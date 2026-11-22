@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TBX Studio v15.0 ULTRA — TBX-400 UNIVERSAL (Complete Calibration IDE)</title>
+<title>TBX Studio v21.0 ULTRA — TBX-400 UNIVERSAL (Complete Calibration IDE)</title>
 <style>
 :root {
   color-scheme: dark;
@@ -852,7 +852,7 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           <div class="t-node" data-route="cv-igncal" onclick="navTo('cv-igncal')"><span>⚡ Calibração de Ignição</span></div>
           <div class="t-node" data-route="cv-staged" onclick="navTo('cv-staged')"><span>⛽ Injeção &amp; 2ª Bancada</span><span class="pro-tag">8/16</span></div>
           <div class="t-node" data-route="cv-sens" onclick="navTo('cv-sens')"><span>Calibração de Sensores</span></div>
-          <div class="t-node" data-route="cv-io" onclick="navTo('cv-io')"><span>Entradas e Saídas (Pinos)</span></div>
+          <div class="t-node" data-route="cv-io" onclick="navTo('cv-io')"><span>🔌 Gerenciador de Portas (I/O)</span></div>
           <div class="t-node" data-route="cv-outtest" onclick="navTo('cv-outtest')"><span>Testar Bicos e Bobinas</span></div>
         </div>
 
@@ -891,7 +891,8 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         <div class="t-cat" onclick="toggleCat(this)"><span>5. Cilindros, Knock e Rede</span><span>▾</span></div>
         <div class="t-group-items">
           <div class="t-node" data-route="cv-ai" onclick="navTo('cv-ai')"><span>🛡 Proteções do Motor (10)</span></div>
-          <div class="t-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Cilindros Individuais &amp; EGT</span></div>
+          <div class="t-node" data-route="cv-egt" onclick="navTo('cv-egt')"><span>🌡 Pirômetros EGT (Termopar K)</span></div>
+          <div class="t-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Cilindros Individuais &amp; IMEP</span></div>
           <div class="t-node pro-only" data-route="cv-knock" onclick="navTo('cv-knock')"><span>Detonação Acústica (Knock)</span><span class="pro-tag">800</span></div>
           <div class="t-node" data-route="cv-plc" onclick="navTo('cv-plc')"><span>Saídas Programáveis (PLC)</span></div>
           <div class="t-node" data-route="cv-pdm" onclick="navTo('cv-pdm')"><span>PDM-8 Sem Fusíveis (CAN)</span></div>
@@ -903,8 +904,8 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         <div class="t-cat" onclick="toggleCat(this)"><span>6. Datalogger e Oficina</span><span>▾</span></div>
         <div class="t-group-items">
           <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>📈 Datalogger 200 Hz</span></div>
+          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span style="color:#38bdf8;font-weight:700;">🖥 Central de Dashs &amp; Templates</span></div>
           <div class="t-node" data-route="cv-scope" onclick="navTo('cv-scope')"><span>Osciloscópio Roda Fônica</span></div>
-          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Painel Digital 7"</span></div>
           <div class="t-node" data-route="cv-dyno" onclick="navTo('cv-dyno')"><span>Dinamômetro Virtual</span></div>
           <div class="t-node" data-route="cv-dtc" onclick="navTo('cv-dtc')"><span>Alertas e Falhas (DTC)</span></div>
           <div class="t-node" data-route="cv-calc" onclick="navTo('cv-calc')"><span>Calculadoras de Oficina</span></div>
@@ -1049,12 +1050,14 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           <div class="clean-home-hero">
             <div>
               <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:3px;">Central de Calibração Completa — Padrão Motorsport &amp; Rua</div>
-              <div style="font-size:12.2px;color:#94a3b8;">Acesso direto a Calibração de Ignição c/ Pistola, Lenta Avançada PID + Dashpot, 2ª Bancada 8/16 Bicos, Sonda O2, Câmbio e Recursos TBX-800 PRO.</div>
+              <div style="font-size:12.2px;color:#94a3b8;">Boost N75/MAC ou Domo CO2, Pirômetros EGT CAN/0–5V, Realocação Dinâmica de Portas Livres e Central de Dashs 7" com 6 Templates.</div>
             </div>
-            <div style="display:flex;gap:8px;flex-shrink:0;">
-              <button class="tbtn pro-only" style="border-color:#f59e0b;color:#fde68a;background:rgba(245,158,11,0.14);" onclick="navTo('cv-pro800')">🏆 Central TBX-800 PRO</button>
+            <div style="display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;">
+              <button class="tbtn" style="border-color:rgba(16,185,129,0.5);color:#6ee7b7;background:rgba(16,185,129,0.12);" onclick="navTo('cv-io')">🔌 Portas Livres (I/O)</button>
+              <button class="tbtn" style="border-color:rgba(249,115,22,0.5);color:#fdba74;background:rgba(249,115,22,0.12);" onclick="navTo('cv-egt')">🌡 Central EGT</button>
+              <button class="tbtn" style="border-color:rgba(56,189,248,0.5);color:#7dd3fc;background:rgba(56,189,248,0.12);" onclick="navTo('cv-dash')">🖥 Central de Dashs</button>
               <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">🤖 Copiloto IA</button>
-              <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Assistente Novo Motor</button>
+              <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Novo Motor</button>
             </div>
           </div>
 
@@ -1448,20 +1451,25 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div>
       </section>
 
-      <!-- ==================== VIEW 6: I/O FLEXPIN, SENSORS (+ DEW-POINT), PLC, PINOUT (+ FAULT SIM), CAN & DTC ==================== -->
+      <!-- ==================== VIEW 6: DYNAMIC SMART PORT ALLOCATOR (FREE UNUSED FEATURE PORTS FOR OTHER USES!) ==================== -->
       <section class="view-pane" id="cv-io">
         <div class="v-bar">
-          <div class="v-crumb">MATRIZ TRUE FLEX-I/O™</div>
-          <button class="obtn on" onclick="navTo('cv-sens')">Sensores & Sonda</button>
+          <div class="v-crumb">🔌 Gerenciador Inteligente de Portas — Realoque Qualquer Porta de Recurso Não Usado!</div>
+          <button class="obtn on" onclick="navTo('cv-boost')">Modo Boost (N75/CO2)</button>
+          <button class="obtn" onclick="navTo('cv-egt')">Configurar EGT</button>
           <button class="obtn" onclick="navTo('cv-plc')">4 Saídas PLC</button>
-          <button class="obtn" onclick="navTo('cv-ftb')">Placa PnP FT</button>
-          <span style="margin-left:auto;font-family:var(--mono);color:var(--neon-c);margin-right:10px;" id="ioFlexCounter">Entradas Ativas: 22 (14 Nativas + 8 Flex-I/O™)</span>
+          <span style="margin-left:auto;font-family:var(--mono);color:var(--neon-c);margin-right:10px;" id="ioFlexCounter">Portas Livres: Calculando...</span>
           <span style="font-family:var(--mono);color:var(--neon-g);" id="ioStatusMsg">✓ 0 Conflitos</span>
         </div>
-        <div class="scroll-body"><div class="grid-2">
-          <div class="panel-box"><div class="p-hdr"><span>Saídas Físicas (Converta Qualquer Saída Livre em Entrada Flex-I/O™!)</span></div><table class="data-tbl" id="tblOutputsMap"></table></div>
-          <div class="panel-box"><div class="p-hdr"><span>Entradas Nativas + Pinos Convertidos por Software (Divisor 33k/6.8k)</span></div><table class="data-tbl" id="tblInputsMap"></table></div>
-        </div></div>
+        <div class="scroll-body">
+          <div class="info-banner vcam" id="ioSmartSummaryBanner">
+            <strong>Gerenciamento Dinâmico de Portas TBX:</strong> Quando você não usa um recurso (ex: usa 4 cilindros em vez de 8, usa N75 em vez de CO2, usa EGT via CAN ou desliga WMI/2ª Bancada), as portas daquele recurso ficam <strong>🟢 LIVRES AUTOMATICAMENTE</strong> abaixo para ligar outro atuador ou converter em entrada extra!
+          </div>
+          <div class="grid-2">
+            <div class="panel-box"><div class="p-hdr"><span>1. Portas de Saída &amp; Potência (Realoque Portas 🟢 Livres ou Converta em Entrada!)</span></div><table class="data-tbl" id="tblOutputsMap"></table></div>
+            <div class="panel-box"><div class="p-hdr"><span>2. Portas de Entrada Analógica / Digital / EGT / CO2 &amp; Pinos Convertidos</span></div><table class="data-tbl" id="tblInputsMap"></table></div>
+          </div>
+        </div>
       </section>
 
       <section class="view-pane" id="cv-sens">
@@ -1867,29 +1875,47 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div>
       </section>
 
-      <!-- ==================== VIEW 9: CLOSED-LOOP BOOST PID + CO2 DOME + BOOST BY GEAR 1-6 ==================== -->
+      <!-- ==================== VIEW 9: UNIFIED BOOST CONTROL — N75 / MAC vs CO2 DOME vs TURBINE DOME vs MECHANICAL ==================== -->
       <section class="view-pane" id="cv-boost">
         <div class="v-bar">
-          <div class="v-crumb">CONTROLE DE PRESSÃO DE TURBO — N75 PID, MARCHAS 1ª–6ª, VELOCIDADE &amp; DOMO CO2</div>
-          <button class="obtn on" onclick="navMap('boost_tgt')">Abrir Mapa 3D RPM × TPS →</button>
-        </div>
-        <div class="mod-tabs">
-          <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-boost', 0, this)">1. Solenoide N75 &amp; Alvo por Marcha (1ª a 6ª)</button>
-          <button type="button" class="mod-tab-btn pro-only" onclick="switchModTab('cv-boost', 1, this)">2. Wastegate Domo CO2 Dupla Válvula &amp; Velocidade (800 PRO)</button>
+          <div class="v-crumb">🚀 Controle de Pressão de Turbo — N75 / MAC, Domo CO2 Dupla Válvula, Marchas &amp; Velocidade</div>
+          <button class="obtn" onclick="navTo('cv-io')">🔌 Ver Portas Liberadas</button>
+          <button class="obtn on" onclick="navMap('boost_tgt')">Mapa 3D RPM × TPS →</button>
         </div>
         <div class="scroll-body">
-          <div class="mod-pane active">
-            <div class="grid-2">
-              <div class="panel-box"><div class="p-hdr"><span>Controlador Wastegate N75 Malha Fechada PID</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Modo de Controle de Pressão</span><select><option selected>Malha Fechada PID + Duty Base</option><option>Malha Aberta (% Duty Fixo por Marcha)</option><option>Pressão por Velocidade (km/h)</option><option>Pressão por Tempo Arrancada (0–6s)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Pino &amp; Frequência Solenoide</span>
+          <!-- MASTER BOOST HARDWARE STRATEGY BAR (FREES UNUSED PORTS AUTOMATICALLY!) -->
+          <div class="panel-box">
+            <div class="p-hdr"><span>Estratégia Física de Controle da Wastegate (Portas Não Usadas Ficam 🟢 Livres p/ Outras Funções!)</span><span id="bstPortUsageBadge" style="color:var(--neon-g);font-family:var(--mono)">1 Porta Usada • 2 Portas CO2 Livres</span></div>
+            <div class="card-pad" style="display:grid;grid-template-columns:1.25fr 1fr;gap:12px;align-items:center;">
+              <div class="f-row" style="padding:0"><span class="f-lbl">Modo de Atuação Física</span>
+                <select id="bstHwStrategy" onchange="syncBoostHardwareMode()">
+                  <option value="n75" selected>1. Solenoide Única PWM — N75 / MAC 3 Vias (Rua &amp; Track)</option>
+                  <option value="co2">2. Pressão no Domo por CO2 / Ar Comprimido — 2 Válvulas Carga + Alívio</option>
+                  <option value="dome_air">3. Domo c/ Pressão da Própria Turbina s/ CO2 — 2 Válvulas MAC</option>
+                  <option value="ewg" class="pro-only">4. Wastegate Eletrônica Motorizada (Ponte-H DBW #2)</option>
+                  <option value="spring">5. Mola Mecânica Direta (0 Portas Usadas — Libera Todas!)</option>
+                </select>
+              </div>
+              <div class="ro-badge" id="bstLiveDomeReadout"><span>MAP Atual / Meta</span><strong style="color:var(--cyan)" id="bstHeaderLiveTxt">N75 PWM 31 Hz • Alvo +1.60 bar</strong></div>
+            </div>
+          </div>
+
+          <div class="grid-2" id="bstMainConfigGrid">
+            <!-- CARD A1: SHOWN WHEN N75 / MAC SINGLE SOLENOID IS SELECTED -->
+            <div class="panel-box" id="bstCardN75">
+              <div class="p-hdr"><span>Configuração Solenoide N75 / MAC 3 Vias (Malha Fechada PID ou Duty)</span><span class="st-pill">1 PORTA PWM</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Modo de Malha N75 / MAC</span>
+                  <select><option selected>Malha Fechada PID + Duty Base por Marcha</option><option>Malha Aberta (% Duty Fixo por Marcha)</option><option>Pressão por Velocidade (km/h)</option></select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Porta de Saída &amp; Frequência MAC/N75</span>
                   <div class="dual-ctl">
-                    <select><option selected>Aux PWM 1 (N75)</option><option>Aux PWM 3</option></select>
-                    <select><option selected>31 Hz (MAC / N75)</option><option>25 Hz</option><option>45 Hz</option></select>
+                    <select id="bstPinN75" onchange="buildIoTables()"><option value="Aux PWM 1" selected>Aux PWM 1 (Padrão)</option><option value="Aux PWM 3">Aux PWM 3</option><option value="INJ Livre F1">INJ Livre F1</option></select>
+                    <select><option>19 Hz (MAC Pesada)</option><option selected>31 Hz (MAC / N75)</option><option>45 Hz (Pierburg)</option></select>
                   </div>
                 </div>
                 <div class="f-row"><span class="f-lbl">Spool Rápido (100% Duty até faltar)</span>
-                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" min="0.05" max="1.00" value="0.25"><span class="ns-u">bar p/ Alvo</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                  <div class="num-step"><input type="number" step="0.05" min="0.05" max="1.00" value="0.25"><span class="ns-u">bar p/ Alvo</span></div>
                 </div>
                 <div class="f-row"><span class="f-lbl">Ganhos PID (Kp / Ki / Kd)</span>
                   <div class="tri-ctl">
@@ -1905,56 +1931,55 @@ body.mode-400 .t-node.pro-only { display: none !important; }
                     <div class="num-step"><input type="number" step="1" value="8"><span class="ns-u">s</span></div>
                   </div>
                 </div>
-              </div></div>
-
-              <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão por Marcha (1ª a 6ª — Ao Vivo na Simulação!)</span><span id="bstLiveGearTag" style="color:var(--cyan);font-family:var(--mono)">Marcha Atual: Lenta</span></div>
-                <table class="data-tbl">
-                  <thead><tr><th>Marcha</th><th>Alvo Mapa 1 Pista</th><th>Alvo Mapa 2 Rua</th><th>Duty Base</th></tr></thead>
-                  <tbody>
-                    <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><input id="bstG1" type="number" step="0.05" value="0.85"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG1Street" type="number" step="0.05" value="0.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
-                    <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><input id="bstG2" type="number" step="0.05" value="1.25"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG2Street" type="number" step="0.05" value="0.90"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
-                    <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><input id="bstG3" type="number" step="0.05" value="1.45"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG3Street" type="number" step="0.05" value="1.15"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
-                    <tr><td><strong>4ª Marcha</strong></td><td><div class="num-step"><input id="bstG4" type="number" step="0.05" value="1.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG4Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
-                    <tr><td><strong>5ª / 6ª Marcha</strong></td><td><div class="num-step"><input id="bstG5" type="number" step="0.05" value="1.65"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG5Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="72"><span class="ns-u">%</span></div></td></tr>
-                  </tbody>
-                </table>
               </div>
             </div>
-          </div>
 
-          <div class="mod-pane">
-            <div class="grid-2">
-              <div class="panel-box"><div class="p-hdr"><span>Controle de Pressão no Domo da Wastegate (CO2 / Ar Comprimido)</span><span class="pro-tag">TBX-800 PRO</span></div><div class="card-pad">
-                <div class="f-row switch-row"><span class="f-lbl">Ativar Malha Fechada por 2 Solenoides (Carga + Alívio Domo)</span><input type="checkbox" onchange="syncFeatureCards()"></div>
-                <div class="f-row"><span class="f-lbl">Solenoide Carga (Increase) / Alívio (Decrease)</span>
+            <!-- CARD A2: SHOWN WHEN CO2 DOME OR TURBINE-AIR DOME IS SELECTED -->
+            <div class="panel-box" id="bstCardCo2" style="display:none">
+              <div class="p-hdr"><span id="bstDomeCardTitle">Controle Malha Fechada no Domo da Wastegate (CO2 / 2 Solenoides)</span><span class="st-pill">2 VÁLVULAS + DOMO</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Porta Solenoide Carga (Injetar) / Alívio (Sangrar)</span>
                   <div class="dual-ctl">
-                    <select><option selected>Aux PWM 5 (Carga CO2)</option><option>PDM-8 #7</option></select>
-                    <select><option selected>Aux PWM 6 (Alívio)</option><option>PDM-8 #8</option></select>
+                    <select id="bstPinCo2Fill" onchange="buildIoTables()"><option selected>Aux PWM 5 (Carga)</option><option>INJ Livre F1</option><option>PDM-8 #7</option></select>
+                    <select id="bstPinCo2Vent" onchange="buildIoTables()"><option selected>Aux PWM 6 (Alívio)</option><option>INJ Livre F2</option><option>PDM-8 #8</option></select>
                   </div>
                 </div>
-                <div class="f-row"><span class="f-lbl">Sensor Pressão do Domo &amp; Pressão Garrafa CO2</span>
+                <div class="f-row"><span class="f-lbl">Porta Sensor Pressão Domo &amp; Garrafa CO2</span>
                   <div class="dual-ctl">
-                    <select><option selected>AN7 Pressão Domo (0–10b)</option><option>CAN Pressão</option></select>
-                    <div class="ro-badge"><strong style="color:var(--neon-g)">Garrafa: 8.4 bar OK</strong></div>
+                    <select id="bstPinDomeSens" onchange="buildIoTables()"><option selected>AN7 Domo (0–10b)</option><option>Flex-I/O Convertida</option><option>CAN Pressão</option></select>
+                    <div class="ro-badge" id="roCo2BottleBadge"><strong style="color:var(--neon-g)">Garrafa: 8.6 bar OK</strong></div>
                   </div>
                 </div>
-                <div class="f-row"><span class="f-lbl">Mola Mecânica da Wastegate &amp; Zona Morta</span>
+                <div class="f-row"><span class="f-lbl">Pressão Mola Wastegate &amp; Alvo Domo no 2-Step</span>
                   <div class="dual-ctl">
-                    <div class="num-step"><span class="ns-pfx">Mola</span><input type="number" step="0.05" value="0.80"><span class="ns-u">bar</span></div>
-                    <div class="num-step"><span class="ns-pfx">±</span><input type="number" step="0.02" value="0.06"><span class="ns-u">bar</span></div>
+                    <div class="num-step"><span class="ns-pfx">Mola</span><input id="bstWgSpring" type="number" step="0.05" value="0.80"><span class="ns-u">b</span></div>
+                    <div class="num-step"><span class="ns-pfx">Larg</span><input id="bstCo2Launch" type="number" step="0.05" value="1.15"><span class="ns-u">b</span></div>
                   </div>
                 </div>
-                <div class="f-row"><span class="f-lbl">Relação Pressão Domo → Coletor MAP</span>
-                  <div class="num-step"><input type="number" step="0.05" value="1.15"><span class="ns-u">× Razão Domo</span></div>
+                <div class="f-row"><span class="f-lbl">Zona Morta PID Domo &amp; Razão Domo/MAP</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">±</span><input type="number" step="0.02" value="0.05"><span class="ns-u">bar</span></div>
+                    <div class="num-step"><input id="bstDomeRatio" type="number" step="0.05" value="1.15"><span class="ns-u">×MAP</span></div>
+                  </div>
                 </div>
-              </div></div>
+                <div class="f-row"><span class="f-lbl">Segurança se Acabar CO2 (&lt; 3.5 bar Garrafa)</span>
+                  <select><option selected>Avisar no Painel + Limitar Giro Segurança 5800 RPM</option><option>Trocar Automaticamente p/ Mapa Seguro M2</option></select>
+                </div>
+              </div>
+            </div>
 
-              <div class="panel-box"><div class="p-hdr"><span>Rampa de Pressão por Velocidade (Tração Progressiva Rua/Pista)</span></div><div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Até 60 km/h (Saída de Curva / Largada)</span><div class="num-step"><input type="number" step="0.05" value="0.85"><span class="ns-u">bar</span></div></div>
-                <div class="f-row"><span class="f-lbl">Em 100 km/h</span><div class="num-step"><input type="number" step="0.05" value="1.25"><span class="ns-u">bar</span></div></div>
-                <div class="f-row"><span class="f-lbl">Em 140 km/h</span><div class="num-step"><input type="number" step="0.05" value="1.50"><span class="ns-u">bar</span></div></div>
-                <div class="f-row"><span class="f-lbl">Acima de 180 km/h (Plena Carga)</span><div class="num-step"><input type="number" step="0.05" value="1.75"><span class="ns-u">bar</span></div></div>
-              </div></div>
+            <!-- CARD B: BOOST TARGETS BY GEAR 1-6 + SPEED RAMP -->
+            <div class="panel-box" id="bstCardTargets"><div class="p-hdr"><span id="bstTargetTblHdr">Alvo de Pressão por Marcha (1ª a 6ª — Ao Vivo na Simulação!)</span><span id="bstLiveGearTag" style="color:var(--cyan);font-family:var(--mono)">Marcha Atual: Lenta</span></div>
+              <table class="data-tbl">
+                <thead><tr><th>Marcha</th><th>Alvo Mapa 1 Pista</th><th>Alvo Mapa 2 Rua</th><th id="bstCol3Hdr">Duty Base / Domo</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><input id="bstG1" type="number" step="0.05" value="0.85"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG1Street" type="number" step="0.05" value="0.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><input id="bstG2" type="number" step="0.05" value="1.25"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG2Street" type="number" step="0.05" value="0.90"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><input id="bstG3" type="number" step="0.05" value="1.45"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG3Street" type="number" step="0.05" value="1.15"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>4ª Marcha</strong></td><td><div class="num-step"><input id="bstG4" type="number" step="0.05" value="1.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG4Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>5ª / 6ª Marcha</strong></td><td><div class="num-step"><input id="bstG5" type="number" step="0.05" value="1.65"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG5Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="72"><span class="ns-u">%</span></div></td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -2444,40 +2469,96 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div></div>
       </section>
 
-      <!-- ==================== NEW VIEW: 7" DIGITAL DASH & TOUCHSCREEN COCKPIT DESIGNER ==================== -->
+      <!-- ==================== VIEW: CUSTOMIZABLE DASH STUDIO WITH 6 TEMPLATES, 3 PAGES & SLOT EDITOR ==================== -->
       <section class="view-pane" id="cv-dash">
         <div class="v-bar">
-          <div class="v-crumb">🖥 PAINEL DIGITAL 7" TOUCHSCREEN — BARRA MOTORSPORT, 6 SENSORES &amp; BOTÕES RÁPIDOS NA TELA</div>
-          <select id="dashThemeSel" style="height:28px" onchange="drawDashPreview()">
-            <option value="obsidian" selected>Tema 1: Motorsport GT3 Ribbon (Padrão TBX)</option>
-            <option value="race">Tema 2: F1 Barra Reta + Shift-Light</option>
-            <option value="drag">Tema 3: Arrancada Drag 201m/402m</option>
-            <option value="oem">Tema 4: Rua Esportivo Noturno</option>
-          </select>
+          <div class="v-crumb">🖥 Central de Dashs Customizável — 6 Templates, 3 Páginas &amp; Editor Bloco-a-Bloco</div>
+          <div class="seg-opt" style="width:auto;">
+            <button type="button" class="on" id="dpg0" onclick="selectDashPage(0)">Pág 1: Pista</button>
+            <button type="button" id="dpg1" onclick="selectDashPage(1)">Pág 2: CO2 &amp; EGT</button>
+            <button type="button" id="dpg2" onclick="selectDashPage(2)">Pág 3: Rua</button>
+          </div>
           <button class="obtn warn" onclick="toggleDashAlarmDemo()">🚨 Testar Alerta</button>
-          <button class="obtn on" onclick="openDashFullscreen()">⛶ Tela Cheia no Carro</button>
-          <button class="obtn ok" onclick="toast('Layout 7 pol. enviado via Wi-Fi / CAN para o Painel Digital TBX!')">📲 Enviar p/ Cockpit</button>
+          <button class="obtn on" onclick="openDashFullscreen()">⛶ Tela Cheia</button>
+          <button class="obtn ok" onclick="toast('Todas as 3 páginas do Dash sincronizadas com o Cockpit TBX!')">📲 Gravar no Painel</button>
         </div>
         <div class="scroll-body">
-          <div style="display:grid;grid-template-columns:1.68fr 1fr;gap:12px;min-height:430px;">
+          <!-- 6 ONE-CLICK VISUAL DASH TEMPLATES -->
+          <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;">
+            <button type="button" class="preset-btn selected" id="dtpl_gt3" onclick="applyDashTemplate('gt3',this)"><strong>🏎 1. GT3 Ribbon</strong><span>Barra 42 seg + 6 blocos</span></button>
+            <button type="button" class="preset-btn" id="dtpl_drag_co2" onclick="applyDashTemplate('drag_co2',this)"><strong>🚦 2. Drag CO2</strong><span>Domo CO2 + Garrafa + 201m</span></button>
+            <button type="button" class="preset-btn" id="dtpl_analog" onclick="applyDashTemplate('analog',this)"><strong>🕹 3. Duplo Ponteiro</strong><span>2 Relógios Redondos + 4 dig</span></button>
+            <button type="button" class="preset-btn" id="dtpl_egt8" onclick="applyDashTemplate('egt8',this)"><strong>🌡 4. Térmico EGT</strong><span>Barras EGT Cil + EMAP</span></button>
+            <button type="button" class="preset-btn" id="dtpl_street" onclick="applyDashTemplate('street',this)"><strong>🛣 5. Street OEM</strong><span>Velocímetro km/h + Rua</span></button>
+            <button type="button" class="preset-btn" id="dtpl_grid8" onclick="applyDashTemplate('grid8',this)"><strong>🎛 6. Grid 8 Canais</strong><span>8 Blocos Grandes Pista</span></button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.68fr 1fr;gap:12px;min-height:395px;">
             <div class="panel-box" id="dashPreviewCard">
-              <div class="p-hdr"><span>Painel Touch Interativo 60 FPS — Clique nos 4 Botões Inferiores do Próprio Painel!</span><span style="color:var(--cyan);font-family:var(--mono)">IPS 1000 NITS • TOUCH ATIVO</span></div>
-              <div class="canvas-slot" style="min-height:385px;cursor:pointer;"><canvas id="cvDashPreview" onclick="onDashCanvasClick(event)"></canvas></div>
+              <div class="p-hdr"><span>Clique em Qualquer Bloco de Sensor p/ Customizar ou nos 4 Botões Touch na Base!</span><span id="lblDashSelectedSlot" style="color:var(--cyan);font-family:var(--mono)">Bloco #1 Selecionado</span></div>
+              <div class="canvas-slot" style="min-height:355px;cursor:pointer;"><canvas id="cvDashPreview" onclick="onDashCanvasClick(event)"></canvas></div>
             </div>
+
             <div class="panel-box">
-              <div class="p-hdr"><span>Configuração de Shift-Light, Alarmes &amp; Botões Touch</span></div>
+              <div class="p-hdr"><span id="hdrSlotEditorTitle">Customizar Bloco #1 do Painel</span><span class="st-pill">AO VIVO</span></div>
               <div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Início LEDs Verdes (1º Estágio)</span>
-                  <div class="num-step"><input id="dshLedStart" type="number" step="100" value="5400" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
+                <div style="display:none"><select id="dashThemeSel"><option value="obsidian" selected>gt3</option></select><select id="dshSlotL"><option value="map" selected>map</option></select><select id="dshSlotR"><option value="lam" selected>lam</option></select></div>
+                <div class="f-row"><span class="f-lbl">Bloco em Edição (Ou clique no painel)</span>
+                  <select id="selEditSlotIdx" onchange="selectDashTileForEdit(parseInt(this.value,10))">
+                    <option value="0" selected>Bloco #1 (Superior Esq.)</option>
+                    <option value="1">Bloco #2 (Superior Centro)</option>
+                    <option value="2">Bloco #3 (Superior Dir.)</option>
+                    <option value="3">Bloco #4 (Inferior Esq.)</option>
+                    <option value="4">Bloco #5 (Inferior Centro)</option>
+                    <option value="5">Bloco #6 (Inferior Dir.)</option>
+                    <option value="6">Bloco #7 (Extra Grid 8)</option>
+                    <option value="7">Bloco #8 (Extra Grid 8)</option>
+                  </select>
                 </div>
-                <div class="f-row"><span class="f-lbl">Flash Vermelho Troca de Marcha</span>
-                  <div class="num-step"><input id="dshLedShift" type="number" step="100" value="7000" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
+                <div class="f-row"><span class="f-lbl">Canal / Sensor neste Bloco</span>
+                  <select id="selSlotChannel" onchange="updateEditedDashSlot()">
+                    <option value="map">Pressão Turbo / MAP (bar)</option>
+                    <option value="dome">Pressão Domo CO2 (bar)</option>
+                    <option value="co2_btl">Garrafa CO2 (bar)</option>
+                    <option value="lam">Sonda Wideband O2 (λ)</option>
+                    <option value="egt_max">EGT Máximo Escape (°C)</option>
+                    <option value="emap">Contrapressão EMAP (bar)</option>
+                    <option value="clt">Temperatura Água (°C)</option>
+                    <option value="iat">Temperatura Ar IAT (°C)</option>
+                    <option value="dp">Pressão Diff Comb. dP (bar)</option>
+                    <option value="oil">Pressão de Óleo (bar)</option>
+                    <option value="pw">Tempo de Injeção (ms)</option>
+                    <option value="duty">Duty dos Bicos (%)</option>
+                    <option value="ign">Avanço de Ignição (°)</option>
+                    <option value="spd">Velocidade GPS/VSS (km/h)</option>
+                    <option value="eth">Teor Etanol Flex (%)</option>
+                    <option value="vbatt">Tensão Bateria (V)</option>
+                  </select>
                 </div>
-                <div class="f-row"><span class="f-lbl">Bloco Esquerdo Superior</span><select id="dshSlotL" onchange="drawDashPreview()"><option value="map" selected>Pressão Turbo / MAP (bar)</option><option value="oil">Pressão de Óleo (bar)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Bloco Direito Superior</span><select id="dshSlotR" onchange="drawDashPreview()"><option value="lam" selected>Sonda Wideband (λ)</option><option value="clt">Temperatura Água (°C)</option></select></div>
-                <div class="f-row switch-row"><span class="f-lbl">Pop-up Gigante se Comb. dP &lt; 2.5b ou Água &gt; 106°C</span><input type="checkbox" checked></div>
-                <div class="f-row switch-row"><span class="f-lbl">Botões Touch Rápidos na Tela (2-Step, Mapa, Puxada)</span><input id="chkDashTouchBtns" type="checkbox" checked onchange="drawDashPreview()"></div>
-                <div class="info-banner vcam"><strong>Superior à FT470:</strong> Além da leitura de 6 canais simultâneos com memória de pico, você pode clicar direto nos <strong>4 botões touch na base do painel ao lado</strong> (2-Step, Trocar Mapa M1–M4, Iniciar Puxada 1ª–4ª e Alerta) ou abrir em <strong>Tela Cheia</strong> num tablet/multimídia Android!</div>
+                <div class="f-row"><span class="f-lbl">Cor do Valor neste Bloco</span>
+                  <select id="selSlotColor" onchange="updateEditedDashSlot()">
+                    <option value="#00e5ff">Ciano Neon</option>
+                    <option value="#00e676">Verde Esmeralda</option>
+                    <option value="#fbbf24">Amarelo Motorsport</option>
+                    <option value="#38bdf8">Azul Sky</option>
+                    <option value="#a78bfa">Roxo Telemetria</option>
+                    <option value="#f472b6">Rosa Drag</option>
+                    <option value="#f8fafc">Branco Puro</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Shift-Light (Início → Troca Flash)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><input id="dshLedStart" type="number" step="100" value="5400" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
+                    <div class="num-step"><input id="dshLedShift" type="number" step="100" value="7000" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Botão Touch #1 / #2 na Tela</span>
+                  <div class="dual-ctl">
+                    <select id="selTouchBtn0" onchange="drawDashPreview()"><option value="2step" selected>🔥 2-Step</option><option value="overboost">💨 Overboost</option><option value="pops">💥 Pops</option></select>
+                    <select id="selTouchBtn1" onchange="drawDashPreview()"><option value="bank" selected>🗺 Mapa M1..4</option><option value="page">📄 Próx. Página</option></select>
+                  </div>
+                </div>
+                <div class="f-row switch-row"><span class="f-lbl">Exibir Barra de 4 Botões Touch na Base</span><input id="chkDashTouchBtns" type="checkbox" checked onchange="drawDashPreview()"></div>
               </div>
             </div>
           </div>
@@ -3194,6 +3275,53 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           </div>
         </div>
       </section>
+
+      <!-- ==================== NEW v21.0 VIEW I: DEDICATED EGT THERMOCOUPLE CENTER & PORT SHARING ==================== -->
+      <section class="view-pane" id="cv-egt">
+        <div class="v-bar">
+          <div class="v-crumb">🌡 Pirômetros de Escape EGT (Termopar Tipo K) — CAN vs Portas Analógicas &amp; Proteção Individual</div>
+          <button class="obtn warn" onclick="simHotEgtCylinder(2, true)">🔥 Simular Cil #3 @ 968 °C</button>
+          <button class="obtn ok" onclick="simHotEgtCylinder(-1, false)">✓ Normalizar Temperaturas</button>
+          <button class="obtn on" onclick="navTo('cv-io')">🔌 Ver Portas Analógicas</button>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-2">
+            <div class="panel-box">
+              <div class="p-hdr"><span>1. Modo de Ligação EGT &amp; Liberação Automática de Portas</span><span id="egtPortBadge" style="color:var(--neon-g);font-family:var(--mono)">0 Portas Analógicas Gastas</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Interface dos Sensores EGT</span>
+                  <select id="egtModeSel" onchange="syncEgtTopology()">
+                    <option value="can8" selected>Módulo CAN EGT-8 (ID 0x6C0 — Libera 100% das Portas Analógicas!)</option>
+                    <option value="an1">1× EGT Geral na Entrada da Turbina (Usa AN6 • Libera 7 Portas!)</option>
+                    <option value="an4">4× EGT Individuais Analógicos 0–5V (Usa AN5..AN8)</option>
+                    <option value="off">Desativado — Sem Pirômetro EGT (100% Portas Livres)</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Escala do Condicionador Termopar K</span>
+                  <select><option selected>Padrão Linear 0–5V = 0 a 1.250 °C (250 °C/V)</option><option>0.5–4.5V = 100 a 1.100 °C</option></select>
+                </div>
+                <div class="f-row"><span class="f-lbl">1º Estágio Proteção (Enriquecer Cilindro Quente)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input id="egtWarnC" type="number" step="10" value="910"><span class="ns-u">°C</span></div>
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="egtRichPct" type="number" step="1" value="10"><span class="ns-u">%Comb</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">2º Estágio Corte Emergência (Salva Pistão!)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input id="egtCutC" type="number" step="10" value="970"><span class="ns-u">°C</span></div>
+                    <select><option selected>Zerar Boost + Limitar 4800 RPM</option><option>Corte Geral Ignição</option></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-box">
+              <div class="p-hdr"><span>2. Leitura Térmica Ao Vivo por Cilindro / Turbina</span><span id="egtMaxLiveBadge" style="color:#fbbf24;font-family:var(--mono)">Máx: 804 °C • Seguro</span></div>
+              <div class="card-pad" id="egtLiveBarsBox" style="gap:7px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- 3. CALM, EASY-TO-READ RIGHT SIDEBAR (6 CLEAR ENGINE READINGS) -->
@@ -3549,6 +3677,8 @@ function navTo(viewId) {
     if (viewId === "cv-calc") runWorkshopCalcs();
     if (viewId === "cv-copilot") runFullAiAudit();
     if (viewId === "cv-setup") syncDirectSetup();
+    if (viewId === "cv-boost") syncBoostHardwareMode();
+    if (viewId === "cv-egt") syncEgtTopology();
     if (viewId === "cv-log") { if (st.logBuf.length < 30) buildProPullLog(); else drawLogMain(); }
   });
 }
@@ -4737,70 +4867,228 @@ function drawVirtualDyno() {
   document.getElementById("lblDynoPeaks").textContent = "Picos SAE: " + pkHp + " cv @ 6150 RPM  |  " + pkTq + " kgfm @ 4550 RPM";
 }
 
-/* ==================== REMAINING HELPERS, TACHO, LOOP & EVENT LISTENERS ==================== */
+/* ==================== v21.0 DYNAMIC SMART PORT ALLOCATOR, UNIFIED BOOST (N75/CO2) & EGT CENTER ==================== */
+st.customOutAssign = {};
+st.customInAssign = {};
+st.hotEgtSimCyl = -1;
+
+function syncBoostHardwareMode() {
+  const mode = (document.getElementById("bstHwStrategy") || {}).value || "n75";
+  const cN75 = document.getElementById("bstCardN75");
+  const cCo2 = document.getElementById("bstCardCo2");
+  const bdg = document.getElementById("bstPortUsageBadge");
+  const txt = document.getElementById("bstHeaderLiveTxt");
+  const dTitle = document.getElementById("bstDomeCardTitle");
+  const btl = document.getElementById("roCo2BottleBadge");
+  const col3 = document.getElementById("bstCol3Hdr");
+
+  if (cN75) cN75.style.display = (mode === "n75" || mode === "ewg") ? "flex" : "none";
+  if (cCo2) cCo2.style.display = (mode === "co2" || mode === "dome_air") ? "flex" : "none";
+
+  if (mode === "n75") {
+    if (bdg) { bdg.textContent = "1 Saída Usada (N75) • 🟢 2 Saídas CO2 + AN7 Domo LIVRES!"; bdg.style.color = "var(--neon-g)"; }
+    if (txt) txt.textContent = "Solenoide N75 / MAC 31 Hz • Alvo +" + getConfiguredGearBoostBar(4).toFixed(2) + " bar";
+    if (col3) col3.textContent = "Duty Base N75";
+  } else if (mode === "co2") {
+    if (bdg) { bdg.textContent = "2 Solenoides CO2 + Sensor Domo Ativos • 🟢 Porta N75 LIVRE!"; bdg.style.color = "#fbbf24"; }
+    if (dTitle) dTitle.textContent = "Controle Malha Fechada no Domo (Garrafa CO2 — Carga + Alívio)";
+    if (btl) btl.innerHTML = '<strong style="color:var(--neon-g)">Garrafa CO2: 8.6 bar OK</strong>';
+    if (txt) txt.textContent = "Domo CO2 PID Ativo • Mola 0.8b → Alvo +" + getConfiguredGearBoostBar(4).toFixed(2) + " bar";
+    if (col3) col3.textContent = "Pré-Carga Domo (%)";
+  } else if (mode === "dome_air") {
+    if (bdg) { bdg.textContent = "2 Solenoides Ar Turbina + Domo • 🟢 Porta Garrafa & N75 LIVRES!"; bdg.style.color = "var(--cyan)"; }
+    if (dTitle) dTitle.textContent = "Controle no Domo c/ Ar da Própria Turbina (Sem Garrafa CO2!)";
+    if (btl) btl.innerHTML = '<strong style="color:var(--cyan)">Fonte: Compressor Turbo</strong>';
+    if (txt) txt.textContent = "Domo 4-Vias Ar Turbina • Alvo +" + getConfiguredGearBoostBar(4).toFixed(2) + " bar";
+    if (col3) col3.textContent = "Pré-Carga Domo (%)";
+  } else if (mode === "ewg") {
+    if (bdg) { bdg.textContent = "Ponte-H DBW #2 Usada • 🟢 Portas PWM N75 & CO2 LIVRES!"; bdg.style.color = "var(--cyan)"; }
+    if (txt) txt.textContent = "Atuador Eletrônico E-Wastegate Posição PID";
+  } else {
+    if (bdg) { bdg.textContent = "0 Portas Usadas • 🟢 TODAS AS PORTAS BOOST/DOMO LIVRES!"; bdg.style.color = "var(--neon-g)"; }
+    if (txt) txt.textContent = "Mola Mecânica Direta • Portas Liberadas p/ Outros Recursos";
+  }
+  buildIoTables();
+}
+
+function syncEgtTopology() {
+  const mode = (document.getElementById("egtModeSel") || {}).value || "can8";
+  const bdg = document.getElementById("egtPortBadge");
+  if (bdg) {
+    if (mode === "can8") { bdg.textContent = "Via Rede CAN 0x6C0 • 🟢 4 Portas Analógicas LIVRES!"; bdg.style.color = "var(--neon-g)"; }
+    else if (mode === "an1") { bdg.textContent = "1 Porta Usada (AN6) • 🟢 3 Portas Analógicas LIVRES!"; bdg.style.color = "var(--cyan)"; }
+    else if (mode === "an4") { bdg.textContent = "4 Portas Analógicas Usadas (AN5..AN8)"; bdg.style.color = "#fbbf24"; }
+    else { bdg.textContent = "EGT OFF • 🟢 100% Portas Analógicas LIVRES!"; bdg.style.color = "var(--neon-g)"; }
+  }
+  renderEgtLiveBars();
+  buildIoTables();
+}
+
+function simHotEgtCylinder(cylIdx, isHot) {
+  st.hotEgtSimCyl = isHot ? cylIdx : -1;
+  if (isHot) {
+    st.cylEgt[cylIdx] = 968;
+    toast("🔥 Simulação EGT: Cilindro #" + (cylIdx + 1) + " subiu p/ 968 °C → Enriquecimento individual +10% ativado!");
+  } else {
+    st.cylEgt = [782,790,804,798,780,788,795,801];
+    toast("✓ Temperaturas EGT normalizadas em todos os cilindros.");
+  }
+  renderEgtLiveBars();
+}
+
+function renderEgtLiveBars() {
+  const box = document.getElementById("egtLiveBarsBox"), mxBdg = document.getElementById("egtMaxLiveBadge");
+  if (!box) return;
+  const mode = (document.getElementById("egtModeSel") || {}).value || "can8";
+  const warnC = parseFloat((document.getElementById("egtWarnC") || {}).value) || 910;
+  const richPct = parseFloat((document.getElementById("egtRichPct") || {}).value) || 10;
+  if (mode === "off") {
+    box.innerHTML = '<div class="info-banner vcam">Pirômetros EGT desativados. Todas as portas analógicas <b>AN5..AN8</b> foram liberadas no <b>Gerenciador de Portas</b> para você ligar Pressão de Óleo, Domo CO2, EMAP ou outros sensores!</div>';
+    if (mxBdg) mxBdg.textContent = "EGT Desativado";
+    return;
+  }
+  const cfgN = parseInt((document.getElementById("cfgCyl") || {}).value, 10) || 4;
+  const count = mode === "an1" ? 1 : (mode === "an4" ? Math.min(4, cfgN) : cfgN);
+  let maxVal = 0;
+  const rows = [];
+  for (let i = 0; i < count; i++) {
+    const boostAdd = Math.max(0, Math.round((st.tlm.map_kpa - 100) * 0.65));
+    const val = (i === st.hotEgtSimCyl) ? 968 : Math.min(995, (st.cylEgt[i] || 785) + boostAdd);
+    if (val > maxVal) maxVal = val;
+    const hot = val >= warnC;
+    const pct = Math.max(8, Math.min(100, Math.round(((val - 350) / 700) * 100)));
+    const lbl = mode === "an1" ? "Coletor Geral Entrada Turbina (AN6)" : ("Cilindro #" + (i + 1) + (mode === "can8" ? " (CAN)" : (" (AN" + (5 + i) + ")")));
+    rows.push(
+      '<div style="display:flex;flex-direction:column;gap:3px;">' +
+      '<div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;">' +
+      '<span style="color:#cbd5e1">' + lbl + '</span>' +
+      '<strong style="color:' + (hot ? '#fda4af' : '#fbbf24') + '">' + val + ' °C' + (hot ? (' • SALVANDO +' + richPct + '% COMB!') : '') + '</strong></div>' +
+      '<div style="height:9px;background:#070c16;border:1px solid #1e2f4d;border-radius:4px;overflow:hidden;">' +
+      '<div style="width:' + pct + '%;height:100%;background:' + (hot ? 'linear-gradient(90deg,#f59e0b,#ef4444)' : 'linear-gradient(90deg,#10b981,#f59e0b)') + ';"></div></div></div>'
+    );
+  }
+  box.innerHTML = rows.join("");
+  if (mxBdg) {
+    mxBdg.textContent = "Pico Atual: " + maxVal + " °C • " + (maxVal >= warnC ? "PROTEÇÃO ATIVA!" : "Seguro");
+    mxBdg.style.color = maxVal >= warnC ? "#fda4af" : "var(--neon-g)";
+  }
+}
+
+function setCustomPortRole(kind, pinKey, val) {
+  if (kind === "out") st.customOutAssign[pinKey] = val;
+  else st.customInAssign[pinKey] = val;
+  buildIoTables();
+  toast("🔌 Porta " + pinKey + " configurada como: " + val);
+}
+
 function buildIoTables() {
   const is800 = (HW_MODEL === "800");
-  const flexOpt = "⚡ ENTRADA FLEX-I/O™: Botão / Sensor 0–19V (Divisor 33k/6.8k)";
-  const outOpts = is800
-    ? ["Bicos Bancada A (Cil 1–4)", "Bicos Bancada B / 8 Bicos", "Bobinas Cil 1–4", "Bobinas Cil 5–8", "Solenoide Wastegate Boost N75", "Solenoide VVT Admissão", "Ponte-H Borboleta DBW J338", "Relé Bomba Combustível", "Eletroventilador 1", "Compressor Ar-Condicionado", "Shift-Light / VTEC / Nitro", flexOpt, "Desativado (Livre)"]
-    : ["Bicos Cil 1–4 (Sequencial)", "Bobina 1 / Centelha 1-4 / Dist", "Bobina 2 / Centelha 2-3", "Bobinas COP 3 e 4", "Válvula Marcha Lenta PWM", "Solenoide Boost N75", "Relé Compressor A/C", "Eletroventilador 1 / Sonda Z19", "Eletroventilador 2 (Aux)", "Relé Bomba Combustível", "Saída Conta-Giros 12V", flexOpt, "Desativado (Livre)"];
-  const outRows = is800 ? [
-    ["J1.A1..A4","INJ 1..4 (50V)","Bicos Bancada A (Cil 1–4)"],["J1.A5..A8","INJ 5..8 (Flex)","⚡ ENTRADA FLEX-I/O™: Botão / Sensor 0–19V (Divisor 33k/6.8k)"],
-    ["J1.B1..B4","IGN 1..4 (TTL)","Bobinas Cil 1–4"],["J1.B5..B8","IGN 5..8 (Flex)","⚡ ENTRADA FLEX-I/O™: Botão / Sensor 0–19V (Divisor 33k/6.8k)"],
-    ["J1.D4","PWM 5A","Solenoide Wastegate Boost N75"],["J1.D3","PWM 300Hz","Solenoide VVT Admissão"],
-    ["J2.E1/E2","Ponte-H 20kHz","Ponte-H Borboleta DBW J338"],["J2.G4","Relé","Relé Bomba Combustível"],
-    ["J2.G5","PWM/Relé","Eletroventilador 1"],["J2.G7","Relé/Flex","Compressor Ar-Condicionado"]
-  ] : [
-    ["A1..A4","INJ 1..4","Bicos Cil 1–4 (Sequencial)"],["B2","IGN 1","Bobina 1 / Centelha 1-4 / Dist"],
-    ["B3","IGN 2","Bobina 2 / Centelha 2-3"],["B4 / B5","IGN 3 & 4","Bobinas COP 3 e 4"],
-    ["A5","PWM Forte","Válvula Marcha Lenta PWM"],["A6 (Flex1)","PWM 4.5A","Solenoide Boost N75"],
-    ["A7 (Flex2)","Relé/Flex","⚡ ENTRADA FLEX-I/O™: Botão / Sensor 0–19V (Divisor 33k/6.8k)"],["A8 (Flex3)","PWM 4.5A","Eletroventilador 1 / Sonda Z19"],
-    ["B1","Relé","Relé Bomba Combustível"],["B6 (Flex4)","12V/Flex","Saída Conta-Giros 12V"]
+  const nCyl = parseInt((document.getElementById("cfgCyl") || {}).value, 10) || 4;
+  const stg2On = !!(document.getElementById("chkStage2En") && document.getElementById("chkStage2En").checked);
+  const bstMode = (document.getElementById("bstHwStrategy") || {}).value || "n75";
+  const egtMode = (document.getElementById("egtModeSel") || {}).value || "can8";
+  const wmiSw = document.querySelector("#cv-wmi .switch-row input[type='checkbox']");
+  const wmiOn = wmiSw ? wmiSw.checked : true;
+
+  const freeOutChoices = [
+    "🟢 PORTA LIVRE (Disponível p/ Outro Uso)",
+    "⚡ Converter em Entrada Flex-I/O™ (0–19V / Botão)",
+    "Saída Extra: 2ª Bomba de Combustível",
+    "Saída Extra: Solenoide Nitro Progressivo",
+    "Saída Extra: Shift-Light Externo / Alerta",
+    "Saída Extra: Water Spray Intercooler",
+    "Saída Extra: Ventoinha 2 / Bomba D'Água",
+    "Saída Extra: Solenoide Comando VTEC"
   ];
-  st.baseInRows = is800 ? [
-    ["Interno","ADC 16-Bit","MAP 7.0 Bar + Pulso VirtualCam™"],["J2.F3","ADC 0–5V","2º MAP Pré-Borboleta G31"],
-    ["J2.E3..E6","4× ADC","Pistas Duplas TPS1/2 + Pedal PPS1/2"],["J2.E7/E8","SPI CJ125","Sonda LSU 4.9 + Dew-Point"],
-    ["J1.C1..C4","MAX9926","Roda 60-2 + Fase Comando"],["J1.D1/D2","2× ADC","Pressão Comb 10b + Óleo 10b"],
-    ["PD11 / PE7","Digital","Freio + Embreagem + Strain-Gauge"],["CAN 1/2","Dual FDCAN","ABS 4 Rodas 0x4A0 + DSG + EGT"]
-  ] : [
-    ["Interno","ADC 12-Bit","MAP 7.0 Bar + Pulso VirtualCam™"],["D1","ADC 0–5V","TPS Borboleta a Cabo"],
-    ["D2 / D3","NTC 2.7k","Água (CLT) & Ar (IAT)"],["D6","High-Z","Wideband 0–5V OU Sonda 0–1V"],
-    ["D7","ADC 0.5–4.5V","Pressão Combustível / Strain-Gauge"],["C2 / C4","VR / Hall +5V","Rotação 60-2 + Fase"],
-    ["C5 / C6","Digital","Pedido A/C + Botão 2-Step / Bump"],["C7","Frequência","Etanol Flex ou Velocidade VSS"]
+  const freeInChoices = [
+    "🟢 ENTRADA LIVRE (Disponível p/ Outro Sensor)",
+    "Sensor Pressão no Domo CO2 (0–10 bar)",
+    "Sensor Pressão Garrafa CO2 (0–100 bar)",
+    "Sensor Contrapressão Escape EMAP (0–10 bar)",
+    "Pirômetro EGT Condicionado 0–5V (0–1250 °C)",
+    "Sensor Pressão de Óleo PS-10 (0–10 bar)",
+    "Sensor Pressão de Água / Cárter",
+    "Botão Rolling Anti-Lag / Overboost Volante",
+    "Sensor Curso de Suspensão / Altura"
   ];
-  document.getElementById("tblOutputsMap").innerHTML = "<thead><tr><th>Pino</th><th>Driver</th><th>Função / Modo Flex-I/O™</th></tr></thead><tbody>" +
-    outRows.map(function(r) {
-      const opts = outOpts.map(function(o) { return '<option value="' + o + '"' + (o === r[2] ? " selected" : "") + '>' + o + "</option>"; }).join("");
-      return "<tr><td style='font-family:var(--mono);color:var(--cyan)' data-pin='" + r[0] + "'>" + r[0] + "</td><td style='color:var(--txt-2)'>" + r[1] + "</td><td><select class='io-out-sel' data-pin='" + r[0] + "' onchange='checkIoConflicts()'>" + opts + "</select></td></tr>";
-    }).join("") + "</tbody>";
+
+  const outCatalog = is800 ? [
+    { pin: "J1.A1..A4", drv: "INJ 1..4", used: true, owner: "Bicos Primários Cil 1–4", defFree: freeOutChoices[0] },
+    { pin: "J1.A5..A8", drv: "INJ 5..8", used: (nCyl > 4 || stg2On), owner: (nCyl > 4 ? ("Bicos Cil 5–" + nCyl) : "2ª Bancada Estagiada"), reason: "4 Cil / S/ 2ª Bancada", defFree: "⚡ Converter em Entrada Flex-I/O™ (0–19V / Botão)" },
+    { pin: "J1.B1..B4", drv: "IGN 1..4", used: true, owner: "Bobinas Ignição Cil 1–4", defFree: freeOutChoices[0] },
+    { pin: "J1.B5..B8", drv: "IGN 5..8", used: (nCyl > 4), owner: "Bobinas Ignição Cil 5–" + nCyl, reason: "Motor 4 Cilindros", defFree: "Saída Extra: Shift-Light Externo / Alerta" },
+    { pin: "Aux PWM 1", drv: "PWM 5A", used: (bstMode === "n75"), owner: "Solenoide Boost N75 / MAC", reason: "Modo Boost = " + bstMode.toUpperCase(), defFree: freeOutChoices[0] },
+    { pin: "Aux PWM 5", drv: "PWM 5A", used: (bstMode === "co2" || bstMode === "dome_air"), owner: "Solenoide Carga Domo CO2", reason: "Domo CO2 Desativado", defFree: "Saída Extra: 2ª Bomba de Combustível" },
+    { pin: "Aux PWM 6", drv: "PWM 5A", used: (bstMode === "co2" || bstMode === "dome_air"), owner: "Solenoide Alívio Domo CO2", reason: "Domo CO2 Desativado", defFree: freeOutChoices[0] },
+    { pin: "Aux PWM 4", drv: "PWM 5A", used: wmiOn, owner: "Bomba Água / Metanol (WMI)", reason: "WMI Desligado", defFree: freeOutChoices[0] },
+    { pin: "J2.E1/E2", drv: "Ponte-H 1", used: true, owner: "Borboleta Eletrônica DBW #1", defFree: freeOutChoices[0] },
+    { pin: "J2.H7/H8", drv: "Ponte-H 2", used: (bstMode === "ewg"), owner: "Wastegate Eletrônica E-WG", reason: "DBW #2 / E-WG OFF", defFree: freeOutChoices[0] }
+  ] : [
+    { pin: "A1..A4", drv: "INJ 1..4", used: true, owner: "Bicos Cil 1–4 (Sequencial)", defFree: freeOutChoices[0] },
+    { pin: "B2..B5", drv: "IGN 1..4", used: true, owner: "Bobinas Cil 1–4", defFree: freeOutChoices[0] },
+    { pin: "A5", drv: "PWM Forte", used: true, owner: "Válvula Marcha Lenta PWM", defFree: freeOutChoices[0] },
+    { pin: "A6 (Flex1)", drv: "PWM 4.5A", used: (bstMode === "n75"), owner: "Solenoide Boost N75 / MAC", reason: "Boost Mecânico", defFree: "⚡ Converter em Entrada Flex-I/O™ (0–19V / Botão)" },
+    { pin: "A7 (Flex2)", drv: "PWM/Flex", used: wmiOn, owner: "Água / Metanol (WMI)", reason: "WMI OFF", defFree: "Saída Extra: 2ª Bomba de Combustível" },
+    { pin: "A8 (Flex3)", drv: "PWM 4.5A", used: true, owner: "Eletroventilador 1", defFree: freeOutChoices[0] },
+    { pin: "B6 (Flex4)", drv: "12V/Flex", used: false, owner: "", reason: "Pino Coringa Livre", defFree: freeOutChoices[0] }
+  ];
+
+  const inCatalog = [
+    { pin: "MAP Int.", cir: "Baro/7b", used: true, owner: "Pressão Coletor MAP + Barométrico", defFree: freeInChoices[0] },
+    { pin: "AN1 / AN2", cir: "ADC 5V", used: true, owner: "TPS Borboleta + Pressão Comb. dP", defFree: freeInChoices[0] },
+    { pin: "AN3 / AN4", cir: "NTC 2.7k", used: true, owner: "Temp. Água (CLT) + Temp. Ar (IAT)", defFree: freeInChoices[0] },
+    { pin: "AN5", cir: "ADC 0–5V", used: (egtMode === "an4"), owner: "Pirômetro EGT Cil #1 (0–5V)", reason: "EGT em " + egtMode.toUpperCase(), defFree: "Sensor Pressão de Óleo PS-10 (0–10 bar)" },
+    { pin: "AN6", cir: "ADC 0–5V", used: (egtMode === "an1" || egtMode === "an4"), owner: (egtMode === "an1" ? "EGT Geral Turbina" : "Pirômetro EGT Cil #2"), reason: "EGT via CAN/OFF", defFree: "Sensor Contrapressão Escape EMAP (0–10 bar)" },
+    { pin: "AN7", cir: "ADC 0–5V", used: (bstMode === "co2" || bstMode === "dome_air" || egtMode === "an4"), owner: (egtMode === "an4" ? "Pirômetro EGT Cil #3" : "Sensor Pressão Domo CO2"), reason: "Domo CO2 & EGT AN OFF", defFree: freeInChoices[0] },
+    { pin: "AN8", cir: "ADC 0–5V", used: (egtMode === "an4"), owner: "Pirômetro EGT Cil #4 (0–5V)", reason: "EGT via CAN/OFF", defFree: "Sensor Pressão Garrafa CO2 (0–100 bar)" },
+    { pin: "DIG C6/C7", cir: "Digital/Hz", used: true, owner: "Botão 2-Step + Sensor Etanol Flex", defFree: freeInChoices[0] }
+  ];
+
+  let freeOutCnt = 0, freeInCnt = 0, flexConvCnt = 0;
+  const outHtml = outCatalog.map(function(r) {
+    if (r.used) {
+      return "<tr><td style='font-family:var(--mono);color:var(--cyan)'><b>" + r.pin + "</b></td><td style='color:var(--txt-2)'>" + r.drv + "</td>" +
+        "<td><div class='ro-badge' style='min-height:26px;border-color:#1e3a5f'><span>🔒 Em uso pelo recurso:</span><strong style='color:#93c5fd'>" + r.owner + "</strong></div></td></tr>";
+    }
+    freeOutCnt++;
+    const cur = st.customOutAssign[r.pin] || r.defFree;
+    if (cur.indexOf("Flex-I/O") >= 0) flexConvCnt++;
+    const opts = freeOutChoices.map(function(o) { return '<option value="' + o + '"' + (o === cur ? " selected" : "") + '>' + o + "</option>"; }).join("");
+    return "<tr style='background:rgba(16,185,129,0.06)'><td style='font-family:var(--mono);color:var(--neon-g)'><b>" + r.pin + "</b></td><td style='color:#6ee7b7;font-size:10px'>Liberada (" + r.reason + ")</td>" +
+      "<td><select class='io-out-sel' data-pin='" + r.pin + "' onchange=\"setCustomPortRole('out','" + r.pin + "',this.value)\">" + opts + "</select></td></tr>";
+  }).join("");
+
+  const inHtml = inCatalog.map(function(r) {
+    if (r.used) {
+      return "<tr><td style='font-family:var(--mono);color:var(--cyan)'><b>" + r.pin + "</b></td><td style='color:var(--txt-2)'>" + r.cir + "</td>" +
+        "<td><div class='ro-badge' style='min-height:26px;border-color:#1e3a5f'><span>🔒 Em uso:</span><strong style='color:#93c5fd'>" + r.owner + "</strong></div></td></tr>";
+    }
+    freeInCnt++;
+    const cur = st.customInAssign[r.pin] || r.defFree;
+    const opts = freeInChoices.map(function(o) { return '<option value="' + o + '"' + (o === cur ? " selected" : "") + '>' + o + "</option>"; }).join("");
+    return "<tr style='background:rgba(16,185,129,0.06)'><td style='font-family:var(--mono);color:var(--neon-g)'><b>" + r.pin + "</b></td><td style='color:#6ee7b7;font-size:10px'>Liberada (" + r.reason + ")</td>" +
+      "<td><select onchange=\"setCustomPortRole('in','" + r.pin + "',this.value)\">" + opts + "</select></td></tr>";
+  }).join("");
+
+  const outTbl = document.getElementById("tblOutputsMap"), inTbl = document.getElementById("tblInputsMap");
+  if (outTbl) outTbl.innerHTML = "<thead><tr><th style='width:95px'>Porta</th><th style='width:128px'>Status / Origem</th><th>Função Atribuída (Realoque Portas Livres!)</th></tr></thead><tbody>" + outHtml + "</tbody>";
+  if (inTbl) inTbl.innerHTML = "<thead><tr><th style='width:95px'>Entrada</th><th style='width:128px'>Status / Origem</th><th>Sensor / Canal Atribuído</th></tr></thead><tbody>" + inHtml + "</tbody>";
+
+  const cntEl = document.getElementById("ioFlexCounter");
+  if (cntEl) cntEl.textContent = "🟢 Portas Liberadas p/ Reuso: " + freeOutCnt + " Saídas + " + freeInCnt + " Entradas" + (flexConvCnt ? (" (+" + flexConvCnt + " Flex-I/O™)") : "");
   checkIoConflicts();
 }
 function checkIoConflicts() {
-  const is800 = (HW_MODEL === "800");
-  const sels = document.querySelectorAll(".io-out-sel"), seen = {}, dup = [], flexRows = [];
+  const sels = document.querySelectorAll(".io-out-sel"), seen = {}, dup = [];
   for (let i = 0; i < sels.length; i++) {
-    const v = sels[i].value, p = sels[i].getAttribute("data-pin") || ("CH" + (i + 1));
-    if (v.indexOf("FLEX-I/O") >= 0) {
-      const pinsCnt = p.indexOf("..") >= 0 ? 4 : 1;
-      flexRows.push([p, "ADC 33k/6.8k", "⚡ Entrada Flex-I/O™ (" + pinsCnt + "x 0–19.3V / Botão)", pinsCnt]);
-    } else if (v.indexOf("Desativado") < 0) {
+    const v = sels[i].value;
+    if (v.indexOf("PORTA LIVRE") < 0 && v.indexOf("Flex-I/O") < 0) {
       if (seen[v]) dup.push(v); else seen[v] = 1;
     }
   }
-  const baseCnt = is800 ? 14 : 9;
-  const addedCnt = flexRows.reduce(function(acc, r) { return acc + r[3]; }, 0);
-  const cntEl = document.getElementById("ioFlexCounter");
-  if (cntEl) cntEl.textContent = "Entradas Ativas: " + (baseCnt + addedCnt) + " (" + baseCnt + " Nativas + " + addedCnt + " via True Flex-I/O™!)";
-  const inTbl = document.getElementById("tblInputsMap");
-  if (inTbl && st.baseInRows) {
-    inTbl.innerHTML = "<thead><tr><th>Pino</th><th>Circuito</th><th>Canal Ativo</th></tr></thead><tbody>" +
-      st.baseInRows.map(function(r) { return "<tr><td style='font-family:var(--mono);color:var(--neon-g)'>" + r[0] + "</td><td style='color:var(--txt-2)'>" + r[1] + "</td><td><strong>" + r[2] + "</strong></td></tr>"; }).join("") +
-      flexRows.map(function(r) { return "<tr style='background:rgba(0,229,255,0.08)'><td style='font-family:var(--mono);color:var(--neon-a)'>" + r[0] + "</td><td style='color:var(--neon-c)'>" + r[1] + "</td><td><strong style='color:var(--neon-a)'>" + r[2] + "</strong></td></tr>"; }).join("") +
-      "</tbody>";
-  }
   const msg = document.getElementById("ioStatusMsg"); if (!msg) return;
   msg.style.color = dup.length ? "#fda4af" : "var(--neon-g)";
-  msg.textContent = dup.length ? ("⚠ Conflito: " + dup[0]) : "✓ 0 Conflitos de Pinagem";
+  msg.textContent = dup.length ? ("⚠ Duplicado: " + dup[0].slice(0, 24)) : "✓ 0 Conflitos de Portas";
 }
 
 function runPreStartCheck() {
@@ -5417,6 +5705,7 @@ function mainLoop() {
   }
   else if (document.getElementById("cv-curve2d").classList.contains("active")) { drawCurve2DEditor(); }
   else if (document.getElementById("cv-dash").classList.contains("active")) { drawDashPreview(); }
+  else if (document.getElementById("cv-egt") && document.getElementById("cv-egt").classList.contains("active")) { renderEgtLiveBars(); }
   else if (document.getElementById("cv-log").classList.contains("active") && st.simScenario === "pull") { drawLogMain(); }
 }
 
@@ -5946,7 +6235,128 @@ function openDashFullscreen() {
   else toast("Modo Tela Cheia acionado!");
 }
 
+st.dashPageIdx = 0;
+st.editSlotIdx = 0;
+st.dashTileRects = [];
 st.dashTouchRects = [];
+
+st.dashPages = [
+  {
+    tpl: "gt3",
+    slots: [
+      { ch: "map", col: "#00e5ff" }, { ch: "lam", col: "#00e676" }, { ch: "clt", col: "#fbbf24" },
+      { ch: "dp",  col: "#38bdf8" }, { ch: "oil", col: "#a78bfa" }, { ch: "ign", col: "#f8fafc" },
+      { ch: "egt_max", col: "#fbbf24" }, { ch: "vbatt", col: "#cbd5e1" }
+    ]
+  },
+  {
+    tpl: "drag_co2",
+    slots: [
+      { ch: "dome", col: "#f472b6" }, { ch: "co2_btl", col: "#00e676" }, { ch: "map", col: "#00e5ff" },
+      { ch: "egt_max", col: "#fbbf24" }, { ch: "lam", col: "#00e676" }, { ch: "dp", col: "#38bdf8" },
+      { ch: "emap", col: "#a78bfa" }, { ch: "duty", col: "#f8fafc" }
+    ]
+  },
+  {
+    tpl: "street",
+    slots: [
+      { ch: "spd", col: "#00e5ff" }, { ch: "clt", col: "#fbbf24" }, { ch: "lam", col: "#00e676" },
+      { ch: "eth", col: "#38bdf8" }, { ch: "vbatt", col: "#cbd5e1" }, { ch: "oil", col: "#a78bfa" },
+      { ch: "iat", col: "#94a3b8" }, { ch: "pw", col: "#00e5ff" }
+    ]
+  }
+];
+
+function getDashChannelData(chKey) {
+  const t = st.tlm;
+  const bb = (t.map_kpa - 101.3) / 100;
+  const boostPos = Math.max(0, bb);
+  const spg = parseFloat((document.getElementById("bstWgSpring") || {}).value) || 0.80;
+  const domeBar = st.simScenario === "2step"
+    ? (parseFloat((document.getElementById("bstCo2Launch") || {}).value) || 1.15)
+    : Math.max(0, boostPos - spg + 0.35);
+  const emapBar = boostPos * 1.17;
+  const egtPk = st.hotEgtSimCyl >= 0 ? 968 : Math.min(960, 790 + Math.round(boostPos * 72));
+  const ratios = [0, 3.30, 1.94, 1.31, 0.97];
+  const spd = t.rpm < 980 && st.simScenario !== "pull" ? 0 : Math.round((t.rpm / (ratios[st.simGear || 1] * 3.88)) * 0.118);
+  const dutyNow = Math.min(100, Math.round((t.inj_pw_ms * t.rpm) / 1200));
+
+  switch (chKey) {
+    case "map":     return ["PRESSÃO MAP", (bb >= 0 ? "+" : "") + bb.toFixed(2) + " bar", bb > 1.95];
+    case "dome":    return ["DOMO CO2", "+" + domeBar.toFixed(2) + " bar", false];
+    case "co2_btl": return ["GARRAFA CO2", "8.6 bar", false];
+    case "lam":     return ["SONDA O2", t.lambda.toFixed(3) + " λ", (t.map_kpa > 180 && t.lambda > 0.86)];
+    case "egt_max": return ["EGT MÁXIMO", egtPk + " °C", egtPk >= 920];
+    case "emap":    return ["ESCAPE EMAP", "+" + emapBar.toFixed(2) + " bar", emapBar > 2.4];
+    case "clt":     return ["TEMP. ÁGUA", t.clt_c.toFixed(0) + " °C", t.clt_c > 103];
+    case "iat":     return ["TEMP. AR IAT", t.iat_c.toFixed(0) + " °C", t.iat_c > 65];
+    case "dp":      return ["DIFF COMB. dP", (t.diff_fp_kpa / 100).toFixed(2) + " bar", t.diff_fp_kpa < 255];
+    case "oil":     return ["PRESSÃO ÓLEO", (t.oil_press_kpa / 100).toFixed(1) + " bar", t.oil_press_kpa < 130];
+    case "pw":      return ["PULSO BICO", t.inj_pw_ms.toFixed(2) + " ms", false];
+    case "duty":    return ["DUTY BICOS", dutyNow + " %", dutyNow > 88];
+    case "ign":     return ["PONTO IGN.", t.ign_deg.toFixed(1) + " °", false];
+    case "spd":     return ["VELOCIDADE", spd + " km/h", false];
+    case "eth":     return ["ETANOL FLEX", t.ethanol_pct + " %E", false];
+    default:        return ["BATERIA", t.vbatt_v.toFixed(2) + " V", t.vbatt_v < 12.1];
+  }
+}
+
+function selectDashPage(pIdx) {
+  st.dashPageIdx = Math.max(0, Math.min(2, pIdx));
+  for (let i = 0; i < 3; i++) {
+    const b = document.getElementById("dpg" + i);
+    if (b) b.classList.toggle("on", i === st.dashPageIdx);
+  }
+  const tpl = st.dashPages[st.dashPageIdx].tpl;
+  ["gt3","drag_co2","analog","egt8","street","grid8"].forEach(function(k) {
+    const tb = document.getElementById("dtpl_" + k);
+    if (tb) tb.classList.toggle("selected", k === tpl);
+  });
+  selectDashTileForEdit(0);
+  drawDashPreview();
+}
+
+function applyDashTemplate(tplKey, btnEl) {
+  const pg = st.dashPages[st.dashPageIdx];
+  pg.tpl = tplKey;
+  ["gt3","drag_co2","analog","egt8","street","grid8"].forEach(function(k) {
+    const tb = document.getElementById("dtpl_" + k);
+    if (tb) tb.classList.toggle("selected", k === tplKey);
+  });
+  if (tplKey === "drag_co2") {
+    pg.slots[0] = { ch: "dome", col: "#f472b6" }; pg.slots[1] = { ch: "co2_btl", col: "#00e676" }; pg.slots[2] = { ch: "map", col: "#00e5ff" };
+    pg.slots[3] = { ch: "egt_max", col: "#fbbf24" }; pg.slots[4] = { ch: "lam", col: "#00e676" }; pg.slots[5] = { ch: "dp", col: "#38bdf8" };
+  } else if (tplKey === "egt8") {
+    pg.slots[0] = { ch: "egt_max", col: "#fbbf24" }; pg.slots[1] = { ch: "emap", col: "#f472b6" }; pg.slots[2] = { ch: "lam", col: "#00e676" };
+  } else if (tplKey === "street") {
+    pg.slots[0] = { ch: "spd", col: "#00e5ff" }; pg.slots[1] = { ch: "clt", col: "#fbbf24" }; pg.slots[2] = { ch: "eth", col: "#00e676" };
+  }
+  selectDashTileForEdit(st.editSlotIdx);
+  drawDashPreview();
+  toast("🖥 Template '" + tplKey.toUpperCase() + "' aplicado na Página " + (st.dashPageIdx + 1) + "!");
+}
+
+function selectDashTileForEdit(idx) {
+  const pg = st.dashPages[st.dashPageIdx];
+  st.editSlotIdx = Math.max(0, Math.min(pg.slots.length - 1, idx));
+  const sl = pg.slots[st.editSlotIdx];
+  const sIdx = document.getElementById("selEditSlotIdx"), sCh = document.getElementById("selSlotChannel"), sCol = document.getElementById("selSlotColor");
+  if (sIdx) sIdx.value = String(st.editSlotIdx);
+  if (sCh) sCh.value = sl.ch;
+  if (sCol) sCol.value = sl.col;
+  setH("lblDashSelectedSlot", "Bloco #" + (st.editSlotIdx + 1) + " Selecionado");
+  setH("hdrSlotEditorTitle", "Customizar Bloco #" + (st.editSlotIdx + 1) + " (Página " + (st.dashPageIdx + 1) + ")");
+  drawDashPreview();
+}
+
+function updateEditedDashSlot() {
+  const pg = st.dashPages[st.dashPageIdx];
+  const ch = (document.getElementById("selSlotChannel") || {}).value || "map";
+  const col = (document.getElementById("selSlotColor") || {}).value || "#00e5ff";
+  pg.slots[st.editSlotIdx] = { ch: ch, col: col };
+  drawDashPreview();
+}
+
 function onDashCanvasClick(ev) {
   const cv = document.getElementById("cvDashPreview"); if (!cv) return;
   const rc = cv.getBoundingClientRect();
@@ -5955,114 +6365,172 @@ function onDashCanvasClick(ev) {
     const r = st.dashTouchRects[i];
     if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) { r.fn(); drawDashPreview(); return; }
   }
+  for (let j = 0; j < st.dashTileRects.length; j++) {
+    const tr = st.dashTileRects[j];
+    if (x >= tr.x && x <= tr.x + tr.w && y >= tr.y && y <= tr.y + tr.h) {
+      selectDashTileForEdit(tr.idx);
+      toast("🎯 Bloco #" + (tr.idx + 1) + " selecionado! Escolha o canal e cor à direita.");
+      return;
+    }
+  }
+}
+
+function drawAnalogDial(ctx, cx, cy, rad, val, minV, maxV, title, unitStr, accentCol) {
+  ctx.fillStyle = "#0a1222"; ctx.strokeStyle = "#223656"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  const a0 = Math.PI * 0.78, aSpan = Math.PI * 1.44;
+  const frac = Math.max(0, Math.min(1, (val - minV) / (maxV - minV)));
+  ctx.strokeStyle = "#1c2d48"; ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.arc(cx, cy, rad - 10, a0, a0 + aSpan); ctx.stroke();
+  ctx.strokeStyle = accentCol; ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.arc(cx, cy, rad - 10, a0, a0 + aSpan * frac); ctx.stroke();
+  const ang = a0 + aSpan * frac;
+  ctx.strokeStyle = "#f43f5e"; ctx.lineWidth = 2.6;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(ang) * (rad - 15), cy + Math.sin(ang) * (rad - 15)); ctx.stroke();
+  ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(cx, cy, 4.5, 0, Math.PI * 2); ctx.fill();
+  ctx.textAlign = "center"; ctx.fillStyle = "#fff"; ctx.font = "900 18px Consolas, monospace";
+  ctx.fillText(unitStr, cx, cy + rad * 0.50);
+  ctx.fillStyle = "#94a3b8"; ctx.font = "700 9px Segoe UI, sans-serif";
+  ctx.fillText(title, cx, cy + rad * 0.72);
 }
 
 function toggleDashAlarmDemo() { st.dashAlarmDemo = !st.dashAlarmDemo; drawDashPreview(); }
 function drawDashPreview() {
   const pc = prepCanvas(document.getElementById("cvDashPreview")); if (!pc) return;
   const ctx = pc.ctx, W = pc.W, H = pc.H, t = st.tlm;
-  const theme = (document.getElementById("dashThemeSel") || {}).value || "obsidian";
+  const pg = st.dashPages[st.dashPageIdx] || st.dashPages[0];
+  const tpl = pg.tpl || "gt3";
   const ledStart = parseInt((document.getElementById("dshLedStart") || {}).value, 10) || 5400;
   const ledShift = parseInt((document.getElementById("dshLedShift") || {}).value, 10) || 7000;
   const showTouch = !document.getElementById("chkDashTouchBtns") || document.getElementById("chkDashTouchBtns").checked;
 
   const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-  if (theme === "drag") { bgGrad.addColorStop(0, "#09090d"); bgGrad.addColorStop(1, "#030305"); }
-  else if (theme === "oem") { bgGrad.addColorStop(0, "#0d182c"); bgGrad.addColorStop(1, "#060b16"); }
+  if (tpl === "drag_co2") { bgGrad.addColorStop(0, "#12091c"); bgGrad.addColorStop(1, "#06040b"); }
+  else if (tpl === "street") { bgGrad.addColorStop(0, "#0b172a"); bgGrad.addColorStop(1, "#050b14"); }
   else { bgGrad.addColorStop(0, "#0b1324"); bgGrad.addColorStop(1, "#050912"); }
-  ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
 
   /* 1. 12-LED Progressive Shift-Light Strip */
-  const padX = 24, ledW = (W - padX * 2 - 11 * 6) / 12;
+  const padX = 22, ledW = (W - padX * 2 - 11 * 6) / 12;
   for (let i = 0; i < 12; i++) {
     const thr = ledStart + (i / 11) * (ledShift - ledStart);
     const lit = t.rpm >= thr;
     const flash = t.rpm >= ledShift && (Math.floor(Date.now() / 85) % 2 === 0);
     const col = i < 5 ? "#00e676" : (i < 9 ? "#ffd600" : "#f43f5e");
     ctx.fillStyle = flash ? "#ff1744" : (lit ? col : "#131e33");
-    ctx.beginPath(); ctx.roundRect(padX + i * (ledW + 6), 11, ledW, 13, 3); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(padX + i * (ledW + 6), 10, ledW, 12, 3); ctx.fill();
   }
 
-  /* 2. Segmented Motorsport GT3 RPM Ribbon Bar (0..8500 RPM + Peak Marker) */
-  const barY = 34, barH = 30, barW = W - padX * 2, segs = 42;
-  const maxScale = Math.max(8000, (st.revLimitRpm || 7200) + 800);
-  const rpmFrac = Math.min(1, t.rpm / maxScale);
-  for (let s = 0; s < segs; s++) {
-    const sf = s / segs, sx = padX + sf * barW, sw = (barW / segs) - 2.2;
-    const active = sf <= rpmFrac;
-    const scol = sf < 0.62 ? "#00e5ff" : (sf < 0.84 ? "#00e676" : "#f43f5e");
-    ctx.fillStyle = active ? scol : "rgba(30,45,72,0.55)";
-    ctx.fillRect(sx, barY, sw, barH);
-  }
-  ctx.font = "700 9.5px Consolas, monospace"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
-  for (let kr = 1; kr <= 8; kr++) {
-    const kx = padX + ((kr * 1000) / maxScale) * barW;
-    if (kx < W - padX) ctx.fillText(String(kr), kx, barY + barH + 11);
-  }
-
-  /* 3. Center Gear Indicator + Giant RPM + Speed + Bank Badge */
   const isPull = (st.simScenario === "pull");
   const gearTxt = t.rpm < 980 && !isPull ? "N" : String(st.simGear || 1);
   const ratios = [0, 3.30, 1.94, 1.31, 0.97];
   const spdKmh = gearTxt === "N" ? 0 : Math.round((t.rpm / (ratios[st.simGear || 1] * 3.88)) * 0.118);
-  const cy = H * 0.36;
+  const maxScale = Math.max(8000, (st.revLimitRpm || 7200) + 800);
+  const botReserve = showTouch ? 42 : 10;
+  let gridTop = H * 0.50, numCols = 3, numSlots = 6;
 
-  ctx.fillStyle = "rgba(14,165,233,0.12)"; ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 1.6;
-  ctx.beginPath(); ctx.roundRect(W * 0.5 - 155, cy - 34, 62, 66, 8); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = "#38bdf8"; ctx.font = "900 40px Consolas, monospace"; ctx.textAlign = "center";
-  ctx.fillText(gearTxt, W * 0.5 - 124, cy + 13);
-  ctx.font = "700 9px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
-  ctx.fillText("MARCHA", W * 0.5 - 124, cy + 27);
+  /* 2. UPPER DECK DEPENDS ON SELECTED TEMPLATE! */
+  if (tpl === "analog") {
+    const rDial = Math.min(72, H * 0.195);
+    const bbNow = (t.map_kpa - 101.3) / 100;
+    drawAnalogDial(ctx, W * 0.29, 34 + rDial, rDial, t.rpm, 0, maxScale, "ROTAÇÃO RPM", String(t.rpm), "#00e5ff");
+    drawAnalogDial(ctx, W * 0.71, 34 + rDial, rDial, bbNow, -1.0, 2.5, "TURBO BAR", (bbNow >= 0 ? "+" : "") + bbNow.toFixed(2) + "b", "#00e676");
+    ctx.fillStyle = "#38bdf8"; ctx.font = "900 34px Consolas, monospace"; ctx.textAlign = "center";
+    ctx.fillText(gearTxt, W * 0.50, 36 + rDial);
+    ctx.font = "700 10px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
+    ctx.fillText(spdKmh + " km/h • PÁG " + (st.dashPageIdx + 1), W * 0.50, 54 + rDial);
+    gridTop = 44 + rDial * 2 + 8; numCols = 4; numSlots = 4;
+  } else if (tpl === "egt8") {
+    const nCyl = Math.max(4, Math.min(8, parseInt((document.getElementById("cfgCyl") || {}).value, 10) || 4));
+    const bTop = 32, bH = H * 0.31, bw = (W - padX * 2 - (nCyl - 1) * 8) / nCyl;
+    const boostAdd = Math.max(0, Math.round((t.map_kpa - 100) * 0.65));
+    for (let c = 0; c < nCyl; c++) {
+      const ev = (c === st.hotEgtSimCyl) ? 968 : Math.min(990, (st.cylEgt[c] || 786) + boostAdd);
+      const ef = Math.max(0.1, Math.min(1, (ev - 400) / 620));
+      const bx = padX + c * (bw + 8);
+      ctx.fillStyle = "#0e1729"; ctx.fillRect(bx, bTop, bw, bH);
+      ctx.fillStyle = ev >= 910 ? "#f43f5e" : "#fbbf24";
+      ctx.fillRect(bx + 2, bTop + bH * (1 - ef), bw - 4, bH * ef);
+      ctx.fillStyle = "#fff"; ctx.font = "800 10.5px Consolas, monospace"; ctx.textAlign = "center";
+      ctx.fillText("C" + (c + 1) + " " + ev + "°", bx + bw * 0.5, bTop + bH - 6);
+    }
+    gridTop = bTop + bH + 10; numCols = 3; numSlots = 6;
+  } else if (tpl === "grid8") {
+    const barW = W - padX * 2, rf = Math.min(1, t.rpm / maxScale);
+    ctx.fillStyle = "#111c30"; ctx.fillRect(padX, 30, barW, 20);
+    ctx.fillStyle = "#00e5ff"; ctx.fillRect(padX, 30, barW * rf, 20);
+    ctx.fillStyle = "#fff"; ctx.font = "800 12px Consolas, monospace"; ctx.textAlign = "center";
+    ctx.fillText(t.rpm + " RPM  •  MARCHA " + gearTxt + "  •  " + spdKmh + " KM/H  •  PÁG " + (st.dashPageIdx + 1) + "/3", W * 0.5, 44);
+    gridTop = 58; numCols = 4; numSlots = 8;
+  } else {
+    /* GT3 Ribbon / Drag CO2 / Street OEM */
+    const barY = 30, barH = 26, barW = W - padX * 2, segs = 42, rf = Math.min(1, t.rpm / maxScale);
+    for (let s = 0; s < segs; s++) {
+      const sf = s / segs, sx = padX + sf * barW, sw = (barW / segs) - 2.2;
+      const scol = tpl === "drag_co2" ? (sf < 0.7 ? "#f472b6" : "#fbbf24") : (sf < 0.62 ? "#00e5ff" : (sf < 0.84 ? "#00e676" : "#f43f5e"));
+      ctx.fillStyle = sf <= rf ? scol : "rgba(30,45,72,0.52)";
+      ctx.fillRect(sx, barY, sw, barH);
+    }
+    const cy = H * 0.34;
+    ctx.fillStyle = "rgba(14,165,233,0.12)"; ctx.strokeStyle = tpl === "drag_co2" ? "#f472b6" : "#0284c7"; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.roundRect(W * 0.5 - 165, cy - 30, 58, 60, 8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = tpl === "drag_co2" ? "#f472b6" : "#38bdf8"; ctx.font = "900 36px Consolas, monospace"; ctx.textAlign = "center";
+    ctx.fillText(gearTxt, W * 0.5 - 136, cy + 12);
 
-  ctx.fillStyle = "#ffffff"; ctx.font = "900 50px Consolas, monospace"; ctx.textAlign = "left";
-  ctx.fillText(String(t.rpm), W * 0.5 - 78, cy + 12);
-  ctx.font = "700 11.5px Segoe UI, sans-serif"; ctx.fillStyle = "#38bdf8";
-  ctx.fillText(spdKmh + " km/h  •  M" + (t.active_bank + 1) + " " + ["PISTA","RUA","ECO","VALET"][t.active_bank || 0], W * 0.5 - 76, cy + 29);
+    ctx.fillStyle = "#ffffff"; ctx.font = "900 46px Consolas, monospace"; ctx.textAlign = "left";
+    ctx.fillText(tpl === "street" ? (spdKmh + " km/h") : String(t.rpm), W * 0.5 - 92, cy + 11);
+    ctx.font = "700 11px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
+    ctx.fillText((tpl === "street" ? (t.rpm + " RPM") : (spdKmh + " km/h")) + " • M" + (t.active_bank + 1) + " • PÁG " + (st.dashPageIdx + 1) + "/3", W * 0.5 - 90, cy + 27);
+    gridTop = H * 0.48; numCols = 3; numSlots = 6;
+  }
 
-  /* 4. 6 High-Contrast Sensor Tiles (2 Rows x 3 Columns) */
-  const bb = ((t.map_kpa - 101.3) / 100).toFixed(2);
-  const dpBar = (t.diff_fp_kpa / 100).toFixed(2);
-  const tiles = [
-    ["PRESSÃO MAP", (bb >= 0 ? "+" : "") + bb + " bar", "#00e5ff", false],
-    ["SONDA O2", t.lambda.toFixed(3) + " λ", "#00e676", (t.map_kpa > 180 && t.lambda > 0.86)],
-    ["TEMP. ÁGUA", t.clt_c.toFixed(0) + " °C", "#fbbf24", t.clt_c > 103],
-    ["DIFF COMB. dP", dpBar + " bar", "#38bdf8", t.diff_fp_kpa < 255],
-    ["PRESSÃO ÓLEO", (t.oil_press_kpa / 100).toFixed(1) + " bar", "#a78bfa", t.oil_press_kpa < 130],
-    ["PONTO / BAT.", t.ign_deg.toFixed(1) + "° • " + t.vbatt_v.toFixed(1) + "V", "#cbd5e1", false]
-  ];
-  const gridTop = H * 0.50, botReserve = showTouch ? 44 : 12;
+  /* 3. CUSTOMIZABLE CLICKABLE SENSOR TILES */
+  st.dashTileRects = [];
+  const numRows = Math.ceil(numSlots / numCols);
   const gridH = H - gridTop - botReserve - 6;
-  const tw = (W - padX * 2 - 16) / 3, th = (gridH - 8) / 2;
-  tiles.forEach(function(tl, idx) {
-    const colIdx = idx % 3, rowIdx = Math.floor(idx / 3);
-    const tx = padX + colIdx * (tw + 8), ty = gridTop + rowIdx * (th + 8);
-    ctx.fillStyle = tl[3] ? "rgba(190,18,60,0.28)" : "rgba(15,24,42,0.94)";
-    ctx.strokeStyle = tl[3] ? "#f43f5e" : "#1f3252"; ctx.lineWidth = 1.2;
+  const tw = (W - padX * 2 - (numCols - 1) * 8) / numCols, th = (gridH - (numRows - 1) * 7) / numRows;
+  for (let idx = 0; idx < numSlots; idx++) {
+    const sl = pg.slots[idx] || { ch: "map", col: "#00e5ff" };
+    const dat = getDashChannelData(sl.ch);
+    const colIdx = idx % numCols, rowIdx = Math.floor(idx / numCols);
+    const tx = padX + colIdx * (tw + 8), ty = gridTop + rowIdx * (th + 7);
+    const isSel = (idx === st.editSlotIdx);
+    ctx.fillStyle = dat[2] ? "rgba(190,18,60,0.30)" : "rgba(15,24,42,0.94)";
+    ctx.strokeStyle = isSel ? "#00e5ff" : (dat[2] ? "#f43f5e" : "#1f3252");
+    ctx.lineWidth = isSel ? 2.2 : 1.1;
     ctx.beginPath(); ctx.roundRect(tx, ty, tw, th, 6); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "700 9.5px Segoe UI, sans-serif";
-    ctx.fillText(tl[0], tx + 10, ty + 16);
-    ctx.fillStyle = tl[3] ? "#fda4af" : tl[2]; ctx.font = "800 19px Consolas, monospace";
-    ctx.fillText(tl[1], tx + 10, ty + Math.min(th - 8, 40));
-  });
+    ctx.fillStyle = isSel ? "#7dd3fc" : "#94a3b8"; ctx.textAlign = "left"; ctx.font = "700 9.2px Segoe UI, sans-serif";
+    ctx.fillText("#" + (idx + 1) + " " + dat[0], tx + 9, ty + 15);
+    ctx.fillStyle = dat[2] ? "#fda4af" : sl.col; ctx.font = "800 " + (numCols === 4 ? "16px" : "18.5px") + " Consolas, monospace";
+    ctx.fillText(dat[1], tx + 9, ty + Math.min(th - 7, 38));
+    st.dashTileRects.push({ idx: idx, x: tx, y: ty, w: tw, h: th });
+  }
 
-  /* 5. 4 Interactive Touchscreen Quick-Action Buttons Right on the 7" Dash! */
+  /* 4. 4 Interactive Touchscreen Quick-Action Buttons */
   st.dashTouchRects = [];
   if (showTouch) {
-    const by = H - 37, bh = 28, bw = (W - padX * 2 - 24) / 4;
+    const by = H - 35, bh = 26, bw = (W - padX * 2 - 24) / 4;
+    const b0Mode = (document.getElementById("selTouchBtn0") || {}).value || "2step";
+    const b1Mode = (document.getElementById("selTouchBtn1") || {}).value || "bank";
     const btns = [
-      { lbl: (st.simScenario === "2step" ? "🔥 2-STEP ON" : "🔥 2-STEP"), act: st.simScenario === "2step", col: "#f97316", fn: function(){ setSimScenario("2step"); } },
-      { lbl: "🗺 MAPA M" + ((t.active_bank + 1)), act: false, col: "#0284c7", fn: function(){ setBank(((t.active_bank || 0) + 1) % 4); } },
+      b0Mode === "overboost"
+        ? { lbl: "💨 OVERBOOST +0.35b", act: false, col: "#0ea5e9", fn: function(){ toast("💨 Overboost +0.35 bar acionado por 8s!"); } }
+        : (b0Mode === "pops"
+          ? { lbl: "💥 POPS DESACEL.", act: st.simScenario === "pops", col: "#a855f7", fn: function(){ setSimScenario("pops"); } }
+          : { lbl: (st.simScenario === "2step" ? "🔥 2-STEP ON" : "🔥 2-STEP"), act: st.simScenario === "2step", col: "#f97316", fn: function(){ setSimScenario("2step"); } }),
+      b1Mode === "page"
+        ? { lbl: "📄 PÁGINA " + (st.dashPageIdx + 1) + "/3 ▸", act: false, col: "#0284c7", fn: function(){ selectDashPage((st.dashPageIdx + 1) % 3); } }
+        : { lbl: "🗺 MAPA M" + ((t.active_bank + 1)), act: false, col: "#0284c7", fn: function(){ setBank(((t.active_bank || 0) + 1) % 4); } },
       { lbl: (st.simScenario === "pull" ? "🚀 PUXANDO..." : "🚀 PUXADA 1ª–4ª"), act: st.simScenario === "pull", col: "#10b981", fn: function(){ setSimScenario("pull"); } },
-      { lbl: "🚨 TESTE ALERTA", act: st.dashAlarmDemo, col: "#e11d48", fn: function(){ toggleDashAlarmDemo(); } }
+      { lbl: "📄 PRÓX. PÁGINA ▸", act: false, col: "#6366f1", fn: function(){ selectDashPage((st.dashPageIdx + 1) % 3); } }
     ];
     btns.forEach(function(b, bi) {
       const bx = padX + bi * (bw + 8);
       ctx.fillStyle = b.act ? b.col : "#132038";
       ctx.strokeStyle = b.col; ctx.lineWidth = 1.3;
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 5); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "800 10.5px Segoe UI, sans-serif";
-      ctx.fillText(b.lbl, bx + bw * 0.5, by + 18);
+      ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "800 10px Segoe UI, sans-serif";
+      ctx.fillText(b.lbl, bx + bw * 0.5, by + 17);
       st.dashTouchRects.push({ x: bx, y: by, w: bw, h: bh, fn: b.fn });
     });
   }
@@ -7086,7 +7554,7 @@ function prepareCleanIntuitiveUi() {
     "cv-proj":    "Dados do Cliente e Versões Salvas",
     "cv-wiz":     "Assistente Passo a Passo — Configurar Novo Motor",
     "cv-setup":   "Motor, Roda Fônica, Bicos e Bobinas",
-    "cv-io":      "Entradas e Saídas da ECU (Pinos)",
+    "cv-io":      "🔌 Gerenciador Inteligente de Portas (Smart Port Allocator™)",
     "cv-sens":    "Calibração de Sensores (TPS, Sonda, Pressão e Temperatura)",
     "cv-plc":     "Saídas Auxiliares Programáveis (Condicionais)",
     "cv-pinout":  "Esquema de Cores do Chicote e Teste de Fiação",
@@ -7096,7 +7564,8 @@ function prepareCleanIntuitiveUi() {
     "cv-ftb":     "Adaptador Plug & Play para Chicotes FuelTech",
     "cv-street":  "Marcha Lenta, Ventoinhas e Ar-Condicionado",
     "cv-cyl":     "Ajuste Individual por Cilindro",
-    "cv-boost":   "Controle de Pressão de Turbo",
+    "cv-boost":   "🌀 Controle de Pressão de Turbo (N75 / MAC • Domo CO2 • Wastegate)",
+    "cv-egt":     "🌡 Central de Pirômetros EGT (Termopar K CAN / 0–5V + Proteção de Pistão)",
     "cv-trac":    "Controle de Tração e Troca Rápida (Shift-Cut)",
     "cv-ai":      "Proteções do Motor e Correção Automática de Sonda",
     "cv-check":   "Check-List Elétrico Antes da Primeira Partida",
@@ -7106,10 +7575,10 @@ function prepareCleanIntuitiveUi() {
     "cv-dbw":     "Borboleta Eletrônica, Piloto Automático e VVT",
     "cv-knock":   "Monitor de Detonação (Knock)",
     "cv-scope":   "Osciloscópio de Rotação e Fase",
-    "cv-log":     "Datalogger — Gráficos Gravados",
+    "cv-log":     "Datalogger — Gráficos Gravados, Timeslip & Ghost",
     "cv-dyno":    "Dinamômetro Virtual (Potência e Torque)",
     "cv-remote":  "Senha da Oficina, Imobilizador e Atualização",
-    "cv-dash":    "Painel Digital 7\" e Shift-Light",
+    "cv-dash":    "🖥 Central de Dashs 7\" — 6 Templates, 3 Páginas & Blocos Customizáveis",
     "cv-outtest": "Testar Bicos, Bobinas e Relés (Motor Parado)",
     "cv-calc":    "Calculadoras Rápidas de Oficina"
   };
@@ -7140,11 +7609,16 @@ function prepareCleanIntuitiveUi() {
   });
 }
 
-buildIoTables();
 setHardwareModel(HW_MODEL);
 prepareCleanIntuitiveUi();
 upgradeAllNumSteppers();
 syncFeatureCards();
+if (typeof syncBoostHardwareMode === "function") syncBoostHardwareMode();
+if (typeof syncEgtTopology === "function") syncEgtTopology();
+["cfgCyl", "chkStage2En", "chkWmiEn", "bstEn"].forEach(function(fid) {
+  const el = document.getElementById(fid);
+  if (el) el.addEventListener("change", function() { buildIoTables(); });
+});
 navTo("cv-home");
 setInterval(mainLoop, 75);
 mainLoop();
