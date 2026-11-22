@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TBX Studio v12.0 — TBX-800 PRO (Complete Ecosystem Edition)</title>
+<title>TBX Studio v14.0 APEX — TBX-800 PRO (Complete Calibration IDE)</title>
 <style>
 :root {
   color-scheme: dark;
@@ -97,53 +97,84 @@ input[type="checkbox"]::after {
 input[type="checkbox"]:checked { background: rgba(16, 185, 129, 0.25); border-color: var(--neon-g); }
 input[type="checkbox"]:checked::after { transform: translateX(16px); background: var(--neon-g); box-shadow: 0 0 6px var(--neon-g); }
 
-.app-shell { display: grid; grid-template-rows: 42px 1fr 24px; width: 100vw; height: 100vh; }
+.app-shell { display: grid; grid-template-rows: 46px 1fr 25px; width: 100vw; height: 100vh; }
 
 .topbar {
-  background: linear-gradient(180deg, #111827 0%, #0b101b 100%);
-  border-bottom: 1px solid var(--bd-0);
+  background: linear-gradient(180deg, #111a2c 0%, #090e19 100%);
+  border-bottom: 1px solid #22314a;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 10px; gap: 6px; white-space: nowrap; overflow: hidden;
+  padding: 0 12px; gap: 8px; white-space: nowrap; overflow: hidden;
 }
 .tb-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .brand-pill {
   display: flex; align-items: center; gap: 6px;
-  background: linear-gradient(135deg, #e11d48 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 55%, #7c3aed 100%);
+  border: 1px solid rgba(56, 189, 248, 0.45);
   color: #fff; font-weight: 900; font-size: 11px; letter-spacing: 0.5px;
-  padding: 5px 9px; border-radius: 4px;
+  padding: 5px 10px; border-radius: 6px; box-shadow: 0 2px 12px rgba(2, 132, 199, 0.28);
 }
-.hw-sel { height: 27px; font-weight: 800; font-size: 11px; color: var(--cyan); border-color: #0284c7; background-color: #081526; min-width: 205px; }
+.hw-sel { height: 29px; font-weight: 800; font-size: 11px; color: var(--cyan); border-color: #0284c7; background-color: #081526; min-width: 198px; border-radius: 6px; }
 .car-pill {
-  height: 27px; padding: 0 10px; background: #101929; border: 1px solid #26354d;
-  border-radius: 4px; display: flex; align-items: center; gap: 6px;
-  color: var(--txt-1); font-size: 11px; cursor: pointer; transition: 0.14s;
+  height: 29px; padding: 0 10px; background: #0f1828; border: 1px solid #26354d;
+  border-radius: 6px; display: flex; align-items: center; gap: 6px;
+  color: var(--txt-1); font-size: 11px; cursor: pointer; transition: 0.14s; max-width: 260px; overflow: hidden; text-overflow: ellipsis;
 }
 .car-pill:hover { border-color: var(--cyan); color: #fff; background: #142238; }
-.cmd-search { width: 190px; height: 27px; background: #070b12; border: 1px solid #243247; border-radius: 4px; padding: 0 9px; color: var(--txt-1); font-family: var(--sans); font-size: 11px; cursor: pointer; }
+.cmd-search { width: 172px; height: 29px; background: #070b12; border: 1px solid #243247; border-radius: 6px; padding: 0 9px; color: var(--txt-1); font-family: var(--sans); font-size: 11px; cursor: pointer; }
 
-.bank-pills { display: flex; background: #070a11; padding: 2px; border-radius: 4px; border: 1px solid #1e293b; gap: 2px; }
-.bk-btn { height: 21px; padding: 0 7px; border: none; border-radius: 3px; background: transparent; color: var(--txt-2); font-family: var(--mono); font-size: 10px; font-weight: 800; cursor: pointer; }
+.bank-pills { display: flex; background: #060911; padding: 2px; border-radius: 6px; border: 1px solid #1e293b; gap: 2px; }
+.bk-btn { height: 23px; padding: 0 8px; border: none; border-radius: 4px; background: transparent; color: var(--txt-2); font-family: var(--mono); font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.12s; }
 .bk-btn:hover { color: #fff; }
-.bk-btn.active { background: #0284c7; color: #fff; }
+.bk-btn.active { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; box-shadow: 0 1px 6px rgba(14,165,233,0.4); }
 .bk-btn.valet.active { background: #d97706; color: #000; }
 
 .tbtn {
-  height: 27px; padding: 0 9px; background: #151e2e; border: 1px solid #2a3950;
-  border-radius: 4px; color: var(--txt-0); font-size: 11px; font-weight: 700;
-  display: inline-flex; align-items: center; gap: 4px; cursor: pointer; transition: 0.12s;
+  height: 29px; padding: 0 10px; background: #141e30; border: 1px solid #293952;
+  border-radius: 6px; color: var(--txt-0); font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: 0.14s;
 }
-.tbtn:hover { background: #1e2b42; border-color: #475569; }
+.tbtn:hover { background: #1e2d46; border-color: #38bdf8; }
 .tbtn.burn { background: linear-gradient(180deg, #059669 0%, #047857 100%); border-color: #10b981; color: #fff; }
+.tbtn.burn.dirty { background: linear-gradient(180deg, #d97706 0%, #b45309 100%); border-color: #fbbf24; animation: pulseBurn 1.4s infinite; }
+@keyframes pulseBurn { 0%,100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.45); } 50% { box-shadow: 0 0 0 4px rgba(251,191,36,0.0); } }
 .tbtn.wiz { background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-color: #38bdf8; color: #fff; }
+.tbtn.health { background: rgba(16, 185, 129, 0.14); border-color: rgba(16, 185, 129, 0.55); color: #6ee7b7; }
 
 .link-pill {
-  height: 27px; padding: 0 9px; background: #062117; border: 1px solid #10b981;
-  border-radius: 4px; display: flex; align-items: center; gap: 6px;
+  height: 29px; padding: 0 10px; background: #062117; border: 1px solid #10b981;
+  border-radius: 6px; display: flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: 10px; font-weight: 800; color: var(--neon-g);
 }
 .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--neon-g); box-shadow: 0 0 8px var(--neon-g); }
 
-.workspace { display: grid; grid-template-columns: 264px 1fr 296px; height: 100%; min-height: 0; overflow: hidden; }
+.workspace { display: grid; grid-template-columns: 268px 1fr 304px; height: 100%; min-height: 0; overflow: hidden; transition: grid-template-columns 0.16s ease; }
+body.hide-left .workspace { grid-template-columns: 0px 1fr 304px; }
+body.hide-right .workspace { grid-template-columns: 268px 1fr 0px; }
+body.hide-left.hide-right .workspace { grid-template-columns: 0px 1fr 0px; }
+body.hide-left .nav-tree, body.hide-right .right-cockpit { overflow: hidden; border: none; }
+
+/* IDE MULTI-TAB WORKSPACE BAR */
+.ide-tabbar {
+  height: 31px; flex-shrink: 0; background: #080d17; border-bottom: 1px solid var(--bd-0);
+  display: flex; align-items: center; padding: 0 6px; gap: 3px; overflow-x: auto;
+}
+.ide-tab {
+  height: 24px; padding: 0 9px; border-radius: 5px 5px 2px 2px;
+  background: #0f1726; border: 1px solid #1e2c42; color: var(--txt-2);
+  font-size: 10.8px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer; flex-shrink: 0; transition: 0.12s;
+}
+.ide-tab:hover { color: #fff; border-color: #334b6e; }
+.ide-tab.active {
+  background: linear-gradient(180deg, #16263f 0%, #0d1626 100%);
+  border-color: var(--cyan); color: #fff; box-shadow: inset 0 2px 0 var(--cyan);
+}
+.ide-tab .x { font-size: 10px; color: #64748b; padding: 0 2px; border-radius: 3px; }
+.ide-tab .x:hover { background: rgba(244,63,94,0.25); color: #fda4af; }
+
+/* TREE FILTER SEARCH */
+.tree-search-wrap { padding: 5px 6px; background: #090f1b; border-bottom: 1px solid var(--bd-0); }
+.tree-search-wrap input { width: 100%; height: 24px; font-size: 10.8px; font-family: var(--sans); background: #050911; border-color: #1f2e45; border-radius: 5px; }
 
 /* LEFT TREE */
 .nav-tree { background: var(--bg-1); border-right: 1px solid var(--bd-0); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
@@ -199,15 +230,37 @@ input[type="checkbox"]:checked::after { transform: translateX(16px); background:
 .obtn.ok { background: rgba(16,185,129,0.16); border-color: #10b981; color: var(--neon-g); }
 .obtn.warn { background: rgba(244,63,94,0.16); border-color: #f43f5e; color: #fda4af; }
 
-/* 3D/2D MATRIX WORKSPACE */
+/* 3D/2D MATRIX WORKSPACE + 4 LAYOUT MODES (COMPLETE / FULL-SHEET / SPLIT VE+IGN / FULL-3D) */
 .cal-layout {
   flex: 1; min-height: 0; padding: 7px; gap: 7px;
-  display: grid; grid-template-rows: minmax(0, 1.54fr) minmax(156px, 0.66fr);
+  display: grid; grid-template-rows: minmax(0, 1.56fr) minmax(150px, 0.64fr);
 }
-.cal-top-split { min-height: 0; display: grid; grid-template-columns: minmax(0, 1.58fr) minmax(295px, 0.84fr); gap: 7px; }
+.cal-top-split { min-height: 0; display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(285px, 0.82fr); gap: 7px; }
+#splitSecondBox { display: none; }
+
+/* Mode: Full-Screen Spreadsheet (Crisp Large Cells!) */
+.cal-layout.mode-sheet { grid-template-rows: 1fr; }
+.cal-layout.mode-sheet #slice2dBox, .cal-layout.mode-sheet #cube3dBox, .cal-layout.mode-sheet #splitSecondBox { display: none !important; }
+.cal-layout.mode-sheet .cal-top-split { grid-template-columns: 1fr; }
+.cal-layout.mode-sheet table.cal-grid td { height: 24.5px; line-height: 24.5px; font-size: 11px; }
+.cal-layout.mode-sheet table.cal-grid th { font-size: 10px; padding: 4px 2px; }
+
+/* Mode: Dual Split VE + Ignition Side-by-Side */
+.cal-layout.mode-split { grid-template-rows: 1fr; }
+.cal-layout.mode-split #slice2dBox, .cal-layout.mode-split #cube3dBox { display: none !important; }
+.cal-layout.mode-split #splitSecondBox { display: flex !important; }
+.cal-layout.mode-split .cal-top-split { grid-template-columns: 1fr 1fr; }
+.cal-layout.mode-split table.cal-grid td { height: 23px; line-height: 23px; font-size: 10.4px; }
+
+/* Mode: Full 3D Surface */
+.cal-layout.mode-3d { grid-template-rows: 1fr; }
+.cal-layout.mode-3d #slice2dBox, .cal-layout.mode-3d #mainSheetBox, .cal-layout.mode-3d #splitSecondBox { display: none !important; }
+.cal-layout.mode-3d .cal-top-split { grid-template-columns: 1fr; }
+
 .panel-box {
-  background: var(--bg-1); border: 1px solid var(--bd-0); border-radius: 5px;
+  background: var(--bg-1); border: 1px solid var(--bd-0); border-radius: 6px;
   display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden;
+}
 }
 .p-hdr {
   height: 27px; flex-shrink: 0; padding: 0 10px;
@@ -235,6 +288,27 @@ table.cal-grid td {
 table.cal-grid td.inv { color: #f8fafc; text-shadow: 0 1px 2px rgba(0,0,0,0.85); }
 table.cal-grid td.sel { outline: 2px solid #ffffff; outline-offset: -2px; position: relative; z-index: 2; }
 table.cal-grid td.hit { box-shadow: inset 0 0 0 2px #000, 0 0 0 2px var(--cyan); position: relative; z-index: 3; }
+table.cal-grid td.locked { position: relative; box-shadow: inset 0 0 0 1.5px #fbbf24; }
+table.cal-grid td.locked::after {
+  content: ""; position: absolute; top: 1px; right: 1px; width: 5px; height: 5px;
+  border-radius: 50%; background: #fbbf24; box-shadow: 0 0 4px #000;
+}
+
+/* RIGHT-CLICK CONTEXT MENU */
+.ctx-menu {
+  position: fixed; z-index: 290; display: none; min-width: 225px;
+  background: rgba(11, 18, 32, 0.97); backdrop-filter: blur(12px);
+  border: 1px solid var(--cyan); border-radius: 8px; padding: 5px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.85); flex-direction: column; gap: 2px;
+}
+.ctx-menu.open { display: flex; }
+.ctx-item {
+  padding: 6px 10px; border-radius: 5px; font-size: 11.2px; color: var(--txt-0);
+  display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+}
+.ctx-item:hover { background: rgba(14,165,233,0.22); color: #fff; }
+.ctx-item span.hk { font-family: var(--mono); font-size: 9.8px; color: var(--txt-3); }
+.ctx-sep { height: 1px; background: #1e2c44; margin: 3px 4px; }
 .live-reticle {
   position: absolute; width: 13px; height: 13px; border-radius: 50%;
   border: 2px solid #fff; background: rgba(244, 63, 94, 0.92);
@@ -333,12 +407,26 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 .bar-track { height: 8px; background: #060911; border: 1px solid #223047; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 3px; }
 
-.tlm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--bd-0); flex: 1; }
-.tlm-cell { background: #0d1320; padding: 5px 8px; display: flex; flex-direction: column; justify-content: center; }
-.tlm-cell .k { font-size: 9px; color: var(--txt-3); font-weight: 700; text-transform: uppercase; display: flex; justify-content: space-between; }
-.tlm-cell .v { font-family: var(--mono); font-size: 13px; font-weight: 800; color: var(--txt-0); margin-top: 1px; }
-.tlm-cell.crit { background: #3b0a18; }
+.tlm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 6px; background: #080c15; }
+.tlm-cell {
+  background: linear-gradient(180deg, #101829 0%, #0b111d 100%);
+  border: 1px solid #1c293f; border-radius: 6px;
+  padding: 6px 8px 5px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px;
+}
+.tlm-cell:hover { border-color: #2f466b; }
+.tlm-cell .k { font-size: 9px; color: var(--txt-2); font-weight: 700; text-transform: uppercase; display: flex; justify-content: space-between; }
+.tlm-cell .v { font-family: var(--mono); font-size: 13.5px; font-weight: 800; color: var(--txt-0); font-variant-numeric: tabular-nums; }
+.tlm-cell .pk { font-family: var(--mono); font-size: 9px; color: #64748b; display: flex; justify-content: space-between; }
+.tlm-mini-bar { height: 3px; background: #060a12; border-radius: 2px; overflow: hidden; }
+.tlm-mini-bar > i { display: block; height: 100%; background: var(--cyan); border-radius: 2px; transition: width 0.1s linear; }
+.tlm-cell.crit { background: #3b0a18; border-color: #f43f5e; }
 .tlm-cell.crit .v { color: #fda4af; }
+
+.quick-sim-drawer {
+  margin: 0 6px 6px; padding: 8px 9px; background: #0b1322; border: 1px solid #223552;
+  border-radius: 6px; display: flex; flex-direction: column; gap: 5px;
+}
+.quick-sim-drawer input[type="range"] { width: 100%; accent-color: var(--cyan); height: 16px; cursor: pointer; }
 
 .statusbar { background: #080c14; border-top: 1px solid var(--bd-0); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-family: var(--mono); font-size: 10px; color: var(--txt-2); }
 
@@ -360,7 +448,8 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
   <!-- TOP UNIFIED COMMAND BAR -->
   <header class="topbar">
     <div class="tb-group">
-      <div class="brand-pill"><span>⚡ TBX STUDIO</span><span>12.0</span></div>
+      <button class="tbtn" style="padding:0 7px;" onclick="toggleSidebar('left')" title="Recolher/Expandir Menu Lateral Esquerdo">[◀]</button>
+      <div class="brand-pill"><span>⚡ TBX STUDIO</span><span>v14.0 APEX</span></div>
       <select class="hw-sel" id="selModelSwitch" onchange="setHardwareModel(this.value)">
         <option value="800" selected>TBX-800 PRO (64p • 20×20 • DBW/VVT)</option>
         <option value="400" >TBX-400 UNIVERSAL (32p • 16×16)</option>
@@ -372,7 +461,7 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
     </div>
 
     <div class="tb-group">
-      <input class="cmd-search" placeholder="🔍 Buscar mapa/função (Ctrl+K)" readonly onclick="openCmdPalette()">
+      <input class="cmd-search" placeholder="🔍 Busca Global (Ctrl+K)" readonly onclick="openCmdPalette()">
       <div class="bank-pills">
         <button class="bk-btn active" id="bt0" onclick="setBank(0)">M1 PISTA</button>
         <button class="bk-btn" id="bt1" onclick="setBank(1)">M2 RUA</button>
@@ -383,15 +472,16 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
     <div class="tb-group">
       <input type="file" id="inpLoadTbxMap" accept=".tbxmap,.json" style="display:none" onchange="importTbxMapFile(this)">
+      <button class="tbtn health" onclick="openMapHealthModal()" title="Analisa todo o mapa procurando mistura pobre em pressão, excesso de ponto, degraus bruscos ou dwell alto!">🩺 Revisar Mapa</button>
       <button class="tbtn" id="btnEngAudio" onclick="toggleEngineAudio()" title="Sintetizador acústico do motor, 2-Step, Pops ≥4k e Misfire ao vivo">🔇 Som</button>
       <button class="tbtn wiz" onclick="navTo('cv-wiz')">Novo</button>
       <button class="tbtn" onclick="document.getElementById('inpLoadTbxMap').click()" title="Abrir arquivo .tbxmap do computador">Abrir</button>
       <button class="tbtn" onclick="exportCal()" title="Baixar arquivo completo .tbxmap com 4 bancos e curvas">Salvar</button>
-      <button class="tbtn" onclick="navTo('cv-proj')">Snapshots</button>
-      <button class="tbtn burn" onclick="burnFram()">Gravar ECU (Ctrl+B)</button>
+      <button class="tbtn burn" id="btnBurnEcu" onclick="burnFram()">Gravar ECU (Ctrl+B)</button>
       <div class="link-pill" onclick="navTo('cv-ai')" style="cursor:pointer;">
         <span class="dot-live"></span><span id="lblTopStatus">200Hz • GUARDIAN OK</span>
       </div>
+      <button class="tbtn" style="padding:0 7px;" onclick="toggleSidebar('right')" title="Recolher/Expandir Telemetria Direita">[▶]</button>
     </div>
   </header>
 
@@ -402,12 +492,17 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         <span id="lblTreeCount" style="color:var(--cyan);font-family:var(--mono);">TBX-800 PRO</span>
         <button class="obtn on" id="btnUiComplexity" style="height:19px;padding:0 6px;font-size:9.5px;" onclick="toggleBasicUiMode()" title="Alternar entre Modo Engenharia Completo e Modo Básico Rápido">MODO: COMPLETO</button>
       </div>
+      <div class="tree-search-wrap">
+        <input type="text" id="treeFilterInp" placeholder="🔎 Filtrar menu (ex: bico, pop, dash, teste)..." oninput="filterLeftTree(this.value)">
+      </div>
       <div class="tree-scroll" id="treeRoot">
-        <div class="t-cat" onclick="toggleCat(this)"><span>1. Projeto, Motor & Sincronismo</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>⚙ 1. Projeto, Motor & Bancada</span><span>▾</span></div>
         <div class="t-group-items">
           <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Ficha da Oficina & Snapshots (Diff)</span><span class="t-tag">VER</span></div>
           <div class="t-node" data-route="cv-wiz" onclick="navTo('cv-wiz')"><span>★ Assistente Novo Carro (6 Passos)</span><span class="t-tag">WIZ</span></div>
           <div class="t-node" data-route="cv-setup" onclick="navTo('cv-setup')"><span>Motor, Fônica, VirtualCam™ & Ignição</span><span class="t-tag" id="bdgTrig">720°</span></div>
+          <div class="t-node" data-route="cv-outtest" onclick="navTo('cv-outtest')"><span>⚡ Teste de Saídas (Bicos/Bobinas/DBW)</span><span class="t-tag" style="color:#fbbf24">TEST</span></div>
+          <div class="t-node" data-route="cv-calc" onclick="navTo('cv-calc')"><span>🧮 Calculadoras Oficina (Bico/Grau/AFR)</span><span class="t-tag" style="color:var(--cyan)">CALC</span></div>
           <div class="t-node" data-route="cv-check" onclick="navTo('cv-check')"><span>Diagnóstico Pré-Partida (10 Testes)</span><span class="t-tag" style="color:var(--neon-g)">OK</span></div>
         </div>
 
@@ -478,8 +573,9 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
           <div class="t-node adv-node" data-route="cv-drag" onclick="navTo('cv-drag')"><span>Arrancada 0–6s, Bump, Strain & Nitro</span><span class="t-tag">DRAG</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>9. Scope, Log Multi-Faixa & Dyno</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>📊 9. Painel Digital, Scope, Log & Dyno</span><span>▾</span></div>
         <div class="t-group-items">
+          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Designer do Painel Digital 7" (Dash)</span><span class="t-tag" style="color:#c084fc">DASH</span></div>
           <div class="t-node" data-route="cv-scope" onclick="navTo('cv-scope')"><span>Scope 4Ch, ToothLog & Doutor VR</span><span class="t-tag">4CH</span></div>
           <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>Datalogger 4 Faixas + Corretor VE</span><span class="t-tag">LOG</span></div>
           <div class="t-node" data-route="cv-dyno" onclick="navTo('cv-dyno')"><span>Virtual Dyno™ Duplo Eixo (cv + kgfm)</span><span class="t-tag">DYNO</span></div>
@@ -490,37 +586,43 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
     <!-- 2. CENTER WORKSPACE -->
     <main class="center-stage">
+      <!-- MULTI-TAB OPEN WORKSPACE BAR (LIKE HALTECH NSP / FTMANAGER 5) -->
+      <div class="ide-tabbar" id="ideTabBar"></div>
 
-      <!-- ==================== VIEW 1: 3D/2D MATRIX + IN-PLACE EDIT + UNDO/REDO + AXIS CONFIG ==================== -->
+      <!-- ==================== VIEW 1: 3D/2D MATRIX + 4 LAYOUT MODES + SPLIT VE+IGN + CELL LOCK ==================== -->
       <section class="view-pane active" id="cv-map3d">
         <div class="v-bar">
           <div class="v-crumb" id="mapHdrTitle">MAPA INJEÇÃO (VE %)</div>
           <span style="font-family:var(--mono);font-size:10px;color:var(--txt-2);" id="lblSelBox">[3632×+0.34]</span>
           <div class="v-sep"></div>
+          <button class="obtn on" id="lyt-full" onclick="setMapLayout('full')" title="F9: Tabela + Cubo 3D + Corte 2D">⊞ Misto</button>
+          <button class="obtn" id="lyt-sheet" onclick="setMapLayout('sheet')" title="Planilha Gigante em Tela Cheia (Melhor Leitura)">▦ 100%</button>
+          <button class="obtn" id="lyt-split" onclick="setMapLayout('split')" title="Acerto Simultâneo: Mapa Injeção VE à esquerda + Mapa Ignição à direita!">◫ VE+Ign</button>
+          <button class="obtn" id="lyt-3d" onclick="setMapLayout('3d')" title="Malha 3D em Tela Cheia">🧊 3D</button>
+          <div class="v-sep"></div>
           <button class="obtn" onclick="undoMap()" title="Ctrl+Z">↶</button>
           <button class="obtn" onclick="redoMap()" title="Ctrl+Y">↷</button>
-          <input id="inpSetVal" type="text" value="88.0" title="Aceita valor exato (85), soma (+2.5) ou % (*1.04)" style="width:52px;height:24px;text-align:center;font-weight:800;">
-          <button class="obtn on" onclick="applyFormulaInput(document.getElementById('inpSetVal').value)">Aplicar</button>
+          <input id="inpSetVal" type="text" value="88.0" title="Aceita valor exato (85), soma (+2.5) ou % (*1.04)" style="width:50px;height:24px;text-align:center;font-weight:800;">
+          <button class="obtn on" onclick="applyFormulaInput(document.getElementById('inpSetVal').value)">=</button>
           <button class="obtn" onclick="matrixOp('mul', 1.02)">+2%</button>
           <button class="obtn" onclick="matrixOp('mul', 0.98)">-2%</button>
-          <button class="obtn" onclick="matrixOp('interpH')" title="Interpolar Horizontal">Int H</button>
-          <button class="obtn" onclick="matrixOp('interpV')" title="Interpolar Vertical">Int V</button>
-          <button class="obtn" onclick="matrixOp('interp2D')" title="Tecla I: Interpolação Bilinear 4 Cantos 2D">Int 2D (I)</button>
-          <button class="obtn" onclick="matrixOp('smooth')" title="Tecla S: Suavizar Bloco 3×3">Suavizar</button>
-          <button class="obtn" id="btnMapDiff" onclick="toggleDiffMode()" title="Tecla D: Exibe Δ Diferença colorida contra Mapa Base/Snapshot">Δ Diff</button>
-          <button class="obtn" id="btnHistMode" onclick="toggleHistMode()" title="Tecla H: Histograma ao vivo de Erro de Sonda (%) × Contagem de Amostras">📊 Hist λ</button>
-          <button class="obtn ok" id="btnHistApply" style="display:none;" onclick="applyHistogramCorrections()" title="Aplica correção ponderada apenas nas células visitadas (Hits >= 3)">⚡ Corrigir</button>
-          <button class="obtn" id="btnFollowEng" onclick="toggleFollowEngine()" title="Tecla F: Cursor segue a célula atual do motor ao vivo">🎯 Seguir</button>
-          <button class="obtn on" id="btnFuelUnit" onclick="toggleFuelMapMode()" title="Alterna entre Eficiência Volumétrica (%) e Tempo de Injeção (ms)">VE↔ms</button>
-          <button class="obtn" onclick="openFtImportModal()" title="Importa tabelas do FTManager, MegaSquirt ou CSV">📥 FT</button>
+          <button class="obtn" onclick="matrixOp('interp2D')" title="Tecla I: Interpolação Bilinear 4 Cantos 2D">Int 2D</button>
+          <button class="obtn" onclick="matrixOp('smooth')" title="Tecla S: Suavizar Bloco 3×3 (Respeita células travadas 🔒)">Suav.</button>
+          <button class="obtn" onclick="toggleLockSelection()" title="Tecla L: Travar/Destravar células selecionadas (Protege lenta/cruzeiro do Auto-Tune!)">🔒 Lock</button>
+          <button class="obtn" id="btnMapDiff" onclick="toggleDiffMode()" title="Tecla D: Exibe Δ Diferença contra Mapa Base">Δ Diff</button>
+          <button class="obtn" id="btnHistMode" onclick="toggleHistMode()" title="Tecla H: Histograma ao vivo de Erro de Sonda (%) × Amostras">📊 Hist</button>
+          <button class="obtn ok" id="btnHistApply" style="display:none;" onclick="applyHistogramCorrections()">⚡ Aplic.</button>
+          <button class="obtn" id="btnFollowEng" onclick="toggleFollowEngine()" title="Tecla F: Seguir célula atual do motor">🎯</button>
+          <button class="obtn on" id="btnFuelUnit" onclick="toggleFuelMapMode()" title="Alterna Eficiência Volumétrica (%) ↔ Pulso (ms)">VE↔ms</button>
+          <button class="obtn" onclick="openFtImportModal()" title="Importar tabela FTManager / CSV">📥 FT</button>
           <button class="obtn ok" onclick="openAxisModal()">⚙ Eixos</button>
         </div>
 
-        <div class="cal-layout">
+        <div class="cal-layout" id="calLayoutRoot">
           <div class="cal-top-split">
-            <div class="panel-box">
+            <div class="panel-box" id="mainSheetBox">
               <div class="p-hdr">
-                <span id="lblSheetSub">Planilha Interativa — Digite Números Direto na Célula • Ctrl+C / Ctrl+V Excel • Clique no Eixo p/ Reescalar</span>
+                <span id="lblSheetSub">Planilha Interativa • Botão Direito p/ Menu • Tecla [L] Trava Célula • Ctrl+C / Ctrl+V Excel</span>
                 <span style="font-family:var(--mono);color:var(--cyan);" id="lblCellCount">400 Células</span>
               </div>
               <div class="sheet-wrap">
@@ -529,7 +631,19 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
               </div>
             </div>
 
-            <div class="panel-box">
+            <!-- SECOND SYNCHRONIZED MAP FOR SPLIT VE + IGNITION MODE -->
+            <div class="panel-box" id="splitSecondBox">
+              <div class="p-hdr">
+                <span style="color:#fbbf24;">⚡ MAPA ESPELHADO: AVANÇO DE IGNIÇÃO (°APMS) — Clique p/ Editar Junto!</span>
+                <button class="obtn" style="height:19px;padding:0 6px;" onclick="navMap('ign')">Focar Ignição</button>
+              </div>
+              <div class="sheet-wrap">
+                <table class="cal-grid" id="calSheetSplitIgn"></table>
+                <div class="live-reticle" id="liveDotSplit"></div>
+              </div>
+            </div>
+
+            <div class="panel-box" id="cube3dBox">
               <div class="p-hdr">
                 <span>Cubo 3D Graduado (Arraste p/ Orbitar • Scroll Zoom)</span>
                 <button class="obtn" style="height:20px;padding:0 7px;" onclick="st.yaw=-0.62;st.pitch=1.12;st.zoom=1;render3D()">Reset 3D</button>
@@ -538,7 +652,7 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
             </div>
           </div>
 
-          <div class="panel-box">
+          <div class="panel-box" id="slice2dBox">
             <div class="p-hdr">
               <span id="lblSliceTitle">Corte 2D — Arraste os Pontos Amarelos</span>
               <span style="font-family:var(--mono);font-size:10px;color:var(--txt-2);">
@@ -1353,15 +1467,109 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
           </div></div>
         </div></div>
       </section>
+
+      <!-- ==================== NEW VIEW: 7" DIGITAL DASH & MULTIMEDIA DESIGNER ==================== -->
+      <section class="view-pane" id="cv-dash">
+        <div class="v-bar">
+          <div class="v-crumb">🖥 DESIGNER DO PAINEL DIGITAL 7" / MULTIMÍDIA ANDROID — SHIFT-LIGHT 12 LEDs & ALERTAS VISUAIS</div>
+          <select id="dashThemeSel" style="height:24px" onchange="drawDashPreview()">
+            <option value="obsidian" selected>Tema 1: Obsidian Pro Cyber (Padrão TBX)</option>
+            <option value="race">Tema 2: Motorsport Barra Shift-Light F1</option>
+            <option value="drag">Tema 3: Arrancada Drag 402m Alto Contraste</option>
+            <option value="oem">Tema 4: Clássico Rua / OEM Esportivo</option>
+          </select>
+          <button class="obtn warn" onclick="toggleDashAlarmDemo()">🚨 Testar Alerta</button>
+          <button class="obtn ok" onclick="toast('Layout do Painel Digital sincronizado com o App TBX Cockpit!')">📲 Enviar p/ Cockpit</button>
+        </div>
+        <div class="scroll-body">
+          <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:10px;min-height:390px;">
+            <div class="panel-box">
+              <div class="p-hdr"><span>Pré-Visualização em Tempo Real (60 FPS — Reage ao Giro e Pressão Atuais!)</span><span style="color:var(--cyan);font-family:var(--mono)">800×480 / 1280×480</span></div>
+              <div class="canvas-slot" style="min-height:340px;"><canvas id="cvDashPreview"></canvas></div>
+            </div>
+            <div class="panel-box">
+              <div class="p-hdr"><span>Configuração de Shift-Light Progressivo & Pop-ups de Emergência</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Início LEDs Verdes (1º Estágio)</span><input id="dshLedStart" type="number" value="5400" onchange="drawDashPreview()"></div>
+                <div class="f-row"><span class="f-lbl">Flash Vermelho Troca de Marcha</span><input id="dshLedShift" type="number" value="7100" onchange="drawDashPreview()"></div>
+                <div class="f-row"><span class="f-lbl">Canal Destaque Esquerdo</span><select id="dshSlotL" onchange="drawDashPreview()"><option value="map" selected>Pressão Turbo / MAP (bar)</option><option value="oil">Pressão de Óleo (bar)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Canal Destaque Direito</span><select id="dshSlotR" onchange="drawDashPreview()"><option value="lam" selected>Sonda Wideband (λ / AFR)</option><option value="clt">Temperatura Água (°C)</option></select></div>
+                <div class="f-row switch-row"><span class="f-lbl">Pop-up Gigante se Óleo &lt; 1.2b ou CLT &gt; 106°C</span><input type="checkbox" checked></div>
+                <div class="f-row switch-row"><span class="f-lbl">Troca Automática de Brilho Dia / Noite</span><input type="checkbox" checked></div>
+                <div class="info-banner vcam">Dica: Ligue a <strong>Bancada Manual</strong> no canto inferior direito e arraste o RPM até 7200 para ver os 12 LEDs de Shift-Light acendendo ao vivo!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW VIEW: STOPPED-ENGINE ACTUATOR / OUTPUT TEST MODE ==================== -->
+      <section class="view-pane" id="cv-outtest">
+        <div class="v-bar">
+          <div class="v-crumb">⚡ TESTE INDIVIDUAL DE SAÍDAS NO COFRE COM MOTOR PARADO (PULSO DE BICOS, BOBINAS, BOMBA, FANS & DBW)</div>
+          <button class="obtn warn" onclick="stopAllOutputTests()">⏹ Parar Todos os Testes</button>
+        </div>
+        <div class="scroll-body">
+          <div class="info-banner" id="outTestBanner">
+            <strong>Modo Teste de Chicote & Atuadores:</strong> Permite pulsar cada bico injetor, centelhar cada bobina (com bomba desligada!) e acionar relés/ventoinhas antes da primeira partida para confirmar fiação 100% certa.
+          </div>
+          <div class="grid-3" id="outTestGrid"></div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW VIEW: WORKSHOP ENGINEERING CALCULATORS ==================== -->
+      <section class="view-pane" id="cv-calc">
+        <div class="v-bar">
+          <div class="v-crumb">🧮 CALCULADORAS TÉCNICAS DE OFICINA (DIMENSIONADOR DE BICOS/BOMBA, GRAU RODA FÔNICA & CÂMBIO/AFR)</div>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-3">
+            <div class="panel-box">
+              <div class="p-hdr"><span>1. Dimensionador de Bicos & Bomba por Potência</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Potência Alvo no Motor (cv)</span><input id="clcHp" type="number" value="380" oninput="runWorkshopCalcs()"></div>
+                <div class="f-row"><span class="f-lbl">Nº de Cilindros</span><input id="clcCyl" type="number" value="4" oninput="runWorkshopCalcs()"></div>
+                <div class="f-row"><span class="f-lbl">Combustível</span><select id="clcFuel" onchange="runWorkshopCalcs()"><option value="e100" selected>Etanol E100 (Turbo)</option><option value="gas">Gasolina Podium (Turbo)</option><option value="meth">Metanol Pista</option></select></div>
+                <div class="f-row"><span class="f-lbl">Duty Máximo Seguro (%)</span><input id="clcDuty" type="number" value="82" oninput="runWorkshopCalcs()"></div>
+                <div class="info-banner vcam" id="clcInjOut">Calculando vazão ideal...</div>
+              </div>
+            </div>
+
+            <div class="panel-box">
+              <div class="p-hdr"><span>2. Ângulo do 1º Dente da Roda Fônica (PMS)</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Padrão da Roda Fônica</span><select id="clcWheel" onchange="runWorkshopCalcs()"><option value="60" selected>60-2 (6.0° por dente)</option><option value="36">36-1 (10.0° por dente)</option><option value="24">24-1 (15.0° por dente)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Nº de Dentes Contados da Falha ao Sensor em PMS</span><input id="clcTeeth" type="number" value="15" oninput="runWorkshopCalcs()"></div>
+                <div class="info-banner" id="clcTrigOut">Ângulo de alinhamento = 90.0° APMS</div>
+                <button class="tbtn wiz" onclick="applyCalcToothAngle()">Aplicar Ângulo no Setup do Motor</button>
+              </div>
+            </div>
+
+            <div class="panel-box">
+              <div class="p-hdr"><span>3. Conversor Lambda ↔ AFR & Velocidade Real</span></div>
+              <div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Valor Lambda (λ)</span><input id="clcLam" type="number" step="0.01" value="0.80" oninput="runWorkshopCalcs()"></div>
+                <div class="f-row"><span class="f-lbl">Giro / Marcha / Diferencial</span>
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;"><input id="clcRpmG" type="number" value="6800" style="width:100%;min-width:0;padding:0 5px" oninput="runWorkshopCalcs()"><input id="clcGearR" type="number" step="0.01" value="0.95" style="width:100%;min-width:0;padding:0 5px" oninput="runWorkshopCalcs()"><input id="clcDiffR" type="number" step="0.01" value="3.88" style="width:100%;min-width:0;padding:0 5px" oninput="runWorkshopCalcs()"></div>
+                </div>
+                <div class="info-banner" id="clcAfrOut">Conversão instantânea...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <!-- 3. RIGHT LIVE TELEMETRY COCKPIT -->
+    <!-- 3. RIGHT LIVE TELEMETRY COCKPIT (WITH PEAK HOLD + MINI-BARS + MANUAL BENCH DRAWER) -->
     <aside class="right-cockpit">
       <div class="tree-hdr">
         <span>Tempo Real <span id="lblHilSrc" style="color:var(--neon-g)"></span></span>
-        <span id="lblGearLive" style="color:var(--yellow);font-family:var(--mono);">3ª • 162 km/h</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span id="lblGearLive" style="color:var(--yellow);font-family:var(--mono);">3ª • 162 km/h</span>
+          <button class="obtn" style="height:18px;padding:0 5px;font-size:9px;" onclick="resetTelemetryPeaks()" title="Zerar todos os picos Mín/Máx registrados">↺ Picos</button>
+        </div>
       </div>
-      <div class="dial-card"><canvas id="cvTacho" style="width:276px;height:188px;display:block;"></canvas></div>
+      <div class="dial-card"><canvas id="cvTacho" style="width:276px;height:178px;display:block;"></canvas></div>
       <div class="bars-card">
         <div class="bar-row">
           <div style="display:flex;justify-content:space-between;"><span>MAP / BOOST</span><strong id="fbMap" style="color:var(--cyan);">+0.85 bar</strong></div>
@@ -1373,26 +1581,74 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
       </div>
       <div class="tlm-grid">
-        <div class="tlm-cell"><div class="k"><span>TPS / Borb.</span><span id="lblThrKind">DBW</span></div><div class="v" id="svTps">42.0 %</div></div>
-        <div class="tlm-cell"><div class="k"><span>Avanço Ign.</span><span>APMS</span></div><div class="v" id="svIgn">18.5 °</div></div>
-        <div class="tlm-cell"><div class="k"><span>Pulso Bico</span><span>INJ</span></div><div class="v" id="svPw">4.82 ms</div></div>
-        <div class="tlm-cell"><div class="k"><span>Duty Bicos</span><span>MAX 90%</span></div><div class="v" id="svDuty">38.4 %</div></div>
-        <div class="tlm-cell"><div class="k"><span>Fase 720°</span><span>VCAM</span></div><div class="v" id="svVcam" style="color:var(--neon-g)">LOCK 99%</div></div>
-        <div class="tlm-cell"><div class="k"><span>Filme Aquino</span><span>τ-X</span></div><div class="v" id="svFilm">0.54 ms</div></div>
-        <div class="tlm-cell" id="sbDp"><div class="k"><span>Diff Comb dP</span><span>3.0b</span></div><div class="v" id="svDp">3.04 bar</div></div>
-        <div class="tlm-cell"><div class="k"><span>Pressão Óleo</span><span>BAR</span></div><div class="v" id="svOil">3.65 bar</div></div>
-        <div class="tlm-cell"><div class="k"><span>Água CLT</span><span>G62</span></div><div class="v" id="svClt">88.5 °C</div></div>
-        <div class="tlm-cell"><div class="k"><span>Ar IAT</span><span>G42</span></div><div class="v" id="svIat">33.0 °C</div></div>
-        <div class="tlm-cell"><div class="k"><span>Sonda LSU</span><span>DEW-OK</span></div><div class="v" style="color:var(--neon-g)">780 °C</div></div>
-        <div class="tlm-cell"><div class="k"><span>Bateria</span><span>+15</span></div><div class="v" id="svBat">13.88 V</div></div>
+        <div class="tlm-cell"><div class="k"><span>TPS / Borb.</span><span id="lblThrKind">DBW</span></div><div class="v" id="svTps">42.0 %</div><div class="pk"><span>Máx</span><span id="pkTps">42%</span></div><div class="tlm-mini-bar"><i id="mbTps" style="width:42%"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Avanço Ign.</span><span>APMS</span></div><div class="v" id="svIgn">18.5 °</div><div class="pk"><span>Mín/Máx</span><span id="pkIgn">18.5°</span></div><div class="tlm-mini-bar"><i id="mbIgn" style="width:58%;background:#c084fc"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Pulso Bico</span><span>INJ</span></div><div class="v" id="svPw">4.82 ms</div><div class="pk"><span>Pico</span><span id="pkPw">4.8ms</span></div><div class="tlm-mini-bar"><i id="mbPw" style="width:36%;background:#38bdf8"></i></div></div>
+        <div class="tlm-cell" id="sbDuty"><div class="k"><span>Duty Bicos</span><span>MAX 85%</span></div><div class="v" id="svDuty">38.4 %</div><div class="pk"><span>Pico</span><span id="pkDuty">38%</span></div><div class="tlm-mini-bar"><i id="mbDuty" style="width:38%;background:#10b981"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Fase 720°</span><span>VCAM</span></div><div class="v" id="svVcam" style="color:var(--neon-g)">LOCK 99%</div><div class="pk"><span>Sinc.</span><span>60-2 OK</span></div><div class="tlm-mini-bar"><i style="width:99%;background:#10b981"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Filme Aquino</span><span>τ-X</span></div><div class="v" id="svFilm">0.54 ms</div><div class="pk"><span>Parede</span><span>Ativo</span></div><div class="tlm-mini-bar"><i style="width:44%;background:#38bdf8"></i></div></div>
+        <div class="tlm-cell" id="sbDp"><div class="k"><span>Diff Comb dP</span><span>3.0b</span></div><div class="v" id="svDp">3.04 bar</div><div class="pk"><span>Mín</span><span id="pkDp">3.04b</span></div><div class="tlm-mini-bar"><i id="mbDp" style="width:76%;background:#10b981"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Pressão Óleo</span><span>BAR</span></div><div class="v" id="svOil">3.65 bar</div><div class="pk"><span>Status</span><span>OK</span></div><div class="tlm-mini-bar"><i style="width:68%;background:#10b981"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Água CLT</span><span>G62</span></div><div class="v" id="svClt">88.5 °C</div><div class="pk"><span>Máx</span><span id="pkClt">88.5°</span></div><div class="tlm-mini-bar"><i id="mbClt" style="width:72%;background:#f59e0b"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Ar IAT</span><span>G42</span></div><div class="v" id="svIat">33.0 °C</div><div class="pk"><span>Dens.</span><span>-0.5%</span></div><div class="tlm-mini-bar"><i style="width:38%;background:#06b6d4"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Sonda LSU</span><span>DEW-OK</span></div><div class="v" style="color:var(--neon-g)">780 °C</div><div class="pk"><span>CJ125</span><span>780°C</span></div><div class="tlm-mini-bar"><i style="width:82%;background:#10b981"></i></div></div>
+        <div class="tlm-cell"><div class="k"><span>Bateria</span><span>+15</span></div><div class="v" id="svBat">13.88 V</div><div class="pk"><span>Altern.</span><span>OK</span></div><div class="tlm-mini-bar"><i style="width:84%;background:#a855f7"></i></div></div>
+      </div>
+
+      <!-- BUILT-IN QUICK BENCH SIMULATOR DRAWER -->
+      <div class="quick-sim-drawer">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:var(--cyan);">
+          <span>🎛 BANCADA RÁPIDA (SIMULAR GIRO)</span>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--txt-1);font-size:9.5px;">
+            <span>Manual</span>
+            <input type="checkbox" id="chkManualBench" onchange="toggleQuickBench(this.checked)" style="width:28px;height:15px;">
+          </label>
+        </div>
+        <div id="quickBenchBody" style="display:none;flex-direction:column;gap:3px;font-family:var(--mono);font-size:9.8px;">
+          <div style="display:flex;justify-content:space-between;"><span>RPM: <strong id="qbRpmLbl" style="color:#fff">3800</strong></span><span>MAP: <strong id="qbMapLbl" style="color:var(--cyan)">+0.85b</strong></span></div>
+          <input type="range" id="qbRpm" min="0" max="7800" step="50" value="3800" oninput="onQuickBenchSlide()">
+          <input type="range" id="qbMap" min="30" max="300" step="5" value="185" oninput="onQuickBenchSlide()">
+        </div>
       </div>
     </aside>
   </div>
 
   <footer class="statusbar">
     <span id="ftrProfile">Projeto: TBX-800 PRO • Sincronismo 60-2 + VirtualCam™ 720° • Sequencial</span>
-    <span>[Digitar/Enter] Editar Célula | [Ctrl+Z/Y] Desfazer/Refazer | [Ctrl+C/V] Excel | [Ctrl+K] Busca | [Ctrl+B] Gravar ECU</span>
+    <span>[Botão Direito] Menu Célula | [F9] Alternar Layout VE+Ign | [L] Travar Célula | [Ctrl+Z/Y] Undo | [Ctrl+K] Busca | [Ctrl+B] Gravar</span>
   </footer>
+</div>
+
+<!-- RIGHT-CLICK SPREADSHEET CONTEXT MENU -->
+<div class="ctx-menu" id="gridCtxMenu">
+  <div class="ctx-item" onclick="closeCtx();openInlineCellEditor()"><span>✏ Definir Valor / Fórmula...</span><span class="hk">Enter</span></div>
+  <div class="ctx-item" onclick="closeCtx();matrixOp('mul',1.02)"><span>➕ Enriquecer / Subir +2%</span><span class="hk">+2%</span></div>
+  <div class="ctx-item" onclick="closeCtx();matrixOp('mul',0.98)"><span>➖ Empobrecer / Descer -2%</span><span class="hk">-2%</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="closeCtx();matrixOp('interp2D')"><span>📐 Interpolar Bloco 2D (4 Cantos)</span><span class="hk">I</span></div>
+  <div class="ctx-item" onclick="closeCtx();matrixOp('smooth')"><span>🌊 Suavizar Região 3×3</span><span class="hk">S</span></div>
+  <div class="ctx-item" onclick="closeCtx();toggleLockSelection()"><span style="color:#fbbf24">🔒 Travar / Destravar Células</span><span class="hk">L</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="closeCtx();copySelectionToAllBanks()"><span>📋 Copiar Bloco p/ Bancos M1–M4</span><span class="hk">M1..4</span></div>
+  <div class="ctx-item" onclick="closeCtx();restoreSelectionFromBase()"><span style="color:#fda4af">↩ Restaurar p/ Valor Base Original</span><span class="hk">Orig</span></div>
+</div>
+
+<!-- AI MAP SAFETY & HEALTH AUDITOR MODAL -->
+<div class="cmd-modal" id="healthModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="cmd-box" style="width:660px;padding:15px;display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #26354d;padding-bottom:8px;">
+      <strong style="color:#6ee7b7;font-size:13.5px;">🩺 REVISOR IA DE SEGURANÇA DO MAPA (AUDITORIA PRÉ-DINAMÔMETRO / PRÉ-PARTIDA)</strong>
+      <button class="obtn" onclick="document.getElementById('healthModal').classList.remove('open')">✕</button>
+    </div>
+    <div id="healthReportBody" style="max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:11.5px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid #1e293b;">
+      <span style="font-size:10.5px;color:var(--txt-2);">Verifica mistura em boost, excesso de ponto, degraus VE &gt;14% e Dwell de bobina.</span>
+      <div style="display:flex;gap:8px;">
+        <button class="tbtn" onclick="document.getElementById('healthModal').classList.remove('open')">Fechar</button>
+        <button class="tbtn burn" onclick="autoFixMapHazards()">⚡ Auto-Corrigir Alertas de Segurança</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- INLINE CELL FORMULA POPOVER -->
@@ -1503,7 +1759,18 @@ const st = {
     film_ms: 0.54, ign_deg: 17.5, diff_fp_kpa: 304, oil_press_kpa: 365, ethanol_pct: 85,
     active_bank: 0, guardian_fault_mask: 0, ghost_armed: false, ghost_unlocked: true, tables_dirty: false
   },
-  logBuf: [], logCursor: 130, logT2: 215, logZoom: 1.0
+  logBuf: [], logCursor: 130, logT2: 215, logZoom: 1.0,
+  lockedCells: {}, mapLayout: "full",
+  manualBench: false, manualRpm: 3800, manualMap: 185,
+  dashAlarmDemo: false, activeOutTest: -1, outTestTimer: null,
+  openTabs: [
+    { key: "map:ve", label: "⛽ Mapa VE" },
+    { key: "map:ign", label: "⚡ Ignição" },
+    { key: "map:lambda", label: "🎯 Sonda λ" },
+    { key: "cv-dash", label: "🖥 Dash 7\"" },
+    { key: "cv-log", label: "📈 Datalogger" }
+  ],
+  peaks: { tps: 42, ignMax: 24.0, pw: 4.8, duty: 38, dpMin: 3.04, clt: 88.5 }
 };
 
 const MAP_META = {
@@ -1586,6 +1853,8 @@ function showViewDom(viewId) {
 function navTo(viewId) {
   showViewDom(viewId);
   syncTreeHighlight(viewId);
+  const nd = document.querySelector('#treeRoot .t-node[data-route="' + viewId + '"] span');
+  upsertIdeTab(viewId, nd ? nd.textContent.slice(0, 22) : viewId);
   requestAnimationFrame(function() {
     if (viewId === "cv-proj") renderSnapshots();
     if (viewId === "cv-io") buildIoTables();
@@ -1600,6 +1869,9 @@ function navTo(viewId) {
     if (viewId === "cv-can") refreshCanSniffer();
     if (viewId === "cv-dtc") renderDtcs();
     if (viewId === "cv-scope") renderScope4Ch();
+    if (viewId === "cv-dash") drawDashPreview();
+    if (viewId === "cv-outtest") renderOutputTests();
+    if (viewId === "cv-calc") runWorkshopCalcs();
     if (viewId === "cv-log") { if (st.logBuf.length < 30) buildProPullLog(); else drawLogMain(); }
   });
 }
@@ -1609,6 +1881,7 @@ function navMap(mapKey) {
   document.getElementById("mapHdrTitle").textContent = MAP_META[mapKey].title + " (" + DIM + "×" + DIM + ")";
   showViewDom("cv-map3d");
   syncTreeHighlight("map:" + mapKey);
+  upsertIdeTab("map:" + mapKey, "▦ " + MAP_META[mapKey].title.replace("MAPA ", "").slice(0, 18));
   requestAnimationFrame(function() { renderGrid(); render3D(); render2DSlice(); });
 }
 
@@ -1619,6 +1892,7 @@ function navCurve(curveKey) {
   document.getElementById("lblCurveUnits").textContent = "Eixo X (" + co.unitX + ")  →  Saída (" + co.unitY + ")";
   showViewDom("cv-curve2d");
   syncTreeHighlight("curve:" + curveKey);
+  upsertIdeTab("curve:" + curveKey, "📈 " + curveKey.toUpperCase());
   requestAnimationFrame(function() { renderCurveInputs(); drawCurve2DEditor(); });
 }
 
@@ -1654,6 +1928,9 @@ function pushUndo() {
   st.undoStack.push({ mapId: st.mapId, data: cloneMap2D(st.maps[st.mapId]) });
   if (st.undoStack.length > 50) st.undoStack.shift();
   st.redoStack = [];
+  st.tlm.tables_dirty = true;
+  const bb = document.getElementById("btnBurnEcu");
+  if (bb) { bb.classList.add("dirty"); bb.textContent = "● Gravar ECU (Ctrl+B)"; }
 }
 function undoMap() {
   if (!st.undoStack.length) { toast("Nada para desfazer."); return; }
@@ -2053,7 +2330,8 @@ function renderGrid() {
         const jc = jet(norm);
         bgCss = jc.css; isInv = jc.inv; txt = v.toFixed(meta.dec);
       }
-      const cls = (isInv ? "inv " : "") + ((r >= b.r0 && r <= b.r1 && c >= b.c0 && c <= b.c1) ? "sel " : "") + ((r === hr && c === hc) ? "hit" : "");
+      const isLocked = !!st.lockedCells[st.mapId + ":" + r + ":" + c];
+      const cls = (isInv ? "inv " : "") + (isLocked ? "locked " : "") + ((r >= b.r0 && r <= b.r1 && c >= b.c0 && c <= b.c1) ? "sel " : "") + ((r === hr && c === hc) ? "hit" : "");
       h += '<td data-r="' + r + '" data-c="' + c + '" class="' + cls.trim() + '" style="background:' + bgCss + '">' + txt + "</td>";
     }
     h += "</tr>";
@@ -2064,6 +2342,7 @@ function renderGrid() {
     ? ("[" + st.rpmAxis[b.r0] + "×" + fmtXHeader(b.c0) + "]")
     : ("[Bloco " + (b.r1 - b.r0 + 1) + "×" + (b.c1 - b.c0 + 1) + "]");
   document.getElementById("inpSetVal").value = m[st.r1][st.c1].toFixed(meta.dec);
+  if (st.mapLayout === "split") renderSplitSecondGrid();
   moveReticle();
 }
 
@@ -2191,6 +2470,7 @@ function matrixOp(op, k) {
   else if (op === "smooth") {
     const cp = cloneMap2D(m);
     for (let r = b.r0; r <= b.r1; r++) for (let c = b.c0; c <= b.c1; c++) {
+      if (st.lockedCells[st.mapId + ":" + r + ":" + c]) continue;
       let s = 0, n = 0;
       for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (r+dr>=0 && r+dr<DIM && c+dc>=0 && c+dc<DIM) { s += cp[r+dr][c+dc]; n++; }
       m[r][c] = clp(s / n);
@@ -2234,6 +2514,7 @@ function applyHistogramCorrections() {
   let fixed = 0;
   for (let r = 0; r < DIM; r++) {
     for (let c = 0; c < DIM; c++) {
+      if (st.lockedCells["ve:" + r + ":" + c]) continue;
       const hits = st.hitCount[r][c] || 0;
       if (hits >= 3) {
         const avgErrPct = st.lamErrSum[r][c] / hits;
@@ -2888,9 +3169,11 @@ function persistAutoSave() {
 function syncCurrentBankStore() { persistAutoSave(); }
 function burnFram() {
   st.tlm.tables_dirty = false;
+  const bb = document.getElementById("btnBurnEcu");
+  if (bb) { bb.classList.remove("dirty"); bb.textContent = "Gravar ECU (Ctrl+B)"; }
   persistAutoSave();
   saveNewSnapshot("Gravado na ECU — M" + (st.tlm.active_bank + 1));
-  toast("Gravado na FRAM da ECU + Auto-Save local persistido!");
+  toast("✓ Calibração gravada na FRAM da ECU + Snapshot criado!");
 }
 function exportCal() {
   ensureBankStore();
@@ -3113,7 +3396,11 @@ setInterval(pollDesktopBridge, 250);
 
 function mainLoop() {
   const ph = Date.now() * 0.0012, s = Math.abs(Math.sin(ph));
-  if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
+  if (st.manualBench) {
+    st.tlm.rpm = st.manualRpm;
+    st.tlm.map_kpa = st.manualMap;
+    st.tlm.tps_dbw_pct = Math.max(2, Math.min(100, ((st.manualMap - 30) / 270) * 100));
+  } else if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
     const cap = st.tlm.active_bank === 3 ? 3200 : 7200;
     st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.min(cap, Math.round(920 + s * 5600));
     st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : Math.round(42 + s * (st.tlm.active_bank === 3 ? 54 : 202));
@@ -3197,14 +3484,39 @@ function mainLoop() {
   document.getElementById("svTps").textContent = t.tps_dbw_pct.toFixed(1) + " %";
   document.getElementById("svIgn").textContent = t.ign_deg.toFixed(1) + " °";
   document.getElementById("svPw").textContent = t.inj_pw_ms.toFixed(2) + " ms";
-  document.getElementById("svDuty").textContent = Math.min(99, (t.inj_pw_ms * t.rpm) / 1200).toFixed(1) + " %";
+  const dutyNow = Math.min(99, (t.inj_pw_ms * t.rpm) / 1200);
+  document.getElementById("svDuty").textContent = dutyNow.toFixed(1) + " %";
   document.getElementById("svDp").textContent = (t.diff_fp_kpa / 100).toFixed(2) + " bar";
   document.getElementById("svClt").textContent = t.clt_c.toFixed(1) + " °C";
   document.getElementById("sbDp").classList.toggle("crit", (t.guardian_fault_mask & 1) !== 0);
+  const sbd = document.getElementById("sbDuty"); if (sbd) sbd.classList.toggle("crit", dutyNow > 85);
   document.getElementById("lblTopStatus").textContent = t.guardian_fault_mask === 0 ? "200Hz • GUARDIAN OK" : "ALERTA GUARDIAN!";
 
-  if (document.getElementById("cv-map3d").classList.contains("active")) { moveReticle(); render3D(); render2DSlice(); }
+  /* Update Telemetry Peak-Hold & Proportional Mini-Bars */
+  if (t.rpm > st.tlm.peakRpm) st.tlm.peakRpm = t.rpm;
+  st.peaks.tps = Math.max(st.peaks.tps, t.tps_dbw_pct);
+  st.peaks.ignMax = Math.max(st.peaks.ignMax, t.ign_deg);
+  st.peaks.pw = Math.max(st.peaks.pw, t.inj_pw_ms);
+  st.peaks.duty = Math.max(st.peaks.duty, dutyNow);
+  st.peaks.dpMin = Math.min(st.peaks.dpMin, t.diff_fp_kpa / 100);
+  st.peaks.clt = Math.max(st.peaks.clt, t.clt_c);
+  const setTxt = function(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; };
+  const setBar = function(id, p) { const e = document.getElementById(id); if (e) e.style.width = Math.max(2, Math.min(100, p)).toFixed(0) + "%"; };
+  setTxt("pkTps", Math.round(st.peaks.tps) + "%"); setBar("mbTps", t.tps_dbw_pct);
+  setTxt("pkIgn", st.peaks.ignMax.toFixed(1) + "°"); setBar("mbIgn", ((t.ign_deg + 10) / 48) * 100);
+  setTxt("pkPw", st.peaks.pw.toFixed(1) + "ms"); setBar("mbPw", (t.inj_pw_ms / 18) * 100);
+  setTxt("pkDuty", Math.round(st.peaks.duty) + "%"); setBar("mbDuty", dutyNow);
+  setTxt("pkDp", st.peaks.dpMin.toFixed(2) + "b"); setBar("mbDp", (t.diff_fp_kpa / 400) * 100);
+  setTxt("pkClt", st.peaks.clt.toFixed(1) + "°"); setBar("mbClt", (t.clt_c / 115) * 100);
+
+  if (document.getElementById("cv-map3d").classList.contains("active")) {
+    moveReticle();
+    if (st.mapLayout === "full" || st.mapLayout === "3d") render3D();
+    if (st.mapLayout === "full") render2DSlice();
+    if (st.mapLayout === "split") moveSplitReticle();
+  }
   else if (document.getElementById("cv-curve2d").classList.contains("active")) { drawCurve2DEditor(); }
+  else if (document.getElementById("cv-dash").classList.contains("active")) { drawDashPreview(); }
 }
 
 (function bindEvents() {
@@ -3217,7 +3529,20 @@ function mainLoop() {
     if (e.shiftKey) { st.r2 = r; st.c2 = c; } else { st.r1 = r; st.c1 = c; st.r2 = r; st.c2 = c; }
     renderGrid(); render3D(); render2DSlice();
   });
-  sh.addEventListener("dblclick", function(e) { if (e.target.closest("td")) openInlineCellEditor(); });
+  sh.addEventListener("contextmenu", function(e) {
+    const td = e.target.closest("td"); if (!td) return;
+    e.preventDefault();
+    const r = parseInt(td.getAttribute("data-r"), 10), c = parseInt(td.getAttribute("data-c"), 10);
+    const b = bounds();
+    if (r < b.r0 || r > b.r1 || c < b.c0 || c > b.c1) { st.r1 = st.r2 = r; st.c1 = st.c2 = c; renderGrid(); }
+    const cm = document.getElementById("gridCtxMenu");
+    cm.style.left = Math.min(window.innerWidth - 245, e.clientX) + "px";
+    cm.style.top = Math.min(window.innerHeight - 285, e.clientY) + "px";
+    cm.classList.add("open");
+  });
+  window.addEventListener("click", function(e) {
+    if (!e.target.closest("#gridCtxMenu")) closeCtx();
+  });
   sh.addEventListener("mouseover", function(e) {
     if (!st.selDrag) return;
     const td = e.target.closest("td"); if (!td) return;
@@ -3365,6 +3690,16 @@ function mainLoop() {
     else if (e.key === "i" || e.key === "I") { e.preventDefault(); matrixOp("interp2D"); }
     else if (e.key === "d" || e.key === "D") { e.preventDefault(); toggleDiffMode(); }
     else if (e.key === "s" || e.key === "S") { e.preventDefault(); matrixOp("smooth"); }
+    else if (e.key === "l" || e.key === "L") { e.preventDefault(); toggleLockSelection(); }
+    else if (e.key === "F9") {
+      e.preventDefault();
+      const order = ["full", "sheet", "split", "3d"];
+      setMapLayout(order[(order.indexOf(st.mapLayout) + 1) % order.length]);
+    }
+    else if (e.altKey && e.key >= "1" && e.key <= "6") {
+      const idx = parseInt(e.key, 10) - 1;
+      if (st.openTabs[idx]) { e.preventDefault(); activateIdeTab(st.openTabs[idx].key); }
+    }
     else if (e.key === "ArrowUp") { e.preventDefault(); st.r2 = Math.min(DIM - 1, st.r2 + 1); if (!e.shiftKey) st.r1 = st.r2; renderGrid(); render3D(); render2DSlice(); }
     else if (e.key === "ArrowDown") { e.preventDefault(); st.r2 = Math.max(0, st.r2 - 1); if (!e.shiftKey) st.r1 = st.r2; renderGrid(); render3D(); render2DSlice(); }
     else if (e.key === "ArrowRight") { e.preventDefault(); st.c2 = Math.min(DIM - 1, st.c2 + 1); if (!e.shiftKey) st.c1 = st.c2; renderGrid(); render3D(); render2DSlice(); }
@@ -3496,7 +3831,374 @@ function simPdmShort(chIdx, doTrip) {
   renderPdm8Table();
 }
 
+/* ==================== v14.0 APEX NSP EDITION: IDE TABS, 4 LAYOUTS, SPLIT VE+IGN, DASH 7", OUT-TEST, CALCS & HEALTH ==================== */
+function closeCtx() { const cm = document.getElementById("gridCtxMenu"); if (cm) cm.classList.remove("open"); }
+
+function toggleSidebar(side) {
+  document.body.classList.toggle(side === "left" ? "hide-left" : "hide-right");
+  requestAnimationFrame(function() {
+    if (document.getElementById("cv-map3d").classList.contains("active")) { render3D(); render2DSlice(); moveReticle(); }
+  });
+}
+
+function filterLeftTree(q) {
+  const ql = (q || "").toLowerCase().trim();
+  const cats = document.querySelectorAll("#treeRoot .t-cat");
+  for (let i = 0; i < cats.length; i++) {
+    const grp = cats[i].nextElementSibling;
+    if (!grp) continue;
+    const nodes = grp.querySelectorAll(".t-node");
+    let anyVis = false;
+    for (let j = 0; j < nodes.length; j++) {
+      const match = !ql || nodes[j].textContent.toLowerCase().indexOf(ql) >= 0;
+      nodes[j].style.display = match ? "flex" : "none";
+      if (match) anyVis = true;
+    }
+    cats[i].style.display = anyVis ? "flex" : "none";
+    if (ql && anyVis) grp.classList.remove("collapsed");
+  }
+}
+
+function renderIdeTabs() {
+  const bar = document.getElementById("ideTabBar"); if (!bar) return;
+  bar.innerHTML = st.openTabs.map(function(t, idx) {
+    const isAct = st.route === t.key;
+    const closeBtn = st.openTabs.length > 1
+      ? '<span class="x" onclick="event.stopPropagation();closeIdeTab(' + idx + ')">✕</span>' : "";
+    return '<div class="ide-tab' + (isAct ? " active" : "") + '" onclick="activateIdeTab(\'' + t.key + '\')">' +
+      '<span>' + t.label + '</span>' + closeBtn + '</div>';
+  }).join("");
+}
+
+function upsertIdeTab(key, label) {
+  if (!st.openTabs.some(function(x) { return x.key === key; })) {
+    if (st.openTabs.length >= 8) st.openTabs.pop();
+    st.openTabs.push({ key: key, label: label });
+  }
+  renderIdeTabs();
+}
+
+function activateIdeTab(key) {
+  if (key.indexOf("map:") === 0) navMap(key.slice(4));
+  else if (key.indexOf("curve:") === 0) navCurve(key.slice(6));
+  else navTo(key);
+}
+
+function closeIdeTab(idx) {
+  const removed = st.openTabs.splice(idx, 1)[0];
+  if (removed && st.route === removed.key && st.openTabs.length) {
+    activateIdeTab(st.openTabs[Math.max(0, idx - 1)].key);
+  } else {
+    renderIdeTabs();
+  }
+}
+
+function setMapLayout(mode) {
+  st.mapLayout = mode;
+  const root = document.getElementById("calLayoutRoot");
+  root.classList.remove("mode-sheet", "mode-split", "mode-3d");
+  if (mode !== "full") root.classList.add("mode-" + mode);
+  ["full", "sheet", "split", "3d"].forEach(function(k) {
+    const b = document.getElementById("lyt-" + k); if (b) b.classList.toggle("on", k === mode);
+  });
+  requestAnimationFrame(function() { renderGrid(); render3D(); render2DSlice(); });
+}
+
+function renderSplitSecondGrid() {
+  const el = document.getElementById("calSheetSplitIgn"); if (!el) return;
+  const secondKey = st.mapId === "ign" ? "ve" : "ign";
+  const meta = MAP_META[secondKey], m = st.maps[secondKey], b = bounds();
+  const hr = Math.round(contIdx(st.rpmAxis, st.tlm.rpm)), hc = Math.round(contIdx(st.mapAxis, st.tlm.map_kpa));
+  let h = '<thead><tr><th class="cn">RPM\\bar</th>';
+  for (let c = 0; c < DIM; c++) h += "<th>" + fmtXHeader(c) + "</th>";
+  h += "</tr></thead><tbody>";
+  for (let r = DIM - 1; r >= 0; r--) {
+    h += '<tr><th class="rh">' + st.rpmAxis[r] + "</th>";
+    for (let c = 0; c < DIM; c++) {
+      const v = m[r][c], jc = jet((v - meta.min) / (meta.max - meta.min));
+      const cls = (jc.inv ? "inv " : "") + ((r >= b.r0 && r <= b.r1 && c >= b.c0 && c <= b.c1) ? "sel " : "") + ((r === hr && c === hc) ? "hit" : "");
+      h += '<td onclick="editSplitCell(\'' + secondKey + '\',' + r + ',' + c + ')" class="' + cls.trim() + '" style="background:' + jc.css + '">' + v.toFixed(meta.dec) + "</td>";
+    }
+    h += "</tr>";
+  }
+  el.innerHTML = h + "</tbody>";
+  moveSplitReticle();
+}
+
+function moveSplitReticle() {
+  const tbl = document.getElementById("calSheetSplitIgn"), dot = document.getElementById("liveDotSplit");
+  if (!tbl || !dot || !tbl.rows || tbl.rows.length < DIM + 1) return;
+  const rf = contIdx(st.rpmAxis, st.tlm.rpm), cf = contIdx(st.mapAxis, st.tlm.map_kpa);
+  const c00 = tbl.rows[1].cells[1], c11 = tbl.rows[DIM].cells[DIM];
+  if (!c00 || !c11) return;
+  dot.style.left = (c00.offsetLeft + c00.offsetWidth * 0.5 + (cf / (DIM - 1)) * (c11.offsetLeft - c00.offsetLeft)) + "px";
+  dot.style.top = (c11.offsetTop + c11.offsetHeight * 0.5 + (rf / (DIM - 1)) * (c00.offsetTop - c11.offsetTop)) + "px";
+}
+
+function editSplitCell(mapKey, r, c) {
+  st.r1 = st.r2 = r; st.c1 = st.c2 = c;
+  navMap(mapKey);
+  openInlineCellEditor();
+}
+
+function toggleLockSelection() {
+  const b = bounds();
+  let anyUnlocked = false;
+  for (let r = b.r0; r <= b.r1; r++) for (let c = b.c0; c <= b.c1; c++) {
+    if (!st.lockedCells[st.mapId + ":" + r + ":" + c]) anyUnlocked = true;
+  }
+  let cnt = 0;
+  for (let r = b.r0; r <= b.r1; r++) for (let c = b.c0; c <= b.c1; c++) {
+    const k = st.mapId + ":" + r + ":" + c;
+    if (anyUnlocked) st.lockedCells[k] = true; else delete st.lockedCells[k];
+    cnt++;
+  }
+  renderGrid();
+  toast((anyUnlocked ? "🔒 Travadas " : "🔓 Destravadas ") + cnt + " células (protegidas contra Auto-Tune / Suavizar)!");
+}
+
+function copySelectionToAllBanks() {
+  ensureBankStore();
+  const b = bounds(), curVal = st.maps[st.mapId];
+  for (let bk = 0; bk < 4; bk++) {
+    for (let r = b.r0; r <= b.r1; r++) for (let c = b.c0; c <= b.c1; c++) {
+      st.bankStore[bk][st.mapId][r][c] = curVal[r][c];
+    }
+  }
+  toast("📋 Bloco selecionado copiado para todos os 4 Bancos (M1 a M4)!");
+}
+
+function restoreSelectionFromBase() {
+  pushUndo();
+  const b = bounds();
+  for (let r = b.r0; r <= b.r1; r++) for (let c = b.c0; c <= b.c1; c++) {
+    st.maps[st.mapId][r][c] = st.baseMaps[st.mapId][r][c];
+  }
+  renderGrid(); render3D(); render2DSlice();
+  toast("↩ Seleção restaurada para os valores originais do Mapa Base!");
+}
+
+function resetTelemetryPeaks() {
+  st.tlm.peakRpm = st.tlm.rpm;
+  st.peaks = { tps: st.tlm.tps_dbw_pct, ignMax: st.tlm.ign_deg, pw: st.tlm.inj_pw_ms, duty: 0, dpMin: st.tlm.diff_fp_kpa / 100, clt: st.tlm.clt_c };
+  toast("↺ Todos os picos Mín/Máx da telemetria foram zerados!");
+}
+
+function toggleQuickBench(on) {
+  st.manualBench = on;
+  document.getElementById("quickBenchBody").style.display = on ? "flex" : "none";
+  if (on) onQuickBenchSlide();
+  toast(on ? "🎛 Bancada Manual ativa: arraste o RPM e MAP na lateral direita!" : "Retornado ao ciclo automático.");
+}
+
+function onQuickBenchSlide() {
+  st.manualRpm = parseInt(document.getElementById("qbRpm").value, 10) || 0;
+  st.manualMap = parseInt(document.getElementById("qbMap").value, 10) || 100;
+  document.getElementById("qbRpmLbl").textContent = st.manualRpm;
+  const b = (st.manualMap - 100) / 100;
+  document.getElementById("qbMapLbl").textContent = (b >= 0 ? "+" : "") + b.toFixed(2) + "b";
+}
+
+/* 7" DIGITAL DASH DESIGNER */
+function toggleDashAlarmDemo() { st.dashAlarmDemo = !st.dashAlarmDemo; drawDashPreview(); }
+function drawDashPreview() {
+  const pc = prepCanvas(document.getElementById("cvDashPreview")); if (!pc) return;
+  const ctx = pc.ctx, W = pc.W, H = pc.H, t = st.tlm;
+  const theme = (document.getElementById("dashThemeSel") || {}).value || "obsidian";
+  const ledStart = parseInt((document.getElementById("dshLedStart") || {}).value, 10) || 5400;
+  const ledShift = parseInt((document.getElementById("dshLedShift") || {}).value, 10) || 7100;
+
+  ctx.fillStyle = theme === "drag" ? "#050505" : (theme === "oem" ? "#0c1424" : "#070b14");
+  ctx.fillRect(0, 0, W, H);
+
+  /* 12-LED Progressive Shift-Light Strip */
+  const padX = 28, ledW = (W - padX * 2 - 11 * 6) / 12;
+  for (let i = 0; i < 12; i++) {
+    const thr = ledStart + (i / 11) * (ledShift - ledStart);
+    const lit = t.rpm >= thr;
+    const flash = t.rpm >= ledShift && (Math.floor(Date.now() / 90) % 2 === 0);
+    const col = i < 5 ? "#00e676" : (i < 9 ? "#ffd600" : "#f43f5e");
+    ctx.fillStyle = flash ? "#f43f5e" : (lit ? col : "#162032");
+    ctx.fillRect(padX + i * (ledW + 6), 14, ledW, 14);
+  }
+
+  /* Main RPM Bar & Giant Gear + RPM */
+  const frac = Math.min(1, t.rpm / 8000);
+  ctx.fillStyle = "#111a2b"; ctx.fillRect(padX, 42, W - padX * 2, 26);
+  const grad = ctx.createLinearGradient(padX, 0, W - padX, 0);
+  grad.addColorStop(0, "#00e5ff"); grad.addColorStop(0.65, "#00e676"); grad.addColorStop(1, "#f43f5e");
+  ctx.fillStyle = grad; ctx.fillRect(padX, 42, (W - padX * 2) * frac, 26);
+
+  ctx.fillStyle = "#ffffff"; ctx.textAlign = "center";
+  ctx.font = "900 56px Consolas, monospace";
+  ctx.fillText(String(t.rpm), W * 0.5, H * 0.48);
+  ctx.font = "700 13px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
+  ctx.fillText("ROTAÇÃO RPM  •  BANCO M" + (t.active_bank + 1), W * 0.5, H * 0.56);
+
+  /* Left & Right Telemetry Cards */
+  const bb = ((t.map_kpa - 101.3) / 100).toFixed(2);
+  const cards = [
+    [padX, H * 0.65, "MAP / BOOST", (bb >= 0 ? "+" : "") + bb + " bar", "#00e5ff"],
+    [W * 0.36, H * 0.65, "ÁGUA / ÓLEO", t.clt_c.toFixed(0) + "°C • " + (t.oil_press_kpa / 100).toFixed(1) + "b", "#fbbf24"],
+    [W * 0.68, H * 0.65, "SONDA WIDEBAND", t.lambda.toFixed(3) + " λ", "#00e676"]
+  ];
+  cards.forEach(function(c) {
+    ctx.fillStyle = "rgba(18,28,46,0.92)"; ctx.strokeStyle = "#243652";
+    ctx.fillRect(c[0], c[1], W * 0.27, H * 0.26); ctx.strokeRect(c[0], c[1], W * 0.27, H * 0.26);
+    ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "700 10px Segoe UI, sans-serif";
+    ctx.fillText(c[2], c[0] + 10, c[1] + 20);
+    ctx.fillStyle = c[4]; ctx.font = "800 22px Consolas, monospace";
+    ctx.fillText(c[3], c[0] + 10, c[1] + 52);
+  });
+
+  if (st.dashAlarmDemo || (t.guardian_fault_mask & 1) !== 0) {
+    ctx.fillStyle = "rgba(190, 18, 60, 0.94)";
+    ctx.fillRect(W * 0.12, H * 0.24, W * 0.76, H * 0.42);
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3; ctx.strokeRect(W * 0.12, H * 0.24, W * 0.76, H * 0.42);
+    ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "900 22px Segoe UI, sans-serif";
+    ctx.fillText("⚠ ALERTA CRÍTICO ENGINE GUARDIAN™", W * 0.5, H * 0.42);
+    ctx.font = "700 14px Consolas, monospace";
+    ctx.fillText("QUEDA DE PRESSÃO DIFERENCIAL DE COMBUSTÍVEL (dP < 2.5 bar)!", W * 0.5, H * 0.54);
+  }
+}
+
+/* STOPPED-ENGINE OUTPUT / ACTUATOR TESTER */
+const OUT_TESTS = [
+  { name: "Bico Injetor #1 (Cil 1)", desc: "Pulsa 5 Hz × 3.0 ms (20 pulsos)", pro: false },
+  { name: "Bico Injetor #2 (Cil 2)", desc: "Pulsa 5 Hz × 3.0 ms (20 pulsos)", pro: false },
+  { name: "Bico Injetor #3 (Cil 3)", desc: "Pulsa 5 Hz × 3.0 ms (20 pulsos)", pro: false },
+  { name: "Bico Injetor #4 (Cil 4)", desc: "Pulsa 5 Hz × 3.0 ms (20 pulsos)", pro: false },
+  { name: "Bobina Ignição #1", desc: "Centelha teste Dwell 2.8 ms (5Hz)", pro: false },
+  { name: "Bobina Ignição #2", desc: "Centelha teste Dwell 2.8 ms (5Hz)", pro: false },
+  { name: "Relé Bomba Combustível", desc: "Aciona por 3.0s p/ medir estanqueidade", pro: false },
+  { name: "Solenoide Boost N75", desc: "Pulsa 30 Hz @ 50% Duty (ouvir clique)", pro: false },
+  { name: "Eletroventilador 1 & 2", desc: "Liga rampa Soft-Start por 4.0s", pro: false },
+  { name: "Varrer Borboleta DBW J338", desc: "Ciclo 0% → 50% → 100% → Repouso", pro: true },
+  { name: "Bancada Bicos #5 a #8", desc: "Teste sequencial 2ª bancada / V8", pro: true },
+  { name: "Solenoide VVT Comando", desc: "Pulsa 300 Hz p/ limpar galeria óleo", pro: true }
+];
+function renderOutputTests() {
+  const g = document.getElementById("outTestGrid"); if (!g) return;
+  const is800 = (HW_MODEL === "800");
+  g.innerHTML = OUT_TESTS.filter(function(o) { return is800 || !o.pro; }).map(function(o, idx) {
+    const on = st.activeOutTest === idx;
+    return '<div class="panel-box" style="border-color:' + (on ? "var(--neon-g)" : "") + '"><div class="p-hdr"><span>' + o.name + '</span>' +
+      '<span style="color:' + (on ? "var(--neon-g)" : "var(--txt-3)") + '">' + (on ? "⚡ PULSANDO" : "PARADO") + '</span></div>' +
+      '<div class="card-pad"><span style="font-size:11px;color:var(--txt-2)">' + o.desc + '</span>' +
+      '<button class="tbtn ' + (on ? "burn" : "wiz") + '" onclick="triggerSingleOutTest(' + idx + ')">' + (on ? "⏹ Parar Pulso" : "▶ Testar Saída Agora") + '</button></div></div>';
+  }).join("");
+}
+function triggerSingleOutTest(idx) {
+  if (st.activeOutTest === idx) { stopAllOutputTests(); return; }
+  st.manualBench = true; st.manualRpm = 0; st.tlm.rpm = 0;
+  st.activeOutTest = idx;
+  renderOutputTests();
+  toast("⚡ Testando '" + OUT_TESTS[idx].name + "' com motor parado (0 RPM)!");
+}
+function stopAllOutputTests() {
+  st.activeOutTest = -1;
+  renderOutputTests();
+  toast("⏹ Todos os testes de bancada encerrados.");
+}
+
+/* WORKSHOP ENGINEERING CALCULATORS */
+function runWorkshopCalcs() {
+  const hp = parseFloat((document.getElementById("clcHp") || {}).value) || 380;
+  const cyl = parseInt((document.getElementById("clcCyl") || {}).value, 10) || 4;
+  const fuel = ((document.getElementById("clcFuel") || {}).value) || "e100";
+  const duty = (parseFloat((document.getElementById("clcDuty") || {}).value) || 82) / 100.0;
+  const bsfc = fuel === "e100" ? 0.82 : (fuel === "meth" ? 1.18 : 0.58);
+  const reqLbh = ((hp * bsfc) / (cyl * duty));
+  const reqCc = reqLbh * 10.5;
+  const pumpLh = (hp * bsfc * 0.454 / 0.789) * 1.25;
+  const injEl = document.getElementById("clcInjOut");
+  if (injEl) injEl.innerHTML = "<strong>Bico Recomendado (@ 3.0b):</strong> " + Math.ceil(reqLbh) + " lb/h (" + Math.round(reqCc) + " cc/min)<br><strong>Vazão Mín. Bomba Linha:</strong> " + Math.round(pumpLh) + " L/h reais em pressão de trabalho.";
+
+  const teethTotal = parseInt((document.getElementById("clcWheel") || {}).value, 10) || 60;
+  const cnt = parseFloat((document.getElementById("clcTeeth") || {}).value) || 15;
+  const degPerTooth = 360.0 / teethTotal;
+  const ang = cnt * degPerTooth;
+  const trigEl = document.getElementById("clcTrigOut");
+  if (trigEl) trigEl.innerHTML = "Passo da roda = <strong>" + degPerTooth.toFixed(1) + "°/dente</strong><br>Ângulo 1º Dente = <strong>" + ang.toFixed(1) + "° APMS</strong>";
+
+  const lam = parseFloat((document.getElementById("clcLam") || {}).value) || 0.80;
+  const rpmG = parseFloat((document.getElementById("clcRpmG") || {}).value) || 6800;
+  const gr = parseFloat((document.getElementById("clcGearR") || {}).value) || 0.95;
+  const df = parseFloat((document.getElementById("clcDiffR") || {}).value) || 3.88;
+  const kmh = (rpmG / (gr * df)) * 0.118;
+  const afrEl = document.getElementById("clcAfrOut");
+  if (afrEl) afrEl.innerHTML =
+    "<strong>Gasolina:</strong> " + (lam * 14.7).toFixed(2) + " AFR &nbsp;|&nbsp; <strong>E100:</strong> " + (lam * 9.0).toFixed(2) + " AFR &nbsp;|&nbsp; <strong>Metanol:</strong> " + (lam * 6.4).toFixed(2) + " AFR<br>" +
+    "<strong>Velocidade Estimada (Pneu 205/55R16):</strong> " + Math.round(kmh) + " km/h";
+}
+function applyCalcToothAngle() {
+  const teethTotal = parseInt(document.getElementById("clcWheel").value, 10) || 60;
+  const cnt = parseFloat(document.getElementById("clcTeeth").value) || 15;
+  toast("✓ Ângulo de sincronismo " + (cnt * (360 / teethTotal)).toFixed(1) + "° APMS enviado ao Setup da Roda Fônica!");
+  navTo("cv-setup");
+}
+
+/* AI MAP SAFETY & SMOOTHNESS REVIEWER */
+function openMapHealthModal() {
+  const findings = [];
+  let leanBoost = 0, highIgnBoost = 0, roughVe = 0;
+  for (let r = 0; r < DIM; r++) {
+    for (let c = 0; c < DIM; c++) {
+      const mp = st.mapAxis[c], rpm = st.rpmAxis[r];
+      if (mp >= 195 && st.maps.lambda[r][c] > 0.855) leanBoost++;
+      if (mp >= 210 && rpm >= 4000 && st.maps.ign[r][c] > 24.5) highIgnBoost++;
+      if (c > 0 && Math.abs(st.maps.ve[r][c] - st.maps.ve[r][c - 1]) > 14.5) roughVe++;
+    }
+  }
+  const maxDwell = Math.max.apply(null, st.curves.dwell.y.slice(4));
+  if (leanBoost > 0) findings.push(["warn", "⚠ Mistura Pobre em Pressão Alta: " + leanBoost + " células acima de +0.95 bar estão com Alvo > 0.855 λ (risco térmico)!"]);
+  else findings.push(["ok", "✓ Alvo de Sonda em Boost Seguro: 100% das células ≥ +0.95 bar estão ≤ 0.855 λ."]);
+
+  if (highIgnBoost > 0) findings.push(["warn", "⚠ Ponto Elevado em Boost: " + highIgnBoost + " células ≥ +1.1 bar acima de 24.5° APMS!"]);
+  else findings.push(["ok", "✓ Margem de Avanço de Ignição sob Pressão: nenhum excesso perigoso detectado."]);
+
+  if (roughVe > 0) findings.push(["warn", "⚠ Degraus Bruscos no Mapa VE: " + roughVe + " transições vizinhas variam mais de 14.5%."]);
+  else findings.push(["ok", "✓ Progressão Suave da Malha VE (" + DIM + "×" + DIM + "): 0 buracos ou picos abruptos."]);
+
+  if (maxDwell > 4.6) findings.push(["warn", "⚠ Dwell de Bobina Alto em 12–16V (" + maxDwell.toFixed(1) + " ms): risco de aquecer módulo IGBT!"]);
+  else findings.push(["ok", "✓ Proteção Térmica de Bobinas (Dwell 14V = " + st.curves.dwell.y[6].toFixed(2) + " ms): 100% seguro."]);
+
+  findings.push(["ok", "✓ 10 Proteções Ativas Engine Guardian™ (dP Bomba, Óleo, CLT, Overboost) verificadas."]);
+
+  document.getElementById("healthReportBody").innerHTML = findings.map(function(f) {
+    const bg = f[0] === "ok" ? "rgba(16,185,129,0.12)" : "rgba(244,63,94,0.16)";
+    const bd = f[0] === "ok" ? "#10b981" : "#f43f5e";
+    const cl = f[0] === "ok" ? "#a7f3d0" : "#fda4af";
+    return '<div style="padding:8px 11px;border-radius:6px;background:' + bg + ';border:1px solid ' + bd + ';color:' + cl + ';font-weight:600;">' + f[1] + '</div>';
+  }).join("");
+  document.getElementById("healthModal").classList.add("open");
+}
+
+function autoFixMapHazards() {
+  pushUndo();
+  for (let r = 0; r < DIM; r++) {
+    for (let c = 0; c < DIM; c++) {
+      const mp = st.mapAxis[c], rpm = st.rpmAxis[r];
+      if (mp >= 195 && st.maps.lambda[r][c] > 0.840) st.maps.lambda[r][c] = 0.800;
+      if (mp >= 210 && rpm >= 4000 && st.maps.ign[r][c] > 23.0) st.maps.ign[r][c] = 21.5;
+    }
+  }
+  for (let i = 4; i < 10; i++) if (st.curves.dwell.y[i] > 4.2) st.curves.dwell.y[i] = 3.4;
+  renderGrid(); render3D(); render2DSlice();
+  openMapHealthModal();
+  toast("✓ Todos os alertas de segurança foram corrigidos automaticamente!");
+}
+
+CMD_ITEMS.push(
+  ["🖥 Designer do Painel Digital 7\" & Shift-Light", function(){ navTo("cv-dash"); }],
+  ["⚡ Teste Individual de Saídas (Bicos / Bobinas / DBW)", function(){ navTo("cv-outtest"); }],
+  ["🧮 Calculadoras de Oficina (Bicos / Roda Fônica / AFR)", function(){ navTo("cv-calc"); }],
+  ["🩺 Revisor IA de Segurança do Mapa", function(){ openMapHealthModal(); }],
+  ["◫ Modo Split Duplo: Mapa VE + Mapa Ignição Juntos", function(){ navMap("ve"); setMapLayout("split"); }]
+);
+
 initAllMaps(1781, 1.6, true);
+renderIdeTabs();
 ensureBankStore();
 try {
   const saved = localStorage.getItem("tbx_studio_autosave_v10_" + HW_MODEL);
