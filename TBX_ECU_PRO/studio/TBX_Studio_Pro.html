@@ -724,6 +724,55 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
 .sim-pill.fault.active { background: linear-gradient(135deg, #e11d48, #be123c); border-color: #fda4af; }
 .sim-slider-row { display: flex; flex-direction: column; gap: 2px; font-size: 10.5px; color: #94a3b8; }
 .sim-slider-row input[type="range"] { width: 100%; accent-color: var(--cyan); height: 15px; cursor: pointer; }
+
+/* v18.0 CLEAN MODULE SUB-TABS, PRO-800 BADGES & TIMING LIGHT STROBE LOCK */
+.mod-tabs {
+  display: flex; align-items: center; gap: 6px; padding: 8px 16px 0;
+  background: #080e1a; border-bottom: 1px solid #18263e; flex-shrink: 0;
+}
+.mod-tab-btn {
+  height: 32px; padding: 0 14px; border-radius: 7px 7px 0 0;
+  border: 1px solid transparent; border-bottom: 2px solid transparent;
+  background: transparent; color: #94a3b8; font-family: var(--sans);
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.14s;
+}
+.mod-tab-btn:hover { color: #e2e8f0; background: rgba(255,255,255,0.03); }
+.mod-tab-btn.active {
+  background: #0f192d; color: #fff; border-color: #243859;
+  border-bottom-color: var(--cyan);
+}
+.mod-pane { display: none; flex-direction: column; gap: 12px; }
+.mod-pane.active { display: flex; }
+
+.pro-tag {
+  margin-left: auto; padding: 1px 5px; border-radius: 4px;
+  font-family: var(--mono); font-size: 9px; font-weight: 800;
+  background: rgba(245,158,11,0.16); color: #fbbf24; border: 1px solid rgba(245,158,11,0.38);
+}
+body.mode-400 .t-node.pro-only { display: none !important; }
+
+.strobe-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; border-radius: 9px; background: #0d172a; border: 1px solid #25395c;
+}
+.strobe-banner.locked {
+  background: linear-gradient(90deg, rgba(245,158,11,0.22), rgba(234,88,12,0.14));
+  border-color: #f59e0b; box-shadow: 0 0 18px rgba(245,158,11,0.22);
+}
+.nudge-row { display: flex; gap: 5px; align-items: center; }
+.nudge-btn {
+  height: 28px; padding: 0 10px; border-radius: 5px; border: 1px solid #2b4266;
+  background: #111e36; color: #e2e8f0; font-family: var(--mono); font-size: 11.5px;
+  font-weight: 700; cursor: pointer; transition: 0.12s;
+}
+.nudge-btn:hover { border-color: var(--cyan); background: #193054; color: #fff; }
+
+.live-status-strip {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 14px; border-radius: 8px; background: #0b1527; border: 1px solid #1e3252;
+  font-family: var(--mono); font-size: 11.5px; color: #cbd5e1;
+}
+.live-status-strip b { color: var(--neon-g); }
 </style>
 </head>
 <body class="mode-800">
@@ -774,69 +823,76 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
         <div class="t-group-items">
           <div class="t-node active" data-route="cv-home" onclick="navTo('cv-home')"><span>🏠 Tela Inicial</span></div>
           <div class="t-node" data-route="cv-copilot" onclick="navTo('cv-copilot')"><span style="color:#a5f3fc;font-weight:700;">🤖 Copiloto IA de Acerto</span></div>
+          <div class="t-node pro-only" data-route="cv-pro800" onclick="navTo('cv-pro800')"><span style="color:#fbbf24;font-weight:700;">🏆 Recursos TBX-800 PRO</span><span class="pro-tag">800</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>Motor e Sensores</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>1. Motor, Ignição e Bicos</span><span>▾</span></div>
         <div class="t-group-items">
           <div class="t-node" data-route="cv-wiz" onclick="navTo('cv-wiz')"><span>★ Assistente Novo Motor</span></div>
-          <div class="t-node" data-route="cv-setup" onclick="navTo('cv-setup')"><span>Motor, Bicos e Bobinas</span></div>
-          <div class="t-node" data-route="cv-sens" onclick="navTo('cv-sens')"><span>Calibrar Sensores</span></div>
+          <div class="t-node" data-route="cv-setup" onclick="navTo('cv-setup')"><span>Configuração do Motor</span></div>
+          <div class="t-node" data-route="cv-igncal" onclick="navTo('cv-igncal')"><span>⚡ Calibração de Ignição</span></div>
+          <div class="t-node" data-route="cv-staged" onclick="navTo('cv-staged')"><span>⛽ Injeção &amp; 2ª Bancada</span><span class="pro-tag">8/16</span></div>
+          <div class="t-node" data-route="cv-sens" onclick="navTo('cv-sens')"><span>Calibração de Sensores</span></div>
           <div class="t-node" data-route="cv-io" onclick="navTo('cv-io')"><span>Entradas e Saídas (Pinos)</span></div>
           <div class="t-node" data-route="cv-outtest" onclick="navTo('cv-outtest')"><span>Testar Bicos e Bobinas</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>Mapas de Acerto</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>2. Mapas e Correções</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="map:ve" onclick="navMap('ve')"><span>⛽ Mapa de Injeção</span></div>
-          <div class="t-node" data-route="map:ign" onclick="navMap('ign')"><span>⚡ Mapa de Ignição</span></div>
+          <div class="t-node" data-route="map:ve" onclick="navMap('ve')"><span>⛽ Mapa Principal Injeção</span></div>
+          <div class="t-node" data-route="map:ign" onclick="navMap('ign')"><span>⚡ Mapa Principal Ignição</span></div>
           <div class="t-node" data-route="map:lambda" onclick="navMap('lambda')"><span>🎯 Mapa Alvo de Sonda</span></div>
-          <div class="t-node" data-route="curve:crank" onclick="navCurve('crank')"><span>Partida a Frio</span></div>
+          <div class="t-node pro-only" data-route="map:stage2" onclick="navMap('stage2')"><span>Divisão 2ª Bancada (%)</span><span class="pro-tag">800</span></div>
+          <div class="t-node pro-only" data-route="map:eoi" onclick="navMap('eoi')"><span>Ângulo Fase Injeção (EOI)</span><span class="pro-tag">800</span></div>
+          <div class="t-node" data-route="curve:crank" onclick="navCurve('crank')"><span>Partida a Frio &amp; Pós</span></div>
           <div class="t-node" data-route="curve:wue" onclick="navCurve('wue')"><span>Aquecimento (Motor Frio)</span></div>
           <div class="t-node" data-route="curve:accel_tps" onclick="navCurve('accel_tps')"><span>Injeção Rápida (Pedal)</span></div>
+          <div class="t-node" data-route="curve:deadtime" onclick="navCurve('deadtime')"><span>Deadtime dos Bicos (V)</span></div>
+          <div class="t-node" data-route="curve:dwell" onclick="navCurve('dwell')"><span>Dwell das Bobinas (V)</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>Turbo, Pista e Cortes</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>3. Lenta, DBW e Sonda O2</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-launch" onclick="navTo('cv-launch')"><span>🔥 2-Step, Rolo e Pops</span></div>
-          <div class="t-node" data-route="cv-boost" onclick="navTo('cv-boost')"><span>🚀 Pressão de Turbo</span></div>
-          <div class="t-node" data-route="cv-trac" onclick="navTo('cv-trac')"><span>Controle de Tração e Troca</span></div>
+          <div class="t-node" data-route="cv-idle" onclick="navTo('cv-idle')"><span>🎛 Controle de Lenta Avançado</span></div>
+          <div class="t-node" data-route="cv-o2closed" onclick="navTo('cv-o2closed')"><span>🎯 Malha Fechada Sonda O2</span></div>
+          <div class="t-node pro-only" data-route="cv-dbw" onclick="navTo('cv-dbw')"><span>Borboleta Dupla DBW &amp; VVT</span><span class="pro-tag">800</span></div>
+          <div class="t-node pro-only" data-route="map:dbw_map" onclick="navMap('dbw_map')"><span>Mapa Pedal × Borboleta</span><span class="pro-tag">800</span></div>
+          <div class="t-node" data-route="cv-street" onclick="navTo('cv-street')"><span>❄️ Ventoinhas, A/C e Rua</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>Rua e Segurança</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>4. Turbo, Câmbio e Pista</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-street" onclick="navTo('cv-street')"><span>❄️ Lenta, Ventoinha e Ar</span></div>
-          <div class="t-node" data-route="cv-ai" onclick="navTo('cv-ai')"><span>🛡 Proteções e Auto-Tune</span></div>
-        </div>
-
-        <div class="t-cat" onclick="toggleCat(this)"><span>Gráficos e Painel</span><span>▾</span></div>
-        <div class="t-group-items">
-          <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>📈 Datalogger (Gráficos)</span></div>
-          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Painel Digital 7"</span></div>
-          <div class="t-node" data-route="cv-dtc" onclick="navTo('cv-dtc')"><span>Alertas e Falhas</span></div>
-        </div>
-
-        <div class="t-cat" onclick="toggleCat(this)" style="margin-top:12px;padding-top:10px;border-top:1px solid #162033;color:#38bdf8;"><span>Mais Recursos Avançados</span><span>▸</span></div>
-        <div class="t-group-items collapsed" id="advMenuGroup">
-          <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Cliente e Versões Salvas</span></div>
-          <div class="t-node" data-route="cv-drag" onclick="navTo('cv-drag')"><span>Arrancada Pro e Nitro</span></div>
-          <div class="t-node" data-route="cv-plc" onclick="navTo('cv-plc')"><span>Saídas Condicionais (Extras)</span></div>
+          <div class="t-node" data-route="cv-boost" onclick="navTo('cv-boost')"><span>🚀 Pressão Turbo &amp; CO2 Domo</span></div>
+          <div class="t-node" data-route="cv-launch" onclick="navTo('cv-launch')"><span>🔥 2-Step, Rolo, ALS e Pops</span></div>
+          <div class="t-node" data-route="cv-gear" onclick="navTo('cv-gear')"><span>⚙ Câmbio, Powershift &amp; DSG</span></div>
+          <div class="t-node" data-route="cv-trac" onclick="navTo('cv-trac')"><span>Controle de Tração Ativo</span></div>
+          <div class="t-node" data-route="cv-drag" onclick="navTo('cv-drag')"><span>Arrancada Pro, 3-Step &amp; Nitro</span></div>
           <div class="t-node" data-route="cv-wmi" onclick="navTo('cv-wmi')"><span>Água / Metanol (WMI)</span></div>
-          <div class="t-node pro-only" data-route="cv-dbw" onclick="navTo('cv-dbw')"><span>Borboleta Eletrônica e VVT</span></div>
-          <div class="t-node pro-only" data-route="map:dbw_map" onclick="navMap('dbw_map')"><span>Mapa Pedal × Borboleta</span></div>
-          <div class="t-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Ajuste Individual p/ Cilindro</span></div>
-          <div class="t-node pro-only" data-route="cv-knock" onclick="navTo('cv-knock')"><span>Sensor de Detonação (Knock)</span></div>
-          <div class="t-node" data-route="curve:deadtime" onclick="navCurve('deadtime')"><span>Deadtime dos Bicos (Bateria)</span></div>
-          <div class="t-node" data-route="curve:dwell" onclick="navCurve('dwell')"><span>Carga das Bobinas (Dwell)</span></div>
-          <div class="t-node" data-route="curve:idle_clt" onclick="navCurve('idle_clt')"><span>Curva de Lenta por Água</span></div>
+        </div>
+
+        <div class="t-cat" onclick="toggleCat(this)"><span>5. Cilindros, Knock e Rede</span><span>▾</span></div>
+        <div class="t-group-items">
+          <div class="t-node" data-route="cv-ai" onclick="navTo('cv-ai')"><span>🛡 Proteções do Motor (10)</span></div>
+          <div class="t-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Cilindros Individuais &amp; EGT</span></div>
+          <div class="t-node pro-only" data-route="cv-knock" onclick="navTo('cv-knock')"><span>Detonação Acústica (Knock)</span><span class="pro-tag">800</span></div>
+          <div class="t-node" data-route="cv-plc" onclick="navTo('cv-plc')"><span>Saídas Programáveis (PLC)</span></div>
+          <div class="t-node" data-route="cv-pdm" onclick="navTo('cv-pdm')"><span>PDM-8 Sem Fusíveis (CAN)</span></div>
           <div class="t-node" data-route="cv-ftb" onclick="navTo('cv-ftb')"><span>Adaptador Chicote FuelTech</span></div>
-          <div class="t-node" data-route="cv-pdm" onclick="navTo('cv-pdm')"><span>Módulo PDM Sem Fusíveis</span></div>
-          <div class="t-node" data-route="cv-can" onclick="navTo('cv-can')"><span>Rede CAN e Câmbio DSG/8HP</span></div>
-          <div class="t-node" data-route="cv-pinout" onclick="navTo('cv-pinout')"><span>Esquema de Cores do Chicote</span></div>
+          <div class="t-node" data-route="cv-can" onclick="navTo('cv-can')"><span>Rede CAN-FD &amp; Painel OEM</span></div>
+          <div class="t-node" data-route="cv-pinout" onclick="navTo('cv-pinout')"><span>Esquema de Cores Chicote</span></div>
+        </div>
+
+        <div class="t-cat" onclick="toggleCat(this)"><span>6. Datalogger e Oficina</span><span>▾</span></div>
+        <div class="t-group-items">
+          <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>📈 Datalogger 200 Hz</span></div>
           <div class="t-node" data-route="cv-scope" onclick="navTo('cv-scope')"><span>Osciloscópio Roda Fônica</span></div>
+          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Painel Digital 7"</span></div>
           <div class="t-node" data-route="cv-dyno" onclick="navTo('cv-dyno')"><span>Dinamômetro Virtual</span></div>
+          <div class="t-node" data-route="cv-dtc" onclick="navTo('cv-dtc')"><span>Alertas e Falhas (DTC)</span></div>
           <div class="t-node" data-route="cv-calc" onclick="navTo('cv-calc')"><span>Calculadoras de Oficina</span></div>
           <div class="t-node" data-route="cv-check" onclick="navTo('cv-check')"><span>Check-List Pré-Partida</span></div>
-          <div class="t-node" data-route="cv-remote" onclick="navTo('cv-remote')"><span>Senha da Oficina e Bloqueio</span></div>
+          <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Cliente e Snapshots Δ</span></div>
+          <div class="t-node" data-route="cv-remote" onclick="navTo('cv-remote')"><span>Senha Oficina &amp; Bloqueio</span></div>
         </div>
       </div>
     </aside>
@@ -969,75 +1025,101 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
         </div>
       </section>
 
-      <!-- ==================== VIEW 0: CLEAN, SPACIOUS 8-CARD MAIN HOME ==================== -->
+      <!-- ==================== VIEW 0: COMPLETE 12-CARD ENGINEERING HOME ==================== -->
       <section class="view-pane active" id="cv-home">
-        <div class="scroll-body" style="padding:20px 22px;gap:18px;">
+        <div class="scroll-body" style="padding:18px 20px;gap:14px;">
           <div class="clean-home-hero">
             <div>
-              <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:3px;">Central de Acerto TBX</div>
-              <div style="font-size:12.5px;color:#94a3b8;">Escolha abaixo o que deseja ajustar ou configure um motor do zero em 6 passos simples.</div>
+              <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:3px;">Central de Calibração Completa — Padrão Motorsport &amp; Rua</div>
+              <div style="font-size:12.2px;color:#94a3b8;">Acesso direto a Calibração de Ignição c/ Pistola, Lenta Avançada PID + Dashpot, 2ª Bancada 8/16 Bicos, Sonda O2, Câmbio e Recursos TBX-800 PRO.</div>
             </div>
             <div style="display:flex;gap:8px;flex-shrink:0;">
-              <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">🤖 Abrir Copiloto IA</button>
-              <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Configurar Novo Motor</button>
+              <button class="tbtn pro-only" style="border-color:#f59e0b;color:#fde68a;background:rgba(245,158,11,0.14);" onclick="navTo('cv-pro800')">🏆 Central TBX-800 PRO</button>
+              <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">🤖 Copiloto IA</button>
+              <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Assistente Novo Motor</button>
             </div>
           </div>
 
           <div class="clean-home-grid">
             <div class="clean-card" onclick="navMap('ve')">
               <div class="clean-card-ico">⛽</div>
-              <div><h3>Mapa de Injeção</h3><p>Ajuste a quantidade de combustível por rotação e pressão.</p></div>
-              <div class="clean-card-val"><span id="htPwLive">2.25 ms</span><span>Abrir →</span></div>
+              <div><h3>Mapa de Injeção</h3><p>Tabela VE % ou Tempo (ms), interpolação 2D e corte gráfico.</p></div>
+              <div class="clean-card-val"><span id="htPwLive">2.55 ms</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navMap('ign')">
               <div class="clean-card-ico">⚡</div>
-              <div><h3>Mapa de Ignição</h3><p>Ajuste os graus de ponto de avanço em cada faixa do motor.</p></div>
+              <div><h3>Mapa de Ignição</h3><p>Avanço em °APMS por rotação e pressão com modo Split VE+Ponto.</p></div>
               <div class="clean-card-val"><span id="htIgnLive">14.5°</span><span>Abrir →</span></div>
             </div>
 
-            <div class="clean-card" onclick="navTo('cv-setup')">
-              <div class="clean-card-ico">🔧</div>
-              <div><h3>Motor, Bicos e Sensores</h3><p>Cilindros, roda fônica, vazão dos bicos, bobinas e TPS.</p></div>
-              <div class="clean-card-val"><span id="htSetupLive">4 Cil • 65 lb/h</span><span>Abrir →</span></div>
+            <div class="clean-card" onclick="navTo('cv-igncal')" style="border-color:rgba(245,158,11,0.38);">
+              <div class="clean-card-ico" style="color:#fbbf24;">🔫</div>
+              <div><h3>Calibração de Ignição</h3><p>Trava p/ pistola de ponto, alinhamento do 1º dente e atraso µs.</p></div>
+              <div class="clean-card-val"><span id="htIgnCalLive" style="color:#fbbf24">Offset 123.0° • 68 µs</span><span>Calibrar →</span></div>
             </div>
 
-            <div class="clean-card" onclick="navTo('cv-launch')">
-              <div class="clean-card-ico">🔥</div>
-              <div><h3>2-Step, Rolo e Pops</h3><p>Corte de arrancada parado, anti-lag em movimento e tiros.</p></div>
-              <div class="clean-card-val"><span id="ht2StepLive">4250 RPM</span><span>Abrir →</span></div>
+            <div class="clean-card" onclick="navTo('cv-idle')" style="border-color:rgba(56,189,248,0.38);">
+              <div class="clean-card-ico">🎛</div>
+              <div><h3>Controle de Lenta Avançado</h3><p>Atuador PID, reserva de ponto, Dashpot e compensações A/C e Fan.</p></div>
+              <div class="clean-card-val"><span id="htIdleAdvLive">Alvo 880 RPM • PID</span><span>Ajustar →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-staged')">
+              <div class="clean-card-ico">💉</div>
+              <div><h3>Injeção &amp; 2ª Bancada</h3><p>8 ou 16 bicos estagiados, regulador 1:1/fixo, Flex e fase EOI.</p></div>
+              <div class="clean-card-val"><span id="htSetupLive">80 + 160 lb/h</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-o2closed')">
+              <div class="clean-card-ico">🎯</div>
+              <div><h3>Malha Fechada Sonda O2</h3><p>Limites separados Lenta / Cruzeiro / Boost e dupla sonda V8.</p></div>
+              <div class="clean-card-val"><span>-4% / +22% em Boost</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navTo('cv-boost')">
               <div class="clean-card-ico">🚀</div>
-              <div><h3>Pressão de Turbo</h3><p>Controle da solenoide N75 e limite de pressão por marcha.</p></div>
-              <div class="clean-card-val"><span id="htBoostLive">Alvo 1.80 bar</span><span>Abrir →</span></div>
+              <div><h3>Boost N75 &amp; Domo CO2</h3><p>Alvo por marcha 1ª–6ª, velocidade, tempo e dupla válvula CO2.</p></div>
+              <div class="clean-card-val"><span id="htBoostLive">Alvo 1.60 bar</span><span>Abrir →</span></div>
             </div>
 
-            <div class="clean-card" onclick="navTo('cv-street')">
-              <div class="clean-card-ico">❄️</div>
-              <div><h3>Lenta, Ventoinha e Ar</h3><p>Rotação de marcha lenta, temperatura das ventoinhas e A/C.</p></div>
-              <div class="clean-card-val"><span id="htCltLive">Fan 94 °C</span><span>Abrir →</span></div>
+            <div class="clean-card" onclick="navTo('cv-gear')">
+              <div class="clean-card-ico">⚙</div>
+              <div><h3>Câmbio, Powershift &amp; DSG</h3><p>Corte individual 1ª–6ª, Strain-Gauge 0–5V, Auto-Blip e CAN DSG.</p></div>
+              <div class="clean-card-val"><span>Corte 58–75 ms</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-launch')">
+              <div class="clean-card-ico">🔥</div>
+              <div><h3>2-Step, Rolo, ALS e Pops</h3><p>Largada parada, anti-lag em movimento, rally e tiros &ge; 4000 RPM.</p></div>
+              <div class="clean-card-val"><span id="ht2StepLive">4250 RPM</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card pro-only" onclick="navTo('cv-dbw')" style="border-color:rgba(245,158,11,0.35);">
+              <div class="clean-card-ico">🦋</div>
+              <div><h3>Borboleta Dupla DBW &amp; VVT</h3><p>Calibração automática pedal/borboleta, Cruise e duplo comando VVT.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">TBX-800 PRO</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navTo('cv-copilot')" style="border-color:rgba(168,85,247,0.45);">
               <div class="clean-card-ico" style="background:rgba(168,85,247,0.16);border-color:rgba(168,85,247,0.4);">🤖</div>
-              <div><h3>Copiloto IA de Acerto</h3><p>Peça ajustes em português, analise logs e audite bicos e ponto.</p></div>
-              <div class="clean-card-val"><span style="color:#c084fc">Diagnóstico + Auto-Acerto</span><span>Abrir →</span></div>
+              <div><h3>Copiloto IA de Acerto</h3><p>Comandos em português, auditoria física e auto-acerto pelo log.</p></div>
+              <div class="clean-card-val"><span style="color:#c084fc">IA Ativa</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navTo('cv-log')">
               <div class="clean-card-ico">📈</div>
-              <div><h3>Datalogger (Gráficos)</h3><p>Analise puxadas gravadas e aplique correção automática.</p></div>
-              <div class="clean-card-val"><span>Gravador 200 Hz</span><span>Abrir →</span></div>
+              <div><h3>Datalogger &amp; Osciloscópio</h3><p>Gravação 200 Hz, correção VE 1-clique e Tooth Logger 60-2.</p></div>
+              <div class="clean-card-val"><span id="htCltLive">200 Hz • 64 Canais</span><span>Abrir →</span></div>
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;">
-            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-outtest')">⚡ Testar Bicos e Bobinas</button>
-            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-sens')">🎛 Calibrar Pedal / TPS</button>
-            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-ai')">🛡 10 Proteções do Motor</button>
-            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-dash')">🖥 Painel Digital 7"</button>
+          <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;">
+            <button class="tbtn" style="justify-content:center;height:36px;" onclick="navTo('cv-outtest')">⚡ Testar Bicos e Bobinas</button>
+            <button class="tbtn" style="justify-content:center;height:36px;" onclick="navTo('cv-sens')">🎛 Calibrar Sensores</button>
+            <button class="tbtn" style="justify-content:center;height:36px;" onclick="navTo('cv-cyl')">🔥 Cilindros &amp; 8× EGT</button>
+            <button class="tbtn" style="justify-content:center;height:36px;" onclick="navTo('cv-ai')">🛡 10 Proteções Motor</button>
+            <button class="tbtn" style="justify-content:center;height:36px;" onclick="navTo('cv-dash')">🖥 Painel Digital 7"</button>
           </div>
         </div>
       </section>
@@ -1757,51 +1839,94 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
         </div>
       </section>
 
-      <!-- ==================== VIEW 9: CLOSED-LOOP BOOST PID + BOOST BY GEAR 1-6 ==================== -->
+      <!-- ==================== VIEW 9: CLOSED-LOOP BOOST PID + CO2 DOME + BOOST BY GEAR 1-6 ==================== -->
       <section class="view-pane" id="cv-boost">
         <div class="v-bar">
-          <div class="v-crumb">CONTROLE DE BOOST MALHA FECHADA PID (N75) + ALVO DE PRESSÃO POR MARCHA (1ª A 6ª)</div>
+          <div class="v-crumb">CONTROLE DE PRESSÃO DE TURBO — N75 PID, MARCHAS 1ª–6ª, VELOCIDADE &amp; DOMO CO2</div>
           <button class="obtn on" onclick="navMap('boost_tgt')">Abrir Mapa 3D RPM × TPS →</button>
         </div>
+        <div class="mod-tabs">
+          <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-boost', 0, this)">1. Solenoide N75 &amp; Alvo por Marcha (1ª a 6ª)</button>
+          <button type="button" class="mod-tab-btn pro-only" onclick="switchModTab('cv-boost', 1, this)">2. Wastegate Domo CO2 Dupla Válvula &amp; Velocidade (800 PRO)</button>
+        </div>
         <div class="scroll-body">
-          <div class="grid-2">
-            <div class="panel-box"><div class="p-hdr"><span>Controlador Wastegate N75 Malha Fechada PID</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Modo de Controle de Pressão</span><select><option selected>Malha Fechada PID + Duty Base</option><option>Malha Aberta (% Duty Fixo por Marcha)</option><option>Pressão por Tempo Arrancada (0–6s)</option></select></div>
-              <div class="f-row"><span class="f-lbl">Pino &amp; Frequência Solenoide</span>
-                <div class="dual-ctl">
-                  <select><option selected>Aux PWM 1 (N75)</option><option>Aux PWM 3</option></select>
-                  <select><option selected>31 Hz (MAC / N75)</option><option>25 Hz</option><option>45 Hz</option></select>
+          <div class="mod-pane active">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Controlador Wastegate N75 Malha Fechada PID</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Modo de Controle de Pressão</span><select><option selected>Malha Fechada PID + Duty Base</option><option>Malha Aberta (% Duty Fixo por Marcha)</option><option>Pressão por Velocidade (km/h)</option><option>Pressão por Tempo Arrancada (0–6s)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Pino &amp; Frequência Solenoide</span>
+                  <div class="dual-ctl">
+                    <select><option selected>Aux PWM 1 (N75)</option><option>Aux PWM 3</option></select>
+                    <select><option selected>31 Hz (MAC / N75)</option><option>25 Hz</option><option>45 Hz</option></select>
+                  </div>
                 </div>
-              </div>
-              <div class="f-row"><span class="f-lbl">Spool Rápido (100% Duty até faltar)</span>
-                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" min="0.05" max="1.00" value="0.25"><span class="ns-u">bar p/ Alvo</span><button type="button" class="ns-b" data-step="1">+</button></div>
-              </div>
-              <div class="f-row"><span class="f-lbl">Ganhos PID (Kp / Ki / Kd)</span>
-                <div class="tri-ctl">
-                  <div class="num-step"><span class="ns-pfx">P</span><input type="number" step="1.0" value="28.0"></div>
-                  <div class="num-step"><span class="ns-pfx">I</span><input type="number" step="0.5" value="14.5"></div>
-                  <div class="num-step"><span class="ns-pfx">D</span><input type="number" step="0.5" value="6.0"></div>
+                <div class="f-row"><span class="f-lbl">Spool Rápido (100% Duty até faltar)</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" min="0.05" max="1.00" value="0.25"><span class="ns-u">bar p/ Alvo</span><button type="button" class="ns-b" data-step="1">+</button></div>
                 </div>
-              </div>
-              <div class="f-row"><span class="f-lbl">Botão Overboost Volante (Bônus / Tempo)</span>
-                <div class="tri-ctl">
-                  <select><option selected>Pino C7</option><option>CAN Vol.</option><option>OFF</option></select>
-                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.05" value="0.35"><span class="ns-u">b</span></div>
-                  <div class="num-step"><input type="number" step="1" value="8"><span class="ns-u">s</span></div>
+                <div class="f-row"><span class="f-lbl">Ganhos PID (Kp / Ki / Kd)</span>
+                  <div class="tri-ctl">
+                    <div class="num-step"><span class="ns-pfx">P</span><input type="number" step="1.0" value="28.0"></div>
+                    <div class="num-step"><span class="ns-pfx">I</span><input type="number" step="0.5" value="14.5"></div>
+                    <div class="num-step"><span class="ns-pfx">D</span><input type="number" step="0.5" value="6.0"></div>
+                  </div>
                 </div>
-              </div>
-            </div></div>
+                <div class="f-row"><span class="f-lbl">Botão Overboost / Scramble Volante</span>
+                  <div class="tri-ctl">
+                    <select><option selected>Pino C7</option><option>CAN Vol.</option><option>OFF</option></select>
+                    <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.05" value="0.35"><span class="ns-u">b</span></div>
+                    <div class="num-step"><input type="number" step="1" value="8"><span class="ns-u">s</span></div>
+                  </div>
+                </div>
+              </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão Turbo por Marcha (Usado Ao Vivo na Simulação!)</span><span id="bstLiveGearTag" style="color:var(--cyan);font-family:var(--mono)">Marcha Atual: Lenta</span></div>
-              <table class="data-tbl">
-                <thead><tr><th>Marcha</th><th>Alvo Mapa 1 Pista</th><th>Alvo Mapa 2 Rua</th><th>Duty Base N75</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG1" type="number" step="0.05" value="0.85"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG1Street" type="number" step="0.05" value="0.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG2" type="number" step="0.05" value="1.25"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG2Street" type="number" step="0.05" value="0.90"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG3" type="number" step="0.05" value="1.45"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG3Street" type="number" step="0.05" value="1.15"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>4ª a 6ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG4" type="number" step="0.05" value="1.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG4Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
-                </tbody>
-              </table>
+              <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão por Marcha (1ª a 6ª — Ao Vivo na Simulação!)</span><span id="bstLiveGearTag" style="color:var(--cyan);font-family:var(--mono)">Marcha Atual: Lenta</span></div>
+                <table class="data-tbl">
+                  <thead><tr><th>Marcha</th><th>Alvo Mapa 1 Pista</th><th>Alvo Mapa 2 Rua</th><th>Duty Base</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><input id="bstG1" type="number" step="0.05" value="0.85"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG1Street" type="number" step="0.05" value="0.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
+                    <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><input id="bstG2" type="number" step="0.05" value="1.25"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG2Street" type="number" step="0.05" value="0.90"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
+                    <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><input id="bstG3" type="number" step="0.05" value="1.45"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG3Street" type="number" step="0.05" value="1.15"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
+                    <tr><td><strong>4ª Marcha</strong></td><td><div class="num-step"><input id="bstG4" type="number" step="0.05" value="1.60"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG4Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
+                    <tr><td><strong>5ª / 6ª Marcha</strong></td><td><div class="num-step"><input id="bstG5" type="number" step="0.05" value="1.65"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input id="bstG5Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="2" value="72"><span class="ns-u">%</span></div></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Controle de Pressão no Domo da Wastegate (CO2 / Ar Comprimido)</span><span class="pro-tag">TBX-800 PRO</span></div><div class="card-pad">
+                <div class="f-row switch-row"><span class="f-lbl">Ativar Malha Fechada por 2 Solenoides (Carga + Alívio Domo)</span><input type="checkbox" onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Solenoide Carga (Increase) / Alívio (Decrease)</span>
+                  <div class="dual-ctl">
+                    <select><option selected>Aux PWM 5 (Carga CO2)</option><option>PDM-8 #7</option></select>
+                    <select><option selected>Aux PWM 6 (Alívio)</option><option>PDM-8 #8</option></select>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Sensor Pressão do Domo &amp; Pressão Garrafa CO2</span>
+                  <div class="dual-ctl">
+                    <select><option selected>AN7 Pressão Domo (0–10b)</option><option>CAN Pressão</option></select>
+                    <div class="ro-badge"><strong style="color:var(--neon-g)">Garrafa: 8.4 bar OK</strong></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Mola Mecânica da Wastegate &amp; Zona Morta</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">Mola</span><input type="number" step="0.05" value="0.80"><span class="ns-u">bar</span></div>
+                    <div class="num-step"><span class="ns-pfx">±</span><input type="number" step="0.02" value="0.06"><span class="ns-u">bar</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Relação Pressão Domo → Coletor MAP</span>
+                  <div class="num-step"><input type="number" step="0.05" value="1.15"><span class="ns-u">× Razão Domo</span></div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Rampa de Pressão por Velocidade (Tração Progressiva Rua/Pista)</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Até 60 km/h (Saída de Curva / Largada)</span><div class="num-step"><input type="number" step="0.05" value="0.85"><span class="ns-u">bar</span></div></div>
+                <div class="f-row"><span class="f-lbl">Em 100 km/h</span><div class="num-step"><input type="number" step="0.05" value="1.25"><span class="ns-u">bar</span></div></div>
+                <div class="f-row"><span class="f-lbl">Em 140 km/h</span><div class="num-step"><input type="number" step="0.05" value="1.50"><span class="ns-u">bar</span></div></div>
+                <div class="f-row"><span class="f-lbl">Acima de 180 km/h (Plena Carga)</span><div class="num-step"><input type="number" step="0.05" value="1.75"><span class="ns-u">bar</span></div></div>
+              </div></div>
             </div>
           </div>
         </div>
@@ -2152,11 +2277,18 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
       </section>
 
       <section class="view-pane pro-only" id="cv-dbw">
-        <div class="v-bar"><div class="v-crumb">BORBOLETA ELETRÔNICA DBW EGAS + PILOTO AUTOMÁTICO (CRUISE) + ANTI-SURGE + DUPLO VVT</div></div>
+        <div class="v-bar">
+          <div class="v-crumb">BORBOLETA ELETRÔNICA DUPLA DBW EGAS + PILOTO AUTOMÁTICO + AUTO-BLIP &amp; DUPLO VVT</div>
+          <button class="obtn ok" onclick="toast('✓ Auto-Calibração DBW concluída: Batente 0% (0.64V/4.36V) e 100% (4.42V/0.58V) gravados!')">⚡ Auto-Calibrar Borboleta &amp; Pedal</button>
+          <button class="obtn on" onclick="navMap('dbw_map')">Abrir Mapa Pedal × Borboleta →</button>
+        </div>
         <div class="scroll-body"><div class="grid-2">
-          <div class="panel-box"><div class="p-hdr"><span>DBW EGAS 20 kHz &amp; Piloto Automático Nativo</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Redundância Dupla TPS1 + TPS2</span><div class="ro-badge"><span>14.2% + 85.8%</span><strong>100.0% • OK</strong></div></div>
-            <div class="f-row switch-row"><span class="f-lbl">Piloto Automático (Cruise — Desarme Freio / Emb.)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+          <div class="panel-box"><div class="p-hdr"><span>DBW #1 &amp; DBW #2 (20 kHz) + Piloto Automático</span><span class="pro-tag">2× PONTE-H 55A</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Redundância Dupla TPS1 + TPS2 / PPS</span><div class="ro-badge"><span>14.2% + 85.8%</span><strong style="color:var(--neon-g)">100.0% • SEGURO</strong></div></div>
+            <div class="f-row"><span class="f-lbl">2ª Borboleta Eletrônica (DBW #2 — V8 / Plenum)</span>
+              <select><option selected>Desativada (Corpo Único DBW #1)</option><option>Espelhada Sincronizada c/ DBW #1 (Plenum Duplo / V8)</option><option>By-Pass Supercharger / Recirculação Boost</option></select>
+            </div>
+            <div class="f-row switch-row"><span class="f-lbl">Piloto Automático Nativo (Desarme Freio / Emb.)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
             <div class="f-row"><span class="f-lbl">Progressão Pedal × Borboleta</span><select><option selected>Linear Pista 1:1 (Resposta Direta)</option><option>Suave Rua / Chuva (Mais Curso Baixa)</option><option>Agressiva Rápida</option></select></div>
             <div class="f-row"><span class="f-lbl">Proteção Anti-Surge ΔP Rotor Turbo</span><select><option selected>Ativa — Abre Suave p/ Evitar Flutter Severo</option><option>Desativada</option></select></div>
             <div class="f-row"><span class="f-lbl">Auto-Blip Punta-Taco (Abertura / Tempo)</span>
@@ -2166,9 +2298,12 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
               </div>
             </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>Malha Fechada PID Dual VVT (300 Hz)</span></div><div class="card-pad">
+          <div class="panel-box"><div class="p-hdr"><span>Malha Fechada PID Dual VVT (Admissão + Escape 300 Hz)</span><span class="pro-tag">DUAL VVT</span></div><div class="card-pad">
             <div class="f-row"><span class="f-lbl">Posição Atual Admissão / Escape</span><div class="ro-badge"><span>Fase Comandos</span><strong>+22.0° / -12.0° CA</strong></div></div>
             <div class="f-row"><span class="f-lbl">Frequência Solenoides VVT Óleo</span><select><option selected>300 Hz (VW / Audi / BMW / Honda)</option><option>250 Hz (Toyota / GM)</option></select></div>
+            <div class="f-row"><span class="f-lbl">Temperatura Mínima do Óleo p/ Ativar VVT</span>
+              <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" min="20" max="90" value="45"><span class="ns-u">°C</span></div>
+            </div>
             <div style="display:flex;gap:6px;margin-top:4px;"><button class="obtn on" style="flex:1;height:28px" onclick="navMap('vvt_in')">📈 Mapa 3D VVT Admissão</button><button class="obtn on" style="flex:1;height:28px" onclick="navMap('vvt_ex')">📈 Mapa 3D VVT Escape</button></div>
           </div></div>
         </div></div>
@@ -2370,6 +2505,517 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
                 </div>
                 <div class="info-banner" id="clcAfrOut">Conversão instantânea...</div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW A: IGNITION CALIBRATION, STROBE LOCK & HARDWARE DELAY ==================== -->
+      <section class="view-pane" id="cv-igncal">
+        <div class="v-bar">
+          <div class="v-crumb">⚡ Calibração de Ignição, Pistola de Ponto e Alinhamento da Roda Fônica</div>
+          <button class="obtn on" onclick="navTo('cv-scope')">Abrir Osciloscópio 60-2 →</button>
+        </div>
+        <div class="mod-tabs">
+          <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-igncal', 0, this)">1. Pistola de Ponto, 1º Dente &amp; Atraso (µs)</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-igncal', 1, this)">2. Bobinas, Dwell em Boost &amp; Fase 720°</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-igncal', 2, this)">3. Correções (Partida, Água, Ar &amp; Etanol)</button>
+        </div>
+        <div class="scroll-body">
+          <!-- SUB-TAB 1: STROBE TIMING LOCK & HARDWARE DELAY -->
+          <div class="mod-pane active">
+            <div class="strobe-banner" id="ignStrobeBanner">
+              <div>
+                <strong id="ignStrobeTitle" style="font-size:13.5px;color:#fff;display:block;margin-bottom:3px;">🔓 Modo Normal: Avanço seguindo Mapa 3D + Correções</strong>
+                <span id="ignStrobeDesc" style="font-size:11.8px;color:#94a3b8;">Para aferir na polia com pistola estroboscópica, clique ao lado para travar o ponto num ângulo fixo.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                <div class="num-step"><input id="ignLockDeg" type="number" step="1.0" min="-10" max="35" value="20.0" oninput="syncIgnCalibration()"><span class="ns-u">°APMS</span></div>
+                <button type="button" class="tbtn burn" id="btnToggleStrobe" onclick="toggleStrobeTimingLock()">🔒 Travar Ponto p/ Pistola</button>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="panel-box">
+                <div class="p-hdr"><span>Alinhamento da Roda Fônica (Ajuste Ao Vivo na Polia)</span><span style="color:var(--neon-g);font-family:var(--mono)">SINCRONISMO OK • 0 ERROS</span></div>
+                <div class="card-pad">
+                  <div class="f-row"><span class="f-lbl">Ângulo do 1º Dente após a Falha<small>Ex: VW AP/1.8T = 123° • GM/Fiat = 84°</small></span>
+                    <div class="num-step"><input id="ignTrigOffset" type="number" step="0.2" min="15" max="355" value="123.0" oninput="syncIgnCalibration()"><span class="ns-u">°APMS</span></div>
+                  </div>
+                  <div class="f-row"><span class="f-lbl">Ajuste Fino c/ Pistola Apontada</span>
+                    <div class="nudge-row">
+                      <button type="button" class="nudge-btn" onclick="nudgeTriggerOffset(-1.0)">◀ -1.0°</button>
+                      <button type="button" class="nudge-btn" onclick="nudgeTriggerOffset(-0.2)">-0.2°</button>
+                      <button type="button" class="nudge-btn" onclick="nudgeTriggerOffset(+0.2)">+0.2°</button>
+                      <button type="button" class="nudge-btn" onclick="nudgeTriggerOffset(+1.0)">+1.0° ▶</button>
+                    </div>
+                  </div>
+                  <div class="f-row"><span class="f-lbl">Borda de Leitura Sensor Rotação</span>
+                    <select><option selected>Descida (Falling Edge — Padrão Bosch VR)</option><option>Subida (Rising Edge — Hall)</option></select>
+                  </div>
+                  <div class="f-row"><span class="f-lbl">Filtro Anti-Ruído Indutivo VR</span>
+                    <select><option>Nível 1 — Baixo</option><option selected>Nível 2 — Automático Adaptativo</option><option>Nível 3 — Alto (Motor Partida Pesado)</option></select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-box">
+                <div class="p-hdr"><span>Compensação de Atraso de Hardware (Alta Rotação)</span><span id="lblSparkDelayDeg" style="color:var(--cyan);font-family:var(--mono)">+3.06° @ 7500 RPM</span></div>
+                <div class="card-pad">
+                  <div class="f-row"><span class="f-lbl">Atraso Físico Bobina / Módulo (µs)<small>Mantém o ponto cravado até 9.500 RPM!</small></span>
+                    <div class="num-step"><input id="ignHwDelayUs" type="number" step="2" min="0" max="280" value="68" oninput="syncIgnCalibration()"><span class="ns-u">µs</span></div>
+                  </div>
+                  <div class="f-row"><span class="f-lbl">Preset Rápido de Módulo / Bobina</span>
+                    <select onchange="document.getElementById('ignHwDelayUs').value=this.value;syncIgnCalibration()">
+                      <option value="68" selected>Bobina Smart COP Audi R8 / VW TSI (68 µs)</option>
+                      <option value="52">Módulo Indutivo Tipo SparkPRO / Bosch 211 (52 µs)</option>
+                      <option value="95">Bobina GM LS2 / Truck Individual (95 µs)</option>
+                      <option value="115">Distribuidor + Módulo Original Antigo (115 µs)</option>
+                      <option value="25">Ignição Capacitiva CDI Pista (25 µs)</option>
+                    </select>
+                  </div>
+                  <div class="info-banner vcam" id="ignDelayExplain">
+                    <strong>Por que calibrar µs?</strong> Em 7.500 RPM, um atraso elétrico de <strong>68 µs</strong> nas bobinas atrasaria o ponto real na polia em <strong>3.06°</strong> se não fosse compensado pela ECU!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 2: COIL DWELL, BOOST SPARK REINFORCEMENT & CAM PHASE -->
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Configuração Elétrica de Bobinas &amp; Reforço em Pressão</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Modo de Saída de Ignição</span><select><option selected>Individual Sequencial (8 Canais COP — 800 PRO)</option><option>Centelha Perdida (Wasted Spark 2×2)</option><option>Distribuidor Único (Saída IGN 1)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Sinal Elétrico nos Pinos IGN</span><select><option selected>Sinal 5V TTL p/ Bobina c/ Módulo Interno (Smart Coil)</option><option>Potência Direta / Módulo Externo (SparkPRO / Bosch)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Dwell na Partida / Dwell Base 13.8V</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">Crk</span><input type="number" step="0.1" min="2.0" max="6.0" value="3.8"><span class="ns-u">ms</span></div>
+                    <div class="num-step"><span class="ns-pfx">14V</span><input type="number" step="0.1" min="1.2" max="5.5" value="3.1"><span class="ns-u">ms</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Reforço de Dwell em Alto Boost (&ge; 1.2 bar)</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.05" min="0.0" max="1.20" value="0.45"><span class="ns-u">ms</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Curva Completa Dwell × Bateria</span><button class="obtn on" onclick="navCurve('dwell')">📈 Editar Curva Dwell 2D →</button></div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Sincronismo de Fase do Comando (720° Ciclo Completo)</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Origem da Fase do 1º Cilindro</span><select><option selected>Sensor Hall Físico na Polia Comando</option><option>TBX VirtualCam™ (Pulso MAP Admissão s/ Sensor!)</option><option>Desativado (360° Centelha Perdida)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Janela Esperada do Pulso de Fase</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">De</span><input type="number" step="5" value="20"><span class="ns-u">°</span></div>
+                    <div class="num-step"><span class="ns-pfx">Até</span><input type="number" step="5" value="160"><span class="ns-u">°</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Diagnóstico Instantâneo 60-2 / Fase</span><div class="ro-badge"><span>Razão Falha 3.01×</span><strong style="color:var(--neon-g)">FASE 720° SINCRONIZADA</strong></div></div>
+              </div></div>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 3: CRANKING, CLT, IAT & FLEX ETHANOL TIMING CORRECTIONS -->
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Avanço de Partida &amp; Bônus Etanol Flex</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Avanço Fixo Durante a Partida (&lt; 450 RPM)</span>
+                  <div class="num-step"><input type="number" step="0.5" min="0" max="25" value="12.0"><span class="ns-u">°APMS</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Acréscimo de Ponto em E100 vs Gasolina</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.5" min="0" max="10" value="3.5"><span class="ns-u">° @ E100</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Limite de Variação Rápida (Suavização Rua)</span>
+                  <div class="num-step"><input type="number" step="1" min="2" max="50" value="18"><span class="ns-u">° / ciclo</span></div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Proteção de Ponto por Temperatura (Água &amp; Ar)</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Avanço Extra Motor Frio (&lt; 30 °C)</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.5" min="0" max="8" value="2.5"><span class="ns-u">°</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Retardo Segurança Água Quente (&ge; 102 °C)</span>
+                  <div class="num-step"><input type="number" step="0.5" min="-12" max="0" value="-3.5"><span class="ns-u">°</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Tabela Completa Retardo × Ar (IAT)</span><button class="obtn on" onclick="navCurve('iat_ign')">📈 Abrir Curva Retardo × IAT →</button></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW B: ADVANCED CLOSED-LOOP IDLE CONTROL ==================== -->
+      <section class="view-pane" id="cv-idle">
+        <div class="v-bar">
+          <div class="v-crumb">🎛 Controle de Marcha Lenta Avançado — PID de Ar, Reserva de Ponto, Dashpot &amp; Compensações</div>
+          <button class="obtn" id="btnSimAcLoad" onclick="toggleIdleLoadSim('ac')">❄ Simular A/C ON</button>
+          <button class="obtn" id="btnSimSteerLoad" onclick="toggleIdleLoadSim('steer')">🛞 Simular Direção</button>
+          <button class="obtn" id="btnSimDriveLoad" onclick="toggleIdleLoadSim('drive')">⚙ Simular Câmbio D</button>
+        </div>
+        <div class="mod-tabs">
+          <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-idle', 0, this)">1. Atuador, Limites &amp; Malha PID</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-idle', 1, this)">2. Reserva de Ponto &amp; Amortecedor (Dashpot)</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-idle', 2, this)">3. Compensações (A/C, Ventoinha, Direção &amp; Câmbio)</button>
+        </div>
+        <div class="scroll-body">
+          <div class="live-status-strip" id="idleLiveStrip">
+            <span>Alvo Lenta: <b id="idlTgtNow">880 RPM</b></span>
+            <span>RPM Real: <b id="idlRpmNow">880 RPM</b></span>
+            <span>Posição Atuador: <b id="idlDutyNow">29.4 %</b></span>
+            <span>Correção Ponto: <b id="idlIgnNow">+0.8°</b></span>
+            <span>Cargas Ativas: <b id="idlLoadsNow" style="color:#38bdf8">Nenhuma</b></span>
+          </div>
+
+          <!-- IDLE TAB 1: ACTUATOR & PID -->
+          <div class="mod-pane active">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Atuador Físico &amp; Limites de Curso</span><span class="st-pill">MALHA FECHADA</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Tipo de Controle de Fluxo de Ar</span>
+                  <select id="idlActuatorType">
+                    <option class="pro-only" selected>Borboleta Eletrônica DBW EGAS (TBX-800 PRO)</option>
+                    <option>Válvula Solenoide PWM 2 Fios (Bosch / VW / Ford)</option>
+                    <option>Válvula Solenoide PWM 3 Fios (BMW / Bosch)</option>
+                    <option>Motor de Passo 4 Fios Bipolar (GM / Magneti)</option>
+                    <option>Apenas Malha Rápida de Ignição (Sem Válvula)</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Abertura Mínima / Máxima Permitida</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="0.5" min="0" max="40" value="2.8"><span class="ns-u">%</span></div>
+                    <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="1.0" min="10" max="85" value="34.0"><span class="ns-u">%</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Posição de Partida (Motor Frio / Quente)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">0°C</span><input type="number" step="1" min="5" max="90" value="48"><span class="ns-u">%</span></div>
+                    <div class="num-step"><span class="ns-pfx">90°C</span><input type="number" step="1" min="3" max="60" value="26"><span class="ns-u">%</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Rotação Alvo Motor Quente (&ge; 80 °C)</span>
+                  <div class="num-step"><input id="idlBaseHotRpm" type="number" step="20" min="650" max="1600" value="880" oninput="st.curves.idle_clt.y[7]=st.curves.idle_clt.y[8]=parseInt(this.value,10)||880"><span class="ns-u">RPM</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Tabela Alvo × Temperatura Água</span><button class="obtn on" onclick="navCurve('idle_clt')">📈 Editar Curva 10 Pontos →</button></div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Ganhos PID &amp; Entrada em Estado de Lenta</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Ganhos PID de Fluxo de Ar</span>
+                  <div class="tri-ctl">
+                    <div class="num-step"><span class="ns-pfx">P</span><input type="number" step="0.2" value="3.8"></div>
+                    <div class="num-step"><span class="ns-pfx">I</span><input type="number" step="0.2" value="2.4"></div>
+                    <div class="num-step"><span class="ns-pfx">D</span><input type="number" step="0.1" value="0.9"></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Pedal Máximo (TPS) &amp; Velocidade Máx.</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">&le;</span><input type="number" step="0.2" min="0.2" max="5.0" value="1.4"><span class="ns-u">%TPS</span></div>
+                    <div class="num-step"><span class="ns-pfx">&le;</span><input type="number" step="1" min="0" max="30" value="8"><span class="ns-u">km/h</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Margem Acima do Alvo p/ Assumir PID</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="25" min="100" max="900" value="320"><span class="ns-u">RPM</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Alvo Exclusivo de Sonda na Lenta<small>Ideal p/ comandos 276°–296°</small></span>
+                  <div class="num-step"><input type="number" step="0.01" min="0.78" max="1.05" value="0.96"><span class="ns-u">λ</span></div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+
+          <!-- IDLE TAB 2: FAST SPARK TORQUE RESERVE & DASHPOT -->
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Malha Ultra-Rápida de Ponto na Lenta (Resposta em 1 Ciclo!)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+                <div class="f-row switch-row"><span class="f-lbl">Ativar Estabilização Instantânea por Ponto de Ignição</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Ponto Base de Equilíbrio na Lenta<small>Mantém reserva de torque imediata</small></span>
+                  <div class="num-step"><input type="number" step="0.5" min="6" max="24" value="14.0"><span class="ns-u">°APMS</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Janela Máxima (Retardo / Avanço)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="0.5" min="-15" max="5" value="-6.0"><span class="ns-u">°</span></div>
+                    <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="0.5" min="8" max="30" value="24.0"><span class="ns-u">°</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Ganho Rápido (° por 100 RPM de queda)</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.2" min="0.5" max="8.0" value="2.8"><span class="ns-u">°/100</span></div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Amortecedor de Retorno (Dashpot — Não Morre ao Tirar o Pé!)</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Abertura Extra ao Soltar Acelerador</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.5" min="0" max="20" value="4.5"><span class="ns-u">%Ar</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Tempo de Decaimento Suave até o Alvo</span>
+                  <div class="num-step"><input type="number" step="0.2" min="0.2" max="6.0" value="1.4"><span class="ns-u">seg</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Acréscimo Carro em Movimento (&gt; 10 km/h)</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="20" min="0" max="300" value="100"><span class="ns-u">RPM</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Atraso Pós-Partida (Afterstart Idle)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="25" value="220"><span class="ns-u">RPM</span></div>
+                    <div class="num-step"><input type="number" step="0.5" value="4.0"><span class="ns-u">s</span></div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+
+          <!-- IDLE TAB 3: LOAD FEEDFORWARD COMPENSATIONS -->
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Compensações Elétricas &amp; Climatização</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Ar-Condicionado (Pré-Ar / +RPM Alvo)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlAcAir" type="number" step="0.5" value="8.5"><span class="ns-u">%Ar</span></div>
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlAcRpm" type="number" step="10" value="80"><span class="ns-u">RPM</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Eletroventilador 1 &amp; 2 (Ao Armar Relé)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">F1+</span><input id="idlFan1Air" type="number" step="0.5" value="3.5"><span class="ns-u">%</span></div>
+                    <div class="num-step"><span class="ns-pfx">F2+</span><input type="number" step="0.5" value="5.5"><span class="ns-u">%</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Bateria Baixa (&lt; 12.6V — Carregar Alternador)</span>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="10" min="0" max="250" value="70"><span class="ns-u">RPM</span></div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Compensações Hidráulicas &amp; Transmissão</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Direção Hidráulica / Elétrica (Esterço)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlSteerAir" type="number" step="0.5" value="4.0"><span class="ns-u">%Ar</span></div>
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlSteerRpm" type="number" step="10" value="50"><span class="ns-u">RPM</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Câmbio Automático / DSG em Drive (D/R)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlDriveAir" type="number" step="0.5" value="5.5"><span class="ns-u">%Ar</span></div>
+                    <div class="num-step"><span class="ns-pfx">+</span><input id="idlDriveRpm" type="number" step="10" value="40"><span class="ns-u">RPM</span></div>
+                  </div>
+                </div>
+                <div class="info-banner vcam">Clique em <strong>❄ Simular A/C ON</strong>, <strong>🛞 Direção</strong> ou <strong>⚙ Câmbio D</strong> na barra superior para testar a compensação ao vivo sem queda de giro!</div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW C: STAGED INJECTION (8/16 INJECTORS), REGULATOR & EOI ==================== -->
+      <section class="view-pane" id="cv-staged">
+        <div class="v-bar">
+          <div class="v-crumb">⛽ Injeção Sequencial, 2ª Bancada Estagiada (8/16 Bicos), Regulador &amp; Combustível Flex</div>
+          <button class="obtn on pro-only" onclick="navMap('stage2')">Mapa 3D 2ª Bancada (%) →</button>
+          <button class="obtn pro-only" onclick="navMap('eoi')">Mapa Ângulo EOI (°) →</button>
+        </div>
+        <div class="mod-tabs">
+          <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-staged', 0, this)">1. Bancada Primária (A) &amp; Secundária Estagiada (B)</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-staged', 1, this)">2. Regulador de Pressão, Sensor Flex &amp; Fase EOI</button>
+        </div>
+        <div class="scroll-body">
+          <div class="mod-pane active">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Bancada A — Primária (Lenta, Cruzeiro &amp; Progressão)</span><span class="st-pill">SEQUENCIAL 720°</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Modo de Disparo Bancada A</span><select><option selected>100% Sequencial Individual (Até 8 Bicos)</option><option>Semi-Sequencial Pares</option><option>Multiponto Simultâneo</option></select></div>
+                <div class="f-row"><span class="f-lbl">Vazão Individual Bancada A (@ 3.0 bar)</span>
+                  <div class="num-step"><input id="stgFlowA" type="number" step="1" min="15" max="500" value="80" oninput="setInjFlowBoth(this.value)"><span class="ns-u">lb/h</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Impedância / Peak &amp; Hold</span><select><option selected>Alta Impedância (&ge; 10 Ω — Saturado Direto)</option><option>Baixa Impedância (Peak 4A / Hold 1A via Driver)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Curvas Deadtime &amp; Zona Curta (SPA)</span>
+                  <div style="display:flex;gap:6px;"><button class="obtn on" onclick="navCurve('deadtime')">Deadtime (V)</button><button class="obtn" onclick="navCurve('spa')">Zona &lt; 2ms</button></div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Bancada B — Secundária Estagiada (Alto Boost / Metanol)</span><span class="pro-tag">ATÉ 16 BICOS</span></div><div class="card-pad">
+                <div class="f-row switch-row"><span class="f-lbl">Habilitar 2ª Bancada de Bicos Suplementar</span><input id="chkStage2En" type="checkbox" checked onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Vazão Individual Bancada B (@ 3.0 bar)</span>
+                  <div class="num-step"><input id="stgFlowB" type="number" step="5" min="30" max="650" value="160"><span class="ns-u">lb/h</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Início de Entrada (Pressão MAP / RPM Mín)</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="0.05" value="0.60"><span class="ns-u">bar</span></div>
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="100" value="3000"><span class="ns-u">RPM</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Rampa de Transição &amp; Filme do Plenum</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><input type="number" step="20" value="220"><span class="ns-u">ms</span></div>
+                    <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.2" value="1.2"><span class="ns-u">ms</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Divisão Exata Bancada A × B</span><button class="obtn on" onclick="navMap('stage2')">📊 Abrir Mapa 3D 2ª Bancada (%) →</button></div>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Regulador de Combustível &amp; Compensação Diferencial</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Tipo de Linha / Regulador</span>
+                  <select>
+                    <option selected>Regulador 1:1 Referenciado no Coletor MAP (Padrão Turbo)</option>
+                    <option>Pressão Fixa s/ Retorno (Returnless OEM 4.0 bar — Compensa √ΔP!)</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Pressão Diferencial Base &amp; Correção Ao Vivo</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><input type="number" step="0.1" min="2.0" max="6.5" value="3.0"><span class="ns-u">bar</span></div>
+                    <div class="ro-badge"><strong style="color:var(--neon-g)">√ΔP Automático ON</strong></div>
+                  </div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Sensor Flex Contínuo (50–150 Hz) &amp; Fase de Injeção (EOI)</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Leitura Atual Sensor Etanol Continental</span><div class="ro-badge"><span>135 Hz • 29.4 °C Comb.</span><strong style="color:var(--cyan)">85 % ETANOL</strong></div></div>
+                <div class="f-row"><span class="f-lbl">Interpolar Automaticamente c/ % Etanol</span><select><option selected>Combustível + Partida a Frio + Ponto + Alvo Boost</option><option>Apenas Volume de Combustível &amp; Partida</option></select></div>
+                <div class="f-row"><span class="f-lbl">Curva Flex &amp; Ângulo Fim de Injeção</span>
+                  <div style="display:flex;gap:6px;"><button class="obtn on" onclick="navCurve('flex_blend')">Curva Flex (%E)</button><button class="obtn pro-only" onclick="navMap('eoi')">Mapa EOI 3D</button></div>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW D: CLOSED-LOOP O2 BY REGIME & DUAL BANK V8 ==================== -->
+      <section class="view-pane" id="cv-o2closed">
+        <div class="v-bar">
+          <div class="v-crumb">🎯 Malha Fechada de Sonda Wideband O2 — Limites por Regime &amp; Dupla Bancada V6/V8</div>
+          <button class="obtn on" onclick="navMap('lambda')">Mapa Alvo de Sonda (λ) →</button>
+          <button class="obtn" onclick="navMap('learned_trim')">Ver Correções Aprendidas (%) →</button>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-2">
+            <div class="panel-box"><div class="p-hdr"><span>Limites de Correção Separados por Regime (Segurança Total!)</span><span class="st-pill">PID SONDA ATIVO</span></div><div class="card-pad">
+              <div class="f-row switch-row"><span class="f-lbl">Ativar Correção em Tempo Real pela Sonda LSU 4.9</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+              <div class="f-row"><span class="f-lbl">1. Limites em Marcha Lenta (Tirar / Colocar)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><input type="number" step="1" min="-25" max="0" value="-10"><span class="ns-u">%</span></div>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" min="0" max="25" value="12"><span class="ns-u">%</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">2. Limites em Cruzeiro / Rua (&lt; 0.10 bar)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><input type="number" step="1" min="-25" max="0" value="-15"><span class="ns-u">%</span></div>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" min="0" max="25" value="15"><span class="ns-u">%</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">3. Limites em Pressão / Boost (&ge; 0.20 bar)<small>Enriquece até +22% p/ salvar, trava -4%!</small></span>
+                <div class="dual-ctl">
+                  <div class="num-step"><input type="number" step="1" min="-10" max="0" value="-4"><span class="ns-u">%Mín</span></div>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" min="5" max="35" value="22"><span class="ns-u">%Máx</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Temperatura Mínima Água &amp; Pós-Partida</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" value="50"><span class="ns-u">°C</span></div>
+                  <div class="num-step"><input type="number" step="2" value="12"><span class="ns-u">seg</span></div>
+                </div>
+              </div>
+            </div></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>Dupla Sonda Wideband (Bancada 1 + Bancada 2) &amp; Auto-Aprendizado</span><span class="pro-tag">TBX-800 PRO</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Sonda Primária (Bancada 1 / Coletor Geral)</span><select><option selected>Controlador CJ125 Interno Nativo (Bosch LSU 4.9)</option><option>CAN TBX-NANO-WB (0x6A0)</option><option>CAN FuelTech WB-O2 Nano</option></select></div>
+              <div class="f-row pro-only"><span class="f-lbl">Sonda Secundária (Bancada 2 — V6 / V8 / Boxer)</span><select><option selected>Desativada (Coletor Único)</option><option>Ativa via CAN 0x6A1 — Corrigir Cilindros 5–8 Separado!</option></select></div>
+              <div class="f-row"><span class="f-lbl">Bloqueio Anti-Falso-Pobre em Misfire</span><div class="ro-badge"><span>Crank-IMEP™</span><strong style="color:var(--neon-g)">PROTEGIDO</strong></div></div>
+              <div class="f-row"><span class="f-lbl">Auto-Gravação de Aprendizado Contínuo</span><select><option selected>Salvar Trims Estáveis na Memória FRAM Automaticamente</option><option>Apenas Corrigir Ao Vivo (Não Alterar Base)</option></select></div>
+            </div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW E: SEQUENTIAL GEARBOX, POWERSHIFT 1-6, PADDLE & DSG ==================== -->
+      <section class="view-pane" id="cv-gear">
+        <div class="v-bar">
+          <div class="v-crumb">⚙ Câmbio Sequencial, Corte de Troca Individual (1ª–6ª), Strain-Gauge, Paddle-Shift &amp; DSG</div>
+          <button class="obtn on" onclick="setSimScenario('pull')">🚀 Testar Trocas 1ª–4ª no Simulador</button>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-2">
+            <div class="panel-box"><div class="p-hdr"><span>Sensor de Alavanca / Detecção de Marcha &amp; Punta-Taco</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Leitura da Marcha Engatada</span><select><option selected>Cálculo Velocidade × RPM (Auto-Calibrado)</option><option>Sensor Analógico no Tambor Sequencial (0–5V)</option><option>Rede CAN Câmbio DQ250 DSG / ZF 8HP</option></select></div>
+              <div class="f-row"><span class="f-lbl">Gatilho do Corte de Troca (Powershift / Flat-Shift)</span><select><option selected>Alavanca Strain-Gauge Analógica 0–5V (Célula Carga)</option><option>Interruptor Pedal Embreagem (Pé Cravado &gt; 85% TPS)</option><option>Borboletas Volante Paddle-Shift Pneumático (800 PRO)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Força Gatilho Subida / Redução (Strain-Gauge)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Up</span><input type="number" step="0.05" value="3.45"><span class="ns-u">V</span></div>
+                  <div class="num-step"><span class="ns-pfx">Dn</span><input type="number" step="0.05" value="1.55"><span class="ns-u">V</span></div>
+                </div>
+              </div>
+              <div class="f-row pro-only"><span class="f-lbl">Auto-Blip Punta-Taco na Redução (DBW)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="2" value="38"><span class="ns-u">%DBW</span></div>
+                  <div class="num-step"><input type="number" step="10" value="105"><span class="ns-u">ms</span></div>
+                </div>
+              </div>
+            </div></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>Tabela de Tempo de Corte &amp; Retardo Pós-Troca por Marcha</span></div>
+              <table class="data-tbl">
+                <thead><tr><th>Troca</th><th>Tempo Corte</th><th>Retardo Retomada</th><th>Rampa Retorno</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>1ª → 2ª</strong></td><td><div class="num-step"><input type="number" step="5" value="75"><span class="ns-u">ms</span></div></td><td><div class="num-step"><input type="number" step="0.5" value="-6.0"><span class="ns-u">°</span></div></td><td><div class="num-step"><input type="number" step="10" value="90"><span class="ns-u">ms</span></div></td></tr>
+                  <tr><td><strong>2ª → 3ª</strong></td><td><div class="num-step"><input type="number" step="5" value="65"><span class="ns-u">ms</span></div></td><td><div class="num-step"><input type="number" step="0.5" value="-5.0"><span class="ns-u">°</span></div></td><td><div class="num-step"><input type="number" step="10" value="80"><span class="ns-u">ms</span></div></td></tr>
+                  <tr><td><strong>3ª → 4ª</strong></td><td><div class="num-step"><input type="number" step="5" value="58"><span class="ns-u">ms</span></div></td><td><div class="num-step"><input type="number" step="0.5" value="-4.0"><span class="ns-u">°</span></div></td><td><div class="num-step"><input type="number" step="10" value="70"><span class="ns-u">ms</span></div></td></tr>
+                  <tr><td><strong>4ª → 5ª / 6ª</strong></td><td><div class="num-step"><input type="number" step="5" value="52"><span class="ns-u">ms</span></div></td><td><div class="num-step"><input type="number" step="0.5" value="-3.0"><span class="ns-u">°</span></div></td><td><div class="num-step"><input type="number" step="10" value="60"><span class="ns-u">ms</span></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v18.0 VIEW F: TBX-800 PRO EXCLUSIVE MOTORSPORT HUB ==================== -->
+      <section class="view-pane" id="cv-pro800">
+        <div class="v-bar">
+          <div class="v-crumb">🏆 Central de Recursos Exclusivos TBX-800 PRO — STM32H7 480 MHz • 64 Pinos • 8×8 Sequencial</div>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:#fbbf24;">Malha 20×20 (400 Células) • Dual CAN-FD • Dual Ponte-H 55A</span>
+        </div>
+        <div class="scroll-body">
+          <div class="clean-home-grid">
+            <div class="clean-card" onclick="navTo('cv-dbw')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🦋</div>
+              <div><h3>Dupla Borboleta DBW &amp; Dual VVT</h3><p>2 pontes H de 20 kHz, Cruise Control, Auto-Blip e comando variável admissão + escape.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">2× BTN8982TA</span><span>Configurar →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-staged')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">💉</div>
+              <div><h3>8×8 Sequencial / 16 Bicos Estagiados</h3><p>Controle de 2 ou 3 bancadas + Mapa 3D de Ângulo de Fase de Injeção (EOI °APMS).</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">Até 16 Injetores</span><span>Configurar →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-boost');switchModTab('cv-boost',1)" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🧪</div>
+              <div><h3>Wastegate por Domo CO2 (2 Válvulas)</h3><p>Malha fechada de pressão na cabeça da válvula com solenoide de carga e alívio.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">PID Domo 200 Hz</span><span>Configurar →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-knock')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🎧</div>
+              <div><h3>Espectrômetro DSP Detonação</h3><p>Processador TI TPIC8101 dedicado c/ janela acústica e retardo individual por cilindro.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">6.94 kHz Por Cil.</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-cyl')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🌡</div>
+              <div><h3>8× Pirômetros EGT &amp; Contrapressão EMAP</h3><p>Equalização térmica individual cilindro 1 a 8 e monitoramento EMAP/MAP da turbina.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">8 Canais Termopar K</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-o2closed')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🎯</div>
+              <div><h3>Dupla Sonda Wideband (Bancada 1 &amp; 2)</h3><p>Correção independente p/ motores V6, V8 e Boxer + controlador Bosch LSU 4.9 interno.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">CJ125 Nativo + CAN</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-gear')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">⚙</div>
+              <div><h3>GearController™ &amp; Câmbio DSG/8HP</h3><p>Entrada Strain-Gauge 0–5V direta, Paddle-Shift pneumático e protocolo CAN DQ250/8HP.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">Dual CAN-FD</span><span>Abrir →</span></div>
+            </div>
+
+            <div class="clean-card" onclick="navTo('cv-trac')" style="border-color:rgba(245,158,11,0.4);">
+              <div class="clean-card-ico">🏎</div>
+              <div><h3>Tração Ativa Slip % (4 Rodas ABS)</h3><p>Compara velocidade de roda dianteira vs traseira + derivada de giro dRPM/dt.</p></div>
+              <div class="clean-card-val"><span style="color:#fbbf24">VSS 4 Rodas</span><span>Abrir →</span></div>
             </div>
           </div>
         </div>
@@ -4358,6 +5004,10 @@ function mainLoop() {
   if (st.shiftCutTicks > 0) {
     ignCalc = -8.0;
   }
+  if (st.strobeLocked) {
+    ignCalc = parseFloat((document.getElementById("ignLockDeg") || {}).value);
+    if (isNaN(ignCalc)) ignCalc = 20.0;
+  }
   t.inj_pw_ms = pwCalc;
   t.ign_deg = ignCalc;
 
@@ -5081,8 +5731,12 @@ function runWorkshopCalcs() {
 function applyCalcToothAngle() {
   const teethTotal = parseInt(document.getElementById("clcWheel").value, 10) || 60;
   const cnt = parseFloat(document.getElementById("clcTeeth").value) || 15;
-  toast("✓ Ângulo de sincronismo " + (cnt * (360 / teethTotal)).toFixed(1) + "° APMS enviado ao Setup da Roda Fônica!");
-  navTo("cv-setup");
+  const ang = Number((cnt * (360 / teethTotal)).toFixed(1));
+  const ignOff = document.getElementById("ignTrigOffset");
+  if (ignOff) ignOff.value = ang.toFixed(1);
+  syncIgnCalibration();
+  toast("✓ Ângulo de sincronismo " + ang.toFixed(1) + "° APMS aplicado em Calibração de Ignição!");
+  navTo("cv-igncal");
 }
 
 /* AI MAP SAFETY & SMOOTHNESS REVIEWER */
@@ -5214,11 +5868,12 @@ function syncCylFiringOptions(cylVal) {
 }
 
 function setInjFlowBoth(val) {
-  const lbh = Math.max(14, Math.min(500, parseFloat(val) || 65));
+  const lbh = Math.max(14, Math.min(500, parseFloat(val) || 80));
   st.injFlowLbh = lbh;
-  const a = document.getElementById("cfgFlowA"), b = document.getElementById("setupFlowA"), cc = document.getElementById("lblCcMinA");
+  const a = document.getElementById("cfgFlowA"), b = document.getElementById("setupFlowA"), s = document.getElementById("stgFlowA"), cc = document.getElementById("lblCcMinA");
   if (a && document.activeElement !== a) a.value = lbh;
   if (b && document.activeElement !== b) b.value = lbh;
+  if (s && document.activeElement !== s) s.value = lbh;
   if (cc) cc.textContent = Math.round(lbh * 10.5) + " cc/min";
   updateSetupInjectorSizingBanner();
 }
@@ -5375,6 +6030,8 @@ function getConfiguredGearBoostBar(gear) {
   return el ? (parseFloat(el.value) || 1.0) : [0, 0.85, 1.25, 1.60, 1.80][gIdx];
 }
 
+function setH(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+
 function stepVehiclePhysics() {
   const t = st.tlm;
   if (t.ghost_armed && !t.ghost_unlocked) {
@@ -5490,14 +6147,44 @@ function stepVehiclePhysics() {
     if (gl) gl.textContent = st.simPedal > 60 ? "Carga Alta" : "Parcial";
   }
   else {
-    /* Calm Closed-Loop Idle */
+    /* Advanced Closed-Loop Idle with Feedforward Load Compensations (A/C, Fan, Steering, Gear D) */
     t.diff_fp_kpa = 304;
     t.guardian_fault_mask = (t.clt_c > 110) ? 2 : 0;
-    const idleTgt = lerpCurve("idle_clt", t.clt_c) || 880;
-    t.tps_dbw_pct = 2.4;
-    t.map_kpa = Math.round(t.map_kpa + (45 - t.map_kpa) * 0.25);
-    t.rpm = Math.round(t.rpm + (idleTgt - t.rpm) * 0.25 + Math.sin(Date.now() * 0.005) * 5);
-    if (gl) gl.textContent = "Marcha Lenta";
+    let idleTgt = lerpCurve("idle_clt", t.clt_c) || 880;
+    let airDuty = 28.5;
+    const loads = [];
+    if (st.idleLoadAc) {
+      airDuty += parseFloat((document.getElementById("idlAcAir") || {}).value) || 8.5;
+      idleTgt += parseFloat((document.getElementById("idlAcRpm") || {}).value) || 80;
+      loads.push("A/C ON");
+    }
+    if (st.simFanOn) {
+      airDuty += parseFloat((document.getElementById("idlFan1Air") || {}).value) || 3.5;
+      loads.push("Fan 1");
+    }
+    if (st.idleLoadSteer) {
+      airDuty += parseFloat((document.getElementById("idlSteerAir") || {}).value) || 4.0;
+      idleTgt += parseFloat((document.getElementById("idlSteerRpm") || {}).value) || 50;
+      loads.push("Direção");
+    }
+    if (st.idleLoadDrive) {
+      airDuty += parseFloat((document.getElementById("idlDriveAir") || {}).value) || 5.5;
+      idleTgt += parseFloat((document.getElementById("idlDriveRpm") || {}).value) || 40;
+      loads.push("Câmbio D");
+    }
+    t.tps_dbw_pct = Number((2.2 + (airDuty - 28.5) * 0.25).toFixed(1));
+    const mapIdle = 44 + loads.length * 4;
+    t.map_kpa = Math.round(t.map_kpa + (mapIdle - t.map_kpa) * 0.25);
+    t.rpm = Math.round(t.rpm + (idleTgt - t.rpm) * 0.28 + Math.sin(Date.now() * 0.005) * 4);
+    const rpmErr = idleTgt - t.rpm;
+    const ignRes = Math.max(-6, Math.min(10, rpmErr * 0.028 + (loads.length ? 1.4 : 0.4)));
+    setH("idlTgtNow", Math.round(idleTgt) + " RPM");
+    setH("idlRpmNow", t.rpm + " RPM");
+    setH("idlDutyNow", airDuty.toFixed(1) + " %");
+    setH("idlIgnNow", (ignRes >= 0 ? "+" : "") + ignRes.toFixed(1) + "°");
+    setH("idlLoadsNow", loads.length ? loads.join(" + ") : "Nenhuma");
+    setH("htIdleAdvLive", "Alvo " + Math.round(idleTgt) + " RPM • " + airDuty.toFixed(0) + "% Ar");
+    if (gl) gl.textContent = st.strobeLocked ? "PISTOLA FIXA" : (loads.length ? ("Lenta + " + loads[0]) : "Marcha Lenta");
     if (bgTag) bgTag.textContent = "Marcha Atual: Lenta";
   }
   const pedSl = document.getElementById("simPedalRange"), pedLb = document.getElementById("simPedalLbl");
@@ -5747,9 +6434,22 @@ function executeAiPrompt() {
       toast("🤖 Marcha lenta quente ajustada para " + Math.round(nums[0]) + " RPM!");
     } else { runAiMacro("big_cam"); }
   }
+  else if (q.indexOf("pistola") >= 0 || q.indexOf("travar ponto") >= 0 || q.indexOf("estrob") >= 0) {
+    const lockDeg = nums.length ? nums[0] : 20.0;
+    const lkEl = document.getElementById("ignLockDeg");
+    if (lkEl) lkEl.value = lockDeg.toFixed(1);
+    st.strobeLocked = false;
+    toggleStrobeTimingLock();
+    navTo("cv-igncal");
+    logAiHistory("Ponto travado em " + lockDeg.toFixed(1) + "° p/ Pistola de Ponto", "Alinhe a polia usando os botões -1° / +1° em Calibração de Ignição.");
+  }
+  else if (q.indexOf("bancada") >= 0 || q.indexOf("estagiad") >= 0) {
+    navTo("cv-staged");
+    logAiHistory("Aberta Injeção Estagiada (2ª Bancada 8/16 Bicos)", "Configure o início de entrada em bar/RPM e o Mapa 3D de divisão.");
+  }
   else if (q.indexOf("frio") >= 0 || q.indexOf("partida") >= 0) { runAiMacro("cold_e100"); }
   else {
-    logAiHistory("Análise executada p/ \"" + raw + "\"", "Use termos diretos como: 'tirar 2 graus acima de 1 bar', 'enriquecer 4% em alta', 'corte em 7500' ou 'lenta em 950'.");
+    logAiHistory("Análise executada p/ \"" + raw + "\"", "Use termos diretos como: 'tirar 2 graus acima de 1 bar', 'travar ponto em 20', 'enriquecer 4% em alta', 'corte em 7500' ou 'lenta em 950'.");
     toast("🤖 Veja a resposta no Histórico da IA!");
   }
   if (inp) inp.value = "";
@@ -5758,8 +6458,92 @@ function executeAiPrompt() {
   runFullAiAudit();
 }
 
+/* ==================== v18.0 SUB-TABS, TIMING LIGHT STROBE LOCK & ADVANCED IDLE CONTROLLERS ==================== */
+st.strobeLocked = false;
+st.idleLoadAc = false;
+st.idleLoadSteer = false;
+st.idleLoadDrive = false;
+
+function switchModTab(viewId, tabIdx, btnEl) {
+  const sec = document.getElementById(viewId);
+  if (!sec) return;
+  const btns = sec.querySelectorAll(".mod-tabs .mod-tab-btn");
+  const panes = sec.querySelectorAll(".scroll-body > .mod-pane");
+  for (let i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btnEl ? (btns[i] === btnEl) : (i === tabIdx));
+  for (let j = 0; j < panes.length; j++) panes[j].classList.toggle("active", j === tabIdx);
+}
+
+function toggleStrobeTimingLock() {
+  st.strobeLocked = !st.strobeLocked;
+  const ban = document.getElementById("ignStrobeBanner");
+  const btn = document.getElementById("btnToggleStrobe");
+  const ttl = document.getElementById("ignStrobeTitle");
+  const dsc = document.getElementById("ignStrobeDesc");
+  const deg = parseFloat((document.getElementById("ignLockDeg") || {}).value) || 20.0;
+  if (ban) ban.classList.toggle("locked", st.strobeLocked);
+  if (btn) {
+    btn.textContent = st.strobeLocked ? "🔓 Destravar Ponto (Voltar Mapa)" : "🔒 Travar Ponto p/ Pistola";
+    btn.className = st.strobeLocked ? "tbtn ok" : "tbtn burn";
+  }
+  if (ttl) {
+    ttl.textContent = st.strobeLocked
+      ? ("⚡ PISTOLA DE PONTO ATIVA — Avanço Travado Fixo em " + deg.toFixed(1) + "° APMS!")
+      : "🔓 Modo Normal: Avanço seguindo Mapa 3D + Correções";
+    ttl.style.color = st.strobeLocked ? "#fde68a" : "#fff";
+  }
+  if (dsc) {
+    dsc.textContent = st.strobeLocked
+      ? "Aponte a pistola na polia e clique em [-1.0°] / [-0.2°] / [+0.2°] / [+1.0°] abaixo até casar a marca! Lembre-se de destravar antes de puxar."
+      : "Para aferir na polia com pistola estroboscópica, clique ao lado para travar o ponto num ângulo fixo.";
+  }
+  syncIgnCalibration();
+  toast(st.strobeLocked ? ("🔫 Ponto travado fixo em " + deg.toFixed(1) + "° APMS no simulador!") : "✓ Ponto destravado: seguindo Mapa 3D normalmente.");
+}
+
+function nudgeTriggerOffset(delta) {
+  const inp = document.getElementById("ignTrigOffset");
+  if (!inp) return;
+  const cur = parseFloat(inp.value) || 123.0;
+  const nxt = Number(Math.max(15, Math.min(355, cur + delta)).toFixed(1));
+  inp.value = nxt.toFixed(1);
+  syncIgnCalibration();
+  toast("⚡ Ângulo do 1º Dente ajustado ao vivo para " + nxt.toFixed(1) + "° APMS!");
+}
+
+function syncIgnCalibration() {
+  const off = parseFloat((document.getElementById("ignTrigOffset") || {}).value) || 123.0;
+  const us = parseFloat((document.getElementById("ignHwDelayUs") || {}).value) || 68;
+  const degAt7500 = (7500 * 6 * us) / 1000000;
+  setH("lblSparkDelayDeg", "+" + degAt7500.toFixed(2) + "° @ 7500 RPM");
+  const ex = document.getElementById("ignDelayExplain");
+  if (ex) {
+    ex.innerHTML = "<strong>Por que calibrar µs?</strong> Em 7.500 RPM, um atraso elétrico de <strong>" + us + " µs</strong> nas bobinas atrasaria o ponto real na polia em <strong>" + degAt7500.toFixed(2) + "°</strong> se não fosse compensado automaticamente pela TBX!";
+  }
+  setH("htIgnCalLive", st.strobeLocked ? "PISTOLA TRAVADA!" : ("Offset " + off.toFixed(1) + "° • " + us + " µs"));
+}
+
+function toggleIdleLoadSim(kind) {
+  if (kind === "ac") st.idleLoadAc = !st.idleLoadAc;
+  if (kind === "steer") st.idleLoadSteer = !st.idleLoadSteer;
+  if (kind === "drive") st.idleLoadDrive = !st.idleLoadDrive;
+  const bAc = document.getElementById("btnSimAcLoad");
+  const bSt = document.getElementById("btnSimSteerLoad");
+  const bDr = document.getElementById("btnSimDriveLoad");
+  if (bAc) bAc.classList.toggle("on", st.idleLoadAc);
+  if (bSt) bSt.classList.toggle("on", st.idleLoadSteer);
+  if (bDr) bDr.classList.toggle("on", st.idleLoadDrive);
+  setSimScenario("idle");
+  toast("🎛 Carga de Marcha Lenta atualizada: veja a pré-abertura automática de ar e RPM!");
+}
+
 CMD_ITEMS.unshift(
-  ["🤖 Copiloto IA de Acerto e Diagnóstico", function(){ navTo("cv-copilot"); }]
+  ["🤖 Copiloto IA de Acerto e Diagnóstico", function(){ navTo("cv-copilot"); }],
+  ["⚡ Calibração de Ignição, Pistola de Ponto & Atraso µs", function(){ navTo("cv-igncal"); }],
+  ["🎛 Controle de Marcha Lenta Avançado (PID + Dashpot + A/C)", function(){ navTo("cv-idle"); }],
+  ["⛽ Injeção Sequencial, 2ª Bancada (8/16 Bicos) & EOI", function(){ navTo("cv-staged"); }],
+  ["🎯 Malha Fechada de Sonda O2 & Dupla Sonda V8", function(){ navTo("cv-o2closed"); }],
+  ["⚙ Câmbio Sequencial, Powershift 1ª–6ª, Strain-Gauge & DSG", function(){ navTo("cv-gear"); }],
+  ["🏆 Central de Recursos Exclusivos TBX-800 PRO", function(){ navTo("cv-pro800"); }]
 );
 
 initAllMaps(1781, 1.6, true);
