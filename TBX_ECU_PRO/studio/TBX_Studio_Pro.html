@@ -597,24 +597,42 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
 .t-node.active { background: rgba(14, 165, 233, 0.20); color: #38bdf8; font-weight: 700; }
 
 /* Clean Spacious Page Header */
-.v-bar { height: 46px; padding: 0 16px; gap: 8px; background: #0a101c; border-bottom: 1px solid #1a263b; overflow: visible; }
-.v-crumb { font-size: 13.5px; font-weight: 800; color: #f8fafc; letter-spacing: 0; margin-right: 8px; }
-.obtn { height: 30px; padding: 0 11px; border-radius: 6px; font-family: var(--sans); font-size: 11.5px; font-weight: 600; }
+.v-bar { height: auto; min-height: 44px; padding: 6px 15px; gap: 7px; flex-wrap: wrap; background: #0a101c; border-bottom: 1px solid #1a263b; overflow: visible; }
+.v-crumb { font-size: 13.2px; font-weight: 800; color: #f8fafc; letter-spacing: 0; margin-right: 6px; white-space: normal; }
+.obtn { height: 29px; padding: 0 10px; border-radius: 6px; font-family: var(--sans); font-size: 11.4px; font-weight: 600; }
 .back-home-btn { background: #111b2e; border: 1px solid #283a57; color: #93c5fd; margin-right: 4px; }
 .back-home-btn:hover { background: #1a2a47; color: #fff; }
 
-/* Spacious Forms & Cards */
-.scroll-body { padding: 16px 18px; gap: 14px; }
-.grid-2, .grid-3 { gap: 14px; }
-.panel-box { border-radius: 10px; border-color: #1c2940; background: #0b1220; }
-.p-hdr { height: 36px; padding: 0 15px; font-size: 12px; background: #0f182a; border-bottom-color: #1c2940; }
-.card-pad { padding: 13px 15px; gap: 9px; }
-.f-row { padding: 6px 0; gap: 12px; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); }
-.f-lbl { font-size: 12.2px; color: #e2e8f0; }
-.num-step, select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]) { height: 31px; border-radius: 6px; font-size: 12px; }
+/* Spacious Forms & Cards (Zero Select Clipping & Fluid Width!) */
+.scroll-body { padding: 15px 17px; gap: 13px; }
+.grid-2, .grid-3 { gap: 13px; }
+.panel-box { border-radius: 10px; border-color: #1c2940; background: #0b1220; overflow-x: auto; }
+.p-hdr { height: 35px; padding: 0 14px; font-size: 11.8px; background: #0f182a; border-bottom-color: #1c2940; }
+.card-pad { padding: 12px 14px; gap: 8px; }
+.f-row, .grid-3 .f-row { padding: 5px 0; gap: 10px; grid-template-columns: minmax(115px, 39%) minmax(0, 61%); }
+.f-row.switch-row, .grid-3 .f-row.switch-row { grid-template-columns: 1fr auto !important; }
+.f-lbl { font-size: 12px; color: #e2e8f0; }
+.num-step, select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]) { height: 30px; border-radius: 6px; font-size: 11.4px; max-width: none; }
+.dual-ctl .num-step .ns-b, .tri-ctl .num-step .ns-b, table.data-tbl .num-step .ns-b, .c-pt-box .num-step .ns-b { display: none !important; }
+.dual-ctl .num-step input[type="number"], .tri-ctl .num-step input[type="number"], table.data-tbl .num-step input[type="number"], .c-pt-box .num-step input[type="number"] { min-width: 44px !important; padding: 0 4px !important; text-align: center; }
+#cv-plc table.data-tbl, #cv-can table.data-tbl { min-width: 960px; }
 .seg-opt { padding: 3px; border-radius: 7px; }
-.seg-opt button { height: 24px; font-size: 11.2px; border-radius: 5px; }
-.ro-badge { min-height: 31px; border-radius: 6px; font-size: 11.5px; padding: 0 11px; }
+.seg-opt button { height: 24px; font-size: 11px; border-radius: 5px; }
+.ro-badge { min-height: 30px; border-radius: 6px; font-size: 11.3px; padding: 0 10px; }
+
+/* Responsive Workshop Notebook Layout (1366x768 / 1536x864) */
+@media (max-width: 1540px) {
+  .workspace { grid-template-columns: 206px 1fr 240px; }
+  .clean-home-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .curve2d-layout { grid-template-rows: minmax(195px, 1fr) 168px; }
+  .curve-cells-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .f-row, .grid-3 .f-row { grid-template-columns: minmax(110px, 38%) minmax(0, 62%); }
+  .topbar { padding: 0 10px; gap: 6px; }
+  .topbar .link-pill { display: none; }
+  .tbtn { padding: 0 9px; font-size: 11px; }
+  .car-pill { max-width: 155px; font-size: 11px; }
+}
 
 /* Spacious 8-Card Main Home Grid */
 .clean-home-hero {
@@ -802,6 +820,7 @@ body.mode-400 .t-node.pro-only { display: none !important; }
 
     <div class="tb-group">
       <input type="file" id="inpLoadTbxMap" accept=".tbxmap,.json" style="display:none" onchange="importTbxMapFile(this)">
+      <button class="tbtn" onclick="openRecipesModal()" title="Carregar calibração pronta de motor brasileiro em 1 clique">📂 Receitas BR</button>
       <button class="tbtn" onclick="openCmdPalette()" title="Buscar qualquer ajuste (Ctrl+K)">🔍 Buscar</button>
       <button class="tbtn" onclick="document.getElementById('inpLoadTbxMap').click()">Abrir</button>
       <button class="tbtn" onclick="exportCal()">Salvar</button>
@@ -844,9 +863,8 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           <div class="t-node" data-route="map:lambda" onclick="navMap('lambda')"><span>🎯 Mapa Alvo de Sonda</span></div>
           <div class="t-node pro-only" data-route="map:stage2" onclick="navMap('stage2')"><span>Divisão 2ª Bancada (%)</span><span class="pro-tag">800</span></div>
           <div class="t-node pro-only" data-route="map:eoi" onclick="navMap('eoi')"><span>Ângulo Fase Injeção (EOI)</span><span class="pro-tag">800</span></div>
-          <div class="t-node" data-route="curve:crank" onclick="navCurve('crank')"><span>Partida a Frio &amp; Pós</span></div>
-          <div class="t-node" data-route="curve:wue" onclick="navCurve('wue')"><span>Aquecimento (Motor Frio)</span></div>
-          <div class="t-node" data-route="curve:accel_tps" onclick="navCurve('accel_tps')"><span>Injeção Rápida (Pedal)</span></div>
+          <div class="t-node" data-route="cv-coldstart" onclick="navTo('cv-coldstart')"><span>❄ Partida a Frio &amp; Aquecimento</span></div>
+          <div class="t-node" data-route="cv-accel" onclick="navTo('cv-accel')"><span>🚀 Injeção Rápida &amp; Filme</span></div>
           <div class="t-node" data-route="curve:deadtime" onclick="navCurve('deadtime')"><span>Deadtime dos Bicos (V)</span></div>
           <div class="t-node" data-route="curve:dwell" onclick="navCurve('dwell')"><span>Dwell das Bobinas (V)</span></div>
         </div>
@@ -1110,7 +1128,7 @@ body.mode-400 .t-node.pro-only { display: none !important; }
             <div class="clean-card" onclick="navTo('cv-log')">
               <div class="clean-card-ico">📈</div>
               <div><h3>Datalogger &amp; Osciloscópio</h3><p>Gravação 200 Hz, correção VE 1-clique e Tooth Logger 60-2.</p></div>
-              <div class="clean-card-val"><span id="htCltLive">200 Hz • 64 Canais</span><span>Abrir →</span></div>
+              <div class="clean-card-val"><span id="htLogLive">200 Hz • 64 Canais</span><span>Abrir →</span></div>
             </div>
           </div>
 
@@ -1834,6 +1852,14 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           <div class="panel-box">
             <div class="p-hdr"><span>Balanço de Torque Crank-IMEP™ (Medido na Roda 60-2 sem Velas Piezo de R$ 35.000!) + Trim Individual</span></div>
             <div class="cyl-dyn-grid" id="cylGridBox"></div>
+          </div>
+          <div class="panel-box pro-only">
+            <div class="p-hdr"><span>Monitoramento de Contrapressão de Escape (EMAP × MAP) &amp; Eficiência da Turbina</span><span class="pro-tag">TBX-800 PRO</span></div>
+            <div class="card-pad" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;">
+              <div class="ro-badge"><span>Pressão Coletor Escape (EMAP)</span><strong id="roEmapBar">1.88 bar</strong></div>
+              <div class="ro-badge"><span>Razão Contrapressão (EMAP / MAP)</span><strong id="roEmapRatio" style="color:var(--neon-g)">1.17× (Turbina Livre!)</strong></div>
+              <div class="f-row" style="padding:0"><span class="f-lbl">Alerta Restrição Escape</span><div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="0.1" value="1.85"><span class="ns-u">×MAP</span></div></div>
+            </div>
           </div>
           <div class="info-banner vcam" id="injBalResult"><strong>INOVAÇÃO EXCLUSIVA TBX Crank-IMEP™:</strong> Quando uma vela/bobina falha em boost, entra oxigênio puro no escape e uma injeção comum lê "mistura pobre" e afoga os demais cilindros (+25% combustível). A TBX detecta na hora a queda de aceleração angular daquele cilindro na roda 60-2 e <strong>bloqueia o enriquecimento falso</strong>!</div>
         </div>
@@ -3020,6 +3046,116 @@ body.mode-400 .t-node.pro-only { display: none !important; }
           </div>
         </div>
       </section>
+
+      <!-- ==================== NEW v19.0 VIEW G: COMPLETE COLD-START, PRIME PULSE, FLOOD CLEAR & WARMUP ==================== -->
+      <section class="view-pane" id="cv-coldstart">
+        <div class="v-bar">
+          <div class="v-crumb">❄ Partida a Frio, Pulso Inicial (Prime), Modo Desafogar, Tanquinho Auxiliar &amp; Aquecimento</div>
+          <button class="obtn on" onclick="navCurve('crank')">Curva Pulso Partida →</button>
+          <button class="obtn" onclick="navCurve('afterstart')">Curva Pós-Partida →</button>
+          <button class="obtn" onclick="navCurve('wue')">Curva Aquecimento (WUE) →</button>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-2">
+            <div class="panel-box"><div class="p-hdr"><span>1. Pulso Inicial Pós-Chave (Prime) &amp; Giro de Partida</span><span class="st-pill">ETANOL / FLEX</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Pulso Inicial ao Ligar Chave (Frio 10°C / Quente 85°C)<small>Molha a válvula p/ pegar no 1º giro!</small></span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">10°C</span><input type="number" step="0.5" min="0" max="40" value="14.5"><span class="ns-u">ms</span></div>
+                  <div class="num-step"><span class="ns-pfx">85°C</span><input type="number" step="0.5" min="0" max="20" value="2.2"><span class="ns-u">ms</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Atraso do Prime após Ligar Ignição (+15)</span>
+                <div class="num-step"><input type="number" step="0.1" min="0" max="3.0" value="0.3"><span class="ns-u">seg</span></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Rotação de Transição (Partida → Funcionando)</span>
+                <div class="num-step"><input type="number" step="20" min="250" max="700" value="420"><span class="ns-u">RPM</span></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Disparo Simultâneo nos Primeiros Giros</span>
+                <select><option selected>Primeiras 2 voltas todos juntos → Migra Sequencial</option><option>100% Sequencial desde o 1º giro</option></select>
+              </div>
+              <div class="f-row"><span class="f-lbl">Modo Desafogar Motor (Flood Clear — Corta Bicos)</span>
+                <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" min="60" max="100" value="85"><span class="ns-u">%TPS</span></div>
+              </div>
+            </div></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>2. Solenoide Partida a Frio Auxiliar &amp; Pós-Partida</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row switch-row"><span class="f-lbl">Usar Tanquinho Auxiliar Gasolina / Aquecedor Flauta</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+              <div class="f-row"><span class="f-lbl">Saída Auxiliar &amp; Temperatura p/ Injetar</span>
+                <div class="dual-ctl">
+                  <select><option selected>Aux 4 (Tanquinho)</option><option>PDM-8 #8</option></select>
+                  <div class="num-step"><span class="ns-pfx">&le;</span><input type="number" step="1" min="-10" max="30" value="16"><span class="ns-u">°C</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Tempo de Injeção Gasolina Auxiliar (0°C / 15°C)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">0°C</span><input type="number" step="0.1" value="1.4"><span class="ns-u">s</span></div>
+                  <div class="num-step"><span class="ns-pfx">15°C</span><input type="number" step="0.1" value="0.5"><span class="ns-u">s</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Duração do Enriquecimento Pós-Partida (Ciclos)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Frio</span><input type="number" step="10" value="220"><span class="ns-u">ciclos</span></div>
+                  <div class="num-step"><span class="ns-pfx">Quen</span><input type="number" step="10" value="65"><span class="ns-u">ciclos</span></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:2px;">
+                <button class="obtn on" style="flex:1" onclick="navCurve('crank')">📈 Pulso Partida (ms)</button>
+                <button class="obtn ok" style="flex:1" onclick="navCurve('wue')">🌡 Aquecimento WUE (%)</button>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW v19.0 VIEW H: TRANSIENT ACCEL ENRICHMENT & AQUINO WALL-WETTING FILM ==================== -->
+      <section class="view-pane" id="cv-accel">
+        <div class="v-bar">
+          <div class="v-crumb">🚀 Injeção Rápida (Aceleração dTPS/dt + dMAP/dt) &amp; Filme Líquido na Parede (Aquino τ-X)</div>
+          <button class="obtn on" onclick="navCurve('accel_tps')">Editar Curva 2D Rápida (ms × %/s) →</button>
+        </div>
+        <div class="scroll-body">
+          <div class="grid-2">
+            <div class="panel-box"><div class="p-hdr"><span>1. Gatilho, Pulso Assíncrono &amp; Correções RPM / Água</span><span class="st-pill">RESPOSTA IMEDIATA</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Variável de Detecção da Pisada</span>
+                <select><option selected>Fusão Híbrida: Velocidade Pedal (TPS) + Subida MAP</option><option>Somente Velocidade da Borboleta (dTPS/dt %/s)</option><option>Somente Variação de Pressão Coletor (dMAP/dt)</option></select>
+              </div>
+              <div class="f-row"><span class="f-lbl">Sensibilidade (Zona Morta) &amp; Pulso Extra Imediato</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="2" min="4" max="80" value="18"><span class="ns-u">%/s</span></div>
+                  <select><option selected>Assíncrono Instantâneo</option><option>Apenas Síncrono</option></select>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Multiplicador Motor Frio (10 °C) vs Quente (90 °C)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">10°C</span><input type="number" step="0.1" value="2.2"><span class="ns-u">×</span></div>
+                  <div class="num-step"><span class="ns-pfx">90°C</span><input type="number" step="0.1" value="1.0"><span class="ns-u">×</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Multiplicador por Giro (1500 RPM → 5800 RPM)<small>Evita afogar nas trocas em alta!</small></span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">1.5k</span><input type="number" step="0.05" value="1.25"><span class="ns-u">×</span></div>
+                  <div class="num-step"><span class="ns-pfx">5.8k</span><input type="number" step="0.05" value="0.35"><span class="ns-u">×</span></div>
+                </div>
+              </div>
+            </div></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>2. Modelo Físico de Filme Líquido Aquino (τ-X — Exclusivo TBX)</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Fração que Cola na Parede do Duto (X %)</span>
+                <div class="num-step"><input type="number" step="1" min="0" max="60" value="24"><span class="ns-u">% Filme</span></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Tempo de Evaporação da Poça (Constante τ)</span>
+                <div class="num-step"><input type="number" step="10" min="40" max="600" value="175"><span class="ns-u">ms</span></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Desconto ao Soltar Rápido o Pedal (Anti-Rico)</span>
+                <div class="num-step"><input type="number" step="5" min="-80" max="0" value="-35"><span class="ns-u">%</span></div>
+              </div>
+              <div class="info-banner vcam">
+                <strong>Diferencial Físico Aquino τ-X:</strong> No Etanol E100, parte do jato condensa nas paredes frias do cabeçote. O modelo calcula a massa exata da película a cada ciclo, eliminando o buraco magro na pisada rápida!
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- 3. CALM, EASY-TO-READ RIGHT SIDEBAR (6 CLEAR ENGINE READINGS) -->
@@ -3185,6 +3321,21 @@ body.mode-400 .t-node.pro-only { display: none !important; }
   </div>
 </div>
 
+<!-- 12 READY-TO-LOAD BRAZILIAN ENGINE CALIBRATION RECIPES MODAL -->
+<div class="cmd-modal" id="recipesModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="cmd-box" style="width:780px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #26354d;padding-bottom:8px;">
+      <strong style="color:var(--neon-g);font-size:14px;">📂 12 CALIBRAÇÕES PRONTAS DE MOTORES BRASILEIROS (CARREGA MAPAS + IGNIÇÃO + BICOS EM 1 CLIQUE!)</strong>
+      <button class="obtn" onclick="document.getElementById('recipesModal').classList.remove('open')">✕</button>
+    </div>
+    <div id="recipesModalGrid" class="preset-grid" style="max-height:420px;overflow-y:auto;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;">
+      <span>Inclui ângulo exato do 1º dente da fônica, ordem de ignição, Dwell seguro, bicos e mapas VE/Ponto/Sonda calibrados.</span>
+      <button class="tbtn" onclick="document.getElementById('recipesModal').classList.remove('open')">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- CTRL+K COMMAND PALETTE -->
 <div class="cmd-modal" id="cmdModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="cmd-box">
@@ -3317,9 +3468,11 @@ function prepCanvas(cv) {
 
 function toast(m) {
   const b = document.getElementById("toastArea");
+  if (!b) return;
+  while (b.children.length >= 2) b.removeChild(b.firstChild);
   const d = document.createElement("div"); d.className = "toast-msg"; d.textContent = m;
   b.appendChild(d);
-  setTimeout(function() { if (d.parentNode) d.parentNode.removeChild(d); }, 2800);
+  setTimeout(function() { if (d.parentNode) d.parentNode.removeChild(d); }, 2400);
 }
 function toggleCat(el) { const g = el.nextElementSibling; if (g) g.classList.toggle("collapsed"); }
 
@@ -4141,10 +4294,11 @@ function drawCurve2DEditor() {
 /* Crank-IMEP™ Torque Contribution + Editable Individual Cylinder Fuel & Ign Trims */
 function renderCylinders() {
   const b = document.getElementById("cylGridBox"); if (!b) return;
-  const nCyl = HW_MODEL === "800" ? 8 : 4;
+  const cfgN = parseInt((document.getElementById("cfgCyl") || {}).value, 10) || (HW_MODEL === "800" ? 8 : 4);
+  const nCyl = HW_MODEL === "800" ? Math.max(3, Math.min(8, cfgN)) : Math.max(3, Math.min(4, cfgN));
   b.style.gridTemplateColumns = "repeat(" + nCyl + ", minmax(0, 1fr))";
   document.getElementById("cylHdrTitle").textContent =
-    HW_MODEL === "800" ? "CRANK-IMEP™ TORQUE S/ SENSOR + TRIM CILINDROS 1–8 & EGT" : "CRANK-IMEP™ TORQUE S/ SENSOR + TRIM CILINDROS 1–4";
+    HW_MODEL === "800" ? ("CRANK-IMEP™ TORQUE S/ SENSOR + TRIM CILINDROS 1–" + nCyl + " & EGT") : ("CRANK-IMEP™ TORQUE S/ SENSOR + TRIM CILINDROS 1–" + nCyl);
   const html = [];
   for (let i = 0; i < nCyl; i++) {
     const imep = st.cylImepPct[i], isMf = (imep < 42);
@@ -4739,24 +4893,38 @@ function burnFram() {
 function exportCal() {
   ensureBankStore();
   st.bankStore[st.tlm.active_bank] = cloneMapsObj(st.maps);
+  const formFields = {};
+  const els = document.querySelectorAll("input[id], select[id], textarea[id]");
+  for (let i = 0; i < els.length; i++) {
+    const el = els[i];
+    if (el.type === "file" || el.type === "password" || el.id === "treeFilterInp" || el.id === "cmdInput") continue;
+    formFields[el.id] = (el.type === "checkbox") ? !!el.checked : el.value;
+  }
   const payload = {
-    schema: "TBXMAP_V10",
+    schema: "TBXMAP_V19",
     model: HW_MODEL,
     client: document.getElementById("prjClient") ? document.getElementById("prjClient").value : "",
     plate: document.getElementById("prjPlate") ? document.getElementById("prjPlate").value : "",
     vehicle: document.getElementById("hdrVehicleSummary").textContent,
     active_bank: st.tlm.active_bank,
+    injFlowLbh: st.injFlowLbh,
+    revLimitRpm: st.revLimitRpm,
+    loadMode: st.loadMode,
     rpmAxis: st.rpmAxis,
     mapAxis: st.mapAxis,
     bankStore: st.bankStore,
     curves: st.curves,
+    cylFuelTrim: st.cylFuelTrim,
+    cylIgnTrim: st.cylIgnTrim,
+    lockedCells: st.lockedCells,
+    formFields: formFields,
     ftbMap: st.ftbMap
   };
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
-  a.download = "calibracao_tbx_v10_" + HW_MODEL + ".tbxmap";
+  a.download = "calibracao_tbx_v19_" + HW_MODEL + ".tbxmap";
   a.click();
-  toast("Arquivo completo .tbxmap (4 bancos + 11 curvas) salvo no computador!");
+  toast("✓ Arquivo completo .tbxmap (4 bancos + 11 curvas + todos os parâmetros) salvo!");
 }
 function importTbxMapFile(inpEl) {
   const f = inpEl.files && inpEl.files[0]; if (!f) return;
@@ -4764,20 +4932,57 @@ function importTbxMapFile(inpEl) {
   rd.onload = function(ev) {
     try {
       const d = JSON.parse(String(ev.target.result || "{}"));
-      if (d.rpmAxis && d.rpmAxis.length === DIM) st.rpmAxis = d.rpmAxis;
-      if (d.mapAxis && d.mapAxis.length === DIM) st.mapAxis = d.mapAxis;
-      if (d.bankStore && d.bankStore.length === 4) {
+      const tgtModel = String(d.model || d.model_code || HW_MODEL);
+      if ((tgtModel === "800" || tgtModel === "400") && tgtModel !== HW_MODEL) {
+        const ms = document.getElementById("selModelSwitch");
+        if (ms) ms.value = tgtModel;
+        setHardwareModel(tgtModel);
+      }
+      const srcRpm = d.rpmAxis || d.rpm_axis;
+      const srcMap = d.mapAxis || d.map_axis;
+      if (srcRpm && srcMap && srcRpm.length === DIM) {
+        st.rpmAxis = srcRpm.slice();
+        st.mapAxis = srcMap.slice();
+      }
+      if (d.bankStore && d.bankStore.length === 4 && d.bankStore[0].ve && d.bankStore[0].ve.length === DIM) {
         st.bankStore = d.bankStore; st.bankStoreDim = DIM;
         st.tlm.active_bank = d.active_bank || 0;
         st.maps = cloneMapsObj(st.bankStore[st.tlm.active_bank]);
-      } else if (d.maps) {
+      } else if (d.bank_maps && d.bank_maps.M1_Pista) {
+        const bNames = ["M1_Pista", "M2_Rua", "M3_Eco", "M4_Valet"];
+        ensureBankStore();
+        for (let bi = 0; bi < 4; bi++) {
+          const bm = d.bank_maps[bNames[bi]] || d.bank_maps.M1_Pista;
+          Object.keys(MAP_META).forEach(function(mk) {
+            if (bm[mk] && bm[mk].length === DIM) st.bankStore[bi][mk] = cloneMap2D(bm[mk]);
+          });
+        }
+        st.maps = cloneMapsObj(st.bankStore[st.tlm.active_bank]);
+      } else if (d.maps && d.maps.ve) {
         st.maps = d.maps;
       }
       if (d.curves) st.curves = d.curves;
-      if (d.vehicle) document.getElementById("hdrVehicleSummary").textContent = d.vehicle;
+      if (d.cylFuelTrim) st.cylFuelTrim = d.cylFuelTrim;
+      if (d.cylIgnTrim) st.cylIgnTrim = d.cylIgnTrim;
+      if (d.lockedCells) st.lockedCells = d.lockedCells;
+      if (d.formFields) {
+        Object.keys(d.formFields).forEach(function(fid) {
+          const el = document.getElementById(fid);
+          if (!el) return;
+          if (el.type === "checkbox") el.checked = !!d.formFields[fid];
+          else el.value = d.formFields[fid];
+        });
+      }
+      if (d.injFlowLbh) setInjFlowBoth(d.injFlowLbh);
+      if (d.revLimitRpm) syncRevLimitInputs(d.revLimitRpm);
+      const vehName = d.vehicle || (d.engine_spec && d.engine_spec.vehicle_name);
+      if (vehName) document.getElementById("hdrVehicleSummary").textContent = vehName;
+      syncFeatureCards();
+      syncIgnCalibration();
+      updateSetupInjectorSizingBanner();
       persistAutoSave();
       navMap("ve");
-      toast(" Calibração " + f.name + " carregada com sucesso!");
+      toast("✓ Calibração completa " + f.name + " carregada!");
     } catch (_err) {
       toast("Erro ao ler arquivo .tbxmap!");
     }
@@ -5943,18 +6148,30 @@ function evalDynamicPlc(t, bb) {
 function updateFtHomeTiles(t, bb) {
   const roTps = document.getElementById("roSensTps");
   if (roTps) roTps.textContent = (0.62 + (t.tps_dbw_pct / 100) * 3.86).toFixed(2) + " V (" + t.tps_dbw_pct.toFixed(0) + "%)";
+  /* Update Turbine Exhaust Backpressure (EMAP / MAP) on TBX-800 PRO */
+  const emapEl = document.getElementById("roEmapBar"), emapRatEl = document.getElementById("roEmapRatio");
+  if (emapEl && emapRatEl) {
+    const mapAbs = Math.max(40, t.map_kpa) / 100;
+    const boostPos = Math.max(0, (t.map_kpa - 101.3) / 100);
+    const emapGauge = boostPos * (1.14 + (t.rpm / 28000));
+    const ratio = (1.013 + emapGauge) / mapAbs;
+    emapEl.textContent = "+" + emapGauge.toFixed(2) + " bar";
+    emapRatEl.textContent = ratio.toFixed(2) + "× " + (ratio < 1.55 ? "(Turbina Livre!)" : "(Alta Contrapressão!)");
+    emapRatEl.style.color = ratio < 1.55 ? "var(--neon-g)" : "#fbbf24";
+  }
   if (!document.getElementById("cv-home") || !document.getElementById("cv-home").classList.contains("active")) return;
-  const setH = function(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt; };
-  setH("htPwLive", t.inj_pw_ms.toFixed(2) + " ms • " + (st.injFlowLbh || 65) + " lb/h");
+  setH("htPwLive", t.inj_pw_ms.toFixed(2) + " ms • " + (st.injFlowLbh || 80) + " lb/h");
   setH("htIgnLive", t.ign_deg.toFixed(1) + "° APMS");
   const r2 = (document.getElementById("lch2StepRpm") || {}).value || "4250";
   const b2 = (document.getElementById("lch2StepBoost") || {}).value || "0.95";
   setH("ht2StepLive", r2 + " RPM • +" + b2 + "b");
-  setH("htBoostLive", (bb >= 0 ? "+" : "") + bb.toFixed(2) + " bar");
+  const tgtG4 = getConfiguredGearBoostBar(4);
+  setH("htBoostLive", "Alvo +" + tgtG4.toFixed(2) + "b • Agora " + (bb >= 0 ? "+" : "") + bb.toFixed(2) + "b");
   setH("htLamLive", t.lambda.toFixed(3) + " λ (" + t.target_lambda.toFixed(3) + ")");
   setH("htDpLive", (t.diff_fp_kpa / 100).toFixed(2) + " bar • " + (t.guardian_fault_mask === 0 ? "OK" : "ALERTA"));
   const f1 = (document.getElementById("strFan1On") || {}).value || "94";
   setH("htCltLive", t.clt_c.toFixed(1) + " °C (Fan " + f1 + "°C)");
+  setH("htLogLive", (st.logBuf && st.logBuf.length ? st.logBuf.length + " amostras • " : "") + "200 Hz • 64 ch");
   setH("htPinBdg", HW_MODEL === "800" ? "64 PINOS" : "32 PINOS");
 }
 
@@ -6560,10 +6777,67 @@ try {
     }
   }
 } catch (_e) {}
+const BR_12_RECIPES = [
+  { name: "VW AP 1.8 / 2.0 Turbo Rua/Pista (60-2)", sub: "VirtualCam™ 720° • E100 • 80 lb/h • +1.6b", cyl: "4", disp: 1984, fire: "1-3-4-2", trig: 123.0, lbh: 80, rev: 7200, boost: 1.60, eth: true, load: "map" },
+  { name: "VW/Audi Golf & A3 1.8T 20V Stage 3", sub: "PnP T80/T121 • COP R8 • E100 • 80 lb/h • +1.6b", cyl: "4", disp: 1781, fire: "1-3-4-2", trig: 123.0, lbh: 80, rev: 7300, boost: 1.60, eth: true, load: "map" },
+  { name: "GM Opala / Caravan 4.1 6cc Turbo", sub: "60-2 • Ordem 1-5-3-6-2-4 • E100 • 120 lb/h", cyl: "6", disp: 4093, fire: "1-5-3-6-2-4", trig: 84.0, lbh: 120, rev: 6400, boost: 1.35, eth: true, load: "map" },
+  { name: "Honda Civic K20 / B16 Turbo VTEC", sub: "Fônica + Fase + VTEC • E100 • 120 lb/h • 8600 RPM", cyl: "4", disp: 1998, fire: "1-3-4-2", trig: 114.0, lbh: 120, rev: 8600, boost: 1.50, eth: true, load: "map" },
+  { name: "Chevrolet V8 LS3 6.2 Sequencial (800 PRO)", sub: "Roda 58X + Fase • 8× COP • Gasolina/E100", cyl: "8", disp: 6162, fire: "1-8-7-2-6-5-4-3", trig: 78.0, lbh: 80, rev: 6800, boost: 0.00, eth: false, load: "map" },
+  { name: "VW Jetta 2.5 5 Cilindros 20V + DSG", sub: "60-2 + CAN DQ250 • Ordem 1-2-4-5-3 • 7300 RPM", cyl: "5", disp: 2480, fire: "1-2-4-5-3", trig: 120.0, lbh: 65, rev: 7300, boost: 0.00, eth: true, load: "map" },
+  { name: "Fiat Uno / Palio Fire 1.4 Turbo", sub: "60-2 Indutivo • E100 • 65 lb/h • +1.25b", cyl: "4", disp: 1368, fire: "1-3-4-2", trig: 84.0, lbh: 65, rev: 6900, boost: 1.25, eth: true, load: "map" },
+  { name: "GM Astra / Vectra / Corsa 2.0 8V Turbo", sub: "60-2 Nativo GM • E100 • 80 lb/h • +1.40b", cyl: "4", disp: 1998, fire: "1-3-4-2", trig: 84.0, lbh: 80, rev: 6800, boost: 1.40, eth: true, load: "map" },
+  { name: "Ford Maverick / Landau 302 V8 (800 PRO)", sub: "36-1 + 8 Bobinas • Ordem 1-5-4-2-6-3-7-8", cyl: "8", disp: 4942, fire: "1-5-4-8-6-3-7-2", trig: 60.0, lbh: 65, rev: 6300, boost: 0.00, eth: false, load: "map" },
+  { name: "Subaru WRX / STI EJ20 Boxer Turbo", sub: "Dual AVCS + COP • Ordem 1-3-2-4 • +1.50b", cyl: "4", disp: 1994, fire: "1-4-3-2", trig: 95.0, lbh: 120, rev: 7400, boost: 1.50, eth: true, load: "map" },
+  { name: "VW AP 2.0 Aspirado Corpos ITB (Alpha-N)", sub: "Eixo Carga TPS % • Comando 296° • 7800 RPM", cyl: "4", disp: 1984, fire: "1-3-4-2", trig: 123.0, lbh: 65, rev: 7800, boost: 0.00, eth: true, load: "tps" },
+  { name: "VW Fusca / Kombi 1600 Dupla Weber", sub: "Mapa 3D Ignição + 2-Step • Roda 36-1 • 5800 RPM", cyl: "4", disp: 1584, fire: "1-4-3-2", trig: 60.0, lbh: 42, rev: 5800, boost: 0.00, eth: false, load: "map" }
+];
+
+function openRecipesModal() {
+  const g = document.getElementById("recipesModalGrid");
+  if (g) {
+    g.innerHTML = BR_12_RECIPES.map(function(r, idx) {
+      return '<div class="preset-btn" onclick="applyOneClickBrRecipe(' + idx + ')"><strong>' + r.name + '</strong><span>' + r.sub + ' • Offset ' + r.trig.toFixed(0) + '°</span></div>';
+    }).join("");
+  }
+  document.getElementById("recipesModal").classList.add("open");
+}
+
+function applyOneClickBrRecipe(idx) {
+  const r = BR_12_RECIPES[idx]; if (!r) return;
+  document.getElementById("cfgName").value = r.name;
+  document.getElementById("cfgCyl").value = r.cyl;
+  document.getElementById("cfgDisp").value = r.disp;
+  document.getElementById("cfgFiring").value = r.fire;
+  document.getElementById("cfgMaxBoost").value = r.boost.toFixed(2);
+  document.getElementById("cfgFuelType").value = r.eth ? "e100" : "gas_e27";
+  const ignOff = document.getElementById("ignTrigOffset");
+  if (ignOff) ignOff.value = r.trig.toFixed(1);
+  st.loadMode = r.load;
+  setInjFlowBoth(r.lbh);
+  syncRevLimitInputs(r.rev);
+  ["1", "2", "3", "4", "5"].forEach(function(gi, k) {
+    const gP = document.getElementById("bstG" + gi), gS = document.getElementById("bstG" + gi + "Street");
+    const frac = [0.58, 0.78, 0.92, 1.0, 1.0][k];
+    if (gP) gP.value = (r.boost * frac).toFixed(2);
+    if (gS) gS.value = (r.boost * frac * 0.75).toFixed(2);
+  });
+  initAllMaps(r.disp, r.boost, r.eth);
+  ensureBankStore();
+  for (let b = 0; b < 4; b++) st.bankStore[b] = cloneMapsObj(st.maps);
+  document.getElementById("hdrVehicleSummary").textContent = r.name.slice(0, 28) + " • " + (r.eth ? "Etanol" : "Gasolina");
+  syncIgnCalibration();
+  updateSetupInjectorSizingBanner();
+  saveNewSnapshot("Receita BR — " + r.name);
+  document.getElementById("recipesModal").classList.remove("open");
+  navMap("ve");
+  toast("✓ Receita completa aplicada: " + r.name + "!");
+}
+
 function upgradeAllNumSteppers() {
   const wraps = document.querySelectorAll(".num-step");
   for (let i = 0; i < wraps.length; i++) {
     const w = wraps[i];
+    if (w.closest(".dual-ctl") || w.closest(".tri-ctl") || w.closest(".data-tbl")) continue;
     if (w.querySelector(".ns-b")) continue;
     const bMinus = document.createElement("button");
     bMinus.type = "button"; bMinus.className = "ns-b"; bMinus.setAttribute("data-step", "-1"); bMinus.textContent = "−";
@@ -6571,6 +6845,15 @@ function upgradeAllNumSteppers() {
     bPlus.type = "button"; bPlus.className = "ns-b"; bPlus.setAttribute("data-step", "1"); bPlus.textContent = "+";
     w.insertBefore(bMinus, w.firstChild);
     w.appendChild(bPlus);
+  }
+  /* Add full-text hover tooltips on all selects so zero info is ever lost */
+  const sels = document.querySelectorAll("select");
+  for (let j = 0; j < sels.length; j++) {
+    const s = sels[j];
+    if (s.selectedIndex >= 0 && s.options[s.selectedIndex]) s.title = s.options[s.selectedIndex].text;
+    s.addEventListener("change", function() {
+      if (this.selectedIndex >= 0 && this.options[this.selectedIndex]) this.title = this.options[this.selectedIndex].text;
+    });
   }
 }
 
