@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TBX Cockpit & Ghost-Lock™ Wi-Fi Live</title>
+<style>
+  :root {
+    --bg: #05080f; --card: #0e1626; --line: rgba(148,163,184,0.18);
+    --txt: #f8fafc; --muted: #94a3b8; --cyan: #06b6d4; --emerald: #10b981;
+    --amber: #f59e0b; --rose: #f43f5e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #10243e 0%, var(--bg) 62%);
+    color: var(--txt); min-height: 100vh; padding: 12px 14px 28px;
+  }
+  .top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; background: rgba(14,22,38,0.9); border: 1px solid var(--line);
+    border-radius: 12px; margin-bottom: 12px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--emerald); display: inline-block; box-shadow: 0 0 10px var(--emerald); }
+  .dot.off { background: var(--rose); box-shadow: 0 0 10px var(--rose); }
+  .rpm-bar-wrap {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px; margin-bottom: 12px; position: relative; overflow: hidden;
+  }
+  .rpm-num { font-size: 46px; font-weight: 900; letter-spacing: -1px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .rpm-track { height: 14px; background: #070b14; border-radius: 999px; overflow: hidden; margin-top: 10px; border: 1px solid var(--line); }
+  .rpm-fill { height: 100%; width: 35%; background: linear-gradient(90deg, #10b981 0%, #06b6d4 55%, #f59e0b 80%, #f43f5e 100%); transition: width 0.06s linear; }
+  .gauges { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+  .g-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px;
+  }
+  .g-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+  .g-val { font-size: 26px; font-weight: 800; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .banks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .b-btn {
+    background: #131e33; color: var(--muted); border: 1px solid var(--line);
+    border-radius: 10px; padding: 10px 4px; font-size: 12px; font-weight: 800; cursor: pointer;
+  }
+  .b-btn.active { background: rgba(6,182,212,0.22); color: #67e8f9; border-color: var(--cyan); }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 13px; margin-bottom: 12px; }
+  .panel h3 { font-size: 13.5px; margin-bottom: 8px; color: #e2e8f0; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  input.pin {
+    flex: 1; background: #070b14; border: 1px solid var(--line); color: var(--txt);
+    border-radius: 9px; padding: 10px 12px; font-size: 16px; font-weight: 800; letter-spacing: 4px; text-align: center;
+  }
+  .act-btn {
+    padding: 10px 14px; border-radius: 9px; border: 1px solid var(--line);
+    font-weight: 800; font-size: 12.5px; cursor: pointer; color: #fff;
+  }
+  .btn-lock { background: linear-gradient(135deg, #e11d48, #be123c); }
+  .btn-unlock { background: linear-gradient(135deg, #059669, #047857); }
+  .slider-row { margin-top: 8px; }
+  .slider-row input[type=range] { width: 100%; accent-color: var(--cyan); height: 26px; }
+  @media (min-width: 820px) {
+    .gauges { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div>
+      <div style="font-weight:900;font-size:14px;">TBX COCKPIT & GHOST-LOCK™ WI-FI</div>
+      <div id="conn-txt" style="font-size:11px;color:var(--muted);">Sincronizando com PC Host...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;">
+      <span id="conn-dot" class="dot"></span>
+      <span id="fortress-badge" style="color:#34d399;">FORTRESS OK</span>
+    </div>
+  </div>
+
+  <div class="rpm-bar-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;">
+      <div>
+        <div class="g-lbl">ROTAÇÃO DO MOTOR (LIVE HIL)</div>
+        <div class="rpm-num" id="v-rpm">3450</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="g-lbl">PONTO IGNIÇÃO</div>
+        <div style="font-size:24px;font-weight:800;color:#38bdf8;" id="v-ign">18.5°</div>
+      </div>
+    </div>
+    <div class="rpm-track"><div class="rpm-fill" id="rpm-fill"></div></div>
+  </div>
+
+  <div class="gauges">
+    <div class="g-card">
+      <div class="g-lbl">MAP / BOOST</div>
+      <div class="g-val" id="v-map" style="color:#38bdf8;">0.85 bar</div>
+    </div>
+    <div class="g-card">
+      <div class="g-lbl">SONDA LAMBDA</div>
+      <div class="g-val" id="v-lam" style="color:#34d399;">0.82 λ</div>
+    </div>
+    <div class="g-card">
+      <div class="g-lbl">TEMP. MOTOR (CLT)</div>
+      <div class="g-val" id="v-clt" style="color:#fbbf24;">88.5 °C</div>
+    </div>
+    <div class="g-card">
+      <div class="g-lbl">BATERIA / PULSO</div>
+      <div class="g-val" id="v-vb" style="color:#c084fc;">13.8 V</div>
+    </div>
+  </div>
+
+  <div class="banks">
+    <button class="b-btn active" id="bk-0" onclick="setBank(0)">🏁 PISTA</button>
+    <button class="b-btn" id="bk-1" onclick="setBank(1)">🛣 RUA</button>
+    <button class="b-btn" id="bk-2" onclick="setBank(2)">🌽 E100</button>
+    <button class="b-btn" id="bk-3" onclick="setBank(3)">🔑 VALET</button>
+  </div>
+
+  <div class="panel">
+    <h3>🎛 Acelerador Remoto Wi-Fi (Teste PC ↔ Celular em Tempo Real!)</h3>
+    <div class="slider-row">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">
+        <span>RPM Alvo Simulador: <strong id="lbl-srpm" style="color:#fff;">3800 RPM</strong></span>
+        <span>MAP: <strong id="lbl-smap" style="color:#fff;">195 kPa</strong></span>
+      </div>
+      <input type="range" id="sl-rpm" min="850" max="7800" step="50" value="3800" oninput="pushStim()">
+      <input type="range" id="sl-map" min="35" max="300" step="5" value="195" oninput="pushStim()">
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>🔒 Bloqueador Anti-Furto Ghost-Lock™ (`HMAC-SHA256` PIN Padrão: `2580`)</h3>
+    <div class="row">
+      <input class="pin" id="pin-in" type="password" maxlength="6" value="2580" placeholder="PIN">
+      <button class="act-btn btn-lock" onclick="ghostCmd('ghost_arm')">BLOQUEAR</button>
+      <button class="act-btn btn-unlock" onclick="ghostCmd('ghost_unlock')">LIBERAR</button>
+    </div>
+    <div id="ghost-msg" style="margin-top:7px;font-size:12px;color:#34d399;font-weight:700;">Status: Central Destravada e Pronta para Partida</div>
+  </div>
+
+<script>
+const API_BASE = window.location.protocol.startsWith("http") ? "" : "http://127.0.0.1:18743";
+let stimDebounce = null;
+
+async function setBank(b) {
+  try {
+    await fetch(`${API_BASE}/api/command?action=set_bank&bank=${b}`, { method: "POST" });
+    for (let i = 0; i < 4; i++) document.getElementById("bk-" + i).classList.toggle("active", i === b);
+  } catch (e) {}
+}
+
+function pushStim() {
+  const rpm = document.getElementById("sl-rpm").value;
+  const map = document.getElementById("sl-map").value;
+  document.getElementById("lbl-srpm").textContent = rpm + " RPM";
+  document.getElementById("lbl-smap").textContent = map + " kPa";
+  if (stimDebounce) clearTimeout(stimDebounce);
+  stimDebounce = setTimeout(async () => {
+    try {
+      await fetch(`${API_BASE}/api/command?action=stim_set&enable=1&rpm=${rpm}&map=${map}&tps=85`, { method: "POST" });
+    } catch (e) {}
+  }, 45);
+}
+
+async function ghostCmd(act) {
+  const pin = document.getElementById("pin-in").value || "2580";
+  try {
+    const r = await fetch(`${API_BASE}/api/command?action=${act}&pin=${encodeURIComponent(pin)}`, { method: "POST" });
+    const j = await r.json();
+    const msg = document.getElementById("ghost-msg");
+    if (j.ghost_armed || !j.ghost_unlocked) {
+      msg.textContent = "🔒 GHOST-LOCK ATIVO: Corte Total de Bicos/Ignição Habilitado!";
+      msg.style.color = "#fb7185";
+    } else {
+      msg.textContent = "✓ GHOST-LOCK LIBERADO: Ignição e Injeção Autorizadas!";
+      msg.style.color = "#34d399";
+    }
+  } catch (e) {}
+}
+
+async function pollLive() {
+  try {
+    const r = await fetch(`${API_BASE}/api/telemetry`, { cache: "no-store" });
+    const d = await r.json();
+    document.getElementById("conn-dot").classList.remove("off");
+    document.getElementById("conn-txt").textContent = `Conectado Ao Vivo • Fonte: ${d.source || 'TBX-LINK'}`;
+    const rpm = d.rpm || 0;
+    document.getElementById("v-rpm").textContent = rpm;
+    document.getElementById("rpm-fill").style.width = Math.min(100, (rpm / 8000) * 100).toFixed(1) + "%";
+    document.getElementById("v-ign").textContent = (d.ign_deg !== undefined ? d.ign_deg.toFixed(1) : "18.0") + "°";
+    const bar = ((d.map_kpa || 100) - 100) / 100.0;
+    document.getElementById("v-map").textContent = (bar >= 0 ? "+" : "") + bar.toFixed(2) + " bar";
+    document.getElementById("v-lam").textContent = (d.lambda !== undefined ? d.lambda.toFixed(3) : "0.850") + " λ";
+    document.getElementById("v-clt").textContent = (d.clt_c !== undefined ? d.clt_c.toFixed(1) : "88.0") + " °C";
+    document.getElementById("v-vb").textContent = (d.vbatt_v !== undefined ? d.vbatt_v.toFixed(1) : "13.8") + " V";
+    if (d.active_bank !== undefined) {
+      for (let i = 0; i < 4; i++) document.getElementById("bk-" + i).classList.toggle("active", i === d.active_bank);
+    }
+  } catch (err) {
+    document.getElementById("conn-dot").classList.add("off");
+    document.getElementById("conn-txt").textContent = "Modo Demo Offline (Inicie o 04_MODO_CARRO_VIRTUAL no PC)";
+  }
+}
+
+setInterval(pollLive, 120);
+pollLive();
+</script>
+</body>
+</html>
