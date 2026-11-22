@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TBX Studio v14.0 APEX — TBX-800 PRO (Complete Calibration IDE)</title>
+<title>TBX Studio v15.0 ULTRA — TBX-800 PRO (Complete Calibration IDE)</title>
 <style>
 :root {
   color-scheme: dark;
@@ -260,7 +260,19 @@ body.hide-left .nav-tree, body.hide-right .right-cockpit { overflow: hidden; bor
 .panel-box {
   background: var(--bg-1); border: 1px solid var(--bd-0); border-radius: 6px;
   display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden;
+  transition: border-color 0.16s, opacity 0.16s;
 }
+.panel-box.feat-off { border-color: #161f30; }
+.panel-box.feat-off .card-pad > .f-row:not(.switch-row) {
+  opacity: 0.36; pointer-events: none; filter: grayscale(0.5);
+}
+.st-pill {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 800; padding: 1px 7px;
+  border-radius: 99px; letter-spacing: 0.4px;
+  background: rgba(16, 185, 129, 0.16); border: 1px solid #10b981; color: var(--neon-g);
+}
+.st-pill.off {
+  background: rgba(100, 116, 139, 0.15); border-color: #334155; color: #94a3b8;
 }
 .p-hdr {
   height: 27px; flex-shrink: 0; padding: 0 10px;
@@ -335,19 +347,136 @@ table.cal-grid td.locked::after {
 .c-pt-box label { font-family: var(--mono); font-size: 10px; color: var(--txt-2); font-weight: 700; }
 .c-pt-box input { width: 100%; text-align: center; font-weight: 800; color: var(--cyan); height: 25px; padding: 0 3px; }
 
-/* FORMS, CARDS & TABLES */
+/* FORMS, CARDS & STRUCTURED ENGINEERING CONTROLS (FT470-KILLER UX) */
 .scroll-body { flex: 1; min-height: 0; overflow-y: auto; padding: 9px; display: flex; flex-direction: column; gap: 9px; }
 .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
 .card-pad { padding: 9px 11px; display: flex; flex-direction: column; gap: 6px; }
 .f-row {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(235px, 275px); align-items: center;
-  gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(268px, 326px); align-items: center;
+  gap: 10px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.045);
 }
+.grid-3 .f-row { grid-template-columns: minmax(0, 1fr) minmax(190px, 232px); gap: 7px; }
 .f-row:last-child { border-bottom: none; }
 .f-row.switch-row { grid-template-columns: minmax(0, 1fr) auto; }
-.f-lbl { color: var(--txt-1); font-size: 11.3px; line-height: 1.3; }
-.f-lbl small { display: block; color: var(--txt-3); font-size: 9.8px; }
+.f-lbl { color: var(--txt-1); font-size: 11.2px; line-height: 1.3; font-weight: 500; }
+.f-lbl small { display: block; color: var(--txt-3); font-size: 9.6px; font-weight: 400; margin-top: 1px; }
+
+/* Remove browser native spin arrows for clean custom steppers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; font-variant-numeric: tabular-nums; }
+
+/* Precision [-][value unit][+] Stepper Widget */
+.num-step {
+  display: flex; align-items: stretch; height: 27px; width: 100%; min-width: 0;
+  background: #070b13; border: 1px solid #263750; border-radius: 5px; overflow: hidden;
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.num-step:focus-within { border-color: var(--cyan); box-shadow: 0 0 0 2px rgba(0,229,255,0.16); }
+.num-step .ns-b {
+  width: 23px; flex-shrink: 0; border: none; background: #101a2c; color: #94a3b8;
+  font-family: var(--mono); font-size: 13px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: 0.12s;
+}
+.num-step .ns-b:hover { background: #0284c7; color: #fff; }
+.num-step .ns-b:active { background: #0369a1; }
+.num-step input[type="number"] {
+  flex: 1; width: 100%; min-width: 0; height: 100%; border: none !important; box-shadow: none !important;
+  background: transparent !important; text-align: right; padding: 0 5px;
+  font-family: var(--mono); font-size: 11.5px; font-weight: 800; color: #f8fafc;
+}
+.num-step .ns-u {
+  display: inline-flex; align-items: center; padding: 0 6px 0 3px;
+  font-family: var(--mono); font-size: 9.6px; font-weight: 700; color: #38bdf8;
+  background: rgba(14, 165, 233, 0.07); border-left: 1px solid rgba(56, 189, 248, 0.16);
+  white-space: nowrap; flex-shrink: 0;
+}
+.num-step .ns-pfx {
+  display: inline-flex; align-items: center; padding: 0 5px;
+  font-family: var(--mono); font-size: 9.4px; font-weight: 700; color: #94a3b8;
+  background: #0c1424; border-right: 1px solid #1e2d45; white-space: nowrap; flex-shrink: 0;
+}
+
+/* Dual / Triple Side-by-Side Structured Controls */
+.dual-ctl { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%; min-width: 0; align-items: center; }
+.tri-ctl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; width: 100%; min-width: 0; align-items: center; }
+.dual-ctl .num-step .ns-b, .tri-ctl .num-step .ns-b, table.data-tbl .num-step .ns-b { width: 17px; font-size: 11.5px; }
+.dual-ctl .num-step .ns-pfx, .tri-ctl .num-step .ns-pfx, table.data-tbl .num-step .ns-pfx { padding: 0 3px; font-size: 8.9px; }
+.dual-ctl .num-step .ns-u, .tri-ctl .num-step .ns-u, table.data-tbl .num-step .ns-u { padding: 0 4px 0 2px; font-size: 9px; }
+.cond-builder { display: grid; grid-template-columns: minmax(92px, 1.2fr) 48px 66px; gap: 4px; align-items: center; width: 100%; }
+.cond-builder select, .cond-builder input { padding-left: 6px; font-size: 10.6px; }
+
+/* 1-Click Segmented Radio Pill Selector (FT470 Touch Upgrade) */
+.seg-opt {
+  display: flex; background: #060a12; border: 1px solid #23334c; border-radius: 5px;
+  padding: 2px; gap: 2px; width: 100%;
+}
+.seg-opt button {
+  flex: 1; height: 21px; border: none; border-radius: 3px; background: transparent;
+  color: var(--txt-2); font-family: var(--sans); font-size: 10.3px; font-weight: 700;
+  cursor: pointer; padding: 0 5px; white-space: nowrap; transition: 0.12s;
+}
+.seg-opt button:hover { color: #fff; background: rgba(56,189,248,0.10); }
+.seg-opt button.on {
+  background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff;
+  box-shadow: 0 1px 5px rgba(14,165,233,0.35);
+}
+.seg-opt button.on.warn { background: linear-gradient(135deg, #e11d48, #be123c); }
+
+/* Non-Editable Live Telemetry / Hardware Readout Pill (Replaces Fake Readonly Text Inputs!) */
+.ro-badge {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  min-height: 27px; padding: 0 9px; border-radius: 5px;
+  background: linear-gradient(90deg, rgba(14,165,233,0.10) 0%, rgba(16,185,129,0.06) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.30);
+  font-family: var(--mono); font-size: 10.8px; font-weight: 700; color: #e2e8f0;
+}
+.ro-badge strong { color: var(--neon-g); font-weight: 800; }
+
+/* FT470-KILLER VISUAL QUICK-LAUNCHER TILE GRID (cv-home) */
+.ft-home-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px;
+}
+.ft-tile {
+  background: linear-gradient(160deg, #111b2e 0%, #090f1b 100%);
+  border: 1px solid #22324c; border-radius: 8px; padding: 10px 11px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 7px;
+  cursor: pointer; position: relative; overflow: hidden; transition: all 0.15s ease;
+}
+.ft-tile::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--tile-ac, var(--cyan));
+}
+.ft-tile:hover {
+  transform: translateY(-2px); border-color: var(--tile-ac, var(--cyan));
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 229, 255, 0.18);
+}
+.ft-tile-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ft-tile-ico {
+  width: 30px; height: 30px; border-radius: 7px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.ft-tile h3 { font-size: 12.2px; font-weight: 800; color: #fff; letter-spacing: 0.1px; }
+.ft-tile p { font-size: 10.3px; color: var(--txt-2); line-height: 1.32; }
+.ft-tile-live {
+  font-family: var(--mono); font-size: 10.6px; font-weight: 800; color: var(--cyan);
+  background: #060a13; border: 1px solid #1b2940; border-radius: 5px;
+  padding: 4px 7px; display: flex; align-items: center; justify-content: space-between;
+}
+.ft-tile-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+.ft-mini-btn {
+  height: 20px; padding: 0 7px; border-radius: 4px; border: 1px solid #293c5a;
+  background: #121e33; color: #cbd5e1; font-size: 9.8px; font-weight: 700; cursor: pointer;
+}
+.ft-mini-btn:hover { background: #0284c7; border-color: #38bdf8; color: #fff; }
+
+.live-test-btn.active {
+  background: linear-gradient(135deg, #e11d48, #f97316) !important;
+  border-color: #fde047 !important; color: #fff !important;
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.65);
+}
 
 /* Compact Key-Value Row for Narrow Sidebars (Fixes Datalogger Overlap!) */
 .log-kv {
@@ -449,7 +578,8 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
   <header class="topbar">
     <div class="tb-group">
       <button class="tbtn" style="padding:0 7px;" onclick="toggleSidebar('left')" title="Recolher/Expandir Menu Lateral Esquerdo">[◀]</button>
-      <div class="brand-pill"><span>⚡ TBX STUDIO</span><span>v14.0 APEX</span></div>
+      <div class="brand-pill"><span>⚡ TBX STUDIO</span><span>v15.0 ULTRA</span></div>
+      <button class="tbtn wiz" onclick="navTo('cv-home')" title="Menu Visual Rápido em Blocos Estilo FT470 / FTManager 5 Ultra">🏠 Menu Rápido</button>
       <select class="hw-sel" id="selModelSwitch" onchange="setHardwareModel(this.value)">
         <option value="800" selected>TBX-800 PRO (64p • 20×20 • DBW/VVT)</option>
         <option value="400" >TBX-400 UNIVERSAL (32p • 16×16)</option>
@@ -496,6 +626,11 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         <input type="text" id="treeFilterInp" placeholder="🔎 Filtrar menu (ex: bico, pop, dash, teste)..." oninput="filterLeftTree(this.value)">
       </div>
       <div class="tree-scroll" id="treeRoot">
+        <div class="t-cat" onclick="toggleCat(this)"><span>🏠 0. Visão Geral &amp; Acesso Rápido</span><span>▾</span></div>
+        <div class="t-group-items">
+          <div class="t-node" data-route="cv-home" onclick="navTo('cv-home')"><span><strong>🏠 Menu Visual Rápido (Grade FT-Ultra)</strong></span><span class="t-tag" style="color:var(--neon-g)">HOME</span></div>
+        </div>
+
         <div class="t-cat" onclick="toggleCat(this)"><span>⚙ 1. Projeto, Motor & Bancada</span><span>▾</span></div>
         <div class="t-group-items">
           <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Ficha da Oficina & Snapshots (Diff)</span><span class="t-tag">VER</span></div>
@@ -693,6 +828,142 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
       </section>
 
+      <!-- ==================== VIEW 0: FT470-ULTRA VISUAL QUICK LAUNCHER (TILE GRID) ==================== -->
+      <section class="view-pane" id="cv-home">
+        <div class="v-bar">
+          <div class="v-crumb">🏠 MENU VISUAL RÁPIDO — PADRÃO FT-TOUCH ULTRA (STATUS AO VIVO + ATALHOS 1-CLIQUE)</div>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--txt-2);">Clique em qualquer bloco para abrir a tela completa ou use os atalhos diretos abaixo</span>
+        </div>
+        <div class="scroll-body">
+          <div class="ft-home-grid">
+            <div class="ft-tile" style="--tile-ac:#00e5ff" onclick="navMap('ve')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">⛽</div><span class="st-pill">SEQUENCIAL 720°</span></div>
+              <div><h3>Mapas de Injeção</h3><p>Malha principal VE % ou Tempo ms, Partida a Frio, Rápida Aquino τ-X e Deadtime.</p></div>
+              <div class="ft-tile-live"><span>Pulso Agora</span><strong id="htPwLive">4.82 ms • 65 lb/h</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navMap('ve')">Mapa VE 3D</button>
+                <button class="ft-mini-btn" onclick="navCurve('crank')">Partida</button>
+                <button class="ft-mini-btn" onclick="navCurve('accel_tps')">Rápida</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#c084fc" onclick="navMap('ign')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">⚡</div><span class="st-pill">COP / 2×2</span></div>
+              <div><h3>Mapas de Ignição &amp; Knock</h3><p>Avanço 3D (°APMS), Dwell por Bateria, Retardo por IAT e Espectrômetro Knock.</p></div>
+              <div class="ft-tile-live"><span>Ponto Agora</span><strong id="htIgnLive">18.5° APMS</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navMap('ign')">Mapa Ponto</button>
+                <button class="ft-mini-btn" onclick="navMap('ve');setMapLayout('split')">Split VE+Ign</button>
+                <button class="ft-mini-btn" onclick="navCurve('dwell')">Dwell</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#f43f5e" onclick="navTo('cv-launch')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🔥</div><span class="st-pill" id="htLaunchBdg">ARMADO</span></div>
+              <div><h3>2-Step, Rolo, ALS &amp; Pops</h3><p>Corte de largada rotativo, Rolling Anti-Lag no botão e Pops limpos ≥ 4000 RPM.</p></div>
+              <div class="ft-tile-live"><span>Alvo 2-Step</span><strong id="ht2StepLive">4250 RPM • +0.95b</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-launch')">Configurar</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-launch');toggleLiveTest('2step')">🔥 Testar 2-Step</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#10b981" onclick="navTo('cv-boost')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🚀</div><span class="st-pill">PID N75</span></div>
+              <div><h3>Controle de Boost</h3><p>Malha fechada PID N75/MAC, alvo por marcha (1ª–6ª), Spool rápido e Overboost.</p></div>
+              <div class="ft-tile-live"><span>MAP Atual</span><strong id="htBoostLive">+0.85 bar</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-boost')">Por Marcha</button>
+                <button class="ft-mini-btn" onclick="navMap('boost_tgt')">Mapa 3D</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#fbbf24" onclick="navTo('cv-ai')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🎯</div><span class="st-pill">MALHA FECHADA</span></div>
+              <div><h3>Malha Fechada O2 &amp; Auto-Tune</h3><p>Alvo Lambda 3D, correção automática com limites seguros em Boost e Histograma.</p></div>
+              <div class="ft-tile-live"><span>Sonda × Alvo</span><strong id="htLamLive">0.810 λ (0.810)</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navMap('lambda')">Mapa Sonda</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-ai')">Limites O2</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#34d399" onclick="navTo('cv-ai')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🛡</div><span class="st-pill" id="htGuardBdg">10 ATIVAS</span></div>
+              <div><h3>Proteções do Motor (1 kHz)</h3><p>Queda dP de bomba, pressão de óleo, mistura pobre, superaquecimento e overboost.</p></div>
+              <div class="ft-tile-live"><span>Diff Comb dP</span><strong id="htDpLive">3.04 bar • OK</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-ai')">10 Proteções</button>
+                <button class="ft-mini-btn" onclick="openMapHealthModal()">🩺 Revisar Mapa</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#38bdf8" onclick="navTo('cv-street')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">❄</div><span class="st-pill">OEM+</span></div>
+              <div><h3>Ventoinhas, A/C &amp; Lenta</h3><p>Eletroventilador 1/2, Pós-Fan, Ar-Condicionado s/ queda de giro, Direção EPS e DFCO.</p></div>
+              <div class="ft-tile-live"><span>Água CLT</span><strong id="htCltLive">88.5 °C (Fan 94°C)</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-street')">Clima &amp; Rua</button>
+                <button class="ft-mini-btn" onclick="navCurve('idle_clt')">Curva Lenta</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#f97316" onclick="navTo('cv-trac')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🏁</div><span class="st-pill">TRAÇÃO + DRAG</span></div>
+              <div><h3>Tração, Shift-Cut &amp; Arrancada</h3><p>Controle destracionamento (dRPM/dt e Slip% ABS), troca rápida por marcha, Rampa 0–6s e Nitro.</p></div>
+              <div class="ft-tile-live"><span>Marcha / Vel.</span><strong id="htGearLive">3ª • 162 km/h</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-trac')">Tração &amp; Cut</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-drag')">Arrancada 0–6s</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#60a5fa" onclick="navTo('cv-io')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🔌</div><span class="st-pill" id="htPinBdg">64 PINOS</span></div>
+              <div><h3>Entradas, Saídas &amp; Sensores</h3><p>Matriz FlexPin™, calibração TPS/PS-10, 4 Saídas Condicionais PLC e Placa PnP FT-Bridge™.</p></div>
+              <div class="ft-tile-live"><span>Conflitos I/O</span><strong>0 Conflitos • OK</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-io')">Pinos I/O</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-sens')">Sensores</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-plc')">4 PLC</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#a855f7" onclick="navTo('cv-dash')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🖥</div><span class="st-pill">60 FPS</span></div>
+              <div><h3>Painel Digital 7" &amp; Shift-Light</h3><p>4 temas visuais, régua de 12 LEDs progressivos, alertas gigantes e espelhamento Wi-Fi.</p></div>
+              <div class="ft-tile-live"><span>Shift-Light</span><strong>5400 → 7100 RPM</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-dash')">Editar Dash</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-can')">Rede CAN</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#eab308" onclick="navTo('cv-outtest')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">🔧</div><span class="st-pill">BANCADA</span></div>
+              <div><h3>Teste de Saídas &amp; Chicote</h3><p>Pulsar bicos, centelhar bobinas, acionar bomba/ventoinha com motor parado e Calculadoras.</p></div>
+              <div class="ft-tile-live"><span>Segurança</span><strong>Trava 0 RPM OK</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-outtest')">Testar Saídas</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-pinout')">Cores Chicote</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-calc')">Calculadoras</button>
+              </div>
+            </div>
+
+            <div class="ft-tile" style="--tile-ac:#14b8a6" onclick="navTo('cv-log')">
+              <div class="ft-tile-top"><div class="ft-tile-ico">📈</div><span class="st-pill">200 HZ</span></div>
+              <div><h3>Datalogger, Scope &amp; Dyno</h3><p>Log 4 faixas c/ corretor automático de VE, Osciloscópio 60-2 c/ Doutor VR e Virtual Dyno.</p></div>
+              <div class="ft-tile-live"><span>Gravador</span><strong>Memória Interna OK</strong></div>
+              <div class="ft-tile-actions" onclick="event.stopPropagation()">
+                <button class="ft-mini-btn" onclick="navTo('cv-log')">Datalogger</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-scope')">Scope 60-2</button>
+                <button class="ft-mini-btn" onclick="navTo('cv-dyno')">Dyno cv</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ==================== VIEW 3: PROJECT / WORKSHOP CLIENT & SNAPSHOT DIFF MANAGER ==================== -->
       <section class="view-pane" id="cv-proj">
         <div class="v-bar">
@@ -708,7 +979,15 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
               <div class="f-row"><span class="f-lbl">Cliente / Proprietário</span><input id="prjClient" value="Cliente Demonstração TBX"></div>
               <div class="f-row"><span class="f-lbl">Placa / Chassi Identificador</span><input id="prjPlate" value="TBX-2026 (Pista / Rua)"></div>
               <div class="f-row"><span class="f-lbl">Preparador / Oficina Responsável</span><input id="prjTuner" value="Turbina X Performance Engineering"></div>
-              <div class="f-row"><span class="f-lbl">Notas de Setup Mecânico</span><input value="Bicos 65lb @ 3.0b • Turbina .50 • E100 • VirtualCam 720°"></div>
+              <div class="f-row"><span class="f-lbl">Perfil de Uso & Combustível</span>
+                <select id="prjUsageProfile">
+                  <option selected>Rua + Track-Day • Turbo E100 • VirtualCam™ 720°</option>
+                  <option>Arrancada Pista 201m/402m • Metanol / E100</option>
+                  <option>Uso Diário Rua / Viagem • Flex Automático</option>
+                  <option>Aspirado / Weber / ITB • Gasolina Podium</option>
+                </select>
+              </div>
+              <div class="f-row"><span class="f-lbl">Observações da Oficina</span><textarea id="prjNotes" rows="2">Turbina .50 • Linha Inox • Bomba Walbro 450 L/h @ 3.0 bar base</textarea></div>
             </div></div>
 
             <div class="panel-box"><div class="p-hdr"><span>Histórico de Versões / Snapshots (Compare ou Restaure em 1 Clique)</span></div>
@@ -748,15 +1027,31 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
             </div></div>
             <div class="grid-2">
               <div class="panel-box"><div class="p-hdr"><span>Arquitetura Mecânica</span></div><div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Nome do Projeto</span><input id="cfgName" value="VW/Audi Golf 1.8T 20V Stage 3"></div>
-                <div class="f-row"><span class="f-lbl">Número de Cilindros</span><select id="cfgCyl" onchange="validateTopology()"><option value="4" selected>4 Cilindros</option><option value="3">3 Cilindros</option><option value="5">5 Cilindros</option><option value="6">6 Cilindros</option><option value="8" class="pro-only">8 Cilindros V8 (TBX-800)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Cilindrada Total (cm³)</span><input id="cfgDisp" type="number" value="1781"></div>
-                <div class="f-row"><span class="f-lbl">Ordem de Ignição</span><input id="cfgFiring" value="1-3-4-2"></div>
+                <div class="f-row"><span class="f-lbl">Identificação do Motor / Carro</span><input id="cfgName" value="VW/Audi Golf 1.8T 20V Stage 3"></div>
+                <div class="f-row"><span class="f-lbl">Número de Cilindros</span><select id="cfgCyl" onchange="syncCylFiringOptions(this.value);validateTopology()"><option value="4" selected>4 Cilindros em Linha / Boxer</option><option value="3">3 Cilindros (TSI / Firefly)</option><option value="5">5 Cilindros (Jetta 2.5 / Audi 20V)</option><option value="6">6 Cilindros (Opala / BMW / VR6)</option><option value="8" class="pro-only">8 Cilindros V8 (TBX-800 PRO)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Cilindrada Total<small>Use [-] [+] ou roda do mouse</small></span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="cfgDisp" type="number" step="50" min="500" max="9000" value="1781"><span class="ns-u">cm³</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Ordem de Ignição<small>Selecionável por arquitetura</small></span>
+                  <select id="cfgFiring">
+                    <option value="1-3-4-2" selected>1-3-4-2 (VW AP / 1.8T / GM / Honda / Fiat)</option>
+                    <option value="1-4-3-2">1-4-3-2 (VW Boxer Ar Fusca / Subaru)</option>
+                    <option value="1-2-3">1-2-3 (3 Cilindros VW EA211 / Fiat)</option>
+                    <option value="1-2-4-5-3">1-2-4-5-3 (5 Cilindros Jetta 2.5 / Audi)</option>
+                    <option value="1-5-3-6-2-4">1-5-3-6-2-4 (6 Cil Linha Opala / BMW)</option>
+                    <option value="1-8-7-2-6-5-4-3">1-8-7-2-6-5-4-3 (GM V8 LS)</option>
+                    <option value="1-5-4-8-6-3-7-2">1-5-4-8-6-3-7-2 (Ford V8 / Coyote)</option>
+                  </select>
+                </div>
               </div></div>
-              <div class="panel-box"><div class="p-hdr"><span>Aspiração & Limites</span></div><div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Tipo de Aspiração</span><select id="cfgAsp"><option value="turbo" selected>Turboalimentado</option><option value="na">Aspirado Natural</option><option value="itb">Aspirado ITBs (Alpha-N)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Pressão Máxima Boost (bar)</span><input id="cfgMaxBoost" type="number" step="0.1" value="1.6"></div>
-                <div class="f-row"><span class="f-lbl">Corte de Giro (RPM)</span><input id="cfgRevLim" type="number" value="7200"></div>
+              <div class="panel-box"><div class="p-hdr"><span>Aspiração & Limites Operacionais</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Tipo de Aspiração</span><select id="cfgAsp"><option value="turbo" selected>Turbo / Supercharger (Speed-Density)</option><option value="na">Aspirado Natural (MAP)</option><option value="itb">Corpos Individuais ITBs (Alpha-N TPS)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Pressão Máxima Alvo</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="cfgMaxBoost" type="number" step="0.1" min="0.0" max="4.5" value="1.6"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Corte de Giro Principal</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="cfgRevLim" type="number" step="100" min="3000" max="11500" value="7200" oninput="syncRevLimitInputs(this.value)"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
                 <div style="display:flex;justify-content:flex-end;padding-top:4px;"><button class="tbtn wiz" onclick="goWizStep(2)">Próximo: Sincronismo →</button></div>
               </div></div>
             </div>
@@ -774,12 +1069,14 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
                     <option value="dist_hall">Distribuidor Hall (Sem Fônica)</option>
                   </select>
                 </div>
-                <div class="f-row"><span class="f-lbl">Padrão Roda Fônica</span><select id="cfgWheel"><option value="60-2" selected>60-2 Dentes</option><option value="36-1">36-1 Dentes</option><option value="36-2">36-2 Dentes</option><option value="dist4">Distribuidor 4 Janelas</option><option value="58X">GM 58X</option></select></div>
-                <div class="f-row"><span class="f-lbl">Sensor de Rotação (Pull-up Software)</span><select id="cfgCrankType"><option value="vr" selected>Indutivo VR (Pull-up OFF)</option><option value="hall">Hall (+5V Pull-up ON)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Padrão Roda Fônica</span><select id="cfgWheel"><option value="60-2" selected>60-2 Dentes (VW / GM / Fiat / BMW)</option><option value="36-1">36-1 Dentes (Ford / Universal)</option><option value="36-2">36-2 Dentes (Toyota / Honda)</option><option value="dist4">Distribuidor 4 Janelas Hall</option><option value="58X">GM 58X (Gen IV)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Tipo Sensor Rotação</span><select id="cfgCrankType"><option value="vr" selected>Indutivo VR 2 Fios (Pull-up OFF)</option><option value="hall">Hall 3 Fios (+5V Pull-up ON)</option></select></div>
               </div></div>
-              <div class="panel-box"><div class="p-hdr"><span>Fase & PMS</span></div><div class="card-pad">
+              <div class="panel-box"><div class="p-hdr"><span>Fase & Alinhamento PMS</span></div><div class="card-pad">
                 <div class="f-row"><span class="f-lbl">Origem de Fase</span><select id="cfgCamType"><option value="hall_pu" selected>Hall Físico (+5V ON)</option><option value="vcam_map">VirtualCam™ (Pulso MAP 105°)</option><option value="none">Desativado (360°)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Offset 1º Dente até PMS (°)</span><input type="number" value="84.0"></div>
+                <div class="f-row"><span class="f-lbl">Ângulo 1º Dente até PMS</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="wizToothAngle" type="number" step="1.0" min="0" max="355" value="84.0"><span class="ns-u">°APMS</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
                 <div style="display:flex;justify-content:space-between;padding-top:6px;"><button class="tbtn" onclick="goWizStep(1)">← Voltar</button><button class="tbtn wiz" onclick="goWizStep(3)">Próximo: Injeção →</button></div>
               </div></div>
             </div>
@@ -787,12 +1084,28 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
           <div class="w-pane" id="wp3">
             <div class="grid-2">
-              <div class="panel-box"><div class="p-hdr"><span>Modo de Injeção</span></div><div class="card-pad">
+              <div class="panel-box"><div class="p-hdr"><span>Modo de Injeção & Bicos</span></div><div class="card-pad">
                 <div class="f-row"><span class="f-lbl">Estratégia Injetores</span><select id="cfgInjMode"><option value="seq" selected>100% Sequencial (Fase Física)</option><option value="seq_vcam">100% Sequencial (VirtualCam™ s/ Fase)</option><option value="semi">Semi-Sequencial Pares</option><option value="multi">Multiponto Simultâneo</option><option value="carb_off">Só Ignição (Carburado)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Vazão Bancada A (lb/h)</span><input id="cfgFlowA" type="number" value="65"></div>
+                <div class="f-row"><span class="f-lbl">Modelo / Preset de Bico</span>
+                  <select onchange="if(this.value)setInjFlowBoth(this.value)">
+                    <option value="">Personalizado (Digitar Vazão)</option>
+                    <option value="42">Bosch Green Giant 42 lb/h (440 cc)</option>
+                    <option value="65" selected>Siemens Deka / Bosch 65 lb/h (682 cc)</option>
+                    <option value="80">Siemens Deka 80 lb/h (840 cc)</option>
+                    <option value="120">Bosch / IWP 120 lb/h (1260 cc)</option>
+                    <option value="165">Bosch Motorsport 165 lb/h (1730 cc)</option>
+                    <option value="210">Injetor Alta Vazão 210 lb/h (2200 cc)</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Vazão Bancada A (@ 3.0 bar)</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="cfgFlowA" type="number" step="1" min="14" max="500" value="65" oninput="setInjFlowBoth(this.value)"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
               </div></div>
-              <div class="panel-box"><div class="p-hdr"><span>Combustível</span></div><div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Combustível</span><select id="cfgFuelType"><option value="e100" selected>Etanol E100</option><option value="flex">Flex (Sensor 50–150 Hz)</option><option value="gas_e27">Gasolina / Podium</option></select></div>
+              <div class="panel-box"><div class="p-hdr"><span>Combustível & Pressão Base</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Combustível Principal</span><select id="cfgFuelType"><option value="e100" selected>Etanol Hidratado E100</option><option value="flex">Flex Automático (Sensor 50–150 Hz)</option><option value="gas_e27">Gasolina Comum / Podium</option><option value="meth">Metanol M100 Pista</option></select></div>
+                <div class="f-row"><span class="f-lbl">Pressão Diferencial Base</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.1" min="2.0" max="6.0" value="3.0"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
                 <div style="display:flex;justify-content:space-between;padding-top:6px;"><button class="tbtn" onclick="goWizStep(2)">← Voltar</button><button class="tbtn wiz" onclick="goWizStep(4)">Próximo: Ignição →</button></div>
               </div></div>
             </div>
@@ -800,7 +1113,8 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
           <div class="w-pane" id="wp4">
             <div class="panel-box"><div class="p-hdr"><span>Ignição & Reaproveitamento de Pinos</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Modo de Bobinas</span><select id="cfgIgnMode" onchange="validateTopology()"><option value="cop" selected>COP Individual</option><option value="cop_vcam">COP Dual-Stage (VirtualCam™)</option><option value="wasted">Centelha Perdida 2×2</option><option value="dist">Distribuidor (IGN1)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Modo de Bobinas</span><select id="cfgIgnMode" onchange="validateTopology()"><option value="cop" selected>COP Individual (1 por Cilindro)</option><option value="cop_vcam">COP Dual-Stage (VirtualCam™)</option><option value="wasted">Centelha Perdida 2×2</option><option value="dist">Distribuidor Bobina Única (IGN1)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Sinal de Disparo</span><select><option selected>Smart Coil c/ Módulo Interno (5V TTL)</option><option>Bobina Passiva (Exige Módulo Ignição Externo)</option></select></div>
               <div class="info-banner" id="sparePinsNotice">Canais IGN ociosos convertidos automaticamente em saídas auxiliares!</div>
               <div style="display:flex;justify-content:space-between;padding-top:6px;"><button class="tbtn" onclick="goWizStep(3)">← Voltar</button><button class="tbtn wiz" onclick="goWizStep(5)">Próximo: Clima & Lenta →</button></div>
             </div></div>
@@ -808,15 +1122,31 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
           <div class="w-pane" id="wp5">
             <div class="panel-box"><div class="p-hdr"><span>Ventoinhas, Ar-Condicionado & Marcha Lenta</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Ventoinha 1 / Ventoinha 2</span><input value="Fan1: 94/90 °C  |  Fan2: 99/95 °C"></div>
-              <div class="f-row"><span class="f-lbl">Ar-Condicionado OEM</span><input value="Pré-Elevação 200ms + Corte WOT >= 80%"></div>
+              <div class="f-row"><span class="f-lbl">Ventoinha 1 (Liga / Desliga)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">ON</span><input type="number" step="1" value="94"><span class="ns-u">°C</span></div>
+                  <div class="num-step"><span class="ns-pfx">OFF</span><input type="number" step="1" value="90"><span class="ns-u">°C</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Ventoinha 2 (Liga / Desliga)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">ON</span><input type="number" step="1" value="99"><span class="ns-u">°C</span></div>
+                  <div class="num-step"><span class="ns-pfx">OFF</span><input type="number" step="1" value="95"><span class="ns-u">°C</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Ar-Condicionado (Pré-Pulso / Corte WOT)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="20" value="200"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                  <div class="num-step"><span class="ns-pfx">WOT</span><input type="number" step="5" value="80"><span class="ns-u">%TPS</span></div>
+                </div>
+              </div>
               <div style="display:flex;justify-content:space-between;padding-top:6px;"><button class="tbtn" onclick="goWizStep(4)">← Voltar</button><button class="tbtn wiz" onclick="goWizStep(6)">Próximo: IA & Gerar →</button></div>
             </div></div>
           </div>
 
           <div class="w-pane" id="wp6">
             <div class="panel-box"><div class="p-hdr"><span>Ativação NeuralCore™ IA & Geração Completa</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Inteligência Embarcada</span><select><option selected>Auto-Tune + Aquino τ-X + Engine Guardian™ 10ch</option><option>Modo Supervisionado</option></select></div>
+              <div class="f-row"><span class="f-lbl">Inteligência Embarcada</span><select><option selected>Auto-Tune Malha Fechada + Aquino τ-X + Engine Guardian™ 10ch</option><option>Modo Supervisionado (Apenas Sugere Correções)</option></select></div>
               <div style="display:flex;justify-content:space-between;padding-top:8px;">
                 <button class="tbtn" onclick="goWizStep(5)">← Voltar</button>
                 <button class="tbtn burn" style="height:32px;padding:0 18px;" onclick="finishCompleteWizard()">✓ CALCULAR MAPA COMPLETO, PINOS E GRAVAR SNAPSHOT</button>
@@ -834,29 +1164,54 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
         <div class="scroll-body">
           <div class="grid-3">
-            <div class="panel-box"><div class="p-hdr"><span>1. Arquitetura, Rotativo Wankel & VirtualCam™</span></div><div class="card-pad">
+            <div class="panel-box"><div class="p-hdr"><span>1. Arquitetura, Rotativo &amp; Sincronismo</span></div><div class="card-pad">
               <div class="f-row"><span class="f-lbl">Arquitetura do Motor</span><select id="sEngArch" onchange="syncDirectSetup()">
                 <option value="p4" selected>Pistão 4 Cilindros (1-3-4-2 / 1-4-3-2)</option>
-                <option value="p1_3_5">Pistão 1, 2, 3 ou 5 Cilindros (Moto / Up TSI / Jetta 2.5)</option>
-                <option value="p6_12">Pistão 6, 8, 10 ou 12 Cilindros (Opala / V8 LS / V10)</option>
-                <option value="rot2">Wankel Rotativo 2 Rotores (Mazda 13B RX-7 / RX-8)</option>
-                <option value="rot34" class="pro-only">Wankel Rotativo 3 ou 4 Rotores (20B / 26B Sequencial)</option>
+                <option value="p1_3_5">Pistão 1, 2, 3 ou 5 Cilindros</option>
+                <option value="p6_12">Pistão 6, 8, 10 ou 12 Cilindros</option>
+                <option value="rot2">Wankel Rotativo 2 Rotores (13B)</option>
+                <option value="rot34" class="pro-only">Wankel Rotativo 3/4 Rotores (20B/26B)</option>
               </select></div>
-              <div class="f-row"><span class="f-lbl">Modo de Fase 720°</span><select id="sTrig" onchange="syncDirectSetup()"><option value="crank_cam">Fônica + Sensor Fase Físico</option><option value="crank_vcam" selected>Fônica + VirtualCam™ (Sem Sensor Fase!)</option><option value="crank_semi">Só Fônica 360° (Semi-Seq)</option><option value="dist_hall">Distribuidor Hall</option></select></div>
-              <div class="f-row"><span class="f-lbl">Roda Fônica / CAS</span><select><option>60-2 Dentes</option><option>36-1 Dentes</option><option>36-2-2-2 (Mazda RX-8 / Subaru)</option><option>24+2 CAS (Mazda 13B / 20B)</option><option>GM 58X</option></select></div>
-              <div class="f-row"><span class="f-lbl">Split Trailing Wankel / VirtualCam™</span><input id="sRotSplit" value="105.0° DPMS (Wankel Split Mín. 8.0° em Boost)"></div>
+              <div class="f-row"><span class="f-lbl">Modo de Fase 720°</span><select id="sTrig" onchange="syncDirectSetup()"><option value="crank_cam">Fônica + Sensor Fase Físico</option><option value="crank_vcam" selected>Fônica + VirtualCam™ (s/ Fase!)</option><option value="crank_semi">Só Fônica 360° (Semi-Seq)</option><option value="dist_hall">Distribuidor Hall</option></select></div>
+              <div class="f-row"><span class="f-lbl">Roda Fônica / CAS</span><select><option selected>60-2 Dentes</option><option>36-1 Dentes</option><option>36-2-2-2 (RX-8 / Subaru)</option><option>24+2 CAS (Mazda 13B)</option><option>GM 58X</option></select></div>
+              <div class="f-row"><span class="f-lbl">Janela MAP VirtualCam™<small>Amostragem fase 720°</small></span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="sRotSplit" type="number" step="1.0" min="45" max="160" value="105.0"><span class="ns-u">°DPMS</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Corte de Giro Motor</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupRevLim" type="number" step="100" min="3000" max="11500" value="7200" oninput="syncRevLimitInputs(this.value)"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>2. Injeção & Eixo de Carga</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Disparo Injetores</span><select><option selected>100% Sequencial 720°</option><option>Semi-Sequencial</option><option>Multiponto</option><option>Só Ignição (Carburado)</option></select></div>
-              <div class="f-row"><span class="f-lbl">Bicos Bancada A</span><input value="65 lb/h (682 cc/min)"></div>
-              <div class="f-row pro-only"><span class="f-lbl">Bicos Bancada B (8 Bicos)</span><input value="160 lb/h (Progressivo)"></div>
-              <div class="f-row"><span class="f-lbl">Base Eixo Carga Principal</span><select onchange="setLoadAxisMode(this.value)"><option value="map" selected>Speed-Density (MAP bar)</option><option value="tps">Alpha-N (TPS % p/ ITBs)</option></select></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>2. Injeção, Bicos &amp; Eixo de Carga</span><span id="lblCcMinA" style="color:var(--cyan);font-family:var(--mono);font-size:9.8px">682 cc/min</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Disparo Injetores</span><select><option selected>100% Sequencial 720°</option><option>Semi-Sequencial</option><option>Multiponto Simultâneo</option><option>Só Ignição (Carburado)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Preset Bico Bancada A</span>
+                <select id="selPresetInjA" onchange="if(this.value)setInjFlowBoth(this.value)">
+                  <option value="">Customizado</option>
+                  <option value="42">Bosch 42 lb/h</option>
+                  <option value="65" selected>Deka 65 lb/h</option>
+                  <option value="80">Deka 80 lb/h</option>
+                  <option value="120">Bosch 120 lb/h</option>
+                  <option value="165">Bosch 165 lb/h</option>
+                  <option value="210">Alta Vazão 210 lb/h</option>
+                </select>
+              </div>
+              <div class="f-row"><span class="f-lbl">Vazão Bancada A</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupFlowA" type="number" step="1" min="14" max="500" value="65" oninput="setInjFlowBoth(this.value)"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row pro-only"><span class="f-lbl">Vazão Bancada B (2ª)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupFlowB" type="number" step="5" min="30" max="600" value="160"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Eixo de Carga Principal</span><select onchange="setLoadAxisMode(this.value)"><option value="map" selected>Speed-Density (MAP bar)</option><option value="tps">Alpha-N (TPS % p/ ITBs)</option></select></div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>3. Ignição & Trava de Ponto</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Bobinas</span><select><option selected>COP Individual</option><option>Centelha Perdida 2×2</option><option>Distribuidor</option></select></div>
-              <div class="f-row"><span class="f-lbl">Polaridade</span><select><option selected>Descida TTL 5V (Fria Repouso)</option><option>Subida Módulo Externo</option></select></div>
-              <div class="f-row"><span class="f-lbl">Dwell Base @ 13.8V</span><input value="3.10 ms"></div>
-              <div class="f-row"><span class="f-lbl">Trava Pistola Estroboscópica</span><select><option selected>OFF (Segue Mapa)</option><option>Travar 15.0° APMS</option><option>Travar 0.0° PMS</option></select></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>3. Ignição, Dwell &amp; Pistola Ponto</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Topologia Bobinas</span><select><option selected>COP Individual</option><option>Centelha Perdida 2×2</option><option>Distribuidor Único</option></select></div>
+              <div class="f-row"><span class="f-lbl">Borda de Disparo</span><select><option selected>Descida TTL 5V (Fria Repouso)</option><option>Subida Módulo Externo</option></select></div>
+              <div class="f-row"><span class="f-lbl">Dwell Base @ 13.8V<small>Proteção térmica IGBT</small></span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupDwellBase" type="number" step="0.10" min="1.20" max="5.50" value="3.10" onchange="st.curves.dwell.y[6]=parseFloat(this.value)||3.1"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Tipo Corte de Giro</span><select><option selected>Corte Rotativo Ignição (Suave)</option><option>Corte Combustível</option><option>Duplo Estágio Ignição + Comb.</option></select></div>
+              <div class="f-row"><span class="f-lbl">Trava Pistola Ponto</span><select onchange="toast('Modo Pistola: '+this.options[this.selectedIndex].text)"><option selected>OFF (Segue Mapa 3D)</option><option>Travar Fixo 15.0° APMS</option><option>Travar Fixo 10.0° APMS</option><option>Travar Fixo 0.0° PMS</option></select></div>
             </div></div>
           </div>
         </div>
@@ -879,46 +1234,115 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       </section>
 
       <section class="view-pane" id="cv-sens">
-        <div class="v-bar"><div class="v-crumb">CALIBRAÇÃO DE SENSORES, PROTEÇÃO DE SONDA DEW-POINT LSU 4.9 & DETECÇÃO DE MARCHAS</div></div>
+        <div class="v-bar"><div class="v-crumb">CALIBRAÇÃO DE SENSORES, PROTEÇÃO DE SONDA DEW-POINT LSU 4.9 &amp; DETECÇÃO DE MARCHAS</div></div>
         <div class="scroll-body"><div class="grid-3">
-          <div class="panel-box"><div class="p-hdr"><span>Calibração Rápida Pedal / TPS</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Tensão Lida Agora</span><input value="0.62 V  (0.0%)" readonly></div>
-            <div class="f-row"><span class="f-lbl">0% Fechada / 100% WOT</span><input value="0.62 V  →  4.48 V"></div>
-            <div style="display:flex;gap:6px;"><button class="obtn ok" style="flex:1" onclick="toast('TPS 0% calibrado!')">Capturar 0%</button><button class="obtn on" style="flex:1" onclick="toast('TPS 100% calibrado!')">Capturar 100%</button></div>
+          <div class="panel-box"><div class="p-hdr"><span>Calibração Rápida Pedal / TPS</span><span class="st-pill">ADC 12-BIT</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Leitura Instantânea TPS</span><div class="ro-badge"><span>Pista Principal</span><strong id="roSensTps">0.62 V (0.0%)</strong></div></div>
+            <div class="f-row"><span class="f-lbl">Tensão 0% (Fechada) / 100% (WOT)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">0%</span><input id="calTpsMinV" type="number" step="0.02" min="0.10" max="2.50" value="0.62"><span class="ns-u">V</span></div>
+                <div class="num-step"><span class="ns-pfx">100%</span><input id="calTpsMaxV" type="number" step="0.02" min="2.80" max="4.95" value="4.48"><span class="ns-u">V</span></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;"><button class="obtn ok" style="flex:1" onclick="document.getElementById('calTpsMinV').value='0.62';toast('TPS 0% capturado (0.62 V)!')">Capturar 0%</button><button class="obtn on" style="flex:1" onclick="document.getElementById('calTpsMaxV').value='4.48';toast('TPS 100% WOT capturado (4.48 V)!')">Capturar 100%</button></div>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>Saúde da Sonda O2 & Proteção Anti-Água (Dew-Point)</span></div><div class="card-pad">
-            <div class="f-row switch-row"><span class="f-lbl">Partida Suave Dew-Point (Triplica Vida no E100!)</span><input type="checkbox" checked></div>
-            <div class="f-row"><span class="f-lbl">Atraso Evaporação Água Pós-Partida</span><input value="22 seg @ 25% PWM -> Rampa 0.4V/s"></div>
-            <div class="f-row"><span class="f-lbl">Diagnóstico Célula Nernst LSU 4.9</span><input value="780 °C • 82 Ω • Saúde: 98%" readonly></div>
+          <div class="panel-box"><div class="p-hdr"><span>Saúde Sonda O2 &amp; Anti-Água (Dew-Point)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Partida Suave Dew-Point (Protege LSU 4.9 no E100!)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Pré-Aquecimento / Duty Evaporação</span>
+              <div class="dual-ctl">
+                <div class="num-step"><input type="number" step="2" min="5" max="90" value="22"><span class="ns-u">seg</span></div>
+                <div class="num-step"><input type="number" step="5" min="10" max="50" value="25"><span class="ns-u">%PWM</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Diagnóstico Célula Nernst CJ125</span><div class="ro-badge"><span>780 °C • 82 Ω</span><strong>SAÚDE 98%</strong></div></div>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>Pressões, Exibição AFR/λ & Sensores Custom</span></div><div class="card-pad">
+          <div class="panel-box"><div class="p-hdr"><span>Pressões PS-10 / MAP &amp; Curvas NTC</span></div><div class="card-pad">
             <div class="f-row"><span class="f-lbl">Unidade Exibição de Sonda</span><select id="selAfrUnit" onchange="st.afrScale=parseFloat(this.value);toast('Escala de sonda atualizada!')"><option value="1" selected>Lambda Puro (1.000 λ)</option><option value="14.7">AFR Gasolina (14.7:1)</option><option value="9.0">AFR Etanol E100 (9.0:1)</option><option value="6.4">AFR Metanol M100 (6.4:1)</option></select></div>
-            <div class="f-row"><span class="f-lbl">Linear 0–5V Custom (0.5V → 4.5V)</span><input value="0.00 bar @ 0.50V  →  10.34 bar @ 4.50V"></div>
-            <div class="f-row"><span class="f-lbl">NTC Steinhart-Hart 3 Pontos</span><input value="0°C=5890Ω | 25°C=2050Ω | 90°C=245Ω"></div>
+            <div class="f-row"><span class="f-lbl">Preset Sensor Pressão (0.5V–4.5V)</span>
+              <select onchange="applyLinearSensorPreset(this.value)">
+                <option value="10" selected>PS-10B / Bosch 0 a 10 bar (Comb/Óleo)</option>
+                <option value="20">PS-20B 0 a 20 bar (Freio / CO2 / WMI)</option>
+                <option value="3">GM / Bosch MAP Externo 3-Bar</option>
+                <option value="5">MAP Motorsport 5-Bar</option>
+              </select>
+            </div>
+            <div class="f-row"><span class="f-lbl">Escala Linear (0.50V → 4.50V)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">0.5V</span><input id="linMinBar" type="number" step="0.1" value="0.0"><span class="ns-u">b</span></div>
+                <div class="num-step"><span class="ns-pfx">4.5V</span><input id="linMaxBar" type="number" step="0.5" value="10.0"><span class="ns-u">b</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Curva NTC Temperatura (CLT / IAT)</span>
+              <select>
+                <option selected>Bosch / VW / Audi Padrão (2050 Ω @ 25°C)</option>
+                <option>GM / Delphi Família I &amp; II (2800 Ω @ 25°C)</option>
+                <option>Fiat / Magneti Marelli Fire (2150 Ω @ 25°C)</option>
+                <option>Honda / Toyota Denso (2200 Ω @ 25°C)</option>
+              </select>
+            </div>
           </div></div>
 
-          <div class="panel-box" style="grid-column: 1 / -1;"><div class="p-hdr"><span>⚡ Calculadora & Reescalonador 1-Clique de Troca de Bicos / Pressão Diferencial / Combustível (Lei de Bernoulli √ΔP)</span><span style="color:var(--neon-g)" id="lblRescalePreview">Fator Calculado: ×0.542 (-45.8% Pulso)</span></div><div class="card-pad" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;">
-            <div><div class="f-lbl" style="margin-bottom:4px">Bico Atual → Novo (lb/h)</div><div style="display:flex;gap:5px"><input id="rsOldLbh" type="number" value="65" oninput="previewInjRescale()"><input id="rsNewLbh" type="number" value="120" oninput="previewInjRescale()"></div></div>
-            <div><div class="f-lbl" style="margin-bottom:4px">Pressão dP Atual → Nova (bar)</div><div style="display:flex;gap:5px"><input id="rsOldDp" type="number" step="0.1" value="3.0" oninput="previewInjRescale()"><input id="rsNewDp" type="number" step="0.1" value="3.0" oninput="previewInjRescale()"></div></div>
+          <div class="panel-box" style="grid-column: 1 / -1;"><div class="p-hdr"><span>⚡ Calculadora &amp; Reescalonador 1-Clique de Troca de Bicos / Pressão Diferencial / Combustível (Lei de Bernoulli √ΔP)</span><span style="color:var(--neon-g)" id="lblRescalePreview">Fator Calculado: ×0.542 (-45.8% Pulso)</span></div><div class="card-pad" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;">
+            <div><div class="f-lbl" style="margin-bottom:4px">Bico Atual → Novo (lb/h)</div><div class="dual-ctl"><div class="num-step"><input id="rsOldLbh" type="number" value="65" oninput="previewInjRescale()"><span class="ns-u">lb</span></div><div class="num-step"><input id="rsNewLbh" type="number" value="120" oninput="previewInjRescale()"><span class="ns-u">lb</span></div></div></div>
+            <div><div class="f-lbl" style="margin-bottom:4px">Pressão dP Atual → Nova (bar)</div><div class="dual-ctl"><div class="num-step"><input id="rsOldDp" type="number" step="0.1" value="3.0" oninput="previewInjRescale()"><span class="ns-u">bar</span></div><div class="num-step"><input id="rsNewDp" type="number" step="0.1" value="3.0" oninput="previewInjRescale()"><span class="ns-u">bar</span></div></div></div>
             <div><div class="f-lbl" style="margin-bottom:4px">Combustível Atual → Novo</div><select id="rsAfrRatio" onchange="previewInjRescale()"><option value="1.0" selected>Manter Mesmo Combustível</option><option value="1.533">Gasolina E27 (13.8) → Etanol E100 (9.0)</option><option value="0.652">Etanol E100 (9.0) → Gasolina E27 (13.8)</option><option value="1.406">Etanol E100 (9.0) → Metanol M100 (6.4)</option></select></div>
-            <div><button class="tbtn burn" style="width:100%;height:28px" onclick="applyInjRescaleAll()">Reescalar Pulso, Partida & Rápida Agora</button></div>
+            <div><button class="tbtn burn" style="width:100%;height:28px" onclick="applyInjRescaleAll()">Reescalar Pulso, Partida &amp; Rápida Agora</button></div>
           </div></div>
         </div></div>
       </section>
 
       <section class="view-pane" id="cv-plc">
-        <div class="v-bar"><div class="v-crumb">4 SAÍDAS AUXILIARES PROGRAMÁVEIS POR LÓGICA CONDICIONAL DUPLA (PLC AUTOMOTIVO)</div></div>
+        <div class="v-bar">
+          <div class="v-crumb">4 SAÍDAS AUXILIARES PROGRAMÁVEIS POR LÓGICA CONDICIONAL DUPLA (PLC AUTOMOTIVO — TEMPO REAL 200 HZ)</div>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--neon-g);">Mude qualquer canal/operador/valor abaixo e veja o acionamento ao vivo!</span>
+        </div>
         <div class="scroll-body"><div class="panel-box">
-          <div class="p-hdr"><span>Regras Condicionais com Histerese (2ª Bomba Turbo, VTEC, Shift-Light, Spray Intercooler)</span></div>
+          <div class="p-hdr"><span>Construtor Estruturado de Saídas Genéricas (2ª Bomba, VTEC, Shift-Light, Water Spray, Solenoides)</span></div>
           <table class="data-tbl">
-            <thead><tr><th>Canal</th><th>Pino</th><th>Condição 1</th><th>Lógica</th><th>Condição 2</th><th>Histerese</th><th>Estado</th></tr></thead>
+            <thead><tr><th style="width:44px">ON</th><th>Função da Saída</th><th style="width:142px">Pino Físico</th><th style="width:236px">Condição 1 (Canal / Op / Valor)</th><th style="width:90px">Lógica</th><th style="width:236px">Condição 2 (Canal / Op / Valor)</th><th style="width:132px">Histerese</th><th style="width:124px">Estado Agora</th></tr></thead>
             <tbody>
-              <tr><td><strong>PLC #1 — 2ª Bomba</strong></td><td><select><option>Aux 2 / INJ Livre</option></select></td><td><input value="MAP >= +0.80 bar"></td><td><select><option>E (AND)</option></select></td><td><input value="RPM >= 3600"></td><td><input value="0.15 bar"></td><td id="plcSt0" style="color:var(--neon-g);font-family:var(--mono);font-weight:800">ARMADA</td></tr>
-              <tr><td><strong>PLC #2 — VTEC</strong></td><td><select><option>IGN Livre TTL</option></select></td><td><input value="RPM >= 4850"></td><td><select><option>E (AND)</option></select></td><td><input value="TPS >= 55%"></td><td><input value="150 RPM"></td><td id="plcSt1" style="color:var(--cyan);font-family:var(--mono);font-weight:800">ARMADA</td></tr>
-              <tr><td><strong>PLC #3 — Shift-Light</strong></td><td><select><option>Saída Tacho/Shift</option></select></td><td><input value="RPM >= 6400"></td><td><select><option>OU (OR)</option></select></td><td><input value="CLT >= 106 °C"></td><td><input value="Piscar 10Hz"></td><td id="plcSt2" style="color:var(--txt-2);font-family:var(--mono);font-weight:800">OFF</td></tr>
-              <tr><td><strong>PLC #4 — Water Spray</strong></td><td><select><option>FlexPin Aux 4</option></select></td><td><input value="IAT >= 30 °C"></td><td><select><option>E (AND)</option></select></td><td><input value="MAP >= +1.10 bar"></td><td><input value="3.0 °C"></td><td id="plcSt3" style="color:var(--txt-2);font-family:var(--mono);font-weight:800">OFF</td></tr>
+              <tr>
+                <td><input type="checkbox" id="plcEn0" checked></td>
+                <td><select><option selected>2ª Bomba Combustível</option><option>Válvula Solenoide Aux</option><option>Ventoinha Extra</option></select></td>
+                <td><select><option selected>Aux PWM 2 (Low-Side)</option><option>IGN Livre 5 TTL</option><option>PDM-8 Canal #6 CAN</option></select></td>
+                <td><div class="cond-builder"><select id="plcC1_0"><option value="map" selected>MAP (bar)</option><option value="rpm">Rotação RPM</option><option value="tps">TPS (%)</option><option value="clt">Água (°C)</option><option value="iat">Ar IAT (°C)</option></select><select id="plcOp1_0"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV1_0" type="number" step="0.05" value="0.80"></div></td>
+                <td><select id="plcLg_0"><option value="and" selected>E (AND)</option><option value="or">OU (OR)</option><option value="one">Só Cond 1</option></select></td>
+                <td><div class="cond-builder"><select id="plcC2_0"><option value="rpm" selected>Rotação RPM</option><option value="map">MAP (bar)</option><option value="tps">TPS (%)</option><option value="clt">Água (°C)</option></select><select id="plcOp2_0"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV2_0" type="number" step="100" value="3600"></div></td>
+                <td><div class="num-step"><input type="number" step="0.05" value="0.15"><span class="ns-u">bar</span></div></td>
+                <td id="plcSt0" style="color:var(--neon-g);font-family:var(--mono);font-weight:800">ARMADA</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="plcEn1" checked></td>
+                <td><select><option selected>Comando VTEC / Variador</option><option>Borboleta Coletor VIS</option><option>Solenoide Nitro</option></select></td>
+                <td><select><option selected>IGN Livre 6 (+5V/GND)</option><option>Aux PWM 3</option><option>FlexPin B4</option></select></td>
+                <td><div class="cond-builder"><select id="plcC1_1"><option value="rpm" selected>Rotação RPM</option><option value="map">MAP (bar)</option><option value="tps">TPS (%)</option><option value="clt">Água (°C)</option></select><select id="plcOp1_1"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV1_1" type="number" step="100" value="4850"></div></td>
+                <td><select id="plcLg_1"><option value="and" selected>E (AND)</option><option value="or">OU (OR)</option><option value="one">Só Cond 1</option></select></td>
+                <td><div class="cond-builder"><select id="plcC2_1"><option value="tps" selected>TPS (%)</option><option value="map">MAP (bar)</option><option value="clt">Água (°C)</option></select><select id="plcOp2_1"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV2_1" type="number" step="5" value="55"></div></td>
+                <td><div class="num-step"><input type="number" step="50" value="150"><span class="ns-u">RPM</span></div></td>
+                <td id="plcSt1" style="color:var(--cyan);font-family:var(--mono);font-weight:800">ARMADA</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="plcEn2" checked></td>
+                <td><select><option selected>Shift-Light / Alerta</option><option>Sirene Pressão Óleo</option></select></td>
+                <td><select><option selected>Saída Tacho / Shift</option><option>Aux Low-Side 4</option></select></td>
+                <td><div class="cond-builder"><select id="plcC1_2"><option value="rpm" selected>Rotação RPM</option><option value="clt">Água (°C)</option><option value="map">MAP (bar)</option></select><select id="plcOp1_2"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV1_2" type="number" step="100" value="6400"></div></td>
+                <td><select id="plcLg_2"><option value="and">E (AND)</option><option value="or" selected>OU (OR)</option><option value="one">Só Cond 1</option></select></td>
+                <td><div class="cond-builder"><select id="plcC2_2"><option value="clt" selected>Água (°C)</option><option value="rpm">Rotação RPM</option><option value="iat">Ar IAT (°C)</option></select><select id="plcOp2_2"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV2_2" type="number" step="1" value="106"></div></td>
+                <td><div class="num-step"><input type="number" step="50" value="100"><span class="ns-u">RPM</span></div></td>
+                <td id="plcSt2" style="color:var(--txt-2);font-family:var(--mono);font-weight:800">OFF</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" id="plcEn3" checked></td>
+                <td><select><option selected>Water Spray Intercooler</option><option>Ventoinha Radiador Óleo</option></select></td>
+                <td><select><option selected>FlexPin Aux 4</option><option>PDM-8 Canal #7 CAN</option></select></td>
+                <td><div class="cond-builder"><select id="plcC1_3"><option value="iat" selected>Ar IAT (°C)</option><option value="clt">Água (°C)</option><option value="map">MAP (bar)</option></select><select id="plcOp1_3"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV1_3" type="number" step="1" value="30"></div></td>
+                <td><select id="plcLg_3"><option value="and" selected>E (AND)</option><option value="or">OU (OR)</option><option value="one">Só Cond 1</option></select></td>
+                <td><div class="cond-builder"><select id="plcC2_3"><option value="map" selected>MAP (bar)</option><option value="tps">TPS (%)</option><option value="rpm">Rotação RPM</option></select><select id="plcOp2_3"><option value=">=" selected>&ge;</option><option value="<=">&le;</option></select><input id="plcV2_3" type="number" step="0.05" value="1.10"></div></td>
+                <td><div class="num-step"><input type="number" step="0.5" value="3.0"><span class="ns-u">°C</span></div></td>
+                <td id="plcSt3" style="color:var(--txt-2);font-family:var(--mono);font-weight:800">OFF</td>
+              </tr>
             </tbody>
           </table>
         </div></div>
@@ -964,8 +1388,10 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
               <div class="f-row"><span class="f-lbl">Câmbio Nativo CAN-TCU™ (Dispensa Módulo de R$ 7.500!)</span>
                 <select><option selected>VW/Audi DSG DQ250/DQ500 (Shift-Farts + Blip Redução)</option><option>BMW ZF 8HP 8-Marchas (Coordenação Torque 0x0B5)</option><option>Manual / Dogbox</option></select>
               </div>
-              <div class="f-row"><span class="f-lbl">Leitura 4 Rodas ABS via CAN (Tração / VSS)</span><input type="checkbox" checked></div>
-              <div class="f-row"><span class="f-lbl">Terminador 120 Ω On-Board</span><input value="Ativo (Transceptor TJA1051T/3 + PESD2CANFD)" readonly></div>
+              <div class="f-row switch-row"><span class="f-lbl">Leitura 4 Rodas ABS via CAN (Tração / VSS)</span><input type="checkbox" checked></div>
+              <div class="f-row"><span class="f-lbl">Resistor Terminador 120 Ω On-Board</span>
+                <select><option selected>Ativado — 120 Ω Interno (Fim de Barramento)</option><option>Desligado — Alta Impedância (Meio de Rede)</option></select>
+              </div>
             </div></div>
 
             <div class="panel-box"><div class="p-hdr"><span>2. CAN Sniffer Ao Vivo (Frames Codificados pelo Firmware C)</span><span style="color:var(--neon-g);font-family:var(--mono);">500 kbps • 0 ERROS</span></div>
@@ -974,14 +1400,14 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
           </div>
 
           <div class="panel-box">
-            <div class="p-hdr"><span>3. Construtor Livre de Pacotes Custom CAN (GCAN / .DBC — Integra Direção Elétrica, Bomba CWA200 e PDM!)</span></div>
+            <div class="p-hdr"><span>3. Construtor Estruturado de Pacotes Custom CAN (GCAN / .DBC — Direção EPS, Bomba CWA200 e PDM!)</span></div>
             <table class="data-tbl">
-              <thead><tr><th>Slot</th><th>Direção &amp; ID Hex</th><th>Formato / Endianness</th><th>Escala &amp; Offset</th><th>Canal TBX Associado</th><th>Status</th></tr></thead>
+              <thead><tr><th>Slot</th><th style="width:92px">Direção</th><th style="width:105px">ID CAN (Hex)</th><th style="width:96px">Frequência</th><th>Formato / Endianness</th><th style="width:170px">Ganho &amp; Offset</th><th>Canal TBX Associado</th><th>Status</th></tr></thead>
               <tbody>
-                <tr><td><strong>GCAN #1</strong></td><td><input value="TX 0x1A0 (50 Hz)"></td><td><select><option selected>16-Bit Motorola Big-Endian</option><option>16-Bit Intel Little-Endian</option></select></td><td><input value="× 100  |  Offset 0"></td><td><select><option selected>Velocidade VSS → Direção Elétrica EPS</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
-                <tr><td><strong>GCAN #2</strong></td><td><input value="TX 0x2E4 (20 Hz)"></td><td><select><option selected>8-Bit Unsigned Byte 0</option></select></td><td><input value="× 2.55 (0–100% PWM)"></td><td><select><option selected>Alvo Bomba D'Água Elétrica BMW CWA200</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
-                <tr><td><strong>GCAN #3</strong></td><td><input value="RX 0x640 (100 Hz)"></td><td><select><option>16-Bit Intel Little-Endian</option></select></td><td><input value="× 0.001 λ"></td><td><select><option selected>Sonda Wideband CAN Externa #2</option></select></td><td style="color:var(--cyan);font-family:var(--mono)">ESCUTA</td></tr>
-                <tr><td><strong>GCAN #4</strong></td><td><input value="TX 0x520 (10 Hz)"></td><td><select><option>Bitmask 8 Bits</option></select></td><td><input value="1:1 Flags"></td><td><select><option selected>Módulo Powerbox PDM Sem Fusíveis</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
+                <tr><td><strong>GCAN #1</strong></td><td><select><option selected>TX Enviar</option><option>RX Ler</option></select></td><td><select><option selected>0x1A0</option><option>0x280</option><option>0x316</option></select></td><td><select><option>20 Hz</option><option selected>50 Hz</option><option>100 Hz</option></select></td><td><select><option selected>16-Bit Motorola Big-Endian</option><option>16-Bit Intel Little-Endian</option></select></td><td><div class="dual-ctl"><div class="num-step"><span class="ns-pfx">×</span><input type="number" step="1" value="100"></div><div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" value="0"></div></div></td><td><select><option selected>Velocidade VSS → Direção Elétrica EPS</option><option>RPM Motor</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
+                <tr><td><strong>GCAN #2</strong></td><td><select><option selected>TX Enviar</option><option>RX Ler</option></select></td><td><select><option selected>0x2E4</option><option>0x3E0</option></select></td><td><select><option selected>20 Hz</option><option>50 Hz</option></select></td><td><select><option selected>8-Bit Unsigned Byte 0</option><option>16-Bit Intel</option></select></td><td><div class="dual-ctl"><div class="num-step"><span class="ns-pfx">×</span><input type="number" step="0.05" value="2.55"></div><div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" value="0"></div></div></td><td><select><option selected>Alvo Bomba D'Água Elétrica BMW CWA200</option><option>Duty Ventoinha PWM</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
+                <tr><td><strong>GCAN #3</strong></td><td><select><option>TX Enviar</option><option selected>RX Ler</option></select></td><td><select><option selected>0x640</option><option>0x6A0</option></select></td><td><select><option>50 Hz</option><option selected>100 Hz</option></select></td><td><select><option selected>16-Bit Intel Little-Endian</option><option>16-Bit Big-Endian</option></select></td><td><div class="dual-ctl"><div class="num-step"><span class="ns-pfx">×</span><input type="number" step="0.001" value="0.001"></div><div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.1" value="0"></div></div></td><td><select><option selected>Sonda Wideband CAN Externa #2</option><option>Pirômetro EGT #1..4</option></select></td><td style="color:var(--cyan);font-family:var(--mono)">ESCUTA</td></tr>
+                <tr><td><strong>GCAN #4</strong></td><td><select><option selected>TX Enviar</option><option>RX Ler</option></select></td><td><select><option selected>0x520</option><option>0x6B0</option></select></td><td><select><option selected>10 Hz</option><option>50 Hz</option></select></td><td><select><option selected>Bitmask 8 Bits</option><option>8-Bit Unsigned</option></select></td><td><div class="dual-ctl"><div class="num-step"><span class="ns-pfx">×</span><input type="number" step="1" value="1"></div><div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" value="0"></div></div></td><td><select><option selected>Módulo Powerbox PDM-8 Sem Fusíveis</option><option>Saídas PLC #1..4</option></select></td><td style="color:var(--neon-g);font-family:var(--mono)">ATIVO</td></tr>
               </tbody>
             </table>
           </div>
@@ -1011,16 +1437,16 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
         <div class="scroll-body">
           <div class="grid-2" style="margin-bottom:10px">
-            <div class="panel-box"><div class="p-hdr"><span>1. Condicionador Wideband CAN Próprio — TBX-NANO-WB (Bosch CJ125 LSU 4.9)</span><span style="color:var(--neon-g)">BOM ~$14.20 • CAN 0x6A0</span></div><div class="card-pad">
+            <div class="panel-box"><div class="p-hdr"><span>1. Condicionador Wideband CAN — TBX-NANO-WB (Bosch CJ125 LSU 4.9)</span><span style="color:var(--neon-g)">CAN 0x6A0</span></div><div class="card-pad">
               <div class="f-row"><span class="f-lbl">Protocolo de Transmissão CAN</span><select><option selected>Dual: TBX-CAN 500 kbps (0x6A0) + FTCAN 2.0 (Compatível FT)</option><option>Apenas TBX-CAN 500 kbps (ID 0x6A0 + 0x6A1 Bancada B)</option></select></div>
-              <div class="f-row"><span class="f-lbl">Display Local OLED 0.96" I2C + Saída 0–5V</span><input value="OLED Ativo (Lambda / AFR) • Linear 0.5V=0.65λ → 4.5V=1.30λ" readonly></div>
-              <div class="f-row"><span class="f-lbl">Aquecimento Anti-Choque Térmico (Dew-Point)</span><input value="Célula Nernst 780 °C • Ip = -0.42 mA • Saúde Sonda: 99%" readonly style="color:var(--neon-g)"></div>
+              <div class="f-row"><span class="f-lbl">Exibição no Display OLED 0.96"</span><select><option selected>Lambda Puro (0.65 a 1.30 λ) + Saída 0.5–4.5V</option><option>AFR Etanol E100 (5.8 a 12.0 AFR)</option><option>AFR Gasolina (9.5 a 19.0 AFR)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Saúde Térmica Célula Nernst</span><div class="ro-badge"><span>780 °C • Ip -0.42 mA</span><strong>SAÚDE 99%</strong></div></div>
             </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>2. Módulo de Potência Sem Fusíveis — TBX-PDM8 SmartFuse™ (8× MOSFETs High-Side)</span><span style="color:var(--cyan)" id="pdmSumBadge">CORRENTE TOTAL: 31.4 A • 0 TRIPS</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Eliminação de Caixa de Relés e Fusíveis</span><input value="8 Canais Estado Sólido • Corte Curto < 1 ms • 3× Auto-Rearme" readonly></div>
-              <div class="f-row"><span class="f-lbl">Rampa Partida Suave PWM (Bomba / Ventoinha)</span><input value="25% → 100% em 450 ms (Elimina pico de 45A na bateria!)" readonly style="color:var(--neon-g)"></div>
-              <div class="f-row"><span class="f-lbl">Tensão Barramento +30 Bateria no PDM-8</span><input id="pdmBattV" value="13.86 V • Temp MOSFETs: 41.2 °C • CAN 0x6B0 OK" readonly></div>
+            <div class="panel-box"><div class="p-hdr"><span>2. Módulo de Potência Sem Fusíveis — TBX-PDM8 SmartFuse™</span><span style="color:var(--cyan)" id="pdmSumBadge">CORRENTE TOTAL: 31.4 A • 0 TRIPS</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Política de Rearme Automático eFuse</span><select><option selected>Corte Curto &lt; 1 ms • Até 3 Tentativas de Auto-Rearme</option><option>Desarme Imediato Travado até Pós-Chave</option></select></div>
+              <div class="f-row"><span class="f-lbl">Rampa Global Partida Suave (Bomba/Fan)</span><select><option>Rápida 250 ms</option><option selected>Progressiva 450 ms (Zero Pico na Bateria!)</option><option>Suave 800 ms</option></select></div>
+              <div class="f-row"><span class="f-lbl">Barramento +30 no PDM-8</span><div class="ro-badge"><span id="pdmBattV">13.86 V • MOSFETs 41.2 °C</span><strong>CAN 0x6B0 OK</strong></div></div>
             </div></div>
           </div>
 
@@ -1063,11 +1489,11 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
               </select></div>
             </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>2. Telemetria da Mini-Box STM32G0B1 + CH446Q & Frame CAN</span><span style="color:var(--neon-c)" id="ftbLinkStat">ONLINE • 0x7B0 ACK</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Hardware Detectado no Chicote Whip 25 cm</span><input id="ftbHwInfo" value="TBX-PNP-FT-POWER52 Rev 1.0 (STM32G0B1 + CH446Q)" readonly></div>
-              <div class="f-row"><span class="f-lbl">Leitura WB-O2 Nano em FTCAN 1 Mbps (29-Bit)</span><input id="ftbNanoRead" value="ID 0x09000013 → 0.852 λ (Sonda Aquecida OK)" readonly style="color:var(--neon-g)"></div>
-              <div class="f-row"><span class="f-lbl">Compensação R_on Matriz CH446Q (NTC Água/Ar)</span><input value="-55.0 Ω automático no firmware (< 0.1 °C erro)" readonly></div>
-              <div class="f-row"><span class="f-lbl">Último Pacote Zero-Jumper Gravado na Flash</span><input id="ftbCanHex" value="0x7B0 [F7 35 72 41 06 0C 02 C9]" readonly style="color:var(--neon-a)"></div>
+            <div class="panel-box"><div class="p-hdr"><span>2. Telemetria da Mini-Box STM32G0B1 + CH446Q &amp; Frame CAN</span><span style="color:var(--neon-c)" id="ftbLinkStat">ONLINE • 0x7B0 ACK</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Hardware Detectado no Whip 25 cm</span><div class="ro-badge"><strong id="ftbHwInfo">TBX-PNP-FT-POWER52 Rev 1.0 (STM32G0B1 + CH446Q)</strong></div></div>
+              <div class="f-row"><span class="f-lbl">Leitura WB-O2 Nano em FTCAN 1 Mbps</span><div class="ro-badge"><span>ID 0x09000013</span><strong id="ftbNanoRead">0.852 λ • Sonda OK</strong></div></div>
+              <div class="f-row"><span class="f-lbl">Compensação R_on Matriz CH446Q</span><div class="ro-badge"><span>Auto-Calibração NTC</span><strong>-55.0 Ω (&lt; 0.1 °C)</strong></div></div>
+              <div class="f-row"><span class="f-lbl">Último Pacote Zero-Jumper Gravado</span><div class="ro-badge"><span id="ftbCanHex" style="color:#fbbf24">0x7B0 [F7 35 72 41 06 0C 02 C9]</span><strong>FLASH OK</strong></div></div>
             </div></div>
           </div>
 
@@ -1084,32 +1510,99 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       <!-- ==================== VIEW 7: STREET, AFTER-RUN FAN, A/C, IDLE & CRUISE ==================== -->
       <section class="view-pane" id="cv-street">
         <div class="v-bar">
-          <div class="v-crumb">RUA & CONFORTO OEM — VENTOINHA 1/2, PÓS-VENTILAÇÃO TURBO, AR-CONDICIONADO & MARCHA LENTA</div>
-          <button class="obtn ok" onclick="toast('Parâmetros de rua e pós-ventilação aplicados!')">Aplicar Configurações OEM</button>
+          <div class="v-crumb">RUA &amp; CONFORTO OEM — VENTOINHA 1/2, PÓS-VENTILAÇÃO TURBO, AR-CONDICIONADO, LENTA &amp; CHASSI</div>
+          <button class="obtn ok" onclick="toast('Parâmetros de rua, ventoinhas e A/C gravados!')">✓ Aplicar Conforto OEM</button>
         </div>
         <div class="scroll-body"><div class="grid-2">
-          <div class="panel-box"><div class="p-hdr"><span>1. Ventoinha 1/2 & Pós-Ventilação Térmica (After-Run)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Ventoinha 1 (Liga / Desliga)</span><input value="94.0 °C  /  90.0 °C"></div>
-            <div class="f-row"><span class="f-lbl">Ventoinha 2 (Liga / Desliga)</span><input value="99.0 °C  /  95.0 °C"></div>
-            <div class="f-row"><span class="f-lbl">Antecipação de Ar Antes de Ligar Fan 1</span><input value="+4.5 % Ar (150 ms antes)"></div>
-            <div class="f-row"><span class="f-lbl">Pós-Ventilação ao Desligar Chave (Power-Hold)</span><input value="Manter 45s se CLT > 98 °C"></div>
+          <div class="panel-box"><div class="p-hdr"><span>1. Ventoinha 1/2 &amp; Pós-Ventilação Térmica (After-Run)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Controle Automático Eletroventilador 1 &amp; 2</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Ventoinha 1 (Liga / Desliga)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">ON</span><input id="strFan1On" type="number" step="0.5" min="70" max="112" value="94.0"><span class="ns-u">°C</span></div>
+                <div class="num-step"><span class="ns-pfx">OFF</span><input id="strFan1Off" type="number" step="0.5" min="65" max="108" value="90.0"><span class="ns-u">°C</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Ventoinha 2 / Alta (Liga / Desliga)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">ON</span><input type="number" step="0.5" min="75" max="115" value="99.0"><span class="ns-u">°C</span></div>
+                <div class="num-step"><span class="ns-pfx">OFF</span><input type="number" step="0.5" min="70" max="110" value="95.0"><span class="ns-u">°C</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Antecipação de Ar Antes da Ventoinha</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.5" min="0" max="20" value="4.5"><span class="ns-u">%Ar</span></div>
+                <div class="num-step"><input type="number" step="25" min="0" max="600" value="150"><span class="ns-u">ms</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Pós-Ventilação Chave Desligada (Power-Hold)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><input type="number" step="5" min="0" max="180" value="45"><span class="ns-u">seg</span></div>
+                <div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="1" min="85" max="112" value="98"><span class="ns-u">°C</span></div>
+              </div>
+            </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>2. Ar-Condicionado Inteligente (Zero Queda RPM)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Pré-Elevação ANTES do Compressor</span><input value="200 ms (+9.5 % abertura ar)"></div>
-            <div class="f-row"><span class="f-lbl">Elevação Alvo de Lenta c/ A/C</span><input value="+70 RPM (Alvo 950 RPM)"></div>
-            <div class="f-row"><span class="f-lbl">Corte Automático em Plena Carga (WOT)</span><input value="TPS >= 80 %  ou  RPM > 6200"></div>
-            <div class="f-row"><span class="f-lbl">Proteção Anti-Ciclagem Compressor</span><input value="Mínimo 5.0 s desligado"></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>2. Ar-Condicionado Inteligente (Zero Queda RPM)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Gerenciamento de Compressor A/C pela ECU</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Pré-Elevação Antes de Atracar Embreagem</span>
+              <div class="dual-ctl">
+                <div class="num-step"><input type="number" step="20" min="0" max="800" value="200"><span class="ns-u">ms</span></div>
+                <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.5" min="0" max="30" value="9.5"><span class="ns-u">%Ar</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Acréscimo de Rotação Alvo na Lenta</span>
+              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="10" min="0" max="350" value="70"><span class="ns-u">+RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Desarme Automático em Plena Carga (WOT)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" min="50" max="100" value="80"><span class="ns-u">%TPS</span></div>
+                <div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="100" min="4000" max="9000" value="6200"><span class="ns-u">RPM</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Tempo Mínimo Anti-Ciclagem Compressor</span>
+              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" min="2" max="20" value="5.0"><span class="ns-u">seg</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>3. Marcha Lenta Malha Dupla (Ar PID + Ponto Rápido)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Atuador de Lenta</span><select><option class="pro-only">Borboleta DBW EGAS</option><option selected>Válvula PWM 2 Fios</option><option>Motor de Passo 4 Fios</option></select></div>
-            <div class="f-row"><span class="f-lbl">Reserva Rápida de Torque por Ignição</span><input value="-6.0° a +8.0° (1 ciclo)"></div>
-            <div class="f-row"><span class="f-lbl">Curva Alvo Lenta × Água</span><button class="obtn on" onclick="navCurve('idle_clt')">Editar Curva 2D →</button></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>3. Marcha Lenta Malha Dupla (Ar PID + Reserva Ponto)</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Atuador Físico de Marcha Lenta</span><select><option class="pro-only">Borboleta Eletrônica DBW EGAS</option><option selected>Válvula Solenoide PWM 2 Fios</option><option>Motor de Passo 4 Fios Bipolar</option><option>Apenas Reserva Rápida de Ignição</option></select></div>
+            <div class="f-row"><span class="f-lbl">Reserva Rápida de Torque por Ignição</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="0.5" min="-15" max="0" value="-6.0"><span class="ns-u">°</span></div>
+                <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="0.5" min="0" max="20" value="8.0"><span class="ns-u">°</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Rotação Alvo Quente (Motor &ge; 80 °C)</span>
+              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="20" min="650" max="1500" value="880" onchange="st.curves.idle_clt.y[7]=st.curves.idle_clt.y[8]=parseInt(this.value,10)||880"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Tabela Completa de Rotação × Água</span><button class="obtn on" onclick="navCurve('idle_clt')">📈 Abrir Curva 2D de Lenta →</button></div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>4. Chassi Moderno: Direção Elétrica EPS, Alternador WOT & Bomba Elétrica</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Direção Elétrica Progressiva (EPS Speed Curve)</span><input value="100% Leve @ 0 km/h → 35% Firme @ 180 km/h"></div>
-            <div class="f-row"><span class="f-lbl">Desarme Alternador em WOT (+4 cv na Roda!)</span><input value="Cortar Excitação c/ TPS >= 92% (>3500 RPM)"></div>
-            <div class="f-row"><span class="f-lbl">Bomba D'Água Elétrica PWM (Alvo Térmico)</span><input value="Manter 86.0 °C Cruzeiro / 80.0 °C em Boost"></div>
-            <div class="f-row"><span class="f-lbl">Escorva Bomba Comb. & Cut-Off DFCO</span><input value="Prime 2.5s  |  DFCO > 1850 RPM"></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>4. Chassi Moderno: EPS, Alternador, Bomba &amp; DFCO</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Direção Elétrica Progressiva (0 → 180 km/h)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">0km</span><input type="number" step="5" min="20" max="100" value="100"><span class="ns-u">%</span></div>
+                <div class="num-step"><span class="ns-pfx">180</span><input type="number" step="5" min="15" max="100" value="35"><span class="ns-u">%</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Desarme Alternador em WOT (+Potência)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="2" min="70" max="100" value="92"><span class="ns-u">%TPS</span></div>
+                <div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="250" min="2500" max="7000" value="3500"><span class="ns-u">RPM</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Alvo Bomba D'Água Elétrica (Cruzeiro / Boost)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">Rua</span><input type="number" step="1" min="72" max="98" value="86"><span class="ns-u">°C</span></div>
+                <div class="num-step"><span class="ns-pfx">WOT</span><input type="number" step="1" min="68" max="95" value="80"><span class="ns-u">°C</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Escorva Bomba Pós-Chave &amp; Cut-Off DFCO</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">Prime</span><input type="number" step="0.5" min="0.5" max="10" value="2.5"><span class="ns-u">s</span></div>
+                <div class="num-step"><span class="ns-pfx">DFCO</span><input type="number" step="100" min="1300" max="4000" value="1850"><span class="ns-u">RPM</span></div>
+              </div>
+            </div>
           </div></div>
         </div></div>
       </section>
@@ -1140,22 +1633,41 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
         <div class="scroll-body">
           <div class="grid-2">
-            <div class="panel-box"><div class="p-hdr"><span>Controlador Wastegate N75 Malha Fechada PID</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Estratégia de Controle</span><select><option selected>Malha Fechada PID + Feedforward Duty</option><option>Malha Aberta (% Duty Fixo)</option></select></div>
-              <div class="f-row"><span class="f-lbl">Frequência Solenoide N75 / MAC</span><select><option selected>31 Hz (MAC 3 Vias / Bosch N75)</option><option>25 Hz</option><option>45 Hz</option></select></div>
-              <div class="f-row"><span class="f-lbl">Manter Wastegate 100% Fechada até (Spool)</span><input value="0.25 bar abaixo do alvo (Enche mais rápido!)"></div>
-              <div class="f-row"><span class="f-lbl">Ganhos PID (Kp / Ki / Kd)</span><input value="Kp=28.0  |  Ki=14.5  |  Kd=6.0"></div>
-              <div class="f-row"><span class="f-lbl">Botão Overboost Volante</span><input value="+0.35 bar por máx. 8.0 seg"></div>
+            <div class="panel-box"><div class="p-hdr"><span>Controlador Wastegate N75 Malha Fechada PID</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Modo de Controle de Pressão</span><select><option selected>Malha Fechada PID + Duty Base</option><option>Malha Aberta (% Duty Fixo por Marcha)</option><option>Pressão por Tempo Arrancada (0–6s)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Pino &amp; Frequência Solenoide</span>
+                <div class="dual-ctl">
+                  <select><option selected>Aux PWM 1 (N75)</option><option>Aux PWM 3</option></select>
+                  <select><option selected>31 Hz (MAC / N75)</option><option>25 Hz</option><option>45 Hz</option></select>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Spool Rápido (100% Duty até faltar)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" min="0.05" max="1.00" value="0.25"><span class="ns-u">bar p/ Alvo</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Ganhos PID (Kp / Ki / Kd)</span>
+                <div class="tri-ctl">
+                  <div class="num-step"><span class="ns-pfx">P</span><input type="number" step="1.0" value="28.0"></div>
+                  <div class="num-step"><span class="ns-pfx">I</span><input type="number" step="0.5" value="14.5"></div>
+                  <div class="num-step"><span class="ns-pfx">D</span><input type="number" step="0.5" value="6.0"></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Botão Overboost Volante (Bônus / Tempo)</span>
+                <div class="tri-ctl">
+                  <select><option selected>Pino C7</option><option>CAN Vol.</option><option>OFF</option></select>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.05" value="0.35"><span class="ns-u">b</span></div>
+                  <div class="num-step"><input type="number" step="1" value="8"><span class="ns-u">s</span></div>
+                </div>
+              </div>
             </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão Turbo & Duty Base por Marcha (Tração Progressiva!)</span></div>
+            <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão Turbo &amp; Duty Base por Marcha (Tração Progressiva!)</span></div>
               <table class="data-tbl">
                 <thead><tr><th>Marcha</th><th>Alvo M1 Pista (bar)</th><th>Alvo M2 Rua (bar)</th><th>Duty Base N75 (%)</th></tr></thead>
                 <tbody>
-                  <tr><td><strong>1ª Marcha</strong></td><td><input type="number" step="0.05" value="0.85"></td><td><input type="number" step="0.05" value="0.60"></td><td><input type="number" value="38"></td></tr>
-                  <tr><td><strong>2ª Marcha</strong></td><td><input type="number" step="0.05" value="1.25"></td><td><input type="number" step="0.05" value="0.90"></td><td><input type="number" value="52"></td></tr>
-                  <tr><td><strong>3ª Marcha</strong></td><td><input type="number" step="0.05" value="1.60"></td><td><input type="number" step="0.05" value="1.15"></td><td><input type="number" value="64"></td></tr>
-                  <tr><td><strong>4ª a 6ª Marcha</strong></td><td><input type="number" step="0.05" value="1.80"></td><td><input type="number" step="0.05" value="1.20"></td><td><input type="number" value="70"></td></tr>
+                  <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.85"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.25"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.90"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.15"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>4ª a 6ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.80"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.20"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
                 </tbody>
               </table>
             </div>
@@ -1170,38 +1682,60 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
         <div class="scroll-body">
           <div class="grid-2">
-            <!-- BASIC + UNIVERSAL dRPM/dt TRACTION (AVAILABLE ON BOTH TBX-400 AND TBX-800!) -->
+            <!-- BASIC + UNIVERSAL dRPM/dt TRACTION -->
             <div class="panel-box" id="tracBasicCard">
-              <div class="p-hdr"><span>Controle de Destracionamento por Subida de Giro (dRPM/dt — Não Exige Sensores ABS!)</span></div>
+              <div class="p-hdr"><span>Destracionamento por Subida de Giro (dRPM/dt — S/ Sensor Roda)</span><span class="st-pill">ATIVO</span></div>
               <div class="card-pad">
-                <div class="f-row switch-row"><span class="f-lbl">Ativar Controle de Tração por Derivada de Giro (RPM/s)</span><input type="checkbox" checked></div>
-                <div class="f-row"><span class="f-lbl">Limite Máx. Aceleração 1ª / 2ª Marcha</span><input value="4400 RPM/s  /  3200 RPM/s"></div>
-                <div class="f-row"><span class="f-lbl">Limite Máx. Aceleração 3ª / 4ª Marcha</span><input value="2100 RPM/s  /  1450 RPM/s"></div>
-                <div class="f-row"><span class="f-lbl">Intervenção Progressiva Balanceada por EGT</span><select><option selected>Retardo até -12° → Migra p/ Corte se Escape > 890°C!</option><option>Apenas Retardo de Ponto</option></select></div>
-                <div class="f-row"><span class="f-lbl">Limitador Velocidade de Box (Pit-Lane)</span><input value="60 km/h (Quando botão ativo)"></div>
+                <div class="f-row switch-row"><span class="f-lbl">Ativar Controle de Tração por Derivada de Giro (RPM/s)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Limite Subida Giro 1ª / 2ª Marcha</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">1ª</span><input type="number" step="100" value="4400"><span class="ns-u">/s</span></div>
+                    <div class="num-step"><span class="ns-pfx">2ª</span><input type="number" step="100" value="3200"><span class="ns-u">/s</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Limite Subida Giro 3ª / 4ª Marcha</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">3ª</span><input type="number" step="100" value="2100"><span class="ns-u">/s</span></div>
+                    <div class="num-step"><span class="ns-pfx">4ª</span><input type="number" step="100" value="1450"><span class="ns-u">/s</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Modo de Atuação Progressiva</span><select><option selected>Retardo até -12° → Migra p/ Corte Rotativo</option><option>Somente Retardo Suave de Ignição</option><option>Corte Rotativo Direto de Centelha</option></select></div>
+                <div class="f-row"><span class="f-lbl">Limitador Velocidade de Box (Pit-Lane)</span>
+                  <div class="dual-ctl">
+                    <select><option selected>Botão C8</option><option>CAN Pit</option><option>Desativado</option></select>
+                    <div class="num-step"><input type="number" step="5" min="30" max="120" value="60"><span class="ns-u">km/h</span></div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- PRO-ONLY 4-WHEEL ABS SLIP% TRACTION (HIDDEN ON TBX-400!) -->
+            <!-- PRO-ONLY 4-WHEEL ABS SLIP% TRACTION -->
             <div class="panel-box pro-only">
-              <div class="p-hdr"><span>Controle de Tração Fechado por % Slip Real (4 Rodas CAN ABS — Exclusivo TBX-800 PRO)</span></div>
+              <div class="p-hdr"><span>Controle de Tração Fechado % Slip (4 Rodas CAN ABS — TBX-800)</span><span class="st-pill">ATIVO</span></div>
               <div class="card-pad">
-                <div class="f-row switch-row"><span class="f-lbl">Ativar Malha Fechada de Escorregamento (V_motriz vs V_livre)</span><input type="checkbox" checked></div>
-                <div class="f-row"><span class="f-lbl">Alvo de Escorregamento Ideal (Slip %)</span><select><option selected>7.5 % — Asfalto Seco / Semi-Slick</option><option>12.0 % — Arrancada Pneu Radial</option><option>3.5 % — Pista Molhada / Chuva</option></select></div>
-                <div class="f-row"><span class="f-lbl">Atuação Combinada DBW + Ignição</span><input value="Fecha até 25% DBW + Retardo -10°"></div>
-                <div class="f-row"><span class="f-lbl">Destracionamento Lido Agora</span><input value="1.8 % Slip (Tração Plena)" readonly></div>
+                <div class="f-row switch-row"><span class="f-lbl">Ativar Malha Fechada (V_motriz vs V_livre)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Alvo de Escorregamento Ideal (Slip %)</span><select><option selected>7.5 % — Asfalto Seco / Semi-Slick</option><option>12.0 % — Arrancada Pneu Radial</option><option>3.5 % — Pista Molhada / Chuva</option><option>15.0 % — Terra / Drift Controlado</option></select></div>
+                <div class="f-row"><span class="f-lbl">Autoridade Máxima DBW + Retardo</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">DBW</span><input type="number" step="5" min="0" max="70" value="25"><span class="ns-u">%</span></div>
+                    <div class="num-step"><span class="ns-pfx">Ign</span><input type="number" step="1" min="-20" max="0" value="-10"><span class="ns-u">°</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Escorregamento Instantâneo</span><div class="ro-badge"><span>Rodas Motrizes</span><strong>1.8 % Slip • Tração Plena</strong></div></div>
               </div>
             </div>
 
             <!-- PER-GEAR SHIFT-CUT TABLE -->
             <div class="panel-box" style="grid-column: 1 / -1;">
-              <div class="p-hdr"><span>Tempos Individuais de Corte de Troca Rápida (Shift-Cut / Flat-Shift por Marcha)</span></div>
+              <div class="p-hdr"><span>Troca Rápida Pé Cravado (Flat-Shift / Power-Shift Individual por Marcha)</span>
+                <select style="width:240px;height:22px;font-size:10.5px"><option selected>Gatilho: Interruptor Pedal Embreagem</option><option>Gatilho: Alavanca Strain-Gauge 0–5V</option><option>Gatilho: Paddle-Shift CAN</option></select>
+              </div>
               <table class="data-tbl">
-                <thead><tr><th>Troca</th><th>Tempo de Corte (ms)</th><th>Retardo Pós-Reengate (°)</th><th>Rampa Retomada Torque</th></tr></thead>
+                <thead><tr><th>Troca de Marcha</th><th style="width:175px">Tempo de Corte</th><th style="width:175px">Retardo no Reengate</th><th style="width:165px">Duração Retardo</th><th>Perfil de Retomada de Torque</th></tr></thead>
                 <tbody>
-                  <tr><td><strong>1ª → 2ª Marcha</strong></td><td><input type="number" value="68"></td><td><input value="-6.0° por 80 ms"></td><td><input value="Suave 120 ms (Evita quebra homocinética)"></td></tr>
-                  <tr><td><strong>2ª → 3ª Marcha</strong></td><td><input type="number" value="56"></td><td><input value="-4.0° por 60 ms"></td><td><input value="Rápida 70 ms"></td></tr>
-                  <tr><td><strong>3ª → 4ª / 5ª Marcha</strong></td><td><input type="number" value="46"></td><td><input value="-2.5° por 40 ms"></td><td><input value="Imediata 35 ms"></td></tr>
+                  <tr><td><strong>1ª → 2ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="2" value="68"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" value="-6.0"><span class="ns-u">°</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="10" value="80"><span class="ns-u">ms</span></div></td><td><select><option selected>Progressiva Suave 120 ms (Salva Homocinética)</option><option>Esportiva 70 ms</option><option>Pista Direta 35 ms</option></select></td></tr>
+                  <tr><td><strong>2ª → 3ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="2" value="56"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" value="-4.0"><span class="ns-u">°</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="10" value="60"><span class="ns-u">ms</span></div></td><td><select><option>Progressiva Suave 120 ms</option><option selected>Esportiva Rápida 70 ms</option><option>Pista Direta 35 ms</option></select></td></tr>
+                  <tr><td><strong>3ª → 4ª / 5ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="2" value="46"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" value="-2.5"><span class="ns-u">°</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="10" value="40"><span class="ns-u">ms</span></div></td><td><select><option>Progressiva Suave 120 ms</option><option>Esportiva Rápida 70 ms</option><option selected>Pista Imediata 35 ms</option></select></td></tr>
                 </tbody>
               </table>
             </div>
@@ -1212,38 +1746,54 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       <!-- ==================== VIEW 11: AI NEURALCORE, PRE-CHECK, LAUNCH, PRO-DRAG, DBW/CRUISE, KNOCK ==================== -->
       <section class="view-pane" id="cv-ai">
         <div class="v-bar">
-          <div class="v-crumb">INTELIGÊNCIA EMBARCADA NEURALCORE™ — AUTO-TUNE COM LIMITES & ENGINE GUARDIAN™ (10 PROTEÇÕES)</div>
+          <div class="v-crumb">INTELIGÊNCIA EMBARCADA NEURALCORE™ — AUTO-TUNE COM LIMITES &amp; ENGINE GUARDIAN™ (10 PROTEÇÕES)</div>
           <button class="obtn on" onclick="navMap('learned_trim')">Mapa 3D % Aprendido</button>
           <button class="obtn warn" onclick="injectFault('pump')">Simular Queda Bomba dP</button>
           <button class="obtn ok" onclick="injectFault('ok')">Restaurar Saudável</button>
         </div>
         <div class="scroll-body">
           <div class="grid-2">
-            <div class="panel-box"><div class="p-hdr"><span>Autoridade do Auto-Tune Malha Fechada</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Modo da IA</span><select><option selected>Auto-Tune + Gravação Seletiva VE</option><option>Supervisionado (Só Sugere)</option><option>Desativado</option></select></div>
-              <div class="f-row"><span class="f-lbl">Autoridade Lenta / Cruzeiro</span><input value="-15.0 %  a  +15.0 %"></div>
-              <div class="f-row"><span class="f-lbl">Autoridade em Boost (Anti-Quebra!)</span><input value="-3.0 % (Trava)  a  +25.0 % (Rico)"></div>
+            <div class="panel-box"><div class="p-hdr"><span>Autoridade da Malha Fechada O2 &amp; Auto-Tune</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Modo da Malha Fechada</span><select><option selected>Auto-Tune + Gravação Seletiva VE</option><option>Malha Fechada em Tempo Real (Sem Salvar VE)</option><option>Supervisionado (Só Sugere no Histograma)</option><option>Desativado (Malha Aberta)</option></select></div>
+              <div class="f-row"><span class="f-lbl">Limite Correção Lenta / Cruzeiro</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="1" min="-35" max="0" value="-15"><span class="ns-u">%</span></div>
+                  <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="1" min="0" max="35" value="15"><span class="ns-u">%</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Limite Correção em Boost (Anti-Empobrecer!)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="0.5" min="-15" max="0" value="-3.0"><span class="ns-u">%</span></div>
+                  <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="1" min="0" max="45" value="25.0"><span class="ns-u">%</span></div>
+                </div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>Física Preditiva Aquino τ-X & Status Guardian™</span></div><div class="card-pad">
-              <div class="f-row switch-row"><span class="f-lbl">Modelo Dinâmico Filme Líquido Aquino τ-X</span><input type="checkbox" checked></div>
+            <div class="panel-box"><div class="p-hdr"><span>Física Preditiva Aquino τ-X &amp; Status Guardian™</span><span class="st-pill">1 kHz</span></div><div class="card-pad">
+              <div class="f-row switch-row"><span class="f-lbl">Modelo Dinâmico de Filme Líquido Aquino τ-X</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+              <div class="f-row"><span class="f-lbl">Rotação Mínima p/ Correção O2</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="50" value="800"><span class="ns-u">RPM</span></div>
+                  <div class="num-step"><span class="ns-pfx">CLT</span><input type="number" step="5" value="55"><span class="ns-u">°C</span></div>
+                </div>
+              </div>
               <div class="info-banner vcam" id="aiLiveBanner">[ENGINE GUARDIAN™ OK] dP = 3.04 bar • 0 falhas mecânicas • Auto-Tune VE ativo.</div>
             </div></div>
           </div>
           <div class="panel-box">
             <div class="p-hdr"><span>Matriz de 10 Proteções Ativas a 1 kHz (Congela Auto-Tune Imediatamente sob Falha Mecânica!)</span></div>
             <table class="data-tbl">
-              <thead><tr><th style="width:54px">Ativo</th><th>Proteção Monitorada</th><th style="width:195px">Limiar</th><th style="width:95px">Filtro</th><th style="width:110px">Travar VE?</th><th>Ação Automática</th></tr></thead>
+              <thead><tr><th style="width:48px">Ativo</th><th>Proteção Monitorada</th><th style="width:192px">Limiar de Disparo</th><th style="width:136px">Filtro Tempo</th><th style="width:76px">Trava VE</th><th>Ação Automática de Salvamento</th></tr></thead>
               <tbody>
-                <tr><td><input type="checkbox" checked></td><td><strong>1. Queda Diferencial Bomba (dP)</strong></td><td><input value="dP < 2.58 bar em Boost"></td><td><input value="25 ms"></td><td><input type="checkbox" checked></td><td><select><option>Esticar Pulso √dP + Cortar N75 + Limite 4800</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>2. Queda Pressão de Óleo × RPM</strong></td><td><input value="< 1.2 bar @ > 3200 RPM"></td><td><input value="80 ms"></td><td><input type="checkbox" checked></td><td><select><option>Cortar Boost + Limitar 3500 RPM + Alerta</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>3. Mistura Pobre em Boost</strong></td><td><input value="Sonda > Alvo + 0.08 λ"></td><td><input value="120 ms"></td><td><input type="checkbox" checked></td><td><select><option>Zerar N75 + Corte Suave Segurança</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>4. Superaquecimento Água (CLT)</strong></td><td><input value="CLT > 110.0 °C"></td><td><input value="500 ms"></td><td><input type="checkbox" checked></td><td><select><option>Cortar A/C + Fans 100% + Enriquecer</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>5. Ar Admissão Quente (IAT)</strong></td><td><input value="IAT > 68.0 °C"></td><td><input value="300 ms"></td><td><input type="checkbox" checked></td><td><select><option>Retardar Ponto -3.5° + Baixar Boost</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>6. Detonação Severa (Knock)</strong></td><td><input value="> Limiar Dinâmico"></td><td><input value="1 Ciclo"></td><td><input type="checkbox" checked></td><td><select><option>Retardo Individual Cilindro -6.0°</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>7. Duty Bicos Saturado</strong></td><td><input value="Duty > 90.0 %"></td><td><input value="50 ms"></td><td><input type="checkbox" checked></td><td><select><option>Reduzir Alvo N75 Automaticamente</option></select></td></tr>
-                <tr><td><input type="checkbox" checked></td><td><strong>8. Overboost Coletor</strong></td><td><input value="MAP > +1.95 bar"></td><td><input value="15 ms"></td><td><input type="checkbox" checked></td><td><select><option>Corte Segurança + N75 = 0%</option></select></td></tr>
-                <tr class="pro-only"><td><input type="checkbox" checked></td><td><strong>9. EGT Escape Alto (8ch CAN)</strong></td><td><input value="EGT > 935 °C"></td><td><input value="100 ms"></td><td><input type="checkbox" checked></td><td><select><option>Enriquecer Cilindro Quente +4.5%</option></select></td></tr>
-                <tr class="pro-only"><td><input type="checkbox" checked></td><td><strong>10. Erro Pista Dupla DBW</strong></td><td><input value="|TPS1+TPS2-100| > 3.5%"></td><td><input value="15 ms"></td><td><input type="checkbox" checked></td><td><select><option>Limp-Home Mola + Limite 2200 RPM</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>1. Queda Diferencial Bomba (dP)</strong></td><td><div class="num-step"><span class="ns-pfx">&lt;</span><input type="number" step="0.05" value="2.58"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="5" value="25"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Esticar Pulso √dP + Cortar N75 + Limite 4800 RPM</option><option>Corte Imediato de Segurança 3500 RPM</option><option>Apenas Alerta no Painel + Gravar Log</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>2. Pressão Mín. Óleo (@ &gt;3200 RPM)</strong></td><td><div class="num-step"><span class="ns-pfx">&lt;</span><input type="number" step="0.1" value="1.20"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="10" value="80"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Cortar Boost + Limitar 3500 RPM + Pop-up Crítico</option><option>Desligar Motor (Se em Pista / Arrancada)</option><option>Apenas Alerta Sonoro/Visual</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>3. Mistura Pobre em Boost (Δλ)</strong></td><td><div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.01" value="0.08"><span class="ns-u">λ</span></div></td><td><div class="num-step"><input type="number" step="10" value="120"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Zerar N75 + Corte Suave Segurança 4500 RPM</option><option>Enriquecer Emergência +15% + Zerar N75</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>4. Superaquecimento Água (CLT)</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="1" value="110"><span class="ns-u">°C</span></div></td><td><div class="num-step"><input type="number" step="50" value="500"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Cortar A/C + Ventoinhas 100% + Limitar 4200 RPM</option><option>Apenas Ventoinhas 100% + Alerta Painel</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>5. Ar Admissão Muito Quente (IAT)</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="1" value="68"><span class="ns-u">°C</span></div></td><td><div class="num-step"><input type="number" step="50" value="300"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Retardar Ponto -3.5° + Reduzir Boost -0.3 bar</option><option>Cortar Solenoide N75 = 0%</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>6. Detonação Severa (Knock)</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="0.5" value="6.5"><span class="ns-u">dB</span></div></td><td><div class="num-step"><input type="number" step="1" value="1"><span class="ns-u">ciclo</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Retardo Individual Cilindro até -6.0° + Enriq. +4%</option><option>Retardo Global + Cortar Boost</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>7. Duty Injetores Saturado</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="1" value="90"><span class="ns-u">%</span></div></td><td><div class="num-step"><input type="number" step="10" value="50"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Reduzir Alvo N75 Automaticamente</option><option>Acionar 2ª Bomba / Limitar Giro</option></select></td></tr>
+                <tr><td><input type="checkbox" checked></td><td><strong>8. Overboost Coletor (MAP Máx)</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="0.05" value="1.95"><span class="ns-u">bar</span></div></td><td><div class="num-step"><input type="number" step="5" value="15"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Corte Segurança Ignição + N75 = 0%</option><option>Fechar Parcialmente Borboleta DBW + N75 = 0%</option></select></td></tr>
+                <tr class="pro-only"><td><input type="checkbox" checked></td><td><strong>9. EGT Escape Alto (8ch CAN)</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="10" value="935"><span class="ns-u">°C</span></div></td><td><div class="num-step"><input type="number" step="20" value="100"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Enriquecer Cilindro Quente +4.5% Individual</option><option>Cortar Boost se passar de 980 °C</option></select></td></tr>
+                <tr class="pro-only"><td><input type="checkbox" checked></td><td><strong>10. Divergência Pista Dupla DBW</strong></td><td><div class="num-step"><span class="ns-pfx">&gt;</span><input type="number" step="0.5" value="3.5"><span class="ns-u">%</span></div></td><td><div class="num-step"><input type="number" step="5" value="15"><span class="ns-u">ms</span></div></td><td><input type="checkbox" checked></td><td><select><option selected>Limp-Home Mola Segurança + Limite 2200 RPM</option><option>Desligar Ponte H Imediatamente</option></select></td></tr>
               </tbody>
             </table>
           </div>
@@ -1257,30 +1807,92 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
       <section class="view-pane" id="cv-launch">
         <div class="v-bar">
-          <div class="v-crumb">2-STEP ROTATIVO, ROLLING ANTI-LAG (ROLO), ALS RALLY & ACÚSTICA OVERRUN POPS ≥ 4000 RPM</div>
-          <button class="obtn ok" onclick="toast('Parâmetros de Largada, Rolo e Pops aplicados!')">Aplicar Motorsport</button>
+          <div class="v-crumb">2-STEP ROTATIVO, ROLLING ANTI-LAG (ROLO), ALS RALLY &amp; OVERRUN POPS &ge; 4000 RPM</div>
+          <button class="obtn warn live-test-btn" id="btnTest2Step" onclick="toggleLiveTest('2step')" title="Simula segurar o botão de 2-Step agora no contagiros e telemetria!">🔥 Testar 2-Step Ao Vivo</button>
+          <button class="obtn on live-test-btn" id="btnTestRoll" onclick="toggleLiveTest('rolling')" title="Simula segurar o botão de Rolling Anti-Lag em movimento!">🚀 Testar Rolo Ao Vivo</button>
+          <button class="obtn live-test-btn" id="btnTestPops" onclick="toggleLiveTest('pops')" title="Simula desaceleração acima de 4000 RPM com Pops ativos!">💥 Testar Pops &ge;4k</button>
+          <button class="obtn ok" onclick="toast('Estratégias de 2-Step, Rolo e Pops gravadas!')">✓ Aplicar</button>
         </div>
         <div class="scroll-body"><div class="grid-2">
-          <div class="panel-box"><div class="p-hdr"><span>1. 2-Step Largada Parada & Corte Rotativo</span></div><div class="card-pad">
-            <div class="f-row switch-row"><span class="f-lbl">Ativar 2-Step Largada (Embreagem / Botão)</span><input type="checkbox" checked></div>
-            <div class="f-row"><span class="f-lbl">Giro Alvo 2-Step / Pressão Alvo Linha</span><input value="4250 RPM  |  Alvo +0.95 bar (N75 100%)"></div>
-            <div class="f-row"><span class="f-lbl">Retardo Ignição & Enriquecimento Frio</span><input value="-14.5° ATDC  |  +18% Combustível (Resfria Escape)"></div>
-            <div class="f-row"><span class="f-lbl">Padrão de Corte dos Cilindros</span><select><option selected>Corte Rotativo Centelha (Zero Lavagem Camisa!)</option><option>Hardcut Bazuca (100ms Corte / 40ms Tiro)</option></select></div>
+          <div class="panel-box"><div class="p-hdr"><span>1. 2-Step Largada Parada &amp; Corte Rotativo</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Ativar 2-Step de Largada</span><input id="chk2StepEn" type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Entrada de Acionamento &amp; VSS Máx</span>
+              <div class="dual-ctl">
+                <select><option selected>Pino C5 (Embreagem)</option><option>Botão Volante C6</option><option>Freio de Mão / Transbrake</option><option>CAN Botão</option></select>
+                <div class="num-step"><span class="ns-pfx">&lt;</span><input type="number" step="1" min="0" max="30" value="6"><span class="ns-u">km/h</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Rotação de Corte / Pressão Alvo Linha</span>
+              <div class="dual-ctl">
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="lch2StepRpm" type="number" step="50" min="2200" max="7500" value="4250"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                <div class="num-step"><span class="ns-pfx">+</span><input id="lch2StepBoost" type="number" step="0.05" min="0.0" max="3.0" value="0.95"><span class="ns-u">bar</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Retardo de Ignição &amp; Enriquecimento</span>
+              <div class="dual-ctl">
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="lch2StepRet" type="number" step="0.5" min="-28" max="10" value="-14.5"><span class="ns-u">°</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                <div class="num-step"><span class="ns-pfx">+</span><input id="lch2StepFuel" type="number" step="1" min="0" max="45" value="18"><span class="ns-u">%Comb</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Estratégia de Corte</span>
+              <div class="seg-opt">
+                <button type="button" class="on" onclick="pickSeg(this)">Rotativo Centelha</button>
+                <button type="button" onclick="pickSeg(this)">Hardcut Bazuca</button>
+                <button type="button" onclick="pickSeg(this)">Suave Rua</button>
+              </div>
+            </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>2. Rolling Anti-Lag (Largada em Movimento / Rolo)</span></div><div class="card-pad">
-            <div class="f-row switch-row"><span class="f-lbl">Habilitar Rolling Launch (Captura RPM/km/h no Botão)</span><input type="checkbox" checked></div>
-            <div class="f-row"><span class="f-lbl">Pino do Botão Volante & Velocidade Mínima</span><input value="Entrada C6 / Flex-I/O  |  Acima de 45 km/h"></div>
-            <div class="f-row"><span class="f-lbl">Pressão Construída Segurando o Botão</span><input value="+1.25 bar Instantâneo (-16° ATDC)"></div>
-            <div class="f-row"><span class="f-lbl">Transição ao Soltar Botão</span><input value="Rampa Suave 120 ms (Tração Total)"></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>2. Rolling Anti-Lag (Largada em Movimento / Rolo)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Habilitar Rolling Launch (Trava RPM Atual no Botão)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Pino do Botão Volante &amp; Vel. Mínima</span>
+              <div class="dual-ctl">
+                <select><option selected>Entrada C6 / Flex-I/O</option><option>CAN Botão Volante</option><option>Pino B5</option></select>
+                <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" min="20" max="160" value="45"><span class="ns-u">km/h</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Pressão Alvo Rolo &amp; Ponto Ignição</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">+</span><input id="lchRollBoost" type="number" step="0.05" min="0.2" max="3.0" value="1.25"><span class="ns-u">bar</span></div>
+                <div class="num-step"><input id="lchRollRet" type="number" step="0.5" min="-28" max="5" value="-16.0"><span class="ns-u">°</span></div>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Rampa de Entrega de Torque ao Soltar</span>
+              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="10" min="0" max="600" value="120"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>3. Anti-Lag de Rally (ALS Fresh-Air)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Modo ALS ao Tirar o Pé</span><select><option>Desativado (Uso Urbano)</option><option selected>Pista Suave (+14% Bypass Ar + -16° ATDC)</option><option>Rally Agressivo (+26% Ar + -24° ATDC)</option></select></div>
-            <div class="f-row"><span class="f-lbl">Desarme Automático de Segurança Térmica</span><input value="Cortar ALS se EGT > 930 °C ou CLT > 104 °C"></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>3. Anti-Lag de Pista / Rally (ALS Fresh-Air)</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Modo ALS ao Tirar o Pé</span>
+              <div class="seg-opt">
+                <button type="button" onclick="pickSeg(this)">OFF (Rua)</button>
+                <button type="button" class="on" onclick="pickSeg(this)">Suave (+14% Ar)</button>
+                <button type="button" onclick="pickSeg(this)">Rally (+26% Ar)</button>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Desarme Automático Segurança Térmica</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">EGT</span><input type="number" step="10" value="930"><span class="ns-u">°C</span></div>
+                <div class="num-step"><span class="ns-pfx">CLT</span><input type="number" step="1" value="104"><span class="ns-u">°C</span></div>
+              </div>
+            </div>
           </div></div>
-          <div class="panel-box"><div class="p-hdr"><span>4. Overrun Pops & Bangs (100% Limpo Abaixo de 4000 RPM!)</span></div><div class="card-pad">
-            <div class="f-row switch-row"><span class="f-lbl">Ativar Pops em Desaceleração (Somente ≥ 4000 RPM)</span><input type="checkbox" checked></div>
-            <div class="f-row"><span class="f-lbl">Timbre Acústico</span><select><option>Burble Suave OEM+ (-12° ATDC)</option><option selected>Esportivo Médio (-22° ATDC)</option><option>Bazuca Pista (-28° ATDC + Toque Bico)</option></select></div>
-            <div class="f-row"><span class="f-lbl">Janela Máxima Antes do Cut-Off DFCO</span><input value="2.50 seg (Silêncio Total < 4000 RPM)"></div>
+
+          <div class="panel-box"><div class="p-hdr"><span>4. Overrun Pops &amp; Bangs (100% Limpo &lt; 4000 RPM)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Ativar Pops em Desaceleração (TPS &lt; 2%)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Intensidade / Timbre Acústico</span>
+              <div class="seg-opt">
+                <button type="button" onclick="pickSeg(this)">Burble (-12°)</button>
+                <button type="button" class="on" onclick="pickSeg(this)">Médio (-22°)</button>
+                <button type="button" onclick="pickSeg(this)">Bazuca (-28°)</button>
+              </div>
+            </div>
+            <div class="f-row"><span class="f-lbl">Rotação Mínima &amp; Duração Máxima</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">&ge;</span><input id="lchPopsMinRpm" type="number" step="100" min="3500" max="6500" value="4000"><span class="ns-u">RPM</span></div>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.25" min="0.5" max="6.0" value="2.50"><span class="ns-u">seg</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+            </div>
           </div></div>
         </div></div>
       </section>
@@ -1297,17 +1909,28 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
             ✓ SISTEMA WMI SAUDÁVEL: Pressão Linha = 11.8 bar • Nível Reservatório OK • Bônus de Avanço (+3.5°) Liberado em Boost!
           </div>
           <div class="grid-2">
-            <div class="panel-box"><div class="p-hdr"><span>1. Rampa Progressiva Bomba / Solenoide WMI (PWM 30 Hz)</span></div><div class="card-pad">
-              <div class="f-row switch-row"><span class="f-lbl">Ativar Controle Progressivo Água/Metanol (50/50 ou M100)</span><input type="checkbox" checked></div>
-              <div class="f-row"><span class="f-lbl">Início da Injeção (15% PWM) → Plena Carga (100% PWM)</span><input value="+0.60 bar MAP  →  +1.70 bar MAP"></div>
-              <div class="f-row"><span class="f-lbl">Bônus de Avanço de Ignição c/ Fluxo Confirmado</span><input value="+3.5° APMS Proporcional ao Fluxo WMI"></div>
-              <div class="f-row"><span class="f-lbl">Redução Automática Bico Principal c/ Metanol</span><input value="-6.5 % Combustível Principal @ 100% WMI"></div>
+            <div class="panel-box"><div class="p-hdr"><span>1. Rampa Progressiva Bomba / Solenoide WMI (PWM 30 Hz)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row switch-row"><span class="f-lbl">Ativar Controle Progressivo Água/Metanol (50/50 ou M100)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+              <div class="f-row"><span class="f-lbl">Pressão Início (15%) → Plena Carga (100%)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">15%</span><input type="number" step="0.05" value="0.60"><span class="ns-u">bar</span></div>
+                  <div class="num-step"><span class="ns-pfx">100%</span><input type="number" step="0.05" value="1.70"><span class="ns-u">bar</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Bônus Avanço Ignição c/ Fluxo Confirmado</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" min="0" max="10" value="3.5"><span class="ns-u">+°APMS</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Desconto Combustível Bico Principal (@100%)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" min="-25" max="0" value="-6.5"><span class="ns-u">%</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>2. Proteção Fail-Safe em &lt; 2 ms (Salva Pistão se Acabar Metanol!)</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Sensor Boia Nível Baixo Reservatório</span><input value="Entrada Flex-I/O™ J1.A5 (Ativo Terra)"></div>
-              <div class="f-row"><span class="f-lbl">Pressão Mínima na Linha WMI (@ >= 20% PWM)</span><input value="Mín. 5.5 bar (Abaixo = Entupimento/Ar na Bomba)"></div>
-              <div class="f-row"><span class="f-lbl">Ação Instantânea em Caso de Falha WMI</span><input value="Zerar Bônus + Retardar -4.0° + Cortar N75 = 0%!" readonly style="color:var(--neon-a)"></div>
-              <div class="f-row"><span class="f-lbl">Duty WMI Calculado Agora</span><input id="wmiDutyLive" value="68.4 % PWM  |  +2.4° Bônus Ativo" readonly></div>
+            <div class="panel-box"><div class="p-hdr"><span>2. Proteção Fail-Safe em &lt; 2 ms (Salva Pistão!)</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Pino Sensor Boia Nível Reservatório</span><select><option selected>Flex-I/O™ J1.A5 (Ativo Terra)</option><option>Entrada Digital C7</option><option>CAN Expansão</option></select></div>
+              <div class="f-row"><span class="f-lbl">Pressão Mínima Linha WMI (@ &ge;20% PWM)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.5" min="1.5" max="14.0" value="5.5"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Ação Instantânea em Falha WMI</span><select><option selected>Zerar Bônus + Retardar -4.0° + Cortar N75 = 0%</option><option>Corte Segurança 4200 RPM + N75 = 0%</option></select></div>
+              <div class="f-row"><span class="f-lbl">Status Instantâneo WMI</span><div class="ro-badge"><strong id="wmiDutyLive">68.4 % PWM • +2.4° Bônus Ativo</strong></div></div>
             </div></div>
           </div>
         </div>
@@ -1315,32 +1938,82 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
       <section class="view-pane" id="cv-drag">
         <div class="v-bar">
-          <div class="v-crumb">PRO-DRAG ARRANCADA — RAMPA 0–6s, BUMP-IN (CREEP), GEARCONTROLLER STRAIN-GAUGE, ANTI-EMPINADA & NITRO</div>
-          <button class="obtn on" onclick="toast('Pulso Staging Bump-In (26 ms) testado no Transbrake!')">⚡ Testar Bump-In (+2 cm)</button>
-          <button class="obtn ok" onclick="toast('Estratégias Pro-Drag gravadas na ECU!')">Aplicar Estratégia Pista</button>
+          <div class="v-crumb">PRO-DRAG ARRANCADA — RAMPA 0–6s, BUMP-IN (CREEP), GEARCONTROLLER STRAIN-GAUGE, ANTI-EMPINADA &amp; NITRO</div>
+          <button class="obtn on" onclick="toast('Pulso Staging Bump-In testado no Transbrake!')">⚡ Testar Bump-In (+2 cm)</button>
+          <button class="obtn ok" onclick="toast('Estratégias Pro-Drag gravadas na ECU!')">✓ Aplicar Pista</button>
         </div>
         <div class="scroll-body">
-          <div class="panel-box" style="height:225px;flex-shrink:0;"><div class="p-hdr"><span>Curva Dupla Pós-Largada (0.0s → 6.0s): Pressão Alvo Turbo (bar, Ciano) + Rampa Nitro PWM (%, Roxo)</span><span style="color:var(--yellow)">Arraste os Pontos Amarelos!</span></div><div class="canvas-slot"><canvas id="cvDragTime" style="cursor:ns-resize;"></canvas></div></div>
+          <div class="panel-box" style="height:220px;flex-shrink:0;"><div class="p-hdr"><span>Curva Dupla Pós-Largada (0.0s → 6.0s): Pressão Alvo Turbo (bar, Ciano) + Rampa Nitro PWM (%, Roxo)</span><span style="color:var(--yellow)">Arraste os Pontos Amarelos!</span></div><div class="canvas-slot"><canvas id="cvDragTime" style="cursor:ns-resize;"></canvas></div></div>
           <div class="grid-2" style="margin-top:8px">
-            <div class="panel-box"><div class="p-hdr"><span>1. 3-Step, Transbrake & Staging Bump-In (Creep)</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Corte Burnout / Pré-Stage / Transbrake</span><input value="6200 / 4800 / 4450 RPM"></div>
-              <div class="f-row"><span class="f-lbl">Alvo Pressão na Linha + Ponto Retardo</span><input value="0.95 bar @ -14.5° ATDC (Enriq. +18%)"></div>
-              <div class="f-row"><span class="f-lbl">Staging Bump-In (Alinhar na Fotocélula)</span><input value="Pulso Solenoide 26 ms  |  Pausa 130 ms"></div>
+            <div class="panel-box"><div class="p-hdr"><span>1. 3-Step, Transbrake &amp; Staging Bump-In (Creep)</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Cortes Burnout / Pré-Stage / Transbrake</span>
+                <div class="tri-ctl">
+                  <div class="num-step"><input type="number" step="100" value="6200"><span class="ns-u">RPM</span></div>
+                  <div class="num-step"><input type="number" step="100" value="4800"><span class="ns-u">RPM</span></div>
+                  <div class="num-step"><input type="number" step="50" value="4450"><span class="ns-u">RPM</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Pressão Alvo no Transbrake &amp; Retardo</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="0.05" value="0.95"><span class="ns-u">bar</span></div>
+                  <div class="num-step"><input type="number" step="0.5" value="-14.5"><span class="ns-u">°</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Staging Bump-In (Pulso Soltura / Pausa)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">ON</span><input type="number" step="2" value="26"><span class="ns-u">ms</span></div>
+                  <div class="num-step"><span class="ns-pfx">OFF</span><input type="number" step="10" value="130"><span class="ns-u">ms</span></div>
+                </div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>2. GearController™ Alavanca Strain-Gauge (0–5V Direto!)</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Repouso / Força Puxada Upshift</span><input value="2.50 V Repouso  |  Corte >= 3.42 V (14 kgf)"></div>
-              <div class="f-row"><span class="f-lbl">Bloqueio Anti-Duplo-Corte (Dog-Ring Lockout)</span><input value="180 ms (Imune a vibração de trambulador!)"></div>
-              <div class="f-row"><span class="f-lbl">Tempos Corte 1→2 / 2→3 / 3→4 + Blip</span><input value="65 ms / 54 ms / 45 ms  |  Blip < 1.58 V"></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>2. GearController™ Alavanca Strain-Gauge (0–5V)</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Tensão Repouso / Gatilho Puxada Upshift</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">0kg</span><input type="number" step="0.05" value="2.50"><span class="ns-u">V</span></div>
+                  <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="0.05" value="3.42"><span class="ns-u">V</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Bloqueio Anti-Duplo-Corte (Dog-Ring)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="10" value="180"><span class="ns-u">ms</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Gatilho Blip Redução &amp; Abertura DBW</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">&le;</span><input type="number" step="0.05" value="1.58"><span class="ns-u">V</span></div>
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="5" value="38"><span class="ns-u">%</span></div>
+                </div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>3. Controle Anti-Empinada (Wheelie Pitch G-Cut)</span></div><div class="card-pad">
-              <div class="f-row switch-row"><span class="f-lbl">Ativar Proteção de Empinada por Inclinação</span><input type="checkbox" checked></div>
-              <div class="f-row"><span class="f-lbl">Ângulo Início Intervenção / Corte Total</span><input value="> 4.5° (-6° Ponto)  →  > 8.0° (Corte Suave)"></div>
-              <div class="f-row"><span class="f-lbl">Limite Aceleração Cardã / Roda Destracionando</span><input value="Máx. 3800 RPM/s no 1º 1.5s"></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>3. Controle Anti-Empinada (Wheelie Pitch G-Cut)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+              <div class="f-row switch-row"><span class="f-lbl">Ativar Proteção de Empinada por Inclinação</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+              <div class="f-row"><span class="f-lbl">Ângulo Retardo Ponto → Corte Suave</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Ret</span><input type="number" step="0.5" value="4.5"><span class="ns-u">°</span></div>
+                  <div class="num-step"><span class="ns-pfx">Cut</span><input type="number" step="0.5" value="8.0"><span class="ns-u">°</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Limite Máx. Subida Cardã (Primeiros 1.5s)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="100" value="3800"><span class="ns-u">RPM/s</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
             </div></div>
-            <div class="panel-box"><div class="p-hdr"><span>4. Nitro Progressivo PWM & Domo Wastegate CO2</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Rampa Solenoide Nitro PWM (30 Hz)</span><input value="35% @ 0.2s → 100% @ 2.8s (TPS >= 92%)"></div>
-              <div class="f-row"><span class="f-lbl">Compensação Automática Bicos + Retardo</span><input value="+24.0% Combustível  |  -4.5° Avanço @ 100%"></div>
-              <div class="f-row pro-only"><span class="f-lbl">Malha Fechada Domo CO2 (2 Solenoides)</span><input value="Alvo Domo 2.15 bar (±0.03 bar PID)"></div>
+
+            <div class="panel-box"><div class="p-hdr"><span>4. Nitro Progressivo PWM &amp; Domo Wastegate CO2</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Rampa Nitro 30 Hz (Duty Inicial → Final)</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">Ini</span><input type="number" step="5" value="35"><span class="ns-u">%</span></div>
+                  <div class="num-step"><span class="ns-pfx">Fim</span><input type="number" step="5" value="100"><span class="ns-u">%</span></div>
+                </div>
+              </div>
+              <div class="f-row"><span class="f-lbl">Enriquecimento Bicos &amp; Retardo @ 100%</span>
+                <div class="dual-ctl">
+                  <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="1" value="24"><span class="ns-u">%</span></div>
+                  <div class="num-step"><input type="number" step="0.5" value="-4.5"><span class="ns-u">°</span></div>
+                </div>
+              </div>
+              <div class="f-row pro-only"><span class="f-lbl">Alvo Malha Fechada Domo CO2 (2 Válvulas)</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="2.15"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              </div>
             </div></div>
           </div>
         </div>
@@ -1349,15 +2022,22 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       <section class="view-pane pro-only" id="cv-dbw">
         <div class="v-bar"><div class="v-crumb">BORBOLETA ELETRÔNICA DBW EGAS + PILOTO AUTOMÁTICO (CRUISE) + ANTI-SURGE + DUPLO VVT</div></div>
         <div class="scroll-body"><div class="grid-2">
-          <div class="panel-box"><div class="p-hdr"><span>DBW EGAS 20 kHz & Piloto Automático Nativo</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Pistas TPS1 + TPS2</span><input value="14.2% + 85.8% = 100.0% (OK)" readonly></div>
-            <div class="f-row switch-row"><span class="f-lbl">Piloto Automático (Cruise Control — Desarme Freio PD11 / Emb. PE7)</span><input type="checkbox" checked></div>
-            <div class="f-row"><span class="f-lbl">Anti-Surge ΔP (G31 Pré-Borboleta)</span><select><option selected>Ativo — Protege Rotor Turbo</option></select></div>
-            <div class="f-row"><span class="f-lbl">Auto-Blip Redução de Marcha</span><input value="+38% por 110 ms"></div>
+          <div class="panel-box"><div class="p-hdr"><span>DBW EGAS 20 kHz &amp; Piloto Automático Nativo</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Redundância Dupla TPS1 + TPS2</span><div class="ro-badge"><span>14.2% + 85.8%</span><strong>100.0% • OK</strong></div></div>
+            <div class="f-row switch-row"><span class="f-lbl">Piloto Automático (Cruise — Desarme Freio / Emb.)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+            <div class="f-row"><span class="f-lbl">Progressão Pedal × Borboleta</span><select><option selected>Linear Pista 1:1 (Resposta Direta)</option><option>Suave Rua / Chuva (Mais Curso Baixa)</option><option>Agressiva Rápida</option></select></div>
+            <div class="f-row"><span class="f-lbl">Proteção Anti-Surge ΔP Rotor Turbo</span><select><option selected>Ativa — Abre Suave p/ Evitar Flutter Severo</option><option>Desativada</option></select></div>
+            <div class="f-row"><span class="f-lbl">Auto-Blip Punta-Taco (Abertura / Tempo)</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">+</span><input type="number" step="2" value="38"><span class="ns-u">%DBW</span></div>
+                <div class="num-step"><input type="number" step="10" value="110"><span class="ns-u">ms</span></div>
+              </div>
+            </div>
           </div></div>
           <div class="panel-box"><div class="p-hdr"><span>Malha Fechada PID Dual VVT (300 Hz)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">VVT Admissão / Escape</span><input value="+22.0° / -12.0° CA" readonly></div>
-            <div style="display:flex;gap:6px;"><button class="obtn on" style="flex:1" onclick="navMap('vvt_in')">Mapa VVT Adm</button><button class="obtn on" style="flex:1" onclick="navMap('vvt_ex')">Mapa VVT Esc</button></div>
+            <div class="f-row"><span class="f-lbl">Posição Atual Admissão / Escape</span><div class="ro-badge"><span>Fase Comandos</span><strong>+22.0° / -12.0° CA</strong></div></div>
+            <div class="f-row"><span class="f-lbl">Frequência Solenoides VVT Óleo</span><select><option selected>300 Hz (VW / Audi / BMW / Honda)</option><option>250 Hz (Toyota / GM)</option></select></div>
+            <div style="display:flex;gap:6px;margin-top:4px;"><button class="obtn on" style="flex:1;height:28px" onclick="navMap('vvt_in')">📈 Mapa 3D VVT Admissão</button><button class="obtn on" style="flex:1;height:28px" onclick="navMap('vvt_ex')">📈 Mapa 3D VVT Escape</button></div>
           </div></div>
         </div></div>
       </section>
@@ -1447,22 +2127,22 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 
           <div class="panel-box"><div class="p-hdr"><span>2. Imobilizador Antifurto Ghost-Lock™ (HMAC-SHA256 no Silício)</span></div><div class="card-pad">
             <div class="f-row"><span class="f-lbl">PIN / Chave BLE 5.0 do Proprietário</span><input type="password" value="2580"></div>
-            <div class="f-row"><span class="f-lbl">Trava de Segurança ISO 26262</span><input value="Jamais corta combustível/ignição se RPM > 0!" readonly></div>
+            <div class="f-row"><span class="f-lbl">Trava de Segurança ISO 26262</span><div class="ro-badge"><span>Interlock Partida</span><strong>Jamais corta se RPM &gt; 0!</strong></div></div>
             <div style="display:flex;gap:6px;">
               <button class="obtn warn" style="flex:1;height:28px" onclick="setGhostState(true)">Armar Imobilizador</button>
-              <button class="obtn ok" style="flex:1;height:28px" onclick="setGhostState(false)">Autenticar & Liberar</button>
+              <button class="obtn ok" style="flex:1;height:28px" onclick="setGhostState(false)">Autenticar &amp; Liberar</button>
             </div>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>3. Atualizador de Firmware USB-C DFU (ChaCha20-Poly1305 Silicon Lock™)</span><span id="dfuPctLbl" style="color:var(--neon-g)">Rev 28.0 Assinado</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Pacote Criptografado</span><input value="TBX-800_PRO_Factory_USBC.tbxfw (RFC 8439 AEAD)" readonly></div>
+          <div class="panel-box"><div class="p-hdr"><span>3. Atualizador de Firmware USB-C DFU (ChaCha20-Poly1305 Silicon Lock™)</span><span id="dfuPctLbl" style="color:var(--neon-g)">Rev 37.0 Assinado</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Canal / Pacote Criptografado</span><select><option selected>TBX-800_PRO_Factory_USBC.tbxfw (RFC 8439 AEAD)</option><option>TBX-400_UNI_Factory_USBC.tbxfw (RFC 8439 AEAD)</option></select></div>
             <div style="height:10px;background:#090e17;border:1px solid #24334a;border-radius:5px;overflow:hidden;margin:4px 0;"><div id="dfuProgBar" style="width:100%;height:100%;background:linear-gradient(90deg,#00e5ff,#00e676);transition:width 0.25s;"></div></div>
-            <button class="tbtn on" style="height:28px" onclick="runSimulatedDfuUpdate()">⚡ Verificar Assinatura & Simular Flash USB-C DFU (Requer 0 RPM)</button>
+            <button class="tbtn on" style="height:28px" onclick="runSimulatedDfuUpdate()">⚡ Verificar Assinatura &amp; Simular Flash USB-C DFU (Requer 0 RPM)</button>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>4. TBX Remote Tuner™ — Acerto de Pista à Distância (Pacotes 64B, Zero Vídeo Pesado!)</span></div><div class="card-pad">
-            <div class="f-row"><span class="f-lbl">Token Criptografado da Sessão (200 Hz)</span><input value="TBX-BR-8492-K7  (Latência: 14 ms)" readonly></div>
-            <div class="f-row"><span class="f-lbl">Banda Consumida no 4G da Pista</span><input value="12.8 KB/s (Funciona até c/ 1 barra de sinal no autódromo!)" readonly></div>
+          <div class="panel-box"><div class="p-hdr"><span>4. TBX Remote Tuner™ — Acerto de Pista à Distância (Pacotes 64B)</span></div><div class="card-pad">
+            <div class="f-row"><span class="f-lbl">Token Criptografado da Sessão</span><div class="ro-badge"><span>TBX-BR-8492-K7</span><strong>Latência 14 ms</strong></div></div>
+            <div class="f-row"><span class="f-lbl">Permissão da Sessão Remota</span><select><option selected>Leitura + Ajuste de Mapas ao Vivo (Requer Confirmação)</option><option>Somente Visualização Telemetria &amp; Logs</option></select></div>
             <button class="tbtn burn" style="height:28px" onclick="toast('Link TBX-BR-8492-K7 copiado para enviar no WhatsApp!')">Copiar Convite p/ Preparador Remoto</button>
           </div></div>
         </div></div>
@@ -1471,7 +2151,7 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       <!-- ==================== NEW VIEW: 7" DIGITAL DASH & MULTIMEDIA DESIGNER ==================== -->
       <section class="view-pane" id="cv-dash">
         <div class="v-bar">
-          <div class="v-crumb">🖥 DESIGNER DO PAINEL DIGITAL 7" / MULTIMÍDIA ANDROID — SHIFT-LIGHT 12 LEDs & ALERTAS VISUAIS</div>
+          <div class="v-crumb">🖥 DESIGNER DO PAINEL DIGITAL 7" / MULTIMÍDIA ANDROID — SHIFT-LIGHT 12 LEDs &amp; ALERTAS VISUAIS</div>
           <select id="dashThemeSel" style="height:24px" onchange="drawDashPreview()">
             <option value="obsidian" selected>Tema 1: Obsidian Pro Cyber (Padrão TBX)</option>
             <option value="race">Tema 2: Motorsport Barra Shift-Light F1</option>
@@ -1488,10 +2168,14 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
               <div class="canvas-slot" style="min-height:340px;"><canvas id="cvDashPreview"></canvas></div>
             </div>
             <div class="panel-box">
-              <div class="p-hdr"><span>Configuração de Shift-Light Progressivo & Pop-ups de Emergência</span></div>
+              <div class="p-hdr"><span>Configuração de Shift-Light Progressivo &amp; Pop-ups de Emergência</span></div>
               <div class="card-pad">
-                <div class="f-row"><span class="f-lbl">Início LEDs Verdes (1º Estágio)</span><input id="dshLedStart" type="number" value="5400" onchange="drawDashPreview()"></div>
-                <div class="f-row"><span class="f-lbl">Flash Vermelho Troca de Marcha</span><input id="dshLedShift" type="number" value="7100" onchange="drawDashPreview()"></div>
+                <div class="f-row"><span class="f-lbl">Início LEDs Verdes (1º Estágio)</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="dshLedStart" type="number" step="100" value="5400" onchange="drawDashPreview()"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Flash Vermelho Troca de Marcha</span>
+                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="dshLedShift" type="number" step="100" value="7100" onchange="drawDashPreview()"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                </div>
                 <div class="f-row"><span class="f-lbl">Canal Destaque Esquerdo</span><select id="dshSlotL" onchange="drawDashPreview()"><option value="map" selected>Pressão Turbo / MAP (bar)</option><option value="oil">Pressão de Óleo (bar)</option></select></div>
                 <div class="f-row"><span class="f-lbl">Canal Destaque Direito</span><select id="dshSlotR" onchange="drawDashPreview()"><option value="lam" selected>Sonda Wideband (λ / AFR)</option><option value="clt">Temperatura Água (°C)</option></select></div>
                 <div class="f-row switch-row"><span class="f-lbl">Pop-up Gigante se Óleo &lt; 1.2b ou CLT &gt; 106°C</span><input type="checkbox" checked></div>
@@ -1763,10 +2447,12 @@ const st = {
   lockedCells: {}, mapLayout: "full",
   manualBench: false, manualRpm: 3800, manualMap: 185,
   dashAlarmDemo: false, activeOutTest: -1, outTestTimer: null,
+  liveTestMode: "", injFlowLbh: 65, revLimitRpm: 7200,
   openTabs: [
+    { key: "cv-home", label: "🏠 Menu Rápido" },
     { key: "map:ve", label: "⛽ Mapa VE" },
     { key: "map:ign", label: "⚡ Ignição" },
-    { key: "map:lambda", label: "🎯 Sonda λ" },
+    { key: "cv-launch", label: "🔥 2-Step/Pops" },
     { key: "cv-dash", label: "🖥 Dash 7\"" },
     { key: "cv-log", label: "📈 Datalogger" }
   ],
@@ -2535,8 +3221,9 @@ function applyHistogramCorrections() {
 /* ==================== 2D CURVES, CYLINDERS (4 OR 8), REAL WIRE PINOUT, CAN & DTC ==================== */
 function renderCurveInputs() {
   const co = st.curves[st.activeCurve], row = document.getElementById("curveTableRow"); if (!row) return;
+  const stp = (co.max - co.min) > 200 ? "10" : ((co.max - co.min) > 25 ? "0.5" : "0.05");
   row.innerHTML = co.x.map(function(xv, i) {
-    return '<div class="c-pt-box"><label>' + xv + " " + co.unitX + '</label><input type="number" step="0.1" value="' + co.y[i].toFixed(2) + '" onchange="updateCurveCell(' + i + ', this.value)"></div>';
+    return '<div class="c-pt-box"><label>' + xv + " " + co.unitX + '</label><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="' + stp + '" value="' + co.y[i].toFixed(2) + '" onchange="updateCurveCell(' + i + ', this.value)"><button type="button" class="ns-b" data-step="1">+</button></div></div>';
   }).join("");
 }
 function updateCurveCell(idx, val) { const co = st.curves[st.activeCurve], n = parseFloat(val); if (!isNaN(n)) { co.y[idx] = Number(Math.max(co.min, Math.min(co.max, n)).toFixed(2)); drawCurve2DEditor(); } }
@@ -2594,10 +3281,10 @@ function renderCylinders() {
       '<div class="cyl-card" style="' + (isMf ? 'border-color:#f43f5e;background:#3b0a18' : '') + '"><strong style="color:var(--cyan)">CIL ' + (i+1) + '</strong>' +
       '<div style="font-size:10px;padding:3px 6px;border-radius:3px;background:#06131f;border:1px solid ' + (isMf ? '#f43f5e' : '#10b981') + ';color:' + (isMf ? '#fda4af' : 'var(--neon-g)') + ';font-weight:800">IMEP ' + imep + '%</div>' +
       egtHtml +
-      '<div style="width:100%"><div style="font-size:9px;color:var(--txt-2);text-align:center">Comb (%)</div>' +
-      '<input type="number" step="0.2" value="' + st.cylFuelTrim[i].toFixed(1) + '" style="width:100%;text-align:center" onchange="st.cylFuelTrim[' + i + ']=parseFloat(this.value)||0"></div>' +
-      '<div style="width:100%"><div style="font-size:9px;color:var(--txt-2);text-align:center">Ponto (°)</div>' +
-      '<input type="number" step="0.2" value="' + st.cylIgnTrim[i].toFixed(1) + '" style="width:100%;text-align:center" onchange="st.cylIgnTrim[' + i + ']=parseFloat(this.value)||0"></div></div>'
+      '<div style="width:100%"><div style="font-size:9px;color:var(--txt-2);text-align:center;margin-bottom:2px">Combustível (%)</div>' +
+      '<div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.2" min="-25" max="25" value="' + st.cylFuelTrim[i].toFixed(1) + '" onchange="st.cylFuelTrim[' + i + ']=parseFloat(this.value)||0"><button type="button" class="ns-b" data-step="1">+</button></div></div>' +
+      '<div style="width:100%"><div style="font-size:9px;color:var(--txt-2);text-align:center;margin-bottom:2px">Ignição (°)</div>' +
+      '<div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.2" min="-10" max="10" value="' + st.cylIgnTrim[i].toFixed(1) + '" onchange="st.cylIgnTrim[' + i + ']=parseFloat(this.value)||0"><button type="button" class="ns-b" data-step="1">+</button></div></div></div>'
     );
   }
   b.innerHTML = html.join("");
@@ -3273,15 +3960,16 @@ function applyInjRescaleAll() {
 function simWmiFault(isFault) {
   st.wmiFault = isFault;
   const b = document.getElementById("wmiStatusBanner");
+  const wd = document.getElementById("wmiDutyLive");
   if (!b) return;
   if (isFault) {
     b.style.background = "#3b0a18"; b.style.borderColor = "#f43f5e"; b.style.color = "#fda4af";
     b.innerHTML = "⚠ FAIL-SAFE WMI ATUANDO EM &lt; 2 MS! Queda de pressão na linha WMI detectada → Bônus cancelado, Retardo -4.0° aplicado e Solenoide N75 cortada p/ salvar os pistões!";
-    document.getElementById("wmiDutyLive").value = "0.0 % PWM (BOMBA DESLIGADA) | -4.0° Emergência";
+    if (wd) wd.textContent = "0.0 % PWM (BOMBA OFF) • -4.0° Emergência";
   } else {
     b.style.background = "#082419"; b.style.borderColor = "var(--neon-g)"; b.style.color = "var(--neon-g)";
     b.innerHTML = "✓ SISTEMA WMI SAUDÁVEL: Pressão Linha = 11.8 bar • Nível Reservatório OK • Bônus de Avanço (+3.5°) Liberado em Boost!";
-    document.getElementById("wmiDutyLive").value = "68.4 % PWM  |  +2.4° Bônus Ativo";
+    if (wd) wd.textContent = "68.4 % PWM • +2.4° Bônus Ativo";
   }
 }
 function setTunerMapLock(locked) {
@@ -3396,13 +4084,30 @@ setInterval(pollDesktopBridge, 250);
 
 function mainLoop() {
   const ph = Date.now() * 0.0012, s = Math.abs(Math.sin(ph));
-  if (st.manualBench) {
+  if (st.liveTestMode === "2step") {
+    const tgtRpm = parseFloat((document.getElementById("lch2StepRpm") || {}).value) || 4250;
+    const tgtBar = parseFloat((document.getElementById("lch2StepBoost") || {}).value) || 0.95;
+    st.tlm.rpm = Math.round(tgtRpm + Math.sin(Date.now() * 0.065) * 48);
+    st.tlm.map_kpa = Math.round(101.3 + tgtBar * 100);
+    st.tlm.tps_dbw_pct = 100.0;
+  } else if (st.liveTestMode === "rolling") {
+    const rBar = parseFloat((document.getElementById("lchRollBoost") || {}).value) || 1.25;
+    st.tlm.rpm = Math.round(5250 + Math.sin(Date.now() * 0.07) * 55);
+    st.tlm.map_kpa = Math.round(101.3 + rBar * 100);
+    st.tlm.tps_dbw_pct = 100.0;
+  } else if (st.liveTestMode === "pops") {
+    const pFloor = parseFloat((document.getElementById("lchPopsMinRpm") || {}).value) || 4000;
+    st.tlm.rpm = Math.round(pFloor + 200 + s * 1600);
+    st.tlm.map_kpa = 31;
+    st.tlm.tps_dbw_pct = 0.0;
+  } else if (st.manualBench) {
     st.tlm.rpm = st.manualRpm;
     st.tlm.map_kpa = st.manualMap;
     st.tlm.tps_dbw_pct = Math.max(2, Math.min(100, ((st.manualMap - 30) / 270) * 100));
   } else if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
-    const cap = st.tlm.active_bank === 3 ? 3200 : 7200;
-    st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.min(cap, Math.round(920 + s * 5600));
+    const userCap = st.revLimitRpm || 7200;
+    const cap = st.tlm.active_bank === 3 ? 3200 : userCap;
+    st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.min(cap, Math.round(920 + s * (cap - 1050)));
     st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : Math.round(42 + s * (st.tlm.active_bank === 3 ? 54 : 202));
     st.tlm.tps_dbw_pct = 4 + s * 93;
   }
@@ -3414,7 +4119,7 @@ function mainLoop() {
   const wueMult = 1.0 + lerpCurve("wue", t.clt_c) * 0.01;
   const iatMult = 1.0 + lerpCurve("iat_fuel", t.iat_c) * 0.01;
   const deadMs = lerpCurve("deadtime", t.vbatt_v);
-  const basePw = veToPwMs(veLive, t.map_kpa, 65, 9.0 * lamTgt) * wueMult * iatMult;
+  const basePw = veToPwMs(veLive, t.map_kpa, st.injFlowLbh || 65, 9.0 * lamTgt) * wueMult * iatMult;
   const spaMs = lerpCurve("spa", basePw);
   const wmiCorr = st.wmiFault ? -4.0 : (t.map_kpa > 160 ? 2.4 : 0.0);
 
@@ -3425,8 +4130,19 @@ function mainLoop() {
 
   t.target_lambda = lamTgt;
   t.lambda = Math.max(0.65, Math.min(1.30, t.target_lambda * (1.0 + residualBias) + (st.stimLamBias || 0) + Math.cos(ph * 3) * 0.003));
-  t.inj_pw_ms = t.rpm === 0 ? 0 : Math.max(0, basePw + deadMs + spaMs);
-  t.ign_deg = ignBase + lerpCurve("iat_ign", t.iat_c) + wmiCorr;
+  let pwCalc = t.rpm === 0 ? 0 : Math.max(0, basePw + deadMs + spaMs);
+  let ignCalc = ignBase + lerpCurve("iat_ign", t.iat_c) + wmiCorr;
+  if (st.liveTestMode === "2step") {
+    ignCalc = parseFloat((document.getElementById("lch2StepRet") || {}).value) || -14.5;
+    pwCalc *= (1.0 + ((parseFloat((document.getElementById("lch2StepFuel") || {}).value) || 18) / 100.0));
+  } else if (st.liveTestMode === "rolling") {
+    ignCalc = parseFloat((document.getElementById("lchRollRet") || {}).value) || -16.0;
+    pwCalc *= 1.16;
+  } else if (st.liveTestMode === "pops") {
+    ignCalc = -22.0;
+  }
+  t.inj_pw_ms = pwCalc;
+  t.ign_deg = ignCalc;
 
   /* Live Lambda Error & Sample Hit-Count Histogram Accumulator */
   if (t.rpm > 850 && t.guardian_fault_mask === 0 && st.hitCount[hr]) {
@@ -3437,12 +4153,15 @@ function mainLoop() {
     }
   }
 
-  /* Optional WebAudio Acoustic Engine / Boost / Misfire Preview */
+  /* Optional WebAudio Acoustic Engine / Boost / 2-Step / Pops / Misfire Preview */
   if (st.audioOn && st.audioOsc && st.audioGain) {
     const nCyl = HW_MODEL === "800" ? 8 : 4;
     const fireHz = Math.max(18, (t.rpm * nCyl) / 120.0);
     const hasMf = (t.guardian_fault_mask & 0x40) !== 0;
-    const chop = hasMf && (Math.floor(Date.now() / 45) % 4 === 0) ? 0.15 : 1.0;
+    const isCut = st.liveTestMode !== "";
+    const chop = isCut
+      ? ((Math.floor(Date.now() / 36) % 2 === 0) ? 1.5 : 0.08)
+      : (hasMf && (Math.floor(Date.now() / 45) % 4 === 0) ? 0.15 : 1.0);
     st.audioOsc.frequency.value = fireHz;
     st.audioMod.frequency.value = 180 + (t.map_kpa * 1.9);
     st.audioGain.gain.value = t.rpm < 200 ? 0.0 : (0.045 * chop);
@@ -3458,21 +4177,10 @@ function mainLoop() {
     }
   }
 
-  /* Live Evaluation of the 4 Automotive PLC Conditional Outputs */
+  /* Live Dynamic Evaluation of the 4 Structured PLC Conditional Outputs */
   const bb = (t.map_kpa - 101.3) / 100;
-  const plcEval = [
-    (bb >= 0.80 && t.rpm >= 3600),
-    (t.rpm >= 4850 && t.tps_dbw_pct >= 55),
-    (t.rpm >= 6400 || t.clt_c >= 106),
-    (t.iat_c >= 30 && bb >= 1.10)
-  ];
-  for (let pi = 0; pi < 4; pi++) {
-    const pel = document.getElementById("plcSt" + pi);
-    if (pel) {
-      pel.textContent = plcEval[pi] ? "⚡ ACIONADA (ON)" : "EM ESPERA (OFF)";
-      pel.style.color = plcEval[pi] ? "var(--neon-g)" : "var(--txt-2)";
-    }
-  }
+  evalDynamicPlc(t, bb);
+  updateFtHomeTiles(t, bb);
 
   drawTacho();
   const afrSc = st.afrScale || 1;
@@ -3758,9 +4466,11 @@ function setFtbRole(idx, roleId) {
 
 function applyFtbPreset(val) {
   const hw = document.getElementById("ftbHwInfo");
-  if (val === "p52") hw.value = "TBX-PNP-FT-POWER52 Rev 1.0 (STM32G0B1 + CH446Q)";
-  else if (val === "c24") hw.value = "TBX-PNP-FT-CLASSIC Rev 1.0 (Molex 24v + 4v FTCAN)";
-  else hw.value = "TBX-PNP-FT-CLASSIC Rev 1.0 (Molex 24v + 16v Aux DRV8833)";
+  if (hw) {
+    if (val === "p52") hw.textContent = "TBX-PNP-FT-POWER52 Rev 1.0 (STM32G0B1 + CH446Q)";
+    else if (val === "c24") hw.textContent = "TBX-PNP-FT-CLASSIC Rev 1.0 (Molex 24v + 4v FTCAN)";
+    else hw.textContent = "TBX-PNP-FT-CLASSIC Rev 1.0 (Molex 24v + 16v Aux DRV8833)";
+  }
   renderFtBridgeMatrix();
   toast("Perfil de chicote FuelTech atualizado!");
 }
@@ -3780,9 +4490,24 @@ function burnFtBridgeMatrix() {
   const b = [0xF7, 0x35, 0x72, 0x41, puMask & 0xFF, gry & 0xFF, (ylw ? 1 : 0) | (nano ? 2 : 0)];
   let xr = 0; b.forEach(function(v) { xr ^= v; }); b.push(xr);
   const hex = b.map(function(v) { return v.toString(16).toUpperCase().padStart(2, "0"); }).join(" ");
-  document.getElementById("ftbCanHex").value = "0x7B0 [" + hex + "]";
+  const hxEl = document.getElementById("ftbCanHex");
+  if (hxEl) hxEl.textContent = "0x7B0 [" + hex + "]";
   toast("Matriz Zero-Jumper CH446Q gravada na Flash da Mini-Box (0x7B0 ACK)!");
 }
+
+const PDM_LOAD_OPTS = [
+  "Bomba Principal Walbro 450",
+  "2ª Bomba Comb. (MAP >= 0.8b)",
+  "Eletroventilador Radiador",
+  "Alimentação Bobinas COP",
+  "Alimentação +12V Injetores",
+  "Bomba Água/Metanol (WMI)",
+  "Linha +15 ECU & Sonda Nano-WB",
+  "Solenoide Transbrake / Nitro",
+  "Bomba D'Água Elétrica CWA200",
+  "Compressor Ar-Condicionado",
+  "Faróis / Iluminação Auxiliar"
+];
 
 st.pdmChannels = [
   { ch: "CH1 • Alta Corrente", load: "Bomba Principal Walbro 450", trip: 22, soft: 450, amps: 11.8, retries: 0, tripped: false },
@@ -3802,12 +4527,15 @@ function renderPdm8Table() {
     if (!c.tripped) totA += c.amps; else trips++;
     const stHtml = c.tripped
       ? "<span style='color:#fda4af;font-weight:800'>⚡ DESARMADO eFUSE (&lt;1ms • Curto)</span>"
-      : (c.amps > 0 ? "<span style='color:var(--neon-g);font-weight:800'>● ATIVO (100% Estado Sólido)</span>" : "<span style='color:var(--txt-2)'>STANDBY (0.0 A)</span>");
+      : (c.amps > 0 ? "<span style='color:var(--neon-g);font-weight:800'>● ATIVO (Estado Sólido)</span>" : "<span style='color:var(--txt-2)'>STANDBY (0.0 A)</span>");
+    const opts = PDM_LOAD_OPTS.map(function(o) {
+      return "<option" + (o === c.load ? " selected" : "") + ">" + o + "</option>";
+    }).join("");
     return "<tr style='" + (c.tripped ? "background:#3b0a18" : "") + "'>" +
       "<td style='font-weight:800;color:var(--cyan)'>" + c.ch + "</td>" +
-      "<td><input value='" + c.load + "' onchange='st.pdmChannels[" + i + "].load=this.value' style='width:100%'></td>" +
-      "<td><input type='number' value='" + c.trip + "' onchange='st.pdmChannels[" + i + "].trip=parseFloat(this.value)||15' style='width:72px;text-align:center'> A</td>" +
-      "<td><input type='number' step='50' value='" + c.soft + "' onchange='st.pdmChannels[" + i + "].soft=parseInt(this.value)||0' style='width:76px;text-align:center'> ms</td>" +
+      "<td><select onchange='st.pdmChannels[" + i + "].load=this.value' style='width:100%'>" + opts + "</select></td>" +
+      "<td><div class='num-step' style='width:108px'><button type='button' class='ns-b' data-step='-1'>−</button><input type='number' step='1' min='2' max='35' value='" + c.trip + "' onchange='st.pdmChannels[" + i + "].trip=parseFloat(this.value)||15'><span class='ns-u'>A</span><button type='button' class='ns-b' data-step='1'>+</button></div></td>" +
+      "<td><div class='num-step' style='width:118px'><button type='button' class='ns-b' data-step='-1'>−</button><input type='number' step='50' min='0' max='1500' value='" + c.soft + "' onchange='st.pdmChannels[" + i + "].soft=parseInt(this.value)||0'><span class='ns-u'>ms</span><button type='button' class='ns-b' data-step='1'>+</button></div></td>" +
       "<td style='font-family:var(--mono);font-weight:800;color:" + (c.tripped ? "#fda4af" : "#f8fafc") + "'>" + (c.tripped ? "0.0 A (38A Pico)" : c.amps.toFixed(1) + " A") + "</td>" +
       "<td style='font-family:var(--mono)'>" + c.retries + " / 3</td>" +
       "<td>" + stHtml + "</td></tr>";
@@ -4189,11 +4917,180 @@ function autoFixMapHazards() {
   toast("✓ Todos os alertas de segurança foram corrigidos automaticamente!");
 }
 
+/* ==================== v15.0 FT470-ULTRA STRUCTURED CONTROLS & LIVE MOTORSPORT ENGINE ==================== */
+function stepNumberInput(inp, dir) {
+  if (!inp) return;
+  const rawStep = parseFloat(inp.getAttribute("step")) || 1;
+  const stepStr = inp.getAttribute("step") || "1";
+  const dec = stepStr.indexOf(".") >= 0 ? (stepStr.length - stepStr.indexOf(".") - 1) : 0;
+  let v = (parseFloat(inp.value) || 0) + dir * rawStep;
+  const mn = parseFloat(inp.getAttribute("min")), mx = parseFloat(inp.getAttribute("max"));
+  if (!isNaN(mn)) v = Math.max(mn, v);
+  if (!isNaN(mx)) v = Math.min(mx, v);
+  inp.value = v.toFixed(dec);
+  inp.dispatchEvent(new Event("input", { bubbles: true }));
+  inp.dispatchEvent(new Event("change", { bubbles: true }));
+  markBurnDirty();
+}
+
+function markBurnDirty() {
+  st.tlm.tables_dirty = true;
+  const bb = document.getElementById("btnBurnEcu");
+  if (bb) { bb.classList.add("dirty"); bb.textContent = "● Gravar ECU (Ctrl+B)"; }
+}
+
+document.addEventListener("click", function(e) {
+  const nb = e.target.closest(".ns-b");
+  if (!nb) return;
+  const wrap = nb.closest(".num-step");
+  if (!wrap) return;
+  const inp = wrap.querySelector('input[type="number"]');
+  const dir = parseInt(nb.getAttribute("data-step"), 10) || 1;
+  stepNumberInput(inp, dir);
+});
+
+document.addEventListener("wheel", function(e) {
+  const inp = e.target.closest('.num-step input[type="number"]');
+  if (!inp) return;
+  e.preventDefault();
+  stepNumberInput(inp, e.deltaY < 0 ? 1 : -1);
+}, { passive: false });
+
+document.addEventListener("change", function(e) {
+  if (e.target && (e.target.tagName === "SELECT" || e.target.tagName === "INPUT") && e.target.id !== "selModelSwitch" && e.target.id !== "treeFilterInp") {
+    markBurnDirty();
+    if (e.target.type === "checkbox") syncFeatureCards();
+  }
+});
+
+function pickSeg(btn) {
+  if (!btn || !btn.parentElement) return;
+  const sibs = btn.parentElement.querySelectorAll("button");
+  for (let i = 0; i < sibs.length; i++) sibs[i].classList.remove("on");
+  btn.classList.add("on");
+  markBurnDirty();
+  toast("✓ Opção selecionada: " + btn.textContent);
+}
+
+function syncFeatureCards() {
+  const boxes = document.querySelectorAll(".panel-box");
+  for (let i = 0; i < boxes.length; i++) {
+    const sw = boxes[i].querySelector(".card-pad > .switch-row:first-child input[type='checkbox']");
+    if (!sw) continue;
+    const isOn = sw.checked;
+    boxes[i].classList.toggle("feat-off", !isOn);
+    const pill = boxes[i].querySelector(".p-hdr .st-pill");
+    if (pill) {
+      pill.textContent = isOn ? "ATIVO" : "DESATIVADO";
+      pill.classList.toggle("off", !isOn);
+    }
+  }
+}
+
+function syncCylFiringOptions(cylVal) {
+  const f = document.getElementById("cfgFiring");
+  if (!f) return;
+  const mapDef = { "3": "1-2-3", "4": "1-3-4-2", "5": "1-2-4-5-3", "6": "1-5-3-6-2-4", "8": "1-8-7-2-6-5-4-3" };
+  if (mapDef[cylVal]) f.value = mapDef[cylVal];
+}
+
+function setInjFlowBoth(val) {
+  const lbh = Math.max(14, Math.min(500, parseFloat(val) || 65));
+  st.injFlowLbh = lbh;
+  const a = document.getElementById("cfgFlowA"), b = document.getElementById("setupFlowA"), cc = document.getElementById("lblCcMinA");
+  if (a && document.activeElement !== a) a.value = lbh;
+  if (b && document.activeElement !== b) b.value = lbh;
+  if (cc) cc.textContent = Math.round(lbh * 10.5) + " cc/min";
+}
+
+function syncRevLimitInputs(val) {
+  const rpm = Math.max(3000, Math.min(11500, parseInt(val, 10) || 7200));
+  st.revLimitRpm = rpm;
+  const a = document.getElementById("cfgRevLim"), b = document.getElementById("setupRevLim");
+  if (a && document.activeElement !== a) a.value = rpm;
+  if (b && document.activeElement !== b) b.value = rpm;
+}
+
+function applyLinearSensorPreset(maxBarStr) {
+  const mx = parseFloat(maxBarStr) || 10.0;
+  const mnEl = document.getElementById("linMinBar"), mxEl = document.getElementById("linMaxBar");
+  if (mnEl) mnEl.value = (mx === 3 || mx === 5) ? "-0.8" : "0.0";
+  if (mxEl) mxEl.value = (mx === 3 ? "2.0" : (mx === 5 ? "4.0" : mx.toFixed(1)));
+  toast("✓ Calibração linear ajustada para sensor " + mx + " bar!");
+}
+
+function toggleLiveTest(mode) {
+  st.liveTestMode = (st.liveTestMode === mode) ? "" : mode;
+  const ids = { "2step": "btnTest2Step", "rolling": "btnTestRoll", "pops": "btnTestPops" };
+  Object.keys(ids).forEach(function(k) {
+    const el = document.getElementById(ids[k]);
+    if (el) el.classList.toggle("active", st.liveTestMode === k);
+  });
+  if (st.liveTestMode === "2step") toast("🔥 TESTE 2-STEP AO VIVO ATIVO: Veja o giro travado, pressão positiva e retardo no painel direito!");
+  else if (st.liveTestMode === "rolling") toast("🚀 ROLLING ANTI-LAG AO VIVO: Construindo pressão instantânea em movimento!");
+  else if (st.liveTestMode === "pops") toast("💥 OVERRUN POPS >= 4000 RPM AO VIVO: Desaceleração c/ retardo acústico!");
+  else toast("✓ Teste ao vivo encerrado — retornado ao ciclo normal.");
+}
+
+function getPlcChanVal(ch, t, bb) {
+  if (ch === "map") return bb;
+  if (ch === "rpm") return t.rpm;
+  if (ch === "tps") return t.tps_dbw_pct;
+  if (ch === "clt") return t.clt_c;
+  if (ch === "iat") return t.iat_c;
+  return 0;
+}
+
+function evalDynamicPlc(t, bb) {
+  for (let i = 0; i < 4; i++) {
+    const enEl = document.getElementById("plcEn" + i), pel = document.getElementById("plcSt" + i);
+    if (!pel) continue;
+    if (enEl && !enEl.checked) {
+      pel.textContent = "DESATIVADO"; pel.style.color = "var(--txt-3)"; continue;
+    }
+    const c1 = (document.getElementById("plcC1_" + i) || {}).value || "rpm";
+    const o1 = (document.getElementById("plcOp1_" + i) || {}).value || ">=";
+    const v1 = parseFloat((document.getElementById("plcV1_" + i) || {}).value) || 0;
+    const lg = (document.getElementById("plcLg_" + i) || {}).value || "and";
+    const c2 = (document.getElementById("plcC2_" + i) || {}).value || "tps";
+    const o2 = (document.getElementById("plcOp2_" + i) || {}).value || ">=";
+    const v2 = parseFloat((document.getElementById("plcV2_" + i) || {}).value) || 0;
+    const x1 = getPlcChanVal(c1, t, bb), x2 = getPlcChanVal(c2, t, bb);
+    const r1 = (o1 === "<=") ? (x1 <= v1) : (x1 >= v1);
+    const r2 = (o2 === "<=") ? (x2 <= v2) : (x2 >= v2);
+    const on = (lg === "one") ? r1 : ((lg === "or") ? (r1 || r2) : (r1 && r2));
+    pel.textContent = on ? "⚡ ACIONADA (ON)" : "EM ESPERA (OFF)";
+    pel.style.color = on ? "var(--neon-g)" : "var(--txt-2)";
+  }
+}
+
+function updateFtHomeTiles(t, bb) {
+  const roTps = document.getElementById("roSensTps");
+  if (roTps) roTps.textContent = (0.62 + (t.tps_dbw_pct / 100) * 3.86).toFixed(2) + " V (" + t.tps_dbw_pct.toFixed(0) + "%)";
+  if (!document.getElementById("cv-home") || !document.getElementById("cv-home").classList.contains("active")) return;
+  const setH = function(id, txt) { const e = document.getElementById(id); if (e) e.textContent = txt; };
+  setH("htPwLive", t.inj_pw_ms.toFixed(2) + " ms • " + (st.injFlowLbh || 65) + " lb/h");
+  setH("htIgnLive", t.ign_deg.toFixed(1) + "° APMS");
+  const r2 = (document.getElementById("lch2StepRpm") || {}).value || "4250";
+  const b2 = (document.getElementById("lch2StepBoost") || {}).value || "0.95";
+  setH("ht2StepLive", r2 + " RPM • +" + b2 + "b");
+  setH("htBoostLive", (bb >= 0 ? "+" : "") + bb.toFixed(2) + " bar");
+  setH("htLamLive", t.lambda.toFixed(3) + " λ (" + t.target_lambda.toFixed(3) + ")");
+  setH("htDpLive", (t.diff_fp_kpa / 100).toFixed(2) + " bar • " + (t.guardian_fault_mask === 0 ? "OK" : "ALERTA"));
+  const f1 = (document.getElementById("strFan1On") || {}).value || "94";
+  setH("htCltLive", t.clt_c.toFixed(1) + " °C (Fan " + f1 + "°C)");
+  setH("htPinBdg", HW_MODEL === "800" ? "64 PINOS" : "32 PINOS");
+}
+
+CMD_ITEMS.unshift(
+  ["🏠 Menu Visual Rápido em Blocos (Padrão FT-Touch Ultra)", function(){ navTo("cv-home"); }]
+);
 CMD_ITEMS.push(
   ["🖥 Designer do Painel Digital 7\" & Shift-Light", function(){ navTo("cv-dash"); }],
   ["⚡ Teste Individual de Saídas (Bicos / Bobinas / DBW)", function(){ navTo("cv-outtest"); }],
   ["🧮 Calculadoras de Oficina (Bicos / Roda Fônica / AFR)", function(){ navTo("cv-calc"); }],
   ["🩺 Revisor IA de Segurança do Mapa", function(){ openMapHealthModal(); }],
+  ["🔥 2-Step, Rolling Anti-Lag & Overrun Pops >= 4000 RPM", function(){ navTo("cv-launch"); }],
   ["◫ Modo Split Duplo: Mapa VE + Mapa Ignição Juntos", function(){ navMap("ve"); setMapLayout("split"); }]
 );
 
@@ -4211,8 +5108,24 @@ try {
     }
   }
 } catch (_e) {}
+function upgradeAllNumSteppers() {
+  const wraps = document.querySelectorAll(".num-step");
+  for (let i = 0; i < wraps.length; i++) {
+    const w = wraps[i];
+    if (w.querySelector(".ns-b")) continue;
+    const bMinus = document.createElement("button");
+    bMinus.type = "button"; bMinus.className = "ns-b"; bMinus.setAttribute("data-step", "-1"); bMinus.textContent = "−";
+    const bPlus = document.createElement("button");
+    bPlus.type = "button"; bPlus.className = "ns-b"; bPlus.setAttribute("data-step", "1"); bPlus.textContent = "+";
+    w.insertBefore(bMinus, w.firstChild);
+    w.appendChild(bPlus);
+  }
+}
+
 buildIoTables();
 setHardwareModel(HW_MODEL);
+upgradeAllNumSteppers();
+syncFeatureCards();
 setInterval(mainLoop, 75);
 mainLoop();
 </script>
