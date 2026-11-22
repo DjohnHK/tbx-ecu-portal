@@ -668,6 +668,62 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
 .calm-tlm-row .lbl { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
 .calm-tlm-row .val { font-family: var(--mono); font-size: 15px; font-weight: 800; color: #f8fafc; }
 .calm-tlm-row.crit { background: #3b0a18; border-color: #f43f5e; }
+
+/* v17.0 FOCUSED CONTEXT-AWARE UI + AI COPILOT + INTERACTIVE PHYSICS DECK */
+.panel-box.feat-off .card-pad > .f-row:not(.switch-row) { display: none !important; }
+.tbtn.ai-btn {
+  background: linear-gradient(135deg, #6d28d9 0%, #0284c7 100%);
+  border-color: #38bdf8; color: #fff; box-shadow: 0 2px 10px rgba(109,40,217,0.35);
+}
+.tbtn.ai-btn:hover { filter: brightness(1.12); }
+
+.cell-insp-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 6px 12px; background: #0c1629; border-bottom: 1px solid #1f3252;
+  font-size: 11.8px; color: #e2e8f0;
+}
+.cell-insp-pills { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; }
+.cell-insp-pills b { color: var(--cyan); }
+
+/* AI Copilot Screen */
+.ai-prompt-box {
+  display: flex; gap: 8px; padding: 14px 16px; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(109,40,217,0.18) 0%, rgba(14,165,233,0.12) 100%);
+  border: 1px solid rgba(56,189,248,0.38); align-items: center;
+}
+.ai-prompt-box input {
+  flex: 1; height: 38px !important; font-family: var(--sans) !important; font-size: 13px !important;
+  padding: 0 14px !important; background: #070c17 !important; border-color: #2b4266 !important;
+}
+.ai-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.ai-chip {
+  height: 27px; padding: 0 11px; border-radius: 99px; border: 1px solid #293e5e;
+  background: #0e182b; color: #cbd5e1; font-size: 11.2px; font-weight: 600; cursor: pointer; transition: 0.12s;
+}
+.ai-chip:hover { border-color: var(--cyan); color: #fff; background: #152642; }
+.ai-rec-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 14px; border-radius: 8px; background: #0d1628; border: 1px solid #20324e;
+}
+.ai-rec-card.warn { border-left: 4px solid #f59e0b; }
+.ai-rec-card.crit { border-left: 4px solid #f43f5e; background: rgba(190,18,60,0.12); }
+.ai-rec-card.ok { border-left: 4px solid #10b981; }
+
+/* Right Physics Scenario Deck */
+.sim-deck {
+  margin: auto 10px 10px; padding: 10px 11px; background: #0c1425;
+  border: 1px solid #1f314f; border-radius: 9px; display: flex; flex-direction: column; gap: 7px;
+}
+.sim-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.sim-pill {
+  height: 26px; border-radius: 5px; border: 1px solid #243654; background: #111c30;
+  color: #cbd5e1; font-size: 10.8px; font-weight: 700; cursor: pointer; transition: 0.12s;
+}
+.sim-pill:hover { border-color: var(--cyan); color: #fff; }
+.sim-pill.active { background: linear-gradient(135deg, #0284c7, #2563eb); border-color: #38bdf8; color: #fff; }
+.sim-pill.fault.active { background: linear-gradient(135deg, #e11d48, #be123c); border-color: #fda4af; }
+.sim-slider-row { display: flex; flex-direction: column; gap: 2px; font-size: 10.5px; color: #94a3b8; }
+.sim-slider-row input[type="range"] { width: 100%; accent-color: var(--cyan); height: 15px; cursor: pointer; }
 </style>
 </head>
 <body class="mode-400">
@@ -676,6 +732,7 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
   <header class="topbar">
     <div class="tb-group">
       <button class="tbtn wiz" onclick="navTo('cv-home')">🏠 Início</button>
+      <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">🤖 Copiloto IA</button>
       <select class="hw-sel" id="selModelSwitch" onchange="setHardwareModel(this.value)">
         <option value="800" >ECU: TBX-800 PRO</option>
         <option value="400" selected>ECU: TBX-400</option>
@@ -716,6 +773,7 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
       <div class="tree-scroll" id="treeRoot">
         <div class="t-group-items">
           <div class="t-node active" data-route="cv-home" onclick="navTo('cv-home')"><span>🏠 Tela Inicial</span></div>
+          <div class="t-node" data-route="cv-copilot" onclick="navTo('cv-copilot')"><span style="color:#a5f3fc;font-weight:700;">🤖 Copiloto IA de Acerto</span></div>
         </div>
 
         <div class="t-cat" onclick="toggleCat(this)"><span>Motor e Sensores</span><span>▾</span></div>
@@ -830,9 +888,18 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
         <div class="cal-layout mode-sheet" id="calLayoutRoot">
           <div class="cal-top-split">
             <div class="panel-box" id="mainSheetBox">
-              <div class="p-hdr">
-                <span id="lblSheetSub">Clique ou arraste nas células para selecionar • Digite o valor e aperte Enter • Botão direito abre atalhos</span>
-                <span style="font-family:var(--mono);color:var(--cyan);" id="lblCellCount">400 Células</span>
+              <div class="cell-insp-bar">
+                <div class="cell-insp-pills" id="cellCrossSummary">
+                  <span>📍 Ponto: <b>3600 RPM × +0.34 bar</b></span>
+                  <span>Combustível: <b>76.0% VE (6.1 ms)</b></span>
+                  <span>Ponto aqui: <b>22.1°</b></span>
+                  <span>Alvo Sonda: <b>0.86 λ</b></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="display:none" id="lblSheetSub"></span>
+                  <span style="display:none" id="lblCellCount"></span>
+                  <button type="button" class="obtn on" id="btnJumpSameCell" onclick="jumpSameCellOtherMap()">Ver Ignição neste mesmo Ponto ⇄</button>
+                </div>
               </div>
               <div class="sheet-wrap">
                 <table class="cal-grid" id="calSheet"></table>
@@ -911,7 +978,7 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
               <div style="font-size:12.5px;color:#94a3b8;">Escolha abaixo o que deseja ajustar ou configure um motor do zero em 6 passos simples.</div>
             </div>
             <div style="display:flex;gap:8px;flex-shrink:0;">
-              <button class="tbtn" onclick="openMapHealthModal()">🩺 Revisar Segurança</button>
+              <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">🤖 Abrir Copiloto IA</button>
               <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Configurar Novo Motor</button>
             </div>
           </div>
@@ -932,7 +999,7 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
             <div class="clean-card" onclick="navTo('cv-setup')">
               <div class="clean-card-ico">🔧</div>
               <div><h3>Motor, Bicos e Sensores</h3><p>Cilindros, roda fônica, vazão dos bicos, bobinas e TPS.</p></div>
-              <div class="clean-card-val"><span>4 Cil • 65 lb/h</span><span>Abrir →</span></div>
+              <div class="clean-card-val"><span id="htSetupLive">4 Cil • 65 lb/h</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navTo('cv-launch')">
@@ -953,10 +1020,10 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
               <div class="clean-card-val"><span id="htCltLive">Fan 94 °C</span><span>Abrir →</span></div>
             </div>
 
-            <div class="clean-card" onclick="navTo('cv-ai')">
-              <div class="clean-card-ico">🛡</div>
-              <div><h3>Proteções e Auto-Tune</h3><p>Correção automática de sonda O2 e cortes de segurança.</p></div>
-              <div class="clean-card-val"><span id="htDpLive" style="color:var(--neon-g)">10 Proteções OK</span><span>Abrir →</span></div>
+            <div class="clean-card" onclick="navTo('cv-copilot')" style="border-color:rgba(168,85,247,0.45);">
+              <div class="clean-card-ico" style="background:rgba(168,85,247,0.16);border-color:rgba(168,85,247,0.4);">🤖</div>
+              <div><h3>Copiloto IA de Acerto</h3><p>Peça ajustes em português, analise logs e audite bicos e ponto.</p></div>
+              <div class="clean-card-val"><span style="color:#c084fc">Diagnóstico + Auto-Acerto</span><span>Abrir →</span></div>
             </div>
 
             <div class="clean-card" onclick="navTo('cv-log')">
@@ -969,8 +1036,59 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
           <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;">
             <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-outtest')">⚡ Testar Bicos e Bobinas</button>
             <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-sens')">🎛 Calibrar Pedal / TPS</button>
+            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-ai')">🛡 10 Proteções do Motor</button>
             <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-dash')">🖥 Painel Digital 7"</button>
-            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-io')">🔌 Entradas e Saídas</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== NEW FOCUSED VIEW: AI TUNING & DIAGNOSTIC COPILOT ==================== -->
+      <section class="view-pane" id="cv-copilot">
+        <div class="v-bar">
+          <button class="obtn back-home-btn" onclick="navTo('cv-home')">← Início</button>
+          <div class="v-crumb">🤖 Copiloto IA de Acerto e Diagnóstico do Motor</div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <button class="obtn" onclick="undoMap()">↶ Desfazer Último Ajuste</button>
+            <button class="obtn ok" onclick="runFullAiAudit()">🔄 Reavaliar Setup Agora</button>
+          </div>
+        </div>
+        <div class="scroll-body">
+          <!-- NATURAL LANGUAGE COMMAND BAR -->
+          <div class="ai-prompt-box">
+            <span style="font-size:20px;">🤖</span>
+            <input type="text" id="inpAiPrompt" placeholder="Peça em português: ex. 'tirar 2 graus acima de 1 bar', 'enriquecer 4% em alta', '2-step em 4500', 'corte em 7500'..." onkeydown="if(event.key==='Enter')executeAiPrompt()">
+            <button class="tbtn ai-btn" style="height:38px;padding:0 18px;" onclick="executeAiPrompt()">Executar Ajuste IA</button>
+          </div>
+
+          <!-- 1-CLICK GOAL MACROS -->
+          <div class="ai-chip-row">
+            <button type="button" class="ai-chip" onclick="runAiMacro('log_fix')">🎯 Corrigir Mapa pelo Último Log</button>
+            <button type="button" class="ai-chip" onclick="runAiMacro('safe_boost_ign')">🛡 Ponto Seguro p/ Turbo (-2° em Pressão)</button>
+            <button type="button" class="ai-chip" onclick="runAiMacro('eco_cruise')">🛣 Economia na Estrada (Cruzeiro)</button>
+            <button type="button" class="ai-chip" onclick="runAiMacro('big_cam')">🏁 Acertar Lenta p/ Comando Bravo</button>
+            <button type="button" class="ai-chip" onclick="runAiMacro('cold_e100')">❄ Melhorar Partida a Frio Etanol</button>
+            <button type="button" class="ai-chip" onclick="setSimScenario('pull');toast('🚀 Puxada 1ª–4ª iniciada! Observe o giro, pressão por marcha e gravação no Log.')">🚀 Simular Puxada 1ª–4ª Agora</button>
+          </div>
+
+          <div class="grid-2">
+            <!-- LEFT: AUTOMATIC PHYSICS & SAFETY AUDIT -->
+            <div class="panel-box">
+              <div class="p-hdr"><span>Diagnóstico Automático do Seu Acerto Atual</span><span id="aiScoreBadge" style="color:var(--neon-g);font-family:var(--mono)">SAÚDE 96%</span></div>
+              <div class="card-pad" id="aiAuditCards" style="gap:8px;"></div>
+            </div>
+
+            <!-- RIGHT: ACTION LOG & EXPLANATION -->
+            <div class="panel-box">
+              <div class="p-hdr"><span>Histórico de Ações e Explicação Técnica da IA</span></div>
+              <div class="card-pad" id="aiHistoryLog" style="gap:8px;">
+                <div class="ai-rec-card ok">
+                  <div>
+                    <strong style="color:#fff;display:block;margin-bottom:2px;">Copiloto pronto para ajudar no acerto</strong>
+                    <span style="color:#94a3b8;font-size:11.5px;">Digite o que deseja mudar acima ou clique em qualquer recomendação ao lado para aplicar automaticamente com opção de Desfazer (Ctrl+Z).</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1174,40 +1292,42 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
           <span style="margin-left:auto;font-family:var(--mono);color:var(--neon-g);" id="setupSummaryTop">VirtualCam™ 720° Sincronizado (99%)</span>
         </div>
         <div class="scroll-body">
+          <div class="info-banner vcam" id="setupLiveCalcBanner">
+            <strong>Dimensionamento Atual:</strong> Bicos de <strong>65 lb/h (682 cc/min)</strong> → Duty estimado em potência máxima (7200 RPM @ +1.60 bar): <strong>76% (Margem Segura ✓)</strong>
+          </div>
           <div class="grid-3">
-            <div class="panel-box"><div class="p-hdr"><span>1. Arquitetura, Rotativo &amp; Sincronismo</span></div><div class="card-pad">
-              <div class="f-row"><span class="f-lbl">Arquitetura do Motor</span><select id="sEngArch" onchange="syncDirectSetup()">
-                <option value="p4" selected>Pistão 4 Cilindros (1-3-4-2 / 1-4-3-2)</option>
-                <option value="p1_3_5">Pistão 1, 2, 3 ou 5 Cilindros</option>
-                <option value="p6_12">Pistão 6, 8, 10 ou 12 Cilindros</option>
-                <option value="rot2">Wankel Rotativo 2 Rotores (13B)</option>
-                <option value="rot34" class="pro-only">Wankel Rotativo 3/4 Rotores (20B/26B)</option>
+            <div class="panel-box"><div class="p-hdr"><span>1. Motor e Roda Fônica</span></div><div class="card-pad">
+              <div class="f-row"><span class="f-lbl">Tipo de Motor</span><select id="sEngArch" onchange="syncDirectSetup()">
+                <option value="p4" selected>4 Cilindros (AP / 1.8T / GM / Honda)</option>
+                <option value="p1_3_5">3 ou 5 Cilindros (TSI / Jetta 2.5)</option>
+                <option value="p6_12">6 ou 8 Cilindros (Opala / BMW / V8)</option>
+                <option value="rot2">Rotativo Wankel (Mazda 13B)</option>
               </select></div>
-              <div class="f-row"><span class="f-lbl">Modo de Fase 720°</span><select id="sTrig" onchange="syncDirectSetup()"><option value="crank_cam">Fônica + Sensor Fase Físico</option><option value="crank_vcam" selected>Fônica + VirtualCam™ (s/ Fase!)</option><option value="crank_semi">Só Fônica 360° (Semi-Seq)</option><option value="dist_hall">Distribuidor Hall</option></select></div>
-              <div class="f-row"><span class="f-lbl">Roda Fônica / CAS</span><select><option selected>60-2 Dentes</option><option>36-1 Dentes</option><option>36-2-2-2 (RX-8 / Subaru)</option><option>24+2 CAS (Mazda 13B)</option><option>GM 58X</option></select></div>
-              <div class="f-row"><span class="f-lbl">Janela MAP VirtualCam™<small>Amostragem fase 720°</small></span>
-                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="sRotSplit" type="number" step="1.0" min="45" max="160" value="105.0"><span class="ns-u">°DPMS</span><button type="button" class="ns-b" data-step="1">+</button></div>
+              <div class="f-row"><span class="f-lbl">Leitura de Fase (Sequencial)</span><select id="sTrig" onchange="syncDirectSetup()"><option value="crank_cam">Com Sensor de Fase no Comando</option><option value="crank_vcam" selected>Sem Sensor de Fase (Sequencial via MAP)</option><option value="crank_semi">Semi-Sequencial (Pares)</option><option value="dist_hall">Distribuidor Hall</option></select></div>
+              <div class="f-row"><span class="f-lbl">Padrão da Roda Fônica</span><select><option selected>60-2 Dentes</option><option>36-1 Dentes</option><option>36-2 Dentes</option><option>GM 58X</option><option>Distribuidor 4 Janelas</option></select></div>
+              <div class="f-row" id="rowRotSplit" style="display:none"><span class="f-lbl">Ângulo Fase / Split Rotativo</span>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="sRotSplit" type="number" step="1.0" min="45" max="160" value="105.0"><span class="ns-u">°</span><button type="button" class="ns-b" data-step="1">+</button></div>
               </div>
-              <div class="f-row"><span class="f-lbl">Corte de Giro Motor</span>
+              <div class="f-row"><span class="f-lbl">Corte de Giro Principal</span>
                 <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupRevLim" type="number" step="100" min="3000" max="11500" value="7200" oninput="syncRevLimitInputs(this.value)"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
               </div>
             </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>2. Injeção, Bicos &amp; Eixo de Carga</span><span id="lblCcMinA" style="color:var(--cyan);font-family:var(--mono);font-size:9.8px">682 cc/min</span></div><div class="card-pad">
+            <div class="panel-box"><div class="p-hdr"><span>2. Injeção, Bicos &amp; Eixo de Carga</span><span id="lblCcMinA" style="color:var(--cyan);font-family:var(--mono);font-size:9.8px">840 cc/min</span></div><div class="card-pad">
               <div class="f-row"><span class="f-lbl">Disparo Injetores</span><select><option selected>100% Sequencial 720°</option><option>Semi-Sequencial</option><option>Multiponto Simultâneo</option><option>Só Ignição (Carburado)</option></select></div>
               <div class="f-row"><span class="f-lbl">Preset Bico Bancada A</span>
                 <select id="selPresetInjA" onchange="if(this.value)setInjFlowBoth(this.value)">
                   <option value="">Customizado</option>
                   <option value="42">Bosch 42 lb/h</option>
-                  <option value="65" selected>Deka 65 lb/h</option>
-                  <option value="80">Deka 80 lb/h</option>
+                  <option value="65">Deka 65 lb/h</option>
+                  <option value="80" selected>Deka 80 lb/h</option>
                   <option value="120">Bosch 120 lb/h</option>
                   <option value="165">Bosch 165 lb/h</option>
                   <option value="210">Alta Vazão 210 lb/h</option>
                 </select>
               </div>
               <div class="f-row"><span class="f-lbl">Vazão Bancada A</span>
-                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupFlowA" type="number" step="1" min="14" max="500" value="65" oninput="setInjFlowBoth(this.value)"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupFlowA" type="number" step="1" min="14" max="500" value="80" oninput="setInjFlowBoth(this.value)"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
               </div>
               <div class="f-row pro-only"><span class="f-lbl">Vazão Bancada B (2ª)</span>
                 <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="setupFlowB" type="number" step="5" min="30" max="600" value="160"><span class="ns-u">lb/h</span><button type="button" class="ns-b" data-step="1">+</button></div>
@@ -1575,21 +1695,28 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
             </div>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>3. Marcha Lenta Malha Dupla (Ar PID + Reserva Ponto)</span></div><div class="card-pad">
+          <div class="panel-box"><div class="p-hdr"><span>3. Marcha Lenta, Pós-Chave &amp; Cut-Off</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
             <div class="f-row"><span class="f-lbl">Atuador Físico de Marcha Lenta</span><select><option class="pro-only">Borboleta Eletrônica DBW EGAS</option><option selected>Válvula Solenoide PWM 2 Fios</option><option>Motor de Passo 4 Fios Bipolar</option><option>Apenas Reserva Rápida de Ignição</option></select></div>
+            <div class="f-row"><span class="f-lbl">Rotação Alvo Quente (Motor &ge; 80 °C)</span>
+              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="20" min="650" max="1500" value="880" onchange="st.curves.idle_clt.y[7]=st.curves.idle_clt.y[8]=parseInt(this.value,10)||880"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            </div>
             <div class="f-row"><span class="f-lbl">Reserva Rápida de Torque por Ignição</span>
               <div class="dual-ctl">
                 <div class="num-step"><span class="ns-pfx">Mín</span><input type="number" step="0.5" min="-15" max="0" value="-6.0"><span class="ns-u">°</span></div>
                 <div class="num-step"><span class="ns-pfx">Máx</span><input type="number" step="0.5" min="0" max="20" value="8.0"><span class="ns-u">°</span></div>
               </div>
             </div>
-            <div class="f-row"><span class="f-lbl">Rotação Alvo Quente (Motor &ge; 80 °C)</span>
-              <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="20" min="650" max="1500" value="880" onchange="st.curves.idle_clt.y[7]=st.curves.idle_clt.y[8]=parseInt(this.value,10)||880"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+            <div class="f-row"><span class="f-lbl">Escorva Bomba Pós-Chave &amp; Cut-Off DFCO</span>
+              <div class="dual-ctl">
+                <div class="num-step"><span class="ns-pfx">Prime</span><input type="number" step="0.5" min="0.5" max="10" value="2.5"><span class="ns-u">s</span></div>
+                <div class="num-step"><span class="ns-pfx">DFCO</span><input type="number" step="100" min="1300" max="4000" value="1850"><span class="ns-u">RPM</span></div>
+              </div>
             </div>
             <div class="f-row"><span class="f-lbl">Tabela Completa de Rotação × Água</span><button class="obtn on" onclick="navCurve('idle_clt')">📈 Abrir Curva 2D de Lenta →</button></div>
           </div></div>
 
-          <div class="panel-box"><div class="p-hdr"><span>4. Chassi Moderno: EPS, Alternador, Bomba &amp; DFCO</span></div><div class="card-pad">
+          <div class="panel-box"><div class="p-hdr"><span>4. Extras Opcionais: Direção Elétrica, Alternador &amp; Bomba Elétrica</span><span class="st-pill">OPCIONAL</span></div><div class="card-pad">
+            <div class="f-row switch-row"><span class="f-lbl">Ativar Controle de Chassi Moderno (EPS / Alternador / Bomba PWM)</span><input type="checkbox" onchange="syncFeatureCards()"></div>
             <div class="f-row"><span class="f-lbl">Direção Elétrica Progressiva (0 → 180 km/h)</span>
               <div class="dual-ctl">
                 <div class="num-step"><span class="ns-pfx">0km</span><input type="number" step="5" min="20" max="100" value="100"><span class="ns-u">%</span></div>
@@ -1606,12 +1733,6 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
               <div class="dual-ctl">
                 <div class="num-step"><span class="ns-pfx">Rua</span><input type="number" step="1" min="72" max="98" value="86"><span class="ns-u">°C</span></div>
                 <div class="num-step"><span class="ns-pfx">WOT</span><input type="number" step="1" min="68" max="95" value="80"><span class="ns-u">°C</span></div>
-              </div>
-            </div>
-            <div class="f-row"><span class="f-lbl">Escorva Bomba Pós-Chave &amp; Cut-Off DFCO</span>
-              <div class="dual-ctl">
-                <div class="num-step"><span class="ns-pfx">Prime</span><input type="number" step="0.5" min="0.5" max="10" value="2.5"><span class="ns-u">s</span></div>
-                <div class="num-step"><span class="ns-pfx">DFCO</span><input type="number" step="100" min="1300" max="4000" value="1850"><span class="ns-u">RPM</span></div>
               </div>
             </div>
           </div></div>
@@ -1671,14 +1792,14 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
               </div>
             </div></div>
 
-            <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão Turbo &amp; Duty Base por Marcha (Tração Progressiva!)</span></div>
+            <div class="panel-box"><div class="p-hdr"><span>Alvo de Pressão Turbo por Marcha (Usado Ao Vivo na Simulação!)</span><span id="bstLiveGearTag" style="color:var(--cyan);font-family:var(--mono)">Marcha Atual: Lenta</span></div>
               <table class="data-tbl">
-                <thead><tr><th>Marcha</th><th>Alvo M1 Pista (bar)</th><th>Alvo M2 Rua (bar)</th><th>Duty Base N75 (%)</th></tr></thead>
+                <thead><tr><th>Marcha</th><th>Alvo Mapa 1 Pista</th><th>Alvo Mapa 2 Rua</th><th>Duty Base N75</th></tr></thead>
                 <tbody>
-                  <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.85"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.25"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="0.90"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.15"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
-                  <tr><td><strong>4ª a 6ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.80"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input type="number" step="0.05" value="1.20"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>1ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG1" type="number" step="0.05" value="0.85"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG1Street" type="number" step="0.05" value="0.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="38"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>2ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG2" type="number" step="0.05" value="1.25"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG2Street" type="number" step="0.05" value="0.90"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="52"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>3ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG3" type="number" step="0.05" value="1.45"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG3Street" type="number" step="0.05" value="1.15"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="64"><span class="ns-u">%</span></div></td></tr>
+                  <tr><td><strong>4ª a 6ª Marcha</strong></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG4" type="number" step="0.05" value="1.60"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="bstG4Street" type="number" step="0.05" value="1.20"><span class="ns-u">bar</span><button type="button" class="ns-b" data-step="1">+</button></div></td><td><div class="num-step"><input type="number" step="2" value="70"><span class="ns-u">%</span></div></td></tr>
                 </tbody>
               </table>
             </div>
@@ -2298,17 +2419,31 @@ body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
         <span id="lblThrKind"></span><span id="svTps"></span><span id="svDuty"></span><div id="sbDuty"></div>
       </div>
 
-      <!-- SIMPLE SIMULATION SWITCH -->
-      <div style="margin:auto 12px 12px;padding:10px 12px;background:#0d1526;border:1px solid #1e2e4a;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
-        <button type="button" class="tbtn" id="btnAutoSweep" style="width:100%;justify-content:center;" onclick="toggleAutoSweep()">▶ Simular Motor Acelerando</button>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;">
-          <span>Controle Manual de Giro</span>
-          <input type="checkbox" id="chkManualBench" onchange="toggleQuickBench(this.checked)">
+      <!-- INTERACTIVE REAL-PHYSICS SIMULATOR DECK -->
+      <div class="sim-deck">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;font-weight:800;color:#e2e8f0;">🎛 Simulador do Motor</span>
+          <span id="simFanStatus" style="font-family:var(--mono);font-size:9.8px;color:#94a3b8;">Fan: OFF</span>
         </div>
-        <div id="quickBenchBody" style="display:none;flex-direction:column;gap:4px;font-family:var(--mono);font-size:10.5px;">
-          <div style="display:flex;justify-content:space-between;"><span>RPM: <strong id="qbRpmLbl" style="color:#fff">3800</strong></span><span>MAP: <strong id="qbMapLbl" style="color:var(--cyan)">+0.85b</strong></span></div>
-          <input type="range" id="qbRpm" min="0" max="7800" step="50" value="3800" oninput="onQuickBenchSlide()">
-          <input type="range" id="qbMap" min="30" max="300" step="5" value="185" oninput="onQuickBenchSlide()">
+        <div class="sim-pills">
+          <button type="button" class="sim-pill active" id="simBtn_idle" onclick="setSimScenario('idle')">🟢 Lenta</button>
+          <button type="button" class="sim-pill" id="simBtn_pull" onclick="setSimScenario('pull')">🚀 Puxada 1ª–4ª</button>
+          <button type="button" class="sim-pill" id="simBtn_2step" onclick="setSimScenario('2step')">🔥 2-Step</button>
+          <button type="button" class="sim-pill" id="simBtn_pops" onclick="setSimScenario('pops')">💥 Pops / Cut</button>
+        </div>
+        <button type="button" class="sim-pill fault" id="simBtn_fault" style="width:100%" onclick="setSimScenario('fault')">🚨 Testar Queda Pressão Bomba (Proteção)</button>
+
+        <div class="sim-slider-row">
+          <div style="display:flex;justify-content:space-between;"><span>Pedal Acelerador</span><strong id="simPedalLbl" style="color:var(--cyan);font-family:var(--mono)">0 %</strong></div>
+          <input type="range" id="simPedalRange" min="0" max="100" step="2" value="0" oninput="onSimPedalInput(this.value)">
+        </div>
+        <div class="sim-slider-row">
+          <div style="display:flex;justify-content:space-between;"><span>Temperatura Água</span><strong id="simCltLbl" style="color:#fbbf24;font-family:var(--mono)">88 °C</strong></div>
+          <input type="range" id="simCltRange" min="0" max="115" step="1" value="88" oninput="onSimCltInput(this.value)">
+        </div>
+
+        <div style="display:none">
+          <input type="checkbox" id="chkManualBench"><div id="quickBenchBody"><span id="qbRpmLbl"></span><span id="qbMapLbl"></span><input id="qbRpm"><input id="qbMap"></div>
         </div>
       </div>
     </aside>
@@ -2464,7 +2599,7 @@ const st = {
   lockedCells: {}, mapLayout: "sheet",
   manualBench: false, manualRpm: 3800, manualMap: 185,
   dashAlarmDemo: false, activeOutTest: -1, outTestTimer: null,
-  liveTestMode: "", injFlowLbh: 65, revLimitRpm: 7200,
+  liveTestMode: "", injFlowLbh: 80, revLimitRpm: 7200,
   openTabs: [
     { key: "cv-home", label: "🏠 Menu Rápido" },
     { key: "map:ve", label: "⛽ Mapa VE" },
@@ -2575,6 +2710,8 @@ function navTo(viewId) {
     if (viewId === "cv-dash") drawDashPreview();
     if (viewId === "cv-outtest") renderOutputTests();
     if (viewId === "cv-calc") runWorkshopCalcs();
+    if (viewId === "cv-copilot") runFullAiAudit();
+    if (viewId === "cv-setup") syncDirectSetup();
     if (viewId === "cv-log") { if (st.logBuf.length < 30) buildProPullLog(); else drawLogMain(); }
   });
 }
@@ -2854,25 +2991,75 @@ function finishCompleteWizard() {
   toast("Mapa Base completo gerado e Snapshot salvo!");
 }
 function syncDirectSetup() {
-  const tr = document.getElementById("sTrig").value;
-  const archEl = document.getElementById("sEngArch");
-  const arch = archEl ? archEl.value : "p4";
-  if (arch.indexOf("rot") === 0) {
-    document.getElementById("setupSummaryTop").textContent = "Wankel Rotativo Ativo • Proteção Apex Split >= 8.0° em Boost!";
+  const tr = (document.getElementById("sTrig") || {}).value || "crank_vcam";
+  const arch = (document.getElementById("sEngArch") || {}).value || "p4";
+  const rowRot = document.getElementById("rowRotSplit");
+  if (rowRot) rowRot.style.display = (arch.indexOf("rot") === 0) ? "grid" : "none";
+  const topEl = document.getElementById("setupSummaryTop");
+  if (topEl) {
+    topEl.textContent = arch.indexOf("rot") === 0
+      ? "Rotativo Wankel Ativo • Split de Proteção Configurado"
+      : (tr === "crank_vcam" ? "Sequencial s/ Sensor de Fase Ativo" : "Sincronismo Configurado");
+  }
+  updateSetupInjectorSizingBanner();
+}
+
+function calcPeakInjectorMetrics() {
+  const lbh = st.injFlowLbh || 65;
+  const maxRpm = st.revLimitRpm || 7200;
+  const boostCfg = (typeof getConfiguredGearBoostBar === "function") ? getConfiguredGearBoostBar(4) : 1.20;
+  const evalMap = Math.max(100, Math.round(100 + boostCfg * 100));
+  const evalVe = (typeof bilerpMap === "function" && st.maps.ve && st.maps.ve.length)
+    ? bilerpMap(st.maps.ve, maxRpm, evalMap) : 86;
+  const evalLam = (typeof bilerpMap === "function" && st.maps.lambda && st.maps.lambda.length)
+    ? bilerpMap(st.maps.lambda, maxRpm, evalMap) : 0.80;
+  const fuelSel = (document.getElementById("cfgFuelType") || {}).value || "e100";
+  const stoich = fuelSel === "gas_e27" ? 13.8 : 9.0;
+  const pwMax = veToPwMs(evalVe, evalMap, lbh, stoich * evalLam) + 0.75;
+  const cycleMs = 120000 / maxRpm;
+  const rawDuty = Math.round((pwMax / cycleMs) * 100);
+  return {
+    lbh: lbh, maxRpm: maxRpm, boostBar: boostCfg.toFixed(2),
+    pwMax: pwMax, cycleMs: cycleMs, rawDuty: rawDuty,
+    cappedDuty: Math.min(100, rawDuty), saturated: rawDuty >= 100
+  };
+}
+
+function updateSetupInjectorSizingBanner() {
+  const ban = document.getElementById("setupLiveCalcBanner");
+  if (!ban || !st.maps.ve || !st.maps.ve.length) return;
+  const m = calcPeakInjectorMetrics();
+  const homeSetup = document.getElementById("htSetupLive");
+  if (homeSetup) homeSetup.textContent = m.lbh + " lb/h • Corte " + m.maxRpm;
+  if (m.saturated) {
+    ban.style.borderColor = "#f43f5e"; ban.style.background = "rgba(244,63,94,0.14)"; ban.style.color = "#fecdd3";
+    ban.innerHTML = "🚨 <strong>Bicos Saturados em 100% (" + m.lbh + " lb/h):</strong> Em " + m.maxRpm + " RPM c/ +" + m.boostBar + " bar, o motor pede <strong>" + m.pwMax.toFixed(1) + " ms</strong> mas o ciclo só tem <strong>" + m.cycleMs.toFixed(1) + " ms</strong>! Suba p/ ≥ 80 lb/h ou baixe a pressão.";
+  } else if (m.rawDuty > 86) {
+    ban.style.borderColor = "#f59e0b"; ban.style.background = "rgba(245,158,11,0.13)"; ban.style.color = "#fde68a";
+    ban.innerHTML = "⚠ <strong>Margem Apertada (" + m.lbh + " lb/h):</strong> Em " + m.maxRpm + " RPM c/ +" + m.boostBar + " bar, o Duty chega a <strong>" + m.rawDuty + "% (" + m.pwMax.toFixed(1) + " ms)</strong>. Acima de 85% recomenda-se bicos maiores.";
   } else {
-    document.getElementById("setupSummaryTop").textContent = tr === "crank_vcam" ? "VirtualCam™ 720° Ativo (Confiança 99%)" : ("Sincronismo: " + tr.toUpperCase());
+    ban.style.borderColor = "#10b981"; ban.style.background = "rgba(16,185,129,0.11)"; ban.style.color = "#a7f3d0";
+    ban.innerHTML = "✓ <strong>Dimensionamento Seguro:</strong> Bicos de <strong>" + m.lbh + " lb/h (" + Math.round(m.lbh * 10.5) + " cc/min)</strong> → Pulso máx. <strong>" + m.pwMax.toFixed(1) + " ms (Duty " + m.rawDuty + "%)</strong> em " + m.maxRpm + " RPM @ +" + m.boostBar + " bar.";
   }
 }
 
 function veToPwMs(vePct, mapKpa, lbh, afr) {
-  const safeInj = Math.max(15, lbh || 65) * 0.000126;
-  const airG = (Math.max(20, mapKpa) * 445.25 * (vePct * 0.01)) / 88454.0;
+  const disp = parseFloat((document.getElementById("cfgDisp") || {}).value) || 1781;
+  const nCyl = Math.max(1, parseInt((document.getElementById("cfgCyl") || {}).value, 10) || 4);
+  const cylCc = disp / nCyl;
+  const densFactor = (afr || 9.0) < 11.2 ? 0.000145 : 0.000126;
+  const safeInj = Math.max(15, lbh || 65) * densFactor;
+  const airG = (Math.max(20, mapKpa) * cylCc * (vePct * 0.01)) / 88454.0;
   return Number(Math.max(0.4, Math.min(35.0, (airG / (afr || 9.0)) / safeInj)).toFixed(2));
 }
 function pwMsToVe(pwMs, mapKpa, lbh, afr) {
-  const safeInj = Math.max(15, lbh || 65) * 0.000126;
+  const disp = parseFloat((document.getElementById("cfgDisp") || {}).value) || 1781;
+  const nCyl = Math.max(1, parseInt((document.getElementById("cfgCyl") || {}).value, 10) || 4);
+  const cylCc = disp / nCyl;
+  const densFactor = (afr || 9.0) < 11.2 ? 0.000145 : 0.000126;
+  const safeInj = Math.max(15, lbh || 65) * densFactor;
   const airG = Math.max(0.2, pwMs) * safeInj * (afr || 9.0);
-  return Number(Math.max(20.0, Math.min(165.0, (airG * 88454.0 / (Math.max(20, mapKpa) * 445.25)) * 100.0)).toFixed(1));
+  return Number(Math.max(20.0, Math.min(165.0, (airG * 88454.0 / (Math.max(20, mapKpa) * cylCc)) * 100.0)).toFixed(1));
 }
 function toggleFuelMapMode() {
   if (st.mapId === "pw_ms") {
@@ -2966,8 +3153,8 @@ function initAllMaps(dispCc, maxBoostBar, isEth) {
       const seedHits = diagDist < 0.16 ? Math.round((0.17 - diagDist) * 85) : 0;
       st.hitCount[r][c] = seedHits;
       st.lamErrSum[r][c] = seedHits > 0 ? (seedHits * Math.sin(r * 0.65 + c * 0.45) * 3.8) : 0.0;
-      st.maps.ve[r][c] = Number(((50 + 0.21 * map) * bell * scale).toFixed(1));
-      st.maps.pw_ms[r][c] = veToPwMs(st.maps.ve[r][c], map, 65, isEth ? 9.0 : 13.8);
+      st.maps.ve[r][c] = Number(((58 + 34 * (1 - Math.exp(-map / 105))) * bell * scale).toFixed(1));
+      st.maps.pw_ms[r][c] = veToPwMs(st.maps.ve[r][c], map, st.injFlowLbh || 65, isEth ? 9.0 : 13.8);
       st.maps.ign[r][c] = Number(Math.max(-9, Math.min(37, 12.5 + ethIgn + 0.0033 * rpm - (map > 100 ? 0.098 * (map - 100) : -0.055 * (100 - map)))).toFixed(1));
       st.maps.lambda[r][c] = Number((map >= 190 ? 0.785 : (map >= 125 ? 0.88 - ((map - 125) / 65) * 0.095 : 1.000)).toFixed(3));
       st.maps.learned_trim[r][c] = Number((Math.sin(r * 0.55 + c * 0.4) * 2.5).toFixed(1));
@@ -3045,8 +3232,32 @@ function renderGrid() {
     ? ("[" + st.rpmAxis[b.r0] + "×" + fmtXHeader(b.c0) + "]")
     : ("[Bloco " + (b.r1 - b.r0 + 1) + "×" + (b.c1 - b.c0 + 1) + "]");
   document.getElementById("inpSetVal").value = m[st.r1][st.c1].toFixed(meta.dec);
+  updateCellCrossInspector(b, cnt);
   if (st.mapLayout === "split") renderSplitSecondGrid();
   moveReticle();
+}
+
+function updateCellCrossInspector(b, cnt) {
+  const box = document.getElementById("cellCrossSummary"), jmp = document.getElementById("btnJumpSameCell");
+  if (!box || !st.maps.ve || !st.maps.ve.length) return;
+  const r = st.r1, c = st.c1;
+  const rpm = st.rpmAxis[r], mp = st.mapAxis[c], xLbl = fmtXHeader(c) + (st.loadMode === "tps" ? "" : " bar");
+  const veV = st.maps.ve[r][c], ignV = st.maps.ign[r][c], lamV = st.maps.lambda[r][c];
+  const pwEq = veToPwMs(veV, mp, st.injFlowLbh || 65, 9.0 * lamV) + 0.85;
+  const dutyEq = Math.min(99, Math.round((pwEq * rpm) / 1200));
+  const ptTxt = cnt === 1 ? (rpm + " RPM × " + xLbl) : ("Bloco " + (b.r1 - b.r0 + 1) + "×" + (b.c1 - b.c0 + 1) + " (" + rpm + " RPM)");
+  box.innerHTML =
+    "<span>📍 <b>" + ptTxt + "</b></span>" +
+    "<span>Injeção: <b>" + veV.toFixed(1) + "% (" + pwEq.toFixed(2) + " ms • " + dutyEq + "% Duty)</b></span>" +
+    "<span>Ponto aqui: <b>" + ignV.toFixed(1) + "°</b></span>" +
+    "<span>Alvo Sonda: <b>" + lamV.toFixed(2) + " λ</b></span>";
+  if (jmp) {
+    jmp.textContent = st.mapId === "ign" ? "Ver Injeção neste Ponto ⇄" : "Ver Ignição neste Ponto ⇄";
+  }
+}
+
+function jumpSameCellOtherMap() {
+  navMap(st.mapId === "ign" ? "ve" : "ign");
 }
 
 function moveReticle() {
@@ -4100,38 +4311,9 @@ async function pollDesktopBridge() {
 setInterval(pollDesktopBridge, 250);
 
 function mainLoop() {
-  const ph = Date.now() * 0.0012, s = Math.abs(Math.sin(ph));
-  if (st.liveTestMode === "2step") {
-    const tgtRpm = parseFloat((document.getElementById("lch2StepRpm") || {}).value) || 4250;
-    const tgtBar = parseFloat((document.getElementById("lch2StepBoost") || {}).value) || 0.95;
-    st.tlm.rpm = Math.round(tgtRpm + Math.sin(Date.now() * 0.065) * 48);
-    st.tlm.map_kpa = Math.round(101.3 + tgtBar * 100);
-    st.tlm.tps_dbw_pct = 100.0;
-  } else if (st.liveTestMode === "rolling") {
-    const rBar = parseFloat((document.getElementById("lchRollBoost") || {}).value) || 1.25;
-    st.tlm.rpm = Math.round(5250 + Math.sin(Date.now() * 0.07) * 55);
-    st.tlm.map_kpa = Math.round(101.3 + rBar * 100);
-    st.tlm.tps_dbw_pct = 100.0;
-  } else if (st.liveTestMode === "pops") {
-    const pFloor = parseFloat((document.getElementById("lchPopsMinRpm") || {}).value) || 4000;
-    st.tlm.rpm = Math.round(pFloor + 200 + s * 1600);
-    st.tlm.map_kpa = 31;
-    st.tlm.tps_dbw_pct = 0.0;
-  } else if (st.manualBench) {
-    st.tlm.rpm = st.manualRpm;
-    st.tlm.map_kpa = st.manualMap;
-    st.tlm.tps_dbw_pct = Math.max(2, Math.min(100, ((st.manualMap - 30) / 270) * 100));
-  } else if (st.autoSweep && !st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
-    const userCap = st.revLimitRpm || 7200;
-    const cap = st.tlm.active_bank === 3 ? 3200 : userCap;
-    st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.min(cap, Math.round(920 + s * (cap - 1050)));
-    st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : Math.round(42 + s * (st.tlm.active_bank === 3 ? 54 : 202));
-    st.tlm.tps_dbw_pct = 4 + s * 93;
-  } else if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
-    /* Calm, realistic steady warm idle by default so the screen isn't jumping wildly! */
-    st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.round(880 + Math.sin(Date.now() * 0.004) * 6);
-    st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : 45;
-    st.tlm.tps_dbw_pct = 2.4;
+  const ph = Date.now() * 0.0012;
+  if (!st.hilExternalActive) {
+    stepVehiclePhysics();
   }
   const t = st.tlm;
   /* REAL-TIME CLOSED-LOOP BILINEAR INTERPOLATION FROM USER-EDITED MAPS & 2D CURVES! */
@@ -4154,14 +4336,27 @@ function mainLoop() {
   t.lambda = Math.max(0.65, Math.min(1.30, t.target_lambda * (1.0 + residualBias) + (st.stimLamBias || 0) + Math.cos(ph * 3) * 0.003));
   let pwCalc = t.rpm === 0 ? 0 : Math.max(0, basePw + deadMs + spaMs);
   let ignCalc = ignBase + lerpCurve("iat_ign", t.iat_c) + wmiCorr;
-  if (st.liveTestMode === "2step") {
+
+  const effMode = st.liveTestMode || st.simScenario || "idle";
+  if (effMode === "2step") {
     ignCalc = parseFloat((document.getElementById("lch2StepRet") || {}).value) || -14.5;
     pwCalc *= (1.0 + ((parseFloat((document.getElementById("lch2StepFuel") || {}).value) || 18) / 100.0));
-  } else if (st.liveTestMode === "rolling") {
+  } else if (effMode === "rolling") {
     ignCalc = parseFloat((document.getElementById("lchRollRet") || {}).value) || -16.0;
     pwCalc *= 1.16;
-  } else if (st.liveTestMode === "pops") {
-    ignCalc = -22.0;
+  } else if (effMode === "pops") {
+    const pFloor = parseFloat((document.getElementById("lchPopsMinRpm") || {}).value) || 4000;
+    if (t.rpm >= pFloor) {
+      ignCalc = -22.0;
+    } else if (t.rpm > 1850) {
+      pwCalc = 0.0; t.lambda = 1.28; /* Clean DFCO fuel cut below Pops RPM floor! */
+    }
+  } else if (effMode === "fault") {
+    /* Emergency Bernoulli √(3.0 / dP) fuel rescue when pump pressure drops! */
+    pwCalc *= Math.sqrt(300.0 / Math.max(120, t.diff_fp_kpa));
+  }
+  if (st.shiftCutTicks > 0) {
+    ignCalc = -8.0;
   }
   t.inj_pw_ms = pwCalc;
   t.ign_deg = ignCalc;
@@ -5025,6 +5220,7 @@ function setInjFlowBoth(val) {
   if (a && document.activeElement !== a) a.value = lbh;
   if (b && document.activeElement !== b) b.value = lbh;
   if (cc) cc.textContent = Math.round(lbh * 10.5) + " cc/min";
+  updateSetupInjectorSizingBanner();
 }
 
 function syncRevLimitInputs(val) {
@@ -5033,6 +5229,7 @@ function syncRevLimitInputs(val) {
   const a = document.getElementById("cfgRevLim"), b = document.getElementById("setupRevLim");
   if (a && document.activeElement !== a) a.value = rpm;
   if (b && document.activeElement !== b) b.value = rpm;
+  updateSetupInjectorSizingBanner();
 }
 
 function applyLinearSensorPreset(maxBarStr) {
@@ -5116,6 +5313,453 @@ CMD_ITEMS.push(
   ["🩺 Revisor IA de Segurança do Mapa", function(){ openMapHealthModal(); }],
   ["🔥 2-Step, Rolling Anti-Lag & Overrun Pops >= 4000 RPM", function(){ navTo("cv-launch"); }],
   ["◫ Modo Split Duplo: Mapa VE + Mapa Ignição Juntos", function(){ navMap("ve"); setMapLayout("split"); }]
+);
+
+/* ==================== v17.0 CLOSED-LOOP VEHICLE PHYSICS SIMULATOR & AI TUNING COPILOT ==================== */
+st.simScenario = "idle";
+st.simGear = 1;
+st.simPedal = 0;
+st.simCltManual = null;
+st.simFanOn = false;
+st.shiftCutTicks = 0;
+st.pullClock = 0;
+
+function setSimScenario(sc) {
+  st.liveTestMode = "";
+  st.simScenario = (st.simScenario === sc && sc !== "idle") ? "idle" : sc;
+  ["idle", "pull", "2step", "pops", "fault"].forEach(function(k) {
+    const b = document.getElementById("simBtn_" + k);
+    if (b) b.classList.toggle("active", st.simScenario === k);
+  });
+  if (st.simScenario === "pull") {
+    st.simGear = 1; st.tlm.rpm = 2350; st.tlm.map_kpa = 95; st.pullClock = 0; st.logBuf = [];
+    toast("🚀 Puxada Física 1ª–4ª iniciada! Usando seus limites de pressão por marcha e corte de giro.");
+  } else if (st.simScenario === "pops") {
+    st.tlm.rpm = 6100; st.tlm.map_kpa = 32;
+    toast("💥 Simulando desaceleração de 6100 RPM: tiros até 4000 RPM → corte limpo DFCO abaixo!");
+  } else if (st.simScenario === "fault") {
+    st.simGear = 3; st.tlm.rpm = 4600; st.tlm.map_kpa = 195;
+    toast("🚨 Falha simulada: queda na pressão diferencial da bomba! Veja a proteção salvar o motor.");
+  } else if (st.simScenario === "2step") {
+    toast("🔥 2-Step ativo no simulador: segurando giro e pressão na linha!");
+  } else {
+    st.tlm.guardian_fault_mask = 0; st.tlm.diff_fp_kpa = 304;
+  }
+}
+
+function onSimPedalInput(val) {
+  const p = Math.max(0, Math.min(100, parseFloat(val) || 0));
+  st.simPedal = p;
+  document.getElementById("simPedalLbl").textContent = Math.round(p) + " %";
+  st.liveTestMode = "";
+  st.simScenario = p > 2 ? "pedal" : "idle";
+  ["idle", "pull", "2step", "pops", "fault"].forEach(function(k) {
+    const b = document.getElementById("simBtn_" + k);
+    if (b) b.classList.toggle("active", st.simScenario === k);
+  });
+}
+
+function onSimCltInput(val) {
+  const c = parseFloat(val);
+  st.simCltManual = c;
+  st.tlm.clt_c = c;
+  document.getElementById("simCltLbl").textContent = Math.round(c) + " °C";
+}
+
+function getConfiguredGearBoostBar(gear) {
+  const isStreetBank = (st.tlm.active_bank === 1 || st.tlm.active_bank === 2);
+  if (st.tlm.active_bank === 3) return 0.0; /* Manobrista */
+  const suffix = isStreetBank ? "Street" : "";
+  const gIdx = Math.max(1, Math.min(4, gear));
+  const el = document.getElementById("bstG" + gIdx + suffix);
+  return el ? (parseFloat(el.value) || 1.0) : [0, 0.85, 1.25, 1.60, 1.80][gIdx];
+}
+
+function stepVehiclePhysics() {
+  const t = st.tlm;
+  if (t.ghost_armed && !t.ghost_unlocked) {
+    t.rpm = 0; t.map_kpa = 101; t.tps_dbw_pct = 0; return;
+  }
+
+  /* 1. Thermal & Fan 1 Hysteresis Physics */
+  const fanOnThr = parseFloat((document.getElementById("strFan1On") || {}).value) || 94.0;
+  const fanOffThr = parseFloat((document.getElementById("strFan1Off") || {}).value) || 90.0;
+  if (st.simCltManual === null) {
+    const heatLoad = (t.rpm > 3500 && t.map_kpa > 140) ? 0.055 : 0.012;
+    const coolRate = st.simFanOn ? -0.075 : -0.004;
+    t.clt_c = Math.max(82, Math.min(108, t.clt_c + heatLoad + coolRate));
+    const cltSl = document.getElementById("simCltRange"), cltLb = document.getElementById("simCltLbl");
+    if (cltSl && document.activeElement !== cltSl) cltSl.value = Math.round(t.clt_c);
+    if (cltLb) cltLb.textContent = t.clt_c.toFixed(0) + " °C";
+  }
+  if (t.clt_c >= fanOnThr) st.simFanOn = true;
+  else if (t.clt_c <= fanOffThr) st.simFanOn = false;
+  const fanEl = document.getElementById("simFanStatus");
+  if (fanEl) {
+    fanEl.textContent = st.simFanOn ? "❄ Fan: LIGADA" : "Fan: OFF";
+    fanEl.style.color = st.simFanOn ? "var(--neon-g)" : "#94a3b8";
+  }
+
+  const mode = st.liveTestMode || st.simScenario || "idle";
+  const revCap = t.active_bank === 3 ? 3200 : (st.revLimitRpm || 7200);
+  const gl = document.getElementById("lblGearLive"), bgTag = document.getElementById("bstLiveGearTag");
+
+  if (mode === "2step") {
+    const tgtRpm = parseFloat((document.getElementById("lch2StepRpm") || {}).value) || 4250;
+    const tgtBar = parseFloat((document.getElementById("lch2StepBoost") || {}).value) || 0.95;
+    t.tps_dbw_pct = 100.0;
+    t.rpm = Math.round(tgtRpm + Math.sin(Date.now() * 0.07) * 45);
+    t.map_kpa += ((101.3 + tgtBar * 100) - t.map_kpa) * 0.25;
+    t.diff_fp_kpa = 304; t.guardian_fault_mask = 0;
+    if (gl) gl.textContent = "2-Step • Parado";
+  }
+  else if (mode === "rolling") {
+    const rBar = parseFloat((document.getElementById("lchRollBoost") || {}).value) || 1.25;
+    t.tps_dbw_pct = 100.0;
+    t.rpm = Math.round(5200 + Math.sin(Date.now() * 0.07) * 50);
+    t.map_kpa += ((101.3 + rBar * 100) - t.map_kpa) * 0.30;
+    if (gl) gl.textContent = "2ª • 78 km/h (Rolo)";
+  }
+  else if (mode === "pops") {
+    t.tps_dbw_pct = 0.0;
+    t.map_kpa += (31 - t.map_kpa) * 0.35;
+    t.rpm = Math.round(t.rpm - 95);
+    if (t.rpm < 1550) t.rpm = 6200; /* Loop overrun demo smoothly */
+    const pFloor = parseFloat((document.getElementById("lchPopsMinRpm") || {}).value) || 4000;
+    if (gl) gl.textContent = t.rpm >= pFloor ? "Desacel. (Pops)" : "Cut-Off 0ms";
+  }
+  else if (mode === "fault") {
+    t.tps_dbw_pct = 88.0;
+    t.diff_fp_kpa = 212; /* Dropped below 2.58 bar! */
+    t.guardian_fault_mask = 1;
+    t.map_kpa += (101 - t.map_kpa) * 0.30; /* N75 cut to 0 bar boost */
+    t.rpm = Math.min(4800, Math.round(t.rpm + (4750 - t.rpm) * 0.18));
+    if (gl) gl.textContent = "Proteção Limp 4800";
+  }
+  else if (mode === "pull") {
+    t.diff_fp_kpa = 304; t.guardian_fault_mask = 0;
+    t.tps_dbw_pct = 100.0;
+    const gearBoost = getConfiguredGearBoostBar(st.simGear);
+    const spoolFactor = Math.max(0, Math.min(1, (t.rpm - 2500) / 1400));
+    const tgtKpa = 101.3 + (gearBoost * 100 * spoolFactor);
+
+    if (st.shiftCutTicks > 0) {
+      st.shiftCutTicks--;
+      t.rpm = Math.round(t.rpm - 380);
+      t.map_kpa -= 12;
+    } else {
+      t.map_kpa += (tgtKpa - t.map_kpa) * 0.22;
+      const accelStep = [0, 225, 155, 108, 72][st.simGear] * (0.85 + (t.map_kpa / 240) * 0.45);
+      t.rpm = Math.round(t.rpm + accelStep);
+      if (t.rpm >= revCap) {
+        if (st.simGear < 4) {
+          st.simGear++;
+          st.shiftCutTicks = 2; /* Realistic 150ms shift drop */
+        } else {
+          /* Completed 1st-4th pull! Hold briefly then restart or return to idle */
+          st.simGear = 1; t.rpm = 2400; t.map_kpa = 95;
+        }
+      }
+    }
+    const ratios = [0, 3.30, 1.94, 1.31, 0.97];
+    const spd = Math.round((t.rpm / (ratios[st.simGear] * 3.88)) * 0.118);
+    if (gl) gl.textContent = st.simGear + "ª • " + spd + " km/h";
+    if (bgTag) bgTag.textContent = st.simGear + "ª Marcha → Alvo +" + gearBoost.toFixed(2) + " bar";
+
+    /* Stream real pull samples straight into Datalogger! */
+    st.pullClock += 0.075;
+    if (st.logBuf.length > 360) st.logBuf.shift();
+    st.logBuf.push({
+      t: st.pullClock, rpm: t.rpm, gear: st.simGear, spd: spd,
+      map: Math.round(t.map_kpa), tgtMap: Math.round(tgtKpa), tps: 100,
+      lam: t.lambda, tgtLam: t.target_lambda, tgt: t.target_lambda, pw: t.inj_pw_ms,
+      stft: ((t.lambda - t.target_lambda) / Math.max(0.5, t.target_lambda)) * 100,
+      dp: t.diff_fp_kpa, ign: t.ign_deg
+    });
+    st.logCursor = Math.max(0, st.logBuf.length - 1);
+  }
+  else if (mode === "pedal") {
+    t.diff_fp_kpa = 304; t.guardian_fault_mask = 0;
+    t.tps_dbw_pct = st.simPedal;
+    const tgtRpm = Math.min(revCap, 880 + (st.simPedal / 100) * (revCap - 920));
+    t.rpm = Math.round(t.rpm + (tgtRpm - t.rpm) * 0.16);
+    const maxB = getConfiguredGearBoostBar(3);
+    const spool = t.rpm > 2700 ? ((t.rpm - 2700) / 2200) : 0;
+    const tgtKpa = 45 + (st.simPedal / 100) * (56 + Math.min(1, spool) * maxB * 100);
+    t.map_kpa = Math.round(t.map_kpa + (tgtKpa - t.map_kpa) * 0.20);
+    if (gl) gl.textContent = st.simPedal > 60 ? "Carga Alta" : "Parcial";
+  }
+  else {
+    /* Calm Closed-Loop Idle */
+    t.diff_fp_kpa = 304;
+    t.guardian_fault_mask = (t.clt_c > 110) ? 2 : 0;
+    const idleTgt = lerpCurve("idle_clt", t.clt_c) || 880;
+    t.tps_dbw_pct = 2.4;
+    t.map_kpa = Math.round(t.map_kpa + (45 - t.map_kpa) * 0.25);
+    t.rpm = Math.round(t.rpm + (idleTgt - t.rpm) * 0.25 + Math.sin(Date.now() * 0.005) * 5);
+    if (gl) gl.textContent = "Marcha Lenta";
+    if (bgTag) bgTag.textContent = "Marcha Atual: Lenta";
+  }
+  const pedSl = document.getElementById("simPedalRange"), pedLb = document.getElementById("simPedalLbl");
+  if (mode !== "pedal" && pedSl && document.activeElement !== pedSl) {
+    pedSl.value = Math.round(t.tps_dbw_pct);
+    if (pedLb) pedLb.textContent = Math.round(t.tps_dbw_pct) + " %";
+  }
+}
+
+/* ==================== AI TUNING COPILOT: AUDIT, MACROS & NATURAL LANGUAGE PARSER ==================== */
+function logAiHistory(title, detail) {
+  const box = document.getElementById("aiHistoryLog");
+  if (!box) return;
+  const card = document.createElement("div");
+  card.className = "ai-rec-card ok";
+  card.innerHTML = '<div><strong style="color:#6ee7b7;display:block;margin-bottom:2px;">✓ ' + title + '</strong><span style="color:#cbd5e1;font-size:11.5px;">' + detail + '</span></div>';
+  box.insertBefore(card, box.firstChild);
+}
+
+function runFullAiAudit() {
+  const box = document.getElementById("aiAuditCards"), scEl = document.getElementById("aiScoreBadge");
+  if (!box || !st.maps.ve || !st.maps.ve.length) return;
+  const items = [];
+  let score = 100;
+
+  /* 1. Real Injector Duty Check */
+  const injM = calcPeakInjectorMetrics();
+  if (injM.saturated) {
+    score -= 22;
+    items.push({
+      cls: "crit",
+      title: "Bicos Saturados em 100% (" + injM.lbh + " lb/h em +" + injM.boostBar + " bar)",
+      desc: "Em " + injM.maxRpm + " RPM no Etanol, o motor pede " + injM.pwMax.toFixed(1) + " ms mas o ciclo só dispõe de " + injM.cycleMs.toFixed(1) + " ms. Suba p/ bicos ≥ 80 lb/h ou reduza a pressão.",
+      btn: "Simular Bicos 80 lb/h",
+      act: "setInjFlowBoth(80);runFullAiAudit();logAiHistory('Bicos atualizados p/ 80 lb/h','Duty máximo caiu para margem segura (< 72%).');"
+    });
+  } else if (injM.rawDuty > 85) {
+    score -= 14;
+    items.push({
+      cls: "warn",
+      title: "Bicos perto do limite (" + injM.rawDuty + "% Duty em " + injM.maxRpm + " RPM)",
+      desc: "Com bicos de " + injM.lbh + " lb/h em +" + injM.boostBar + " bar, o pulso chega a " + injM.pwMax.toFixed(1) + " ms (ideal manter ≤ 85%).",
+      btn: "Simular Bicos 80 lb/h",
+      act: "setInjFlowBoth(80);runFullAiAudit();logAiHistory('Bicos atualizados p/ 80 lb/h','Duty máximo caiu para margem segura.');"
+    });
+  } else {
+    items.push({
+      cls: "ok",
+      title: "Vazão de Bicos Bem Dimensionada (" + injM.rawDuty + "% Duty Máx.)",
+      desc: "Bicos de " + injM.lbh + " lb/h atendem +" + injM.boostBar + " bar @ " + injM.maxRpm + " RPM (" + injM.pwMax.toFixed(1) + " ms) com " + (100 - injM.rawDuty) + "% de folga."
+    });
+  }
+
+  /* 2. Boost Lambda Safety Check */
+  let leanCells = 0;
+  for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) if (st.mapAxis[c] >= 185 && st.maps.lambda[r][c] > 0.84) leanCells++;
+  if (leanCells > 0) {
+    score -= 15;
+    items.push({
+      cls: "warn",
+      title: leanCells + " células com sonda pobre acima de +0.85 bar",
+      desc: "Mistura acima de 0.84 λ sob pressão eleva temperatura de câmara.",
+      btn: "Corrigir Alvo p/ 0.80 λ",
+      act: "runAiMacro('fix_boost_lam')"
+    });
+  } else {
+    items.push({
+      cls: "ok",
+      title: "Alvo de Sonda em Pressão Seguro (0.78 – 0.83 λ)",
+      desc: "Proteção térmica adequada em todas as faixas de pressão positiva."
+    });
+  }
+
+  /* 3. Ignition Timing Margin in High Boost */
+  let hotIgn = 0;
+  for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) if (st.mapAxis[c] >= 210 && st.rpmAxis[r] >= 4000 && st.maps.ign[r][c] > 23.0) hotIgn++;
+  if (hotIgn > 0) {
+    score -= 12;
+    items.push({
+      cls: "warn",
+      title: hotIgn + " células com ponto agressivo (> 23°) acima de +1.1 bar",
+      desc: "Se for primeiro acerto de rua/dinamômetro, recomenda-se começar 2° mais conservador.",
+      btn: "Baixar -2° em Pressão",
+      act: "runAiMacro('safe_boost_ign')"
+    });
+  } else {
+    items.push({
+      cls: "ok",
+      title: "Curva de Ignição Progressiva sob Pressão",
+      desc: "Retardo proporcional à subida de pressão sem picos perigosos."
+    });
+  }
+
+  /* 4. VE Table Smoothness & Cruise Economy */
+  let steps = 0;
+  for (let r = 0; r < DIM; r++) for (let c = 1; c < DIM; c++) if (Math.abs(st.maps.ve[r][c] - st.maps.ve[r][c - 1]) > 13.5) steps++;
+  if (steps > 0) {
+    score -= 8;
+    items.push({
+      cls: "warn",
+      title: steps + " degraus bruscos encontrados no Mapa de Injeção",
+      desc: "Variações altas entre células vizinhas causam engasgos na progressão.",
+      btn: "Suavizar Transições",
+      act: "runAiMacro('smooth_all_ve')"
+    });
+  } else {
+    items.push({
+      cls: "ok",
+      title: "Progressão do Mapa de Injeção Limpa",
+      desc: "Sem buracos ou degraus bruscos entre faixas de rotação e carga."
+    });
+  }
+
+  if (scEl) {
+    scEl.textContent = "NOTA " + Math.max(50, score) + "/100";
+    scEl.style.color = score >= 90 ? "var(--neon-g)" : "#fbbf24";
+  }
+  box.innerHTML = items.map(function(it) {
+    const btnHtml = it.btn ? '<button type="button" class="obtn on" onclick="' + it.act + '">' + it.btn + '</button>' : "";
+    return '<div class="ai-rec-card ' + it.cls + '"><div><strong style="color:#fff;display:block;margin-bottom:2px;">' + it.title + '</strong><span style="color:#94a3b8;font-size:11.3px;">' + it.desc + '</span></div>' + btnHtml + '</div>';
+  }).join("");
+}
+
+function runAiMacro(id) {
+  pushUndo();
+  let touched = 0;
+  if (id === "safe_boost_ign") {
+    for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) {
+      if (st.mapAxis[c] >= 165) { st.maps.ign[r][c] = Number((st.maps.ign[r][c] - 2.0).toFixed(1)); touched++; }
+    }
+    logAiHistory("Ponto recuado em -2.0° acima de +0.65 bar", touched + " células ajustadas no Mapa de Ignição para maior margem contra detonação.");
+    toast("✓ IA recuou -2.0° de ponto em toda a região de pressão positiva!");
+  }
+  else if (id === "fix_boost_lam") {
+    for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) {
+      if (st.mapAxis[c] >= 185 && st.maps.lambda[r][c] > 0.80) { st.maps.lambda[r][c] = 0.800; touched++; }
+    }
+    logAiHistory("Alvo de Sonda protegido em 0.80 λ sob pressão", touched + " células ajustadas acima de +0.85 bar.");
+    toast("✓ Alvo de Sonda em boost ajustado para 0.80 λ!");
+  }
+  else if (id === "eco_cruise") {
+    for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) {
+      const rpm = st.rpmAxis[r], mp = st.mapAxis[c];
+      if (rpm >= 1800 && rpm <= 3600 && mp >= 35 && mp <= 85) {
+        st.maps.lambda[r][c] = 1.020;
+        st.maps.ign[r][c] = Number(Math.min(36, st.maps.ign[r][c] + 1.5).toFixed(1));
+        touched++;
+      }
+    }
+    logAiHistory("Modo Economia de Cruzeiro aplicado (1800–3600 RPM em vácuo)", touched + " células otimizadas para 1.02 λ e +1.5° de eficiência térmica.");
+    toast("✓ Cruzeiro rodoviário otimizado para economia!");
+  }
+  else if (id === "big_cam") {
+    for (let i = 5; i < 10; i++) st.curves.idle_clt.y[i] = Math.max(1020, st.curves.idle_clt.y[i]);
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) {
+      st.maps.ign[r][c] = Number(Math.max(18.0, st.maps.ign[r][c]).toFixed(1));
+      st.maps.ve[r][c] = Number((st.maps.ve[r][c] * 0.94).toFixed(1));
+    }
+    logAiHistory("Acerto de Lenta para Comando Graduado aplicado", "Alvo de lenta quente elevado p/ 1020 RPM, ponto de base em 18° e limpeza de excesso em baixo vácuo.");
+    toast("✓ Marcha lenta estabilizada p/ comando bravo (1020 RPM + 18° ponto)!");
+  }
+  else if (id === "cold_e100") {
+    for (let i = 0; i < 5; i++) {
+      st.curves.crank.y[i] = Number((st.curves.crank.y[i] * 1.12).toFixed(1));
+      st.curves.afterstart.y[i] = Math.round(st.curves.afterstart.y[i] * 1.10);
+    }
+    logAiHistory("Partida a Frio no Etanol reforçada (< 30 °C)", "Pulso de arranque (+12%) e pós-partida (+10%) recalibrados para pegar de primeira a frio.");
+    toast("✓ Curvas de Partida a Frio e Pós-Partida otimizadas para E100!");
+  }
+  else if (id === "smooth_all_ve") {
+    const cp = cloneMap2D(st.maps.ve);
+    for (let r = 1; r < DIM - 1; r++) for (let c = 1; c < DIM - 1; c++) {
+      st.maps.ve[r][c] = Number(((cp[r][c] * 2 + cp[r-1][c] + cp[r+1][c] + cp[r][c-1] + cp[r][c+1]) / 6).toFixed(1));
+    }
+    logAiHistory("Malha de Injeção suavizada por inteiro", "Filtro progressivo eliminou degraus entre células vizinhas.");
+    toast("✓ Mapa de Injeção suavizado!");
+  }
+  else if (id === "log_fix") {
+    if (st.logBuf.length < 15) buildProPullLog();
+    applyLogVeCorrection();
+    logAiHistory("Mapa de Injeção corrigido pelo Datalogger", "Diferenças entre Sonda Lida e Sonda Alvo compensadas nas células visitadas.");
+  }
+  syncCurrentBankStore();
+  renderGrid();
+  runFullAiAudit();
+}
+
+function executeAiPrompt() {
+  const inp = document.getElementById("inpAiPrompt");
+  const raw = (inp ? inp.value : "").trim();
+  if (!raw) { toast("Digite o que deseja ajustar (ex: 'tirar 2 graus acima de 1 bar')!"); return; }
+  const q = raw.toLowerCase().replace(",", ".");
+  const numMatch = q.match(/[-+]?\d+(\.\d+)?/g);
+  const nums = numMatch ? numMatch.map(parseFloat) : [];
+
+  pushUndo();
+  /* Intent 1: Rev Limit ("corte", "giro maximo", "limitador") */
+  if (q.indexOf("corte") >= 0 && nums.length >= 1 && nums[0] >= 3000) {
+    syncRevLimitInputs(nums[0]);
+    logAiHistory("Corte de giro ajustado para " + Math.round(nums[0]) + " RPM", "Pedido: \"" + raw + "\"");
+    toast("🤖 Corte de giro alterado para " + Math.round(nums[0]) + " RPM!");
+  }
+  /* Intent 2: 2-Step ("2-step", "2 step", "largada") */
+  else if ((q.indexOf("2-step") >= 0 || q.indexOf("2 step") >= 0 || q.indexOf("largada") >= 0) && nums.length >= 1) {
+    const rpmVal = nums.find(function(n){ return n >= 2000; }) || 4300;
+    const barVal = nums.find(function(n){ return n > 0 && n < 4.0; });
+    const rEl = document.getElementById("lch2StepRpm"), bEl = document.getElementById("lch2StepBoost");
+    if (rEl) rEl.value = Math.round(rpmVal);
+    if (bEl && barVal !== undefined) bEl.value = barVal.toFixed(2);
+    logAiHistory("2-Step configurado em " + Math.round(rpmVal) + " RPM" + (barVal ? (" c/ +" + barVal + " bar") : ""), "Pedido: \"" + raw + "\"");
+    toast("🤖 2-Step atualizado para " + Math.round(rpmVal) + " RPM!");
+  }
+  /* Intent 3: Ignition timing ("grau", "ponto", "atrasar", "adiantar", "tirar") */
+  else if (q.indexOf("grau") >= 0 || q.indexOf("ponto") >= 0 || q.indexOf("atras") >= 0 || q.indexOf("adiant") >= 0 || q.indexOf("tirar") >= 0) {
+    const deg = Math.abs(nums[0] || 2.0);
+    const sign = (q.indexOf("tirar") >= 0 || q.indexOf("atras") >= 0 || q.indexOf("baixar") >= 0 || q.indexOf("reduz") >= 0 || (nums[0] < 0)) ? -1 : 1;
+    const barThr = (nums.length >= 2 && nums[1] < 4.5) ? nums[1] : ((q.indexOf("alta") >= 0 || q.indexOf("boost") >= 0 || q.indexOf("press") >= 0 || q.indexOf("bar") >= 0) ? 0.6 : -0.8);
+    const kpaThr = 100 + barThr * 100;
+    let cnt = 0;
+    for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) {
+      if (st.mapAxis[c] >= kpaThr) { st.maps.ign[r][c] = Number((st.maps.ign[r][c] + sign * deg).toFixed(1)); cnt++; }
+    }
+    logAiHistory("Ignição " + (sign < 0 ? "recuada " : "adiantada +") + (sign * deg).toFixed(1) + "° acima de " + barThr.toFixed(2) + " bar", cnt + " células atualizadas no Mapa de Ignição.");
+    toast("🤖 Mapa de Ignição ajustado em " + (sign * deg).toFixed(1) + "° (" + cnt + " células)!");
+  }
+  /* Intent 4: Fuel / Rich / Lean ("rica", "pobre", "enriq", "combust", "injecao", "%") */
+  else if (q.indexOf("ric") >= 0 || q.indexOf("pobr") >= 0 || q.indexOf("enriq") >= 0 || q.indexOf("comb") >= 0 || q.indexOf("%") >= 0) {
+    const pct = Math.abs(nums[0] || 4.0);
+    const sign = (q.indexOf("pobr") >= 0 || q.indexOf("tirar") >= 0 || q.indexOf("reduz") >= 0 || nums[0] < 0) ? -1 : 1;
+    const onlyHigh = (q.indexOf("alta") >= 0 || q.indexOf("boost") >= 0 || q.indexOf("press") >= 0);
+    let cnt = 0;
+    for (let r = 0; r < DIM; r++) for (let c = 0; c < DIM; c++) {
+      if (!onlyHigh || st.mapAxis[c] >= 150) {
+        st.maps.ve[r][c] = Number((st.maps.ve[r][c] * (1 + (sign * pct) / 100)).toFixed(1));
+        cnt++;
+      }
+    }
+    logAiHistory("Combustível ajustado em " + (sign > 0 ? "+" : "-") + pct + "% (" + (onlyHigh ? "em pressão" : "mapa todo") + ")", cnt + " células atualizadas no Mapa de Injeção.");
+    toast("🤖 Mapa de Injeção alterado em " + (sign > 0 ? "+" : "-") + pct + "%!");
+  }
+  /* Intent 5: Economy / Cam / Cold */
+  else if (q.indexOf("econom") >= 0 || q.indexOf("estrada") >= 0) { runAiMacro("eco_cruise"); }
+  else if (q.indexOf("comando") >= 0 || q.indexOf("lenta") >= 0) {
+    if (nums.length >= 1 && nums[0] >= 650 && nums[0] <= 1600) {
+      st.curves.idle_clt.y[7] = st.curves.idle_clt.y[8] = Math.round(nums[0]);
+      logAiHistory("Rotação alvo de marcha lenta quente definida em " + Math.round(nums[0]) + " RPM", "Pedido: \"" + raw + "\"");
+      toast("🤖 Marcha lenta quente ajustada para " + Math.round(nums[0]) + " RPM!");
+    } else { runAiMacro("big_cam"); }
+  }
+  else if (q.indexOf("frio") >= 0 || q.indexOf("partida") >= 0) { runAiMacro("cold_e100"); }
+  else {
+    logAiHistory("Análise executada p/ \"" + raw + "\"", "Use termos diretos como: 'tirar 2 graus acima de 1 bar', 'enriquecer 4% em alta', 'corte em 7500' ou 'lenta em 950'.");
+    toast("🤖 Veja a resposta no Histórico da IA!");
+  }
+  if (inp) inp.value = "";
+  syncCurrentBankStore();
+  renderGrid();
+  runFullAiAudit();
+}
+
+CMD_ITEMS.unshift(
+  ["🤖 Copiloto IA de Acerto e Diagnóstico", function(){ navTo("cv-copilot"); }]
 );
 
 initAllMaps(1781, 1.6, true);
