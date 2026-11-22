@@ -568,196 +568,270 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
 .cmd-item { padding: 8px 10px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; color: var(--txt-1); }
 .cmd-item:hover { background: #0284c7; color: #fff; }
 
-.toast-stack { position: fixed; bottom: 32px; right: 308px; z-index: 260; display: flex; flex-direction: column; gap: 6px; }
-.toast-msg { background: #112236; border: 1px solid var(--cyan); border-left: 4px solid var(--cyan); color: #fff; padding: 8px 13px; border-radius: 4px; font-size: 11.2px; box-shadow: 0 10px 28px rgba(0,0,0,0.65); }
+.toast-stack { position: fixed; bottom: 32px; right: 290px; z-index: 260; display: flex; flex-direction: column; gap: 6px; }
+.toast-msg { background: #112236; border: 1px solid var(--cyan); border-left: 4px solid var(--cyan); color: #fff; padding: 10px 15px; border-radius: 6px; font-size: 12px; box-shadow: 0 10px 28px rgba(0,0,0,0.65); }
+
+/* ==================== v16.0 CLEAN, CALM & INTUITIVE UX OVERRIDES ==================== */
+.app-shell { grid-template-rows: 52px 1fr; }
+.statusbar, .ide-tabbar, .t-tag { display: none !important; }
+.topbar { padding: 0 16px; gap: 12px; background: #0a101d; border-bottom: 1px solid #1e2c44; }
+.tbtn { height: 33px; padding: 0 13px; font-size: 12px; border-radius: 7px; font-weight: 700; }
+.hw-sel { height: 33px; font-size: 12px; min-width: 165px; border-radius: 7px; }
+.car-pill { height: 33px; padding: 0 12px; font-size: 12px; border-radius: 7px; max-width: 280px; }
+.bank-pills { padding: 3px; border-radius: 8px; gap: 3px; }
+.bk-btn { height: 26px; padding: 0 11px; font-size: 11px; font-family: var(--sans); border-radius: 5px; }
+.link-pill { height: 33px; padding: 0 12px; border-radius: 7px; font-size: 11px; font-family: var(--sans); }
+
+.workspace { grid-template-columns: 242px 1fr 272px; }
+body.hide-left .workspace { grid-template-columns: 0px 1fr 272px; }
+body.hide-right .workspace { grid-template-columns: 242px 1fr 0px; }
+
+/* Clean Left Sidebar */
+.nav-tree { background: #080d18; border-right: 1px solid #1a263b; }
+.tree-search-wrap { padding: 8px 10px; background: transparent; border-bottom: 1px solid #162033; }
+.tree-search-wrap input { height: 30px; font-size: 12px; padding: 0 10px; border-radius: 7px; background: #0d1526; }
+.tree-scroll { padding: 8px 8px 18px; }
+.t-cat { padding: 10px 8px 4px; margin-top: 6px; font-size: 10.5px; color: #64748b; letter-spacing: 0.6px; }
+.t-node { padding: 7px 10px; border-radius: 6px; font-size: 12.2px; color: #cbd5e1; border-left: none; }
+.t-node:hover { background: rgba(56, 189, 248, 0.09); color: #fff; }
+.t-node.active { background: rgba(14, 165, 233, 0.20); color: #38bdf8; font-weight: 700; }
+
+/* Clean Spacious Page Header */
+.v-bar { height: 46px; padding: 0 16px; gap: 8px; background: #0a101c; border-bottom: 1px solid #1a263b; overflow: visible; }
+.v-crumb { font-size: 13.5px; font-weight: 800; color: #f8fafc; letter-spacing: 0; margin-right: 8px; }
+.obtn { height: 30px; padding: 0 11px; border-radius: 6px; font-family: var(--sans); font-size: 11.5px; font-weight: 600; }
+.back-home-btn { background: #111b2e; border: 1px solid #283a57; color: #93c5fd; margin-right: 4px; }
+.back-home-btn:hover { background: #1a2a47; color: #fff; }
+
+/* Spacious Forms & Cards */
+.scroll-body { padding: 16px 18px; gap: 14px; }
+.grid-2, .grid-3 { gap: 14px; }
+.panel-box { border-radius: 10px; border-color: #1c2940; background: #0b1220; }
+.p-hdr { height: 36px; padding: 0 15px; font-size: 12px; background: #0f182a; border-bottom-color: #1c2940; }
+.card-pad { padding: 13px 15px; gap: 9px; }
+.f-row { padding: 6px 0; gap: 12px; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); }
+.f-lbl { font-size: 12.2px; color: #e2e8f0; }
+.num-step, select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]) { height: 31px; border-radius: 6px; font-size: 12px; }
+.seg-opt { padding: 3px; border-radius: 7px; }
+.seg-opt button { height: 24px; font-size: 11.2px; border-radius: 5px; }
+.ro-badge { min-height: 31px; border-radius: 6px; font-size: 11.5px; padding: 0 11px; }
+
+/* Spacious 8-Card Main Home Grid */
+.clean-home-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 18px; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(14,165,233,0.14) 0%, rgba(15,23,42,0.85) 100%);
+  border: 1px solid rgba(56,189,248,0.30);
+}
+.clean-home-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.clean-card {
+  background: linear-gradient(180deg, #101a2e 0%, #0a111f 100%);
+  border: 1px solid #1f2f49; border-radius: 12px; padding: 18px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+  cursor: pointer; transition: all 0.15s ease; min-height: 158px;
+}
+.clean-card:hover { transform: translateY(-2px); border-color: var(--cyan); background: #132038; box-shadow: 0 12px 28px rgba(0,0,0,0.45); }
+.clean-card-ico {
+  width: 40px; height: 40px; border-radius: 10px; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(56,189,248,0.10); border: 1px solid rgba(56,189,248,0.22);
+}
+.clean-card h3 { font-size: 14.5px; font-weight: 800; color: #f8fafc; margin-bottom: 4px; }
+.clean-card p { font-size: 11.8px; color: #94a3b8; line-height: 1.4; }
+.clean-card-val {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--cyan);
+  padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* Map Tools Dropdown Menu */
+.tools-dd-wrap { position: relative; }
+.tools-dd-menu {
+  position: absolute; top: 36px; right: 0; width: 250px; z-index: 280;
+  background: #0d1628; border: 1px solid var(--cyan); border-radius: 8px;
+  padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,0.8); display: none; flex-direction: column; gap: 2px;
+}
+.tools-dd-menu.open { display: flex; }
+.tools-dd-menu button {
+  height: 31px; padding: 0 10px; border: none; border-radius: 5px; background: transparent;
+  color: #e2e8f0; font-size: 12px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+}
+.tools-dd-menu button:hover { background: rgba(14,165,233,0.22); color: #fff; }
+
+/* Calm Right Sidebar */
+.right-cockpit { background: #080d18; border-left: 1px solid #1a263b; }
+.calm-tlm-list { display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; }
+.calm-tlm-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; background: #0d1526; border: 1px solid #1b2942; border-radius: 8px;
+}
+.calm-tlm-row .lbl { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
+.calm-tlm-row .val { font-family: var(--mono); font-size: 15px; font-weight: 800; color: #f8fafc; }
+.calm-tlm-row.crit { background: #3b0a18; border-color: #f43f5e; }
 </style>
 </head>
 <body class="mode-400">
 <div class="app-shell">
-  <!-- TOP UNIFIED COMMAND BAR -->
+  <!-- CLEAN, SIMPLE TOP BAR -->
   <header class="topbar">
     <div class="tb-group">
-      <button class="tbtn" style="padding:0 7px;" onclick="toggleSidebar('left')" title="Recolher/Expandir Menu Lateral Esquerdo">[◀]</button>
-      <div class="brand-pill"><span>⚡ TBX STUDIO</span><span>v15.0 ULTRA</span></div>
-      <button class="tbtn wiz" onclick="navTo('cv-home')" title="Menu Visual Rápido em Blocos Estilo FT470 / FTManager 5 Ultra">🏠 Menu Rápido</button>
+      <button class="tbtn wiz" onclick="navTo('cv-home')">🏠 Início</button>
       <select class="hw-sel" id="selModelSwitch" onchange="setHardwareModel(this.value)">
-        <option value="800" >TBX-800 PRO (64p • 20×20 • DBW/VVT)</option>
-        <option value="400" selected>TBX-400 UNIVERSAL (32p • 16×16)</option>
+        <option value="800" >ECU: TBX-800 PRO</option>
+        <option value="400" selected>ECU: TBX-400</option>
       </select>
-      <div class="car-pill" onclick="navTo('cv-proj')" title="Abrir Gestão de Cliente, Snapshots e Receitas">
-        <span style="color:var(--cyan)">★</span>
-        <strong id="hdrVehicleSummary">VW/Audi 1.8T 20V • 60-2 + VirtualCam™ 720° • E100</strong>
+      <div class="car-pill" onclick="navTo('cv-proj')" title="Dados do veículo e versões salvas">
+        <strong id="hdrVehicleSummary">Golf 1.8T Turbo • Etanol</strong>
       </div>
     </div>
 
     <div class="tb-group">
-      <input class="cmd-search" placeholder="🔍 Busca Global (Ctrl+K)" readonly onclick="openCmdPalette()">
-      <div class="bank-pills">
-        <button class="bk-btn active" id="bt0" onclick="setBank(0)">M1 PISTA</button>
-        <button class="bk-btn" id="bt1" onclick="setBank(1)">M2 RUA</button>
-        <button class="bk-btn" id="bt2" onclick="setBank(2)">M3 FLEX</button>
-        <button class="bk-btn valet" id="bt3" onclick="setBank(3)">M4 VALET</button>
+      <div class="bank-pills" title="Alternar entre os 4 mapas salvos na ECU">
+        <button class="bk-btn active" id="bt0" onclick="setBank(0)">Mapa 1 (Pista)</button>
+        <button class="bk-btn" id="bt1" onclick="setBank(1)">Mapa 2 (Rua)</button>
+        <button class="bk-btn" id="bt2" onclick="setBank(2)">Mapa 3 (Eco)</button>
+        <button class="bk-btn valet" id="bt3" onclick="setBank(3)">Manobrista</button>
       </div>
     </div>
 
     <div class="tb-group">
       <input type="file" id="inpLoadTbxMap" accept=".tbxmap,.json" style="display:none" onchange="importTbxMapFile(this)">
-      <button class="tbtn health" onclick="openMapHealthModal()" title="Analisa todo o mapa procurando mistura pobre em pressão, excesso de ponto, degraus bruscos ou dwell alto!">🩺 Revisar Mapa</button>
-      <button class="tbtn" id="btnEngAudio" onclick="toggleEngineAudio()" title="Sintetizador acústico do motor, 2-Step, Pops ≥4k e Misfire ao vivo">🔇 Som</button>
-      <button class="tbtn wiz" onclick="navTo('cv-wiz')">Novo</button>
-      <button class="tbtn" onclick="document.getElementById('inpLoadTbxMap').click()" title="Abrir arquivo .tbxmap do computador">Abrir</button>
-      <button class="tbtn" onclick="exportCal()" title="Baixar arquivo completo .tbxmap com 4 bancos e curvas">Salvar</button>
-      <button class="tbtn burn" id="btnBurnEcu" onclick="burnFram()">Gravar ECU (Ctrl+B)</button>
-      <div class="link-pill" onclick="navTo('cv-ai')" style="cursor:pointer;">
-        <span class="dot-live"></span><span id="lblTopStatus">200Hz • GUARDIAN OK</span>
+      <button class="tbtn" onclick="openCmdPalette()" title="Buscar qualquer ajuste (Ctrl+K)">🔍 Buscar</button>
+      <button class="tbtn" onclick="document.getElementById('inpLoadTbxMap').click()">Abrir</button>
+      <button class="tbtn" onclick="exportCal()">Salvar</button>
+      <button class="tbtn burn" id="btnBurnEcu" onclick="burnFram()">⚡ Gravar na ECU</button>
+      <div class="link-pill" onclick="navTo('cv-ai')" style="cursor:pointer;" title="Ver status das proteções do motor">
+        <span class="dot-live"></span><span id="lblTopStatus">ECU Conectada</span>
       </div>
-      <button class="tbtn" style="padding:0 7px;" onclick="toggleSidebar('right')" title="Recolher/Expandir Telemetria Direita">[▶]</button>
     </div>
   </header>
 
   <div class="workspace">
-    <!-- 1. COMPLETE SYNCHRONIZED LEFT TREE -->
+    <!-- 1. CLEAN, HUMAN-READABLE LEFT MENU -->
     <aside class="nav-tree">
-      <div class="tree-hdr">
-        <span id="lblTreeCount" style="color:var(--cyan);font-family:var(--mono);">TBX-400 UNI</span>
-        <button class="obtn on" id="btnUiComplexity" style="height:19px;padding:0 6px;font-size:9.5px;" onclick="toggleBasicUiMode()" title="Alternar entre Modo Engenharia Completo e Modo Básico Rápido">MODO: COMPLETO</button>
-      </div>
+      <div style="display:none"><span id="lblTreeCount"></span><span id="bdgPinCnt"></span><span id="bdgCylCnt"></span><span id="bdgVeDim"></span><span id="bdgIgnDim"></span><span id="bdgTrig"></span><span id="bdgDtcCnt"></span></div>
       <div class="tree-search-wrap">
-        <input type="text" id="treeFilterInp" placeholder="🔎 Filtrar menu (ex: bico, pop, dash, teste)..." oninput="filterLeftTree(this.value)">
+        <input type="text" id="treeFilterInp" placeholder="🔎 Buscar no menu..." oninput="filterLeftTree(this.value)">
       </div>
       <div class="tree-scroll" id="treeRoot">
-        <div class="t-cat" onclick="toggleCat(this)"><span>🏠 0. Visão Geral &amp; Acesso Rápido</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-home" onclick="navTo('cv-home')"><span><strong>🏠 Menu Visual Rápido (Grade FT-Ultra)</strong></span><span class="t-tag" style="color:var(--neon-g)">HOME</span></div>
+          <div class="t-node active" data-route="cv-home" onclick="navTo('cv-home')"><span>🏠 Tela Inicial</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>⚙ 1. Projeto, Motor & Bancada</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>Motor e Sensores</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Ficha da Oficina & Snapshots (Diff)</span><span class="t-tag">VER</span></div>
-          <div class="t-node" data-route="cv-wiz" onclick="navTo('cv-wiz')"><span>★ Assistente Novo Carro (6 Passos)</span><span class="t-tag">WIZ</span></div>
-          <div class="t-node" data-route="cv-setup" onclick="navTo('cv-setup')"><span>Motor, Fônica, VirtualCam™ & Ignição</span><span class="t-tag" id="bdgTrig">720°</span></div>
-          <div class="t-node" data-route="cv-outtest" onclick="navTo('cv-outtest')"><span>⚡ Teste de Saídas (Bicos/Bobinas/DBW)</span><span class="t-tag" style="color:#fbbf24">TEST</span></div>
-          <div class="t-node" data-route="cv-calc" onclick="navTo('cv-calc')"><span>🧮 Calculadoras Oficina (Bico/Grau/AFR)</span><span class="t-tag" style="color:var(--cyan)">CALC</span></div>
-          <div class="t-node" data-route="cv-check" onclick="navTo('cv-check')"><span>Diagnóstico Pré-Partida (10 Testes)</span><span class="t-tag" style="color:var(--neon-g)">OK</span></div>
+          <div class="t-node" data-route="cv-wiz" onclick="navTo('cv-wiz')"><span>★ Assistente Novo Motor</span></div>
+          <div class="t-node" data-route="cv-setup" onclick="navTo('cv-setup')"><span>Motor, Bicos e Bobinas</span></div>
+          <div class="t-node" data-route="cv-sens" onclick="navTo('cv-sens')"><span>Calibrar Sensores</span></div>
+          <div class="t-node" data-route="cv-io" onclick="navTo('cv-io')"><span>Entradas e Saídas (Pinos)</span></div>
+          <div class="t-node" data-route="cv-outtest" onclick="navTo('cv-outtest')"><span>Testar Bicos e Bobinas</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>2. Pinos, Sensores, CAN & DTC</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>Mapas de Acerto</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-io" onclick="navTo('cv-io')"><span>Matriz de Pinos & FlexPin™</span><span class="t-tag" id="bdgPinCnt">64p</span></div>
-          <div class="t-node" data-route="cv-sens" onclick="navTo('cv-sens')"><span>Sensores, Sonda Dew-Point & Marchas</span><span class="t-tag">CAL</span></div>
-          <div class="t-node adv-node" data-route="cv-plc" onclick="navTo('cv-plc')"><span>4 Saídas Condicionais (PLC E/OU)</span><span class="t-tag">PLC</span></div>
-          <div class="t-node adv-node" data-route="cv-pinout" onclick="navTo('cv-pinout')"><span>Chicote Real (Cores) & Wire Doctor™</span><span class="t-tag">FIO</span></div>
-          <div class="t-node" data-route="cv-ftb" onclick="navTo('cv-ftb')"><span>Migração PnP FuelTech (FT-Bridge™)</span><span class="t-tag" style="color:var(--neon-a)">FT</span></div>
-          <div class="t-node" data-route="cv-pdm" onclick="navTo('cv-pdm')"><span>PDM-8 Sem Fusíveis &amp; Nano-WB CAN</span><span class="t-tag" style="color:var(--neon-g)">PDM</span></div>
-          <div class="t-node adv-node" data-route="cv-can" onclick="navTo('cv-can')"><span>CAN OEM, Câmbio DSG/8HP &amp; .DBC</span><span class="t-tag">TCU</span></div>
-          <div class="t-node" data-route="cv-dtc" onclick="navTo('cv-dtc')"><span>Central de Falhas DTC & Black-Box</span><span class="t-tag" id="bdgDtcCnt">0</span></div>
+          <div class="t-node" data-route="map:ve" onclick="navMap('ve')"><span>⛽ Mapa de Injeção</span></div>
+          <div class="t-node" data-route="map:ign" onclick="navMap('ign')"><span>⚡ Mapa de Ignição</span></div>
+          <div class="t-node" data-route="map:lambda" onclick="navMap('lambda')"><span>🎯 Mapa Alvo de Sonda</span></div>
+          <div class="t-node" data-route="curve:crank" onclick="navCurve('crank')"><span>Partida a Frio</span></div>
+          <div class="t-node" data-route="curve:wue" onclick="navCurve('wue')"><span>Aquecimento (Motor Frio)</span></div>
+          <div class="t-node" data-route="curve:accel_tps" onclick="navCurve('accel_tps')"><span>Injeção Rápida (Pedal)</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>3. Combustível & Ciclo Térmico</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>Turbo, Pista e Cortes</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node active" data-route="map:ve" onclick="navMap('ve')"><span>Mapa Principal de Injeção (VE %)</span><span class="t-tag" id="bdgVeDim">20×20</span></div>
-          <div class="t-node" data-route="curve:crank" onclick="navCurve('crank')"><span>Pulso de Partida a Frio × Água</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:afterstart" onclick="navCurve('afterstart')"><span>Pós-Partida (Afterstart % × Água)</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:wue" onclick="navCurve('wue')"><span>Aquecimento Fase Fria (WUE % × Água)</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:accel_tps" onclick="navCurve('accel_tps')"><span>Injeção Rápida (dTPS + Aquino τ-X)</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:iat_fuel" onclick="navCurve('iat_fuel')"><span>Correção Densidade por Ar (IAT %)</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:deadtime" onclick="navCurve('deadtime')"><span>Deadtime dos Bicos × Bateria (V)</span><span class="t-tag">2D</span></div>
-          <div class="t-node adv-node" data-route="curve:spa" onclick="navCurve('spa')"><span>Zona Pulso Curto (SPA &lt;2ms Bico Gde)</span><span class="t-tag">SPA</span></div>
-          <div class="t-node adv-node" data-route="curve:flex_blend" onclick="navCurve('flex_blend')"><span>Interpolação Flex (Gasolina ↔ E100)</span><span class="t-tag">FLEX</span></div>
-          <div class="t-node pro-only adv-node" data-route="map:eoi" onclick="navMap('eoi')"><span>Ângulo Fim de Injeção (EOI °APMS)</span><span class="t-tag">20×20</span></div>
-          <div class="t-node pro-only adv-node" data-route="map:stage2" onclick="navMap('stage2')"><span>Divisão 2ª Bancada (8 Bicos %)</span><span class="t-tag">20×20</span></div>
-          <div class="t-node adv-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Crank-IMEP™ Torque & Trim p/ Cilindro</span><span class="t-tag" id="bdgCylCnt">8 CIL</span></div>
+          <div class="t-node" data-route="cv-launch" onclick="navTo('cv-launch')"><span>🔥 2-Step, Rolo e Pops</span></div>
+          <div class="t-node" data-route="cv-boost" onclick="navTo('cv-boost')"><span>🚀 Pressão de Turbo</span></div>
+          <div class="t-node" data-route="cv-trac" onclick="navTo('cv-trac')"><span>Controle de Tração e Troca</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>4. Ignição & Controle Knock</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>Rua e Segurança</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="map:ign" onclick="navMap('ign')"><span>Mapa Principal de Ignição (°APMS)</span><span class="t-tag" id="bdgIgnDim">20×20</span></div>
-          <div class="t-node" data-route="curve:dwell" onclick="navCurve('dwell')"><span>Dwell Carga das Bobinas × Tensão</span><span class="t-tag">2D</span></div>
-          <div class="t-node" data-route="curve:iat_ign" onclick="navCurve('iat_ign')"><span>Retardo Preventivo por IAT (°C)</span><span class="t-tag">2D</span></div>
-          <div class="t-node pro-only" data-route="cv-knock" onclick="navTo('cv-knock')"><span>Espectrômetro Knock DSP TPIC8101</span><span class="t-tag">SPI</span></div>
+          <div class="t-node" data-route="cv-street" onclick="navTo('cv-street')"><span>❄️ Lenta, Ventoinha e Ar</span></div>
+          <div class="t-node" data-route="cv-ai" onclick="navTo('cv-ai')"><span>🛡 Proteções e Auto-Tune</span></div>
         </div>
 
-        <div class="t-cat" onclick="toggleCat(this)"><span>5. Rua, Clima, Pós-Fan & Cruise</span><span>▾</span></div>
+        <div class="t-cat" onclick="toggleCat(this)"><span>Gráficos e Painel</span><span>▾</span></div>
         <div class="t-group-items">
-          <div class="t-node" data-route="cv-street" onclick="navTo('cv-street')"><span>Ventoinha 1/2, Pós-Fan, A/C & Lenta</span><span class="t-tag">OEM</span></div>
-          <div class="t-node" data-route="curve:idle_clt" onclick="navCurve('idle_clt')"><span>Rotação Alvo de Lenta × Água (RPM)</span><span class="t-tag">2D</span></div>
+          <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>📈 Datalogger (Gráficos)</span></div>
+          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Painel Digital 7"</span></div>
+          <div class="t-node" data-route="cv-dtc" onclick="navTo('cv-dtc')"><span>Alertas e Falhas</span></div>
         </div>
 
-        <div class="t-cat pro-only" onclick="toggleCat(this)"><span>6. Borboleta DBW, Cruise & VVT</span><span>▾</span></div>
-        <div class="t-group-items pro-only">
-          <div class="t-node pro-only" data-route="map:dbw_map" onclick="navMap('dbw_map')"><span>Mapa 3D Pedal × Borboleta DBW (%)</span><span class="t-tag">EGAS</span></div>
-          <div class="t-node pro-only" data-route="cv-dbw" onclick="navTo('cv-dbw')"><span>DBW, Piloto Automático, Blip & VVT</span><span class="t-tag">20kHz</span></div>
-          <div class="t-node pro-only" data-route="map:vvt_in" onclick="navMap('vvt_in')"><span>Mapa 3D Comando VVT Admissão (°)</span><span class="t-tag">PID</span></div>
-          <div class="t-node pro-only" data-route="map:vvt_ex" onclick="navMap('vvt_ex')"><span>Mapa 3D Comando VVT Escape (°)</span><span class="t-tag">PID</span></div>
-        </div>
-
-        <div class="t-cat" onclick="toggleCat(this)"><span>7. Inteligência NeuralCore™ & IA</span><span>▾</span></div>
-        <div class="t-group-items">
-          <div class="t-node" data-route="map:lambda" onclick="navMap('lambda')"><span>Mapa Alvo de Sonda Malha Fechada (λ)</span><span class="t-tag">O2</span></div>
-          <div class="t-node" data-route="cv-ai" onclick="navTo('cv-ai')"><span>Configuração IA & Engine Guardian™</span><span class="t-tag" style="color:var(--cyan)">10 CH</span></div>
-          <div class="t-node" data-route="map:learned_trim" onclick="navMap('learned_trim')"><span>Mapa de Correção Aprendida (% Trim)</span><span class="t-tag">LTFT</span></div>
-        </div>
-
-        <div class="t-cat" onclick="toggleCat(this)"><span>8. Boost PID, Tração & Arrancada</span><span>▾</span></div>
-        <div class="t-group-items">
-          <div class="t-node" data-route="cv-boost" onclick="navTo('cv-boost')"><span>Boost PID & Pressão por Marcha 1ª–6ª</span><span class="t-tag">N75</span></div>
-          <div class="t-node" data-route="map:boost_tgt" onclick="navMap('boost_tgt')"><span>Mapa 3D Alvo de Pressão Turbo (bar)</span><span class="t-tag">3D</span></div>
-          <div class="t-node" data-route="cv-trac" onclick="navTo('cv-trac')"><span>Controle de Tração & Shift-Cut Marcha</span><span class="t-tag">TC</span></div>
-          <div class="t-node" data-route="cv-launch" onclick="navTo('cv-launch')"><span>2-Step, Anti-Lag ALS, Rolo & Pops ≥4k</span><span class="t-tag">RACE</span></div>
-          <div class="t-node adv-node" data-route="cv-wmi" onclick="navTo('cv-wmi')"><span>Água/Metanol (WMI) + Fail-Safe</span><span class="t-tag" style="color:var(--cyan)">WMI</span></div>
-          <div class="t-node adv-node" data-route="cv-drag" onclick="navTo('cv-drag')"><span>Arrancada 0–6s, Bump, Strain & Nitro</span><span class="t-tag">DRAG</span></div>
-        </div>
-
-        <div class="t-cat" onclick="toggleCat(this)"><span>📊 9. Painel Digital, Scope, Log & Dyno</span><span>▾</span></div>
-        <div class="t-group-items">
-          <div class="t-node" data-route="cv-dash" onclick="navTo('cv-dash')"><span>🖥 Designer do Painel Digital 7" (Dash)</span><span class="t-tag" style="color:#c084fc">DASH</span></div>
-          <div class="t-node" data-route="cv-scope" onclick="navTo('cv-scope')"><span>Scope 4Ch, ToothLog & Doutor VR</span><span class="t-tag">4CH</span></div>
-          <div class="t-node" data-route="cv-log" onclick="navTo('cv-log')"><span>Datalogger 4 Faixas + Corretor VE</span><span class="t-tag">LOG</span></div>
-          <div class="t-node" data-route="cv-dyno" onclick="navTo('cv-dyno')"><span>Virtual Dyno™ Duplo Eixo (cv + kgfm)</span><span class="t-tag">DYNO</span></div>
-          <div class="t-node" data-route="cv-remote" onclick="navTo('cv-remote')"><span>Remote Tuner™ 64B & Ghost-Lock™</span><span class="t-tag">LOCK</span></div>
+        <div class="t-cat" onclick="toggleCat(this)" style="margin-top:12px;padding-top:10px;border-top:1px solid #162033;color:#38bdf8;"><span>Mais Recursos Avançados</span><span>▸</span></div>
+        <div class="t-group-items collapsed" id="advMenuGroup">
+          <div class="t-node" data-route="cv-proj" onclick="navTo('cv-proj')"><span>Cliente e Versões Salvas</span></div>
+          <div class="t-node" data-route="cv-drag" onclick="navTo('cv-drag')"><span>Arrancada Pro e Nitro</span></div>
+          <div class="t-node" data-route="cv-plc" onclick="navTo('cv-plc')"><span>Saídas Condicionais (Extras)</span></div>
+          <div class="t-node" data-route="cv-wmi" onclick="navTo('cv-wmi')"><span>Água / Metanol (WMI)</span></div>
+          <div class="t-node pro-only" data-route="cv-dbw" onclick="navTo('cv-dbw')"><span>Borboleta Eletrônica e VVT</span></div>
+          <div class="t-node pro-only" data-route="map:dbw_map" onclick="navMap('dbw_map')"><span>Mapa Pedal × Borboleta</span></div>
+          <div class="t-node" data-route="cv-cyl" onclick="navTo('cv-cyl')"><span>Ajuste Individual p/ Cilindro</span></div>
+          <div class="t-node pro-only" data-route="cv-knock" onclick="navTo('cv-knock')"><span>Sensor de Detonação (Knock)</span></div>
+          <div class="t-node" data-route="curve:deadtime" onclick="navCurve('deadtime')"><span>Deadtime dos Bicos (Bateria)</span></div>
+          <div class="t-node" data-route="curve:dwell" onclick="navCurve('dwell')"><span>Carga das Bobinas (Dwell)</span></div>
+          <div class="t-node" data-route="curve:idle_clt" onclick="navCurve('idle_clt')"><span>Curva de Lenta por Água</span></div>
+          <div class="t-node" data-route="cv-ftb" onclick="navTo('cv-ftb')"><span>Adaptador Chicote FuelTech</span></div>
+          <div class="t-node" data-route="cv-pdm" onclick="navTo('cv-pdm')"><span>Módulo PDM Sem Fusíveis</span></div>
+          <div class="t-node" data-route="cv-can" onclick="navTo('cv-can')"><span>Rede CAN e Câmbio DSG/8HP</span></div>
+          <div class="t-node" data-route="cv-pinout" onclick="navTo('cv-pinout')"><span>Esquema de Cores do Chicote</span></div>
+          <div class="t-node" data-route="cv-scope" onclick="navTo('cv-scope')"><span>Osciloscópio Roda Fônica</span></div>
+          <div class="t-node" data-route="cv-dyno" onclick="navTo('cv-dyno')"><span>Dinamômetro Virtual</span></div>
+          <div class="t-node" data-route="cv-calc" onclick="navTo('cv-calc')"><span>Calculadoras de Oficina</span></div>
+          <div class="t-node" data-route="cv-check" onclick="navTo('cv-check')"><span>Check-List Pré-Partida</span></div>
+          <div class="t-node" data-route="cv-remote" onclick="navTo('cv-remote')"><span>Senha da Oficina e Bloqueio</span></div>
         </div>
       </div>
     </aside>
 
     <!-- 2. CENTER WORKSPACE -->
     <main class="center-stage">
-      <!-- MULTI-TAB OPEN WORKSPACE BAR (LIKE HALTECH NSP / FTMANAGER 5) -->
       <div class="ide-tabbar" id="ideTabBar"></div>
 
-      <!-- ==================== VIEW 1: 3D/2D MATRIX + 4 LAYOUT MODES + SPLIT VE+IGN + CELL LOCK ==================== -->
-      <section class="view-pane active" id="cv-map3d">
+      <!-- ==================== VIEW 1: CLEAN, EASY-TO-READ MAP TABLE ==================== -->
+      <section class="view-pane" id="cv-map3d">
         <div class="v-bar">
-          <div class="v-crumb" id="mapHdrTitle">MAPA INJEÇÃO (VE %)</div>
-          <span style="font-family:var(--mono);font-size:10px;color:var(--txt-2);" id="lblSelBox">[3632×+0.34]</span>
-          <div class="v-sep"></div>
-          <button class="obtn on" id="lyt-full" onclick="setMapLayout('full')" title="F9: Tabela + Cubo 3D + Corte 2D">⊞ Misto</button>
-          <button class="obtn" id="lyt-sheet" onclick="setMapLayout('sheet')" title="Planilha Gigante em Tela Cheia (Melhor Leitura)">▦ 100%</button>
-          <button class="obtn" id="lyt-split" onclick="setMapLayout('split')" title="Acerto Simultâneo: Mapa Injeção VE à esquerda + Mapa Ignição à direita!">◫ VE+Ign</button>
-          <button class="obtn" id="lyt-3d" onclick="setMapLayout('3d')" title="Malha 3D em Tela Cheia">🧊 3D</button>
-          <div class="v-sep"></div>
-          <button class="obtn" onclick="undoMap()" title="Ctrl+Z">↶</button>
-          <button class="obtn" onclick="redoMap()" title="Ctrl+Y">↷</button>
-          <input id="inpSetVal" type="text" value="88.0" title="Aceita valor exato (85), soma (+2.5) ou % (*1.04)" style="width:50px;height:24px;text-align:center;font-weight:800;">
-          <button class="obtn on" onclick="applyFormulaInput(document.getElementById('inpSetVal').value)">=</button>
-          <button class="obtn" onclick="matrixOp('mul', 1.02)">+2%</button>
-          <button class="obtn" onclick="matrixOp('mul', 0.98)">-2%</button>
-          <button class="obtn" onclick="matrixOp('interp2D')" title="Tecla I: Interpolação Bilinear 4 Cantos 2D">Int 2D</button>
-          <button class="obtn" onclick="matrixOp('smooth')" title="Tecla S: Suavizar Bloco 3×3 (Respeita células travadas 🔒)">Suav.</button>
-          <button class="obtn" onclick="toggleLockSelection()" title="Tecla L: Travar/Destravar células selecionadas (Protege lenta/cruzeiro do Auto-Tune!)">🔒 Lock</button>
-          <button class="obtn" id="btnMapDiff" onclick="toggleDiffMode()" title="Tecla D: Exibe Δ Diferença contra Mapa Base">Δ Diff</button>
-          <button class="obtn" id="btnHistMode" onclick="toggleHistMode()" title="Tecla H: Histograma ao vivo de Erro de Sonda (%) × Amostras">📊 Hist</button>
-          <button class="obtn ok" id="btnHistApply" style="display:none;" onclick="applyHistogramCorrections()">⚡ Aplic.</button>
-          <button class="obtn" id="btnFollowEng" onclick="toggleFollowEngine()" title="Tecla F: Seguir célula atual do motor">🎯</button>
-          <button class="obtn on" id="btnFuelUnit" onclick="toggleFuelMapMode()" title="Alterna Eficiência Volumétrica (%) ↔ Pulso (ms)">VE↔ms</button>
-          <button class="obtn" onclick="openFtImportModal()" title="Importar tabela FTManager / CSV">📥 FT</button>
-          <button class="obtn ok" onclick="openAxisModal()">⚙ Eixos</button>
+          <button class="obtn back-home-btn" onclick="navTo('cv-home')">← Início</button>
+          <div class="v-crumb" id="mapHdrTitle">Mapa de Injeção</div>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--txt-2);" id="lblSelBox"></span>
+
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+            <div class="seg-opt" style="width:auto;">
+              <button type="button" class="on" id="lyt-sheet" onclick="setMapLayout('sheet')">Tabela Simples</button>
+              <button type="button" id="lyt-full" onclick="setMapLayout('full')">Tabela + 3D</button>
+              <button type="button" id="lyt-split" onclick="setMapLayout('split')">Injeção + Ignição</button>
+              <button type="button" id="lyt-3d" style="display:none" onclick="setMapLayout('3d')">3D</button>
+            </div>
+            <div class="v-sep"></div>
+            <button class="obtn" onclick="undoMap()" title="Desfazer (Ctrl+Z)">↶ Desfazer</button>
+            <input id="inpSetVal" type="text" value="88.0" title="Digite valor exato (85) ou +2%" style="width:58px;height:30px;text-align:center;font-weight:800;">
+            <button class="obtn on" onclick="applyFormulaInput(document.getElementById('inpSetVal').value)">Aplicar</button>
+            <button class="obtn" onclick="matrixOp('mul', 1.02)">+2%</button>
+            <button class="obtn" onclick="matrixOp('mul', 0.98)">-2%</button>
+            <button class="obtn" onclick="matrixOp('interp2D')">Interpolar</button>
+            <button class="obtn" onclick="matrixOp('smooth')">Suavizar</button>
+
+            <div class="tools-dd-wrap">
+              <button class="obtn" onclick="document.getElementById('mapToolsMenu').classList.toggle('open');event.stopPropagation()">Mais Opções ▾</button>
+              <div class="tools-dd-menu" id="mapToolsMenu" onclick="this.classList.remove('open')">
+                <button type="button" id="btnFuelUnit" onclick="toggleFuelMapMode()"><span>Alternar VE (%) ↔ Tempo (ms)</span><span>⇄</span></button>
+                <button type="button" id="btnFollowEng" onclick="toggleFollowEngine()"><span>Seguir Giro do Motor</span><span>🎯</span></button>
+                <button type="button" onclick="toggleLockSelection()"><span>Travar / Destravar Células</span><span>🔒</span></button>
+                <button type="button" id="btnMapDiff" onclick="toggleDiffMode()"><span>Ver Diferença p/ Mapa Base</span><span>Δ</span></button>
+                <button type="button" id="btnHistMode" onclick="toggleHistMode()"><span>Sugestão de Correção Sonda</span><span>📊</span></button>
+                <button type="button" id="btnHistApply" style="display:none" onclick="applyHistogramCorrections()"><span>Aplicar Correção Sonda</span><span>⚡</span></button>
+                <button type="button" onclick="openAxisModal()"><span>Configurar Eixos (RPM / bar)</span><span>⚙</span></button>
+                <button type="button" onclick="openFtImportModal()"><span>Importar Tabela FuelTech / Excel</span><span>📥</span></button>
+                <button type="button" onclick="openMapHealthModal()"><span>Revisar Segurança do Mapa</span><span>🩺</span></button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="cal-layout" id="calLayoutRoot">
+        <div class="cal-layout mode-sheet" id="calLayoutRoot">
           <div class="cal-top-split">
             <div class="panel-box" id="mainSheetBox">
               <div class="p-hdr">
-                <span id="lblSheetSub">Planilha Interativa • Botão Direito p/ Menu • Tecla [L] Trava Célula • Ctrl+C / Ctrl+V Excel</span>
+                <span id="lblSheetSub">Clique ou arraste nas células para selecionar • Digite o valor e aperte Enter • Botão direito abre atalhos</span>
                 <span style="font-family:var(--mono);color:var(--cyan);" id="lblCellCount">400 Células</span>
               </div>
               <div class="sheet-wrap">
@@ -828,138 +902,75 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
         </div>
       </section>
 
-      <!-- ==================== VIEW 0: FT470-ULTRA VISUAL QUICK LAUNCHER (TILE GRID) ==================== -->
-      <section class="view-pane" id="cv-home">
-        <div class="v-bar">
-          <div class="v-crumb">🏠 MENU VISUAL RÁPIDO — PADRÃO FT-TOUCH ULTRA (STATUS AO VIVO + ATALHOS 1-CLIQUE)</div>
-          <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--txt-2);">Clique em qualquer bloco para abrir a tela completa ou use os atalhos diretos abaixo</span>
-        </div>
-        <div class="scroll-body">
-          <div class="ft-home-grid">
-            <div class="ft-tile" style="--tile-ac:#00e5ff" onclick="navMap('ve')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">⛽</div><span class="st-pill">SEQUENCIAL 720°</span></div>
-              <div><h3>Mapas de Injeção</h3><p>Malha principal VE % ou Tempo ms, Partida a Frio, Rápida Aquino τ-X e Deadtime.</p></div>
-              <div class="ft-tile-live"><span>Pulso Agora</span><strong id="htPwLive">4.82 ms • 65 lb/h</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navMap('ve')">Mapa VE 3D</button>
-                <button class="ft-mini-btn" onclick="navCurve('crank')">Partida</button>
-                <button class="ft-mini-btn" onclick="navCurve('accel_tps')">Rápida</button>
-              </div>
+      <!-- ==================== VIEW 0: CLEAN, SPACIOUS 8-CARD MAIN HOME ==================== -->
+      <section class="view-pane active" id="cv-home">
+        <div class="scroll-body" style="padding:20px 22px;gap:18px;">
+          <div class="clean-home-hero">
+            <div>
+              <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:3px;">Central de Acerto TBX</div>
+              <div style="font-size:12.5px;color:#94a3b8;">Escolha abaixo o que deseja ajustar ou configure um motor do zero em 6 passos simples.</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0;">
+              <button class="tbtn" onclick="openMapHealthModal()">🩺 Revisar Segurança</button>
+              <button class="tbtn wiz" onclick="navTo('cv-wiz')">★ Configurar Novo Motor</button>
+            </div>
+          </div>
+
+          <div class="clean-home-grid">
+            <div class="clean-card" onclick="navMap('ve')">
+              <div class="clean-card-ico">⛽</div>
+              <div><h3>Mapa de Injeção</h3><p>Ajuste a quantidade de combustível por rotação e pressão.</p></div>
+              <div class="clean-card-val"><span id="htPwLive">2.25 ms</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#c084fc" onclick="navMap('ign')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">⚡</div><span class="st-pill">COP / 2×2</span></div>
-              <div><h3>Mapas de Ignição &amp; Knock</h3><p>Avanço 3D (°APMS), Dwell por Bateria, Retardo por IAT e Espectrômetro Knock.</p></div>
-              <div class="ft-tile-live"><span>Ponto Agora</span><strong id="htIgnLive">18.5° APMS</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navMap('ign')">Mapa Ponto</button>
-                <button class="ft-mini-btn" onclick="navMap('ve');setMapLayout('split')">Split VE+Ign</button>
-                <button class="ft-mini-btn" onclick="navCurve('dwell')">Dwell</button>
-              </div>
+            <div class="clean-card" onclick="navMap('ign')">
+              <div class="clean-card-ico">⚡</div>
+              <div><h3>Mapa de Ignição</h3><p>Ajuste os graus de ponto de avanço em cada faixa do motor.</p></div>
+              <div class="clean-card-val"><span id="htIgnLive">14.5°</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#f43f5e" onclick="navTo('cv-launch')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🔥</div><span class="st-pill" id="htLaunchBdg">ARMADO</span></div>
-              <div><h3>2-Step, Rolo, ALS &amp; Pops</h3><p>Corte de largada rotativo, Rolling Anti-Lag no botão e Pops limpos ≥ 4000 RPM.</p></div>
-              <div class="ft-tile-live"><span>Alvo 2-Step</span><strong id="ht2StepLive">4250 RPM • +0.95b</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-launch')">Configurar</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-launch');toggleLiveTest('2step')">🔥 Testar 2-Step</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-setup')">
+              <div class="clean-card-ico">🔧</div>
+              <div><h3>Motor, Bicos e Sensores</h3><p>Cilindros, roda fônica, vazão dos bicos, bobinas e TPS.</p></div>
+              <div class="clean-card-val"><span>4 Cil • 65 lb/h</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#10b981" onclick="navTo('cv-boost')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🚀</div><span class="st-pill">PID N75</span></div>
-              <div><h3>Controle de Boost</h3><p>Malha fechada PID N75/MAC, alvo por marcha (1ª–6ª), Spool rápido e Overboost.</p></div>
-              <div class="ft-tile-live"><span>MAP Atual</span><strong id="htBoostLive">+0.85 bar</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-boost')">Por Marcha</button>
-                <button class="ft-mini-btn" onclick="navMap('boost_tgt')">Mapa 3D</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-launch')">
+              <div class="clean-card-ico">🔥</div>
+              <div><h3>2-Step, Rolo e Pops</h3><p>Corte de arrancada parado, anti-lag em movimento e tiros.</p></div>
+              <div class="clean-card-val"><span id="ht2StepLive">4250 RPM</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#fbbf24" onclick="navTo('cv-ai')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🎯</div><span class="st-pill">MALHA FECHADA</span></div>
-              <div><h3>Malha Fechada O2 &amp; Auto-Tune</h3><p>Alvo Lambda 3D, correção automática com limites seguros em Boost e Histograma.</p></div>
-              <div class="ft-tile-live"><span>Sonda × Alvo</span><strong id="htLamLive">0.810 λ (0.810)</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navMap('lambda')">Mapa Sonda</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-ai')">Limites O2</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-boost')">
+              <div class="clean-card-ico">🚀</div>
+              <div><h3>Pressão de Turbo</h3><p>Controle da solenoide N75 e limite de pressão por marcha.</p></div>
+              <div class="clean-card-val"><span id="htBoostLive">Alvo 1.80 bar</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#34d399" onclick="navTo('cv-ai')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🛡</div><span class="st-pill" id="htGuardBdg">10 ATIVAS</span></div>
-              <div><h3>Proteções do Motor (1 kHz)</h3><p>Queda dP de bomba, pressão de óleo, mistura pobre, superaquecimento e overboost.</p></div>
-              <div class="ft-tile-live"><span>Diff Comb dP</span><strong id="htDpLive">3.04 bar • OK</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-ai')">10 Proteções</button>
-                <button class="ft-mini-btn" onclick="openMapHealthModal()">🩺 Revisar Mapa</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-street')">
+              <div class="clean-card-ico">❄️</div>
+              <div><h3>Lenta, Ventoinha e Ar</h3><p>Rotação de marcha lenta, temperatura das ventoinhas e A/C.</p></div>
+              <div class="clean-card-val"><span id="htCltLive">Fan 94 °C</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#38bdf8" onclick="navTo('cv-street')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">❄</div><span class="st-pill">OEM+</span></div>
-              <div><h3>Ventoinhas, A/C &amp; Lenta</h3><p>Eletroventilador 1/2, Pós-Fan, Ar-Condicionado s/ queda de giro, Direção EPS e DFCO.</p></div>
-              <div class="ft-tile-live"><span>Água CLT</span><strong id="htCltLive">88.5 °C (Fan 94°C)</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-street')">Clima &amp; Rua</button>
-                <button class="ft-mini-btn" onclick="navCurve('idle_clt')">Curva Lenta</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-ai')">
+              <div class="clean-card-ico">🛡</div>
+              <div><h3>Proteções e Auto-Tune</h3><p>Correção automática de sonda O2 e cortes de segurança.</p></div>
+              <div class="clean-card-val"><span id="htDpLive" style="color:var(--neon-g)">10 Proteções OK</span><span>Abrir →</span></div>
             </div>
 
-            <div class="ft-tile" style="--tile-ac:#f97316" onclick="navTo('cv-trac')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🏁</div><span class="st-pill">TRAÇÃO + DRAG</span></div>
-              <div><h3>Tração, Shift-Cut &amp; Arrancada</h3><p>Controle destracionamento (dRPM/dt e Slip% ABS), troca rápida por marcha, Rampa 0–6s e Nitro.</p></div>
-              <div class="ft-tile-live"><span>Marcha / Vel.</span><strong id="htGearLive">3ª • 162 km/h</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-trac')">Tração &amp; Cut</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-drag')">Arrancada 0–6s</button>
-              </div>
+            <div class="clean-card" onclick="navTo('cv-log')">
+              <div class="clean-card-ico">📈</div>
+              <div><h3>Datalogger (Gráficos)</h3><p>Analise puxadas gravadas e aplique correção automática.</p></div>
+              <div class="clean-card-val"><span>Gravador 200 Hz</span><span>Abrir →</span></div>
             </div>
+          </div>
 
-            <div class="ft-tile" style="--tile-ac:#60a5fa" onclick="navTo('cv-io')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🔌</div><span class="st-pill" id="htPinBdg">64 PINOS</span></div>
-              <div><h3>Entradas, Saídas &amp; Sensores</h3><p>Matriz FlexPin™, calibração TPS/PS-10, 4 Saídas Condicionais PLC e Placa PnP FT-Bridge™.</p></div>
-              <div class="ft-tile-live"><span>Conflitos I/O</span><strong>0 Conflitos • OK</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-io')">Pinos I/O</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-sens')">Sensores</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-plc')">4 PLC</button>
-              </div>
-            </div>
-
-            <div class="ft-tile" style="--tile-ac:#a855f7" onclick="navTo('cv-dash')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🖥</div><span class="st-pill">60 FPS</span></div>
-              <div><h3>Painel Digital 7" &amp; Shift-Light</h3><p>4 temas visuais, régua de 12 LEDs progressivos, alertas gigantes e espelhamento Wi-Fi.</p></div>
-              <div class="ft-tile-live"><span>Shift-Light</span><strong>5400 → 7100 RPM</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-dash')">Editar Dash</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-can')">Rede CAN</button>
-              </div>
-            </div>
-
-            <div class="ft-tile" style="--tile-ac:#eab308" onclick="navTo('cv-outtest')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">🔧</div><span class="st-pill">BANCADA</span></div>
-              <div><h3>Teste de Saídas &amp; Chicote</h3><p>Pulsar bicos, centelhar bobinas, acionar bomba/ventoinha com motor parado e Calculadoras.</p></div>
-              <div class="ft-tile-live"><span>Segurança</span><strong>Trava 0 RPM OK</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-outtest')">Testar Saídas</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-pinout')">Cores Chicote</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-calc')">Calculadoras</button>
-              </div>
-            </div>
-
-            <div class="ft-tile" style="--tile-ac:#14b8a6" onclick="navTo('cv-log')">
-              <div class="ft-tile-top"><div class="ft-tile-ico">📈</div><span class="st-pill">200 HZ</span></div>
-              <div><h3>Datalogger, Scope &amp; Dyno</h3><p>Log 4 faixas c/ corretor automático de VE, Osciloscópio 60-2 c/ Doutor VR e Virtual Dyno.</p></div>
-              <div class="ft-tile-live"><span>Gravador</span><strong>Memória Interna OK</strong></div>
-              <div class="ft-tile-actions" onclick="event.stopPropagation()">
-                <button class="ft-mini-btn" onclick="navTo('cv-log')">Datalogger</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-scope')">Scope 60-2</button>
-                <button class="ft-mini-btn" onclick="navTo('cv-dyno')">Dyno cv</button>
-              </div>
-            </div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;">
+            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-outtest')">⚡ Testar Bicos e Bobinas</button>
+            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-sens')">🎛 Calibrar Pedal / TPS</button>
+            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-dash')">🖥 Painel Digital 7"</button>
+            <button class="tbtn" style="justify-content:center;height:38px;" onclick="navTo('cv-io')">🔌 Entradas e Saídas</button>
           </div>
         </div>
       </section>
@@ -2244,51 +2255,57 @@ table.data-tbl input:not([type="checkbox"]), table.data-tbl select { width: 100%
       </section>
     </main>
 
-    <!-- 3. RIGHT LIVE TELEMETRY COCKPIT (WITH PEAK HOLD + MINI-BARS + MANUAL BENCH DRAWER) -->
+    <!-- 3. CALM, EASY-TO-READ RIGHT SIDEBAR (6 CLEAR ENGINE READINGS) -->
     <aside class="right-cockpit">
-      <div class="tree-hdr">
-        <span>Tempo Real <span id="lblHilSrc" style="color:var(--neon-g)"></span></span>
-        <div style="display:flex;align-items:center;gap:5px;">
-          <span id="lblGearLive" style="color:var(--yellow);font-family:var(--mono);">3ª • 162 km/h</span>
-          <button class="obtn" style="height:18px;padding:0 5px;font-size:9px;" onclick="resetTelemetryPeaks()" title="Zerar todos os picos Mín/Máx registrados">↺ Picos</button>
-        </div>
+      <div class="tree-hdr" style="height:36px;padding:0 14px;background:#0b1220;">
+        <span style="font-size:11px;color:#e2e8f0;">Leituras do Motor <span id="lblHilSrc" style="color:var(--neon-g)"></span></span>
+        <span id="lblGearLive" style="color:#94a3b8;font-family:var(--mono);font-size:10.5px;">Lenta</span>
       </div>
-      <div class="dial-card"><canvas id="cvTacho" style="width:276px;height:178px;display:block;"></canvas></div>
-      <div class="bars-card">
-        <div class="bar-row">
-          <div style="display:flex;justify-content:space-between;"><span>MAP / BOOST</span><strong id="fbMap" style="color:var(--cyan);">+0.85 bar</strong></div>
-          <div class="bar-track"><div class="bar-fill" id="fbMapBar" style="width:55%;background:linear-gradient(90deg,#0284c7,#00e5ff,#00e676);"></div></div>
-        </div>
-        <div class="bar-row">
-          <div style="display:flex;justify-content:space-between;"><span>SONDA × ALVO</span><strong id="fbLam" style="color:var(--neon-g);">0.810 λ (0.810)</strong></div>
-          <div class="bar-track"><div class="bar-fill" id="fbLamBar" style="width:52%;background:linear-gradient(90deg,#f59e0b,#10b981,#f43f5e);"></div></div>
-        </div>
-      </div>
-      <div class="tlm-grid">
-        <div class="tlm-cell"><div class="k"><span>TPS / Borb.</span><span id="lblThrKind">DBW</span></div><div class="v" id="svTps">42.0 %</div><div class="pk"><span>Máx</span><span id="pkTps">42%</span></div><div class="tlm-mini-bar"><i id="mbTps" style="width:42%"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Avanço Ign.</span><span>APMS</span></div><div class="v" id="svIgn">18.5 °</div><div class="pk"><span>Mín/Máx</span><span id="pkIgn">18.5°</span></div><div class="tlm-mini-bar"><i id="mbIgn" style="width:58%;background:#c084fc"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Pulso Bico</span><span>INJ</span></div><div class="v" id="svPw">4.82 ms</div><div class="pk"><span>Pico</span><span id="pkPw">4.8ms</span></div><div class="tlm-mini-bar"><i id="mbPw" style="width:36%;background:#38bdf8"></i></div></div>
-        <div class="tlm-cell" id="sbDuty"><div class="k"><span>Duty Bicos</span><span>MAX 85%</span></div><div class="v" id="svDuty">38.4 %</div><div class="pk"><span>Pico</span><span id="pkDuty">38%</span></div><div class="tlm-mini-bar"><i id="mbDuty" style="width:38%;background:#10b981"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Fase 720°</span><span>VCAM</span></div><div class="v" id="svVcam" style="color:var(--neon-g)">LOCK 99%</div><div class="pk"><span>Sinc.</span><span>60-2 OK</span></div><div class="tlm-mini-bar"><i style="width:99%;background:#10b981"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Filme Aquino</span><span>τ-X</span></div><div class="v" id="svFilm">0.54 ms</div><div class="pk"><span>Parede</span><span>Ativo</span></div><div class="tlm-mini-bar"><i style="width:44%;background:#38bdf8"></i></div></div>
-        <div class="tlm-cell" id="sbDp"><div class="k"><span>Diff Comb dP</span><span>3.0b</span></div><div class="v" id="svDp">3.04 bar</div><div class="pk"><span>Mín</span><span id="pkDp">3.04b</span></div><div class="tlm-mini-bar"><i id="mbDp" style="width:76%;background:#10b981"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Pressão Óleo</span><span>BAR</span></div><div class="v" id="svOil">3.65 bar</div><div class="pk"><span>Status</span><span>OK</span></div><div class="tlm-mini-bar"><i style="width:68%;background:#10b981"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Água CLT</span><span>G62</span></div><div class="v" id="svClt">88.5 °C</div><div class="pk"><span>Máx</span><span id="pkClt">88.5°</span></div><div class="tlm-mini-bar"><i id="mbClt" style="width:72%;background:#f59e0b"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Ar IAT</span><span>G42</span></div><div class="v" id="svIat">33.0 °C</div><div class="pk"><span>Dens.</span><span>-0.5%</span></div><div class="tlm-mini-bar"><i style="width:38%;background:#06b6d4"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Sonda LSU</span><span>DEW-OK</span></div><div class="v" style="color:var(--neon-g)">780 °C</div><div class="pk"><span>CJ125</span><span>780°C</span></div><div class="tlm-mini-bar"><i style="width:82%;background:#10b981"></i></div></div>
-        <div class="tlm-cell"><div class="k"><span>Bateria</span><span>+15</span></div><div class="v" id="svBat">13.88 V</div><div class="pk"><span>Altern.</span><span>OK</span></div><div class="tlm-mini-bar"><i style="width:84%;background:#a855f7"></i></div></div>
+      <div class="dial-card" style="padding:10px 8px 8px;">
+        <canvas id="cvTacho" style="width:248px;height:164px;display:block;"></canvas>
       </div>
 
-      <!-- BUILT-IN QUICK BENCH SIMULATOR DRAWER -->
-      <div class="quick-sim-drawer">
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:var(--cyan);">
-          <span>🎛 BANCADA RÁPIDA (SIMULAR GIRO)</span>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--txt-1);font-size:9.5px;">
-            <span>Manual</span>
-            <input type="checkbox" id="chkManualBench" onchange="toggleQuickBench(this.checked)" style="width:28px;height:15px;">
-          </label>
+      <div class="calm-tlm-list">
+        <div class="calm-tlm-row">
+          <span class="lbl">Pressão (MAP)</span>
+          <span class="val" id="fbMap" style="color:var(--cyan);">-0.56 bar</span>
         </div>
-        <div id="quickBenchBody" style="display:none;flex-direction:column;gap:3px;font-family:var(--mono);font-size:9.8px;">
+        <div class="calm-tlm-row">
+          <span class="lbl">Sonda O2</span>
+          <span class="val" id="fbLam" style="color:var(--neon-g);">1.00 λ</span>
+        </div>
+        <div class="calm-tlm-row">
+          <span class="lbl">Tempo Injeção</span>
+          <span class="val" id="svPw">2.18 ms</span>
+        </div>
+        <div class="calm-tlm-row">
+          <span class="lbl">Ponto Ignição</span>
+          <span class="val" id="svIgn">14.5 °</span>
+        </div>
+        <div class="calm-tlm-row">
+          <span class="lbl">Temp. Água</span>
+          <span class="val" id="svClt">88.5 °C</span>
+        </div>
+        <div class="calm-tlm-row" id="sbDp">
+          <span class="lbl">Pressão Comb.</span>
+          <span class="val" id="svDp">3.04 bar</span>
+        </div>
+      </div>
+
+      <!-- Hidden hooks so legacy helpers never fail -->
+      <div style="display:none">
+        <div id="fbMapBar"></div><div id="fbLamBar"></div>
+        <span id="lblThrKind"></span><span id="svTps"></span><span id="svDuty"></span><div id="sbDuty"></div>
+      </div>
+
+      <!-- SIMPLE SIMULATION SWITCH -->
+      <div style="margin:auto 12px 12px;padding:10px 12px;background:#0d1526;border:1px solid #1e2e4a;border-radius:8px;display:flex;flex-direction:column;gap:8px;">
+        <button type="button" class="tbtn" id="btnAutoSweep" style="width:100%;justify-content:center;" onclick="toggleAutoSweep()">▶ Simular Motor Acelerando</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#94a3b8;">
+          <span>Controle Manual de Giro</span>
+          <input type="checkbox" id="chkManualBench" onchange="toggleQuickBench(this.checked)">
+        </div>
+        <div id="quickBenchBody" style="display:none;flex-direction:column;gap:4px;font-family:var(--mono);font-size:10.5px;">
           <div style="display:flex;justify-content:space-between;"><span>RPM: <strong id="qbRpmLbl" style="color:#fff">3800</strong></span><span>MAP: <strong id="qbMapLbl" style="color:var(--cyan)">+0.85b</strong></span></div>
           <input type="range" id="qbRpm" min="0" max="7800" step="50" value="3800" oninput="onQuickBenchSlide()">
           <input type="range" id="qbMap" min="30" max="300" step="5" value="185" oninput="onQuickBenchSlide()">
@@ -2404,7 +2421,7 @@ let HW_MODEL = "400";
 const hilBus = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel("tbx_hil_bus_v7") : null;
 
 const st = {
-  route: "map:ve", mapId: "ve", loadMode: "map", diffMode: false, histMode: false,
+  route: "cv-home", mapId: "ve", loadMode: "map", diffMode: false, histMode: false, autoSweep: false,
   r1: 8, c1: 8, r2: 8, c2: 8,
   selDrag: false, drag3d: false, drag2d: false, dragCurve: false, dragTime: false,
   yaw: -0.62, pitch: 1.12, zoom: 1.0, lx: 0, ly: 0,
@@ -2444,7 +2461,7 @@ const st = {
     active_bank: 0, guardian_fault_mask: 0, ghost_armed: false, ghost_unlocked: true, tables_dirty: false
   },
   logBuf: [], logCursor: 130, logT2: 215, logZoom: 1.0,
-  lockedCells: {}, mapLayout: "full",
+  lockedCells: {}, mapLayout: "sheet",
   manualBench: false, manualRpm: 3800, manualMap: 185,
   dashAlarmDemo: false, activeOutTest: -1, outTestTimer: null,
   liveTestMode: "", injFlowLbh: 65, revLimitRpm: 7200,
@@ -2460,17 +2477,17 @@ const st = {
 };
 
 const MAP_META = {
-  ve:           { title: "MAPA INJEÇÃO (VE %)", unit: "%", dec: 1, min: 42, max: 122 },
-  pw_ms:        { title: "MAPA INJEÇÃO (PULSO MS)", unit: "ms", dec: 2, min: 1.20, max: 18.50 },
-  ign:          { title: "MAPA AVANÇO IGNIÇÃO (°APMS)", unit: "°", dec: 1, min: -10, max: 38 },
-  lambda:       { title: "MAPA ALVO DE SONDA MALHA FECHADA (LAMBDA λ)", unit: "λ", dec: 3, min: 0.74, max: 1.04 },
-  learned_trim: { title: "MAPA DE CORREÇÕES APRENDIDAS PELA IA AUTO-TUNE (% TRIM)", unit: "%", dec: 1, min: -15, max: 15 },
-  boost_tgt:    { title: "MAPA ALVO DE PRESSÃO DE TURBO (BAR MANOMÉTRICO)", unit: "bar", dec: 2, min: 0.0, max: 2.10 },
-  eoi:          { title: "MAPA ÂNGULO FIM DE INJEÇÃO SEQUENCIAL (EOI °APMS)", unit: "°", dec: 0, min: 280, max: 440 },
-  stage2:       { title: "MAPA DIVISÃO 2ª BANCADA DE INJETORES — 8 BICOS (%)", unit: "%", dec: 0, min: 0, max: 75 },
-  dbw_map:      { title: "MAPA 3D PEDAL × ALVO BORBOLETA ELETRÔNICA DBW (%)", unit: "%", dec: 1, min: 0, max: 100 },
-  vvt_in:       { title: "MAPA 3D COMANDO VARIÁVEL VVT ADMISSÃO (°CA)", unit: "°", dec: 1, min: 0, max: 42 },
-  vvt_ex:       { title: "MAPA 3D COMANDO VARIÁVEL VVT ESCAPE (°CA)", unit: "°", dec: 1, min: -32, max: 0 }
+  ve:           { title: "Mapa de Injeção (VE %)", unit: "%", dec: 1, min: 42, max: 122 },
+  pw_ms:        { title: "Mapa de Injeção (Tempo ms)", unit: "ms", dec: 2, min: 1.20, max: 18.50 },
+  ign:          { title: "Mapa de Ignição (Graus °)", unit: "°", dec: 1, min: -10, max: 38 },
+  lambda:       { title: "Mapa Alvo de Sonda (Lambda)", unit: "λ", dec: 3, min: 0.74, max: 1.04 },
+  learned_trim: { title: "Correções Aprendidas da Sonda (%)", unit: "%", dec: 1, min: -15, max: 15 },
+  boost_tgt:    { title: "Mapa de Pressão de Turbo (bar)", unit: "bar", dec: 2, min: 0.0, max: 2.10 },
+  eoi:          { title: "Ângulo de Fim de Injeção (°)", unit: "°", dec: 0, min: 280, max: 440 },
+  stage2:       { title: "Divisão da 2ª Bancada de Bicos (%)", unit: "%", dec: 0, min: 0, max: 75 },
+  dbw_map:      { title: "Mapa Pedal × Borboleta Eletrônica (%)", unit: "%", dec: 1, min: 0, max: 100 },
+  vvt_in:       { title: "Comando Variável Admissão (°)", unit: "°", dec: 1, min: 0, max: 42 },
+  vvt_ex:       { title: "Comando Variável Escape (°)", unit: "°", dec: 1, min: -32, max: 0 }
 };
 
 /* Listen for Live HIL Broadcasts from TBX-STIM 96p / Dash 7" / Mobile Super-App! */
@@ -4104,12 +4121,17 @@ function mainLoop() {
     st.tlm.rpm = st.manualRpm;
     st.tlm.map_kpa = st.manualMap;
     st.tlm.tps_dbw_pct = Math.max(2, Math.min(100, ((st.manualMap - 30) / 270) * 100));
-  } else if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
+  } else if (st.autoSweep && !st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
     const userCap = st.revLimitRpm || 7200;
     const cap = st.tlm.active_bank === 3 ? 3200 : userCap;
     st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.min(cap, Math.round(920 + s * (cap - 1050)));
     st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : Math.round(42 + s * (st.tlm.active_bank === 3 ? 54 : 202));
     st.tlm.tps_dbw_pct = 4 + s * 93;
+  } else if (!st.hilExternalActive && st.tlm.guardian_fault_mask === 0) {
+    /* Calm, realistic steady warm idle by default so the screen isn't jumping wildly! */
+    st.tlm.rpm = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 0 : Math.round(880 + Math.sin(Date.now() * 0.004) * 6);
+    st.tlm.map_kpa = (st.tlm.ghost_armed && !st.tlm.ghost_unlocked) ? 101 : 45;
+    st.tlm.tps_dbw_pct = 2.4;
   }
   const t = st.tlm;
   /* REAL-TIME CLOSED-LOOP BILINEAR INTERPOLATION FROM USER-EDITED MAPS & 2D CURVES! */
@@ -4188,7 +4210,7 @@ function mainLoop() {
   const decLam = afrSc > 1.5 ? 2 : 3;
   document.getElementById("fbMap").textContent = (bb >= 0 ? "+" : "") + bb.toFixed(2) + " bar";
   document.getElementById("fbMapBar").style.width = Math.min(100, (t.map_kpa / 300) * 100) + "%";
-  document.getElementById("fbLam").textContent = (t.lambda * afrSc).toFixed(decLam) + unitSym + " (" + (t.target_lambda * afrSc).toFixed(decLam) + ")";
+  document.getElementById("fbLam").textContent = (t.lambda * afrSc).toFixed(decLam) + unitSym;
   document.getElementById("svTps").textContent = t.tps_dbw_pct.toFixed(1) + " %";
   document.getElementById("svIgn").textContent = t.ign_deg.toFixed(1) + " °";
   document.getElementById("svPw").textContent = t.inj_pw_ms.toFixed(2) + " ms";
@@ -4198,7 +4220,9 @@ function mainLoop() {
   document.getElementById("svClt").textContent = t.clt_c.toFixed(1) + " °C";
   document.getElementById("sbDp").classList.toggle("crit", (t.guardian_fault_mask & 1) !== 0);
   const sbd = document.getElementById("sbDuty"); if (sbd) sbd.classList.toggle("crit", dutyNow > 85);
-  document.getElementById("lblTopStatus").textContent = t.guardian_fault_mask === 0 ? "200Hz • GUARDIAN OK" : "ALERTA GUARDIAN!";
+  document.getElementById("lblTopStatus").textContent = t.guardian_fault_mask === 0 ? "ECU Conectada" : "⚠ Alerta Motor";
+  const gl = document.getElementById("lblGearLive");
+  if (gl) gl.textContent = t.rpm < 1200 ? "Marcha Lenta" : (t.rpm < 3800 ? "Cruzeiro" : "Acelerando");
 
   /* Update Telemetry Peak-Hold & Proportional Mini-Bars */
   if (t.rpm > st.tlm.peakRpm) st.tlm.peakRpm = t.rpm;
@@ -5122,10 +5146,81 @@ function upgradeAllNumSteppers() {
   }
 }
 
+function toggleAutoSweep() {
+  st.autoSweep = !st.autoSweep;
+  if (st.autoSweep) st.manualBench = false;
+  const b = document.getElementById("btnAutoSweep");
+  if (b) {
+    b.textContent = st.autoSweep ? "⏸ Pausar Simulação (Voltar p/ Lenta)" : "▶ Simular Motor Acelerando";
+    b.classList.toggle("wiz", st.autoSweep);
+  }
+}
+
+function prepareCleanIntuitiveUi() {
+  const SIMPLE_TITLES = {
+    "cv-proj":    "Dados do Cliente e Versões Salvas",
+    "cv-wiz":     "Assistente Passo a Passo — Configurar Novo Motor",
+    "cv-setup":   "Motor, Roda Fônica, Bicos e Bobinas",
+    "cv-io":      "Entradas e Saídas da ECU (Pinos)",
+    "cv-sens":    "Calibração de Sensores (TPS, Sonda, Pressão e Temperatura)",
+    "cv-plc":     "Saídas Auxiliares Programáveis (Condicionais)",
+    "cv-pinout":  "Esquema de Cores do Chicote e Teste de Fiação",
+    "cv-can":     "Rede CAN, Painel Original e Câmbio Automático",
+    "cv-dtc":     "Alertas e Histórico de Falhas",
+    "cv-pdm":     "Módulo de Potência Sem Fusíveis (PDM-8) e Sonda CAN",
+    "cv-ftb":     "Adaptador Plug & Play para Chicotes FuelTech",
+    "cv-street":  "Marcha Lenta, Ventoinhas e Ar-Condicionado",
+    "cv-cyl":     "Ajuste Individual por Cilindro",
+    "cv-boost":   "Controle de Pressão de Turbo",
+    "cv-trac":    "Controle de Tração e Troca Rápida (Shift-Cut)",
+    "cv-ai":      "Proteções do Motor e Correção Automática de Sonda",
+    "cv-check":   "Check-List Elétrico Antes da Primeira Partida",
+    "cv-launch":  "2-Step, Largada em Movimento (Rolo) e Pops",
+    "cv-wmi":     "Injeção de Água / Metanol (WMI)",
+    "cv-drag":    "Arrancada Pro, Transbrake e Nitro",
+    "cv-dbw":     "Borboleta Eletrônica, Piloto Automático e VVT",
+    "cv-knock":   "Monitor de Detonação (Knock)",
+    "cv-scope":   "Osciloscópio de Rotação e Fase",
+    "cv-log":     "Datalogger — Gráficos Gravados",
+    "cv-dyno":    "Dinamômetro Virtual (Potência e Torque)",
+    "cv-remote":  "Senha da Oficina, Imobilizador e Atualização",
+    "cv-dash":    "Painel Digital 7\" e Shift-Light",
+    "cv-outtest": "Testar Bicos, Bobinas e Relés (Motor Parado)",
+    "cv-calc":    "Calculadoras Rápidas de Oficina"
+  };
+
+  const panes = document.querySelectorAll(".view-pane");
+  for (let i = 0; i < panes.length; i++) {
+    const pid = panes[i].id;
+    if (pid === "cv-home") continue;
+    const vbar = panes[i].querySelector(".v-bar");
+    if (!vbar) continue;
+    if (SIMPLE_TITLES[pid]) {
+      const cr = vbar.querySelector(".v-crumb");
+      if (cr) cr.textContent = SIMPLE_TITLES[pid];
+    }
+    if (!vbar.querySelector(".back-home-btn")) {
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "obtn back-home-btn";
+      back.textContent = "← Início";
+      back.onclick = function() { navTo("cv-home"); };
+      vbar.insertBefore(back, vbar.firstChild);
+    }
+  }
+
+  window.addEventListener("click", function(e) {
+    const mm = document.getElementById("mapToolsMenu");
+    if (mm && !e.target.closest(".tools-dd-wrap")) mm.classList.remove("open");
+  });
+}
+
 buildIoTables();
 setHardwareModel(HW_MODEL);
+prepareCleanIntuitiveUi();
 upgradeAllNumSteppers();
 syncFeatureCards();
+navTo("cv-home");
 setInterval(mainLoop, 75);
 mainLoop();
 </script>
