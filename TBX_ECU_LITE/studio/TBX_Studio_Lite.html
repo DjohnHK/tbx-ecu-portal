@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TBX Studio v23.0 ULTRA — TBX-400 UNIVERSAL (Complete Calibration IDE)</title>
+<title>TBX Studio v24.0 ULTRA — TBX-400 UNIVERSAL (Real-Time Closed-Loop AI IDE)</title>
 <style>
 :root {
   color-scheme: dark;
@@ -876,6 +876,100 @@ table.data-tbl select { padding-right: 18px !important; }
   .bm-prev-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .ai-cov-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* ==================== v24.0 REAL-TIME CLOSED-LOOP AI HUD, CELL PULSE & TELEMETRY SCOPE ==================== */
+.tbtn.live-ai-pill {
+  border-color: rgba(168,85,247,0.45);
+  background: rgba(88,28,135,0.22);
+  color: #e9d5ff;
+  font-weight: 800;
+}
+.tbtn.live-ai-pill.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #059669 100%);
+  border-color: #6ee7b7;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(124,58,237,0.45);
+}
+.obtn.live-on {
+  background: linear-gradient(135deg, #7c3aed 0%, #059669 100%) !important;
+  border-color: #6ee7b7 !important;
+  color: #fff !important;
+}
+.obtn.follow-on {
+  background: linear-gradient(135deg, #0284c7 0%, #7c3aed 100%) !important;
+  border-color: #c4b5fd !important;
+  color: #fff !important;
+}
+.live-ai-hud {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px;
+  background: linear-gradient(90deg, rgba(88,28,135,0.34) 0%, rgba(15,23,42,0.95) 45%, rgba(6,78,59,0.28) 100%);
+  border-bottom: 1px solid rgba(167,139,250,0.45);
+  flex-shrink: 0;
+  font-size: 11px;
+  overflow: hidden;
+}
+.live-ai-hud.open { display: flex; }
+.live-ai-hud.blocked {
+  background: linear-gradient(90deg, rgba(159,18,57,0.42) 0%, rgba(15,23,42,0.96) 100%);
+  border-bottom-color: #f43f5e;
+}
+.ai-hud-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px; border-radius: 999px;
+  font-family: var(--mono); font-size: 10.2px; font-weight: 800;
+  background: rgba(16,185,129,0.18); border: 1px solid #10b981; color: #6ee7b7;
+  white-space: nowrap;
+}
+.ai-hud-pill.warn { background: rgba(244,63,94,0.22); border-color: #f43f5e; color: #fecdd3; }
+.ai-hud-stat { color: #94a3b8; white-space: nowrap; font-size: 10.8px; }
+.ai-hud-stat b { font-family: var(--mono); color: #f8fafc; font-weight: 800; }
+
+#calSheet td.ai-tuned-cell {
+  box-shadow: inset 0 0 0 1px rgba(192,132,252,0.65);
+}
+#calSheet td.ai-live-flash {
+  outline: 2px solid #e879f9 !important;
+  outline-offset: -2px;
+  box-shadow: inset 0 0 12px rgba(217,70,239,0.75) !important;
+}
+
+.ai-rt-cockpit {
+  display: grid;
+  grid-template-columns: 1.42fr 1fr;
+  gap: 12px;
+}
+.ai-feed-list {
+  height: 112px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #070c16;
+  border: 1px solid #1c2c46;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-family: var(--mono);
+  font-size: 10.4px;
+}
+.ai-feed-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(30,41,59,0.48);
+  border-left: 2px solid #a855f7;
+  cursor: pointer;
+  color: #e2e8f0;
+}
+.ai-feed-item:hover { background: rgba(56,189,248,0.16); border-left-color: #38bdf8; }
+@media (max-width: 1420px) {
+  .ai-rt-cockpit { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body class="mode-400">
@@ -885,6 +979,7 @@ table.data-tbl select { padding-right: 18px !important; }
     <div class="tb-group">
       <button class="tbtn wiz" onclick="navTo('cv-home')">⌂ Início</button>
       <button class="tbtn ai-btn" onclick="navTo('cv-copilot')">✦ Copiloto IA</button>
+      <button class="tbtn live-ai-pill" id="btnTopLiveAi" onclick="toggleLiveAiAutoTune()" title="Ligar ou pausar a calibração da IA em tempo real">● IA Ao Vivo</button>
       <select class="hw-sel" id="selModelSwitch" onchange="setHardwareModel(this.value)">
         <option value="800" >ECU: TBX-800 PRO</option>
         <option value="400" selected>ECU: TBX-400</option>
@@ -896,16 +991,16 @@ table.data-tbl select { padding-right: 18px !important; }
 
     <div class="tb-group">
       <div class="bank-pills" title="Alternar entre os 4 mapas salvos na ECU">
-        <button class="bk-btn active" id="bt0" onclick="setBank(0)">Mapa 1 (Pista)</button>
-        <button class="bk-btn" id="bt1" onclick="setBank(1)">Mapa 2 (Rua)</button>
-        <button class="bk-btn" id="bt2" onclick="setBank(2)">Mapa 3 (Eco)</button>
-        <button class="bk-btn valet" id="bt3" onclick="setBank(3)">Manobrista</button>
+        <button class="bk-btn active" id="bt0" onclick="setBank(0)">M1 Pista</button>
+        <button class="bk-btn" id="bt1" onclick="setBank(1)">M2 Rua</button>
+        <button class="bk-btn" id="bt2" onclick="setBank(2)">M3 Eco</button>
+        <button class="bk-btn valet" id="bt3" onclick="setBank(3)">Valet</button>
       </div>
     </div>
 
     <div class="tb-group">
       <input type="file" id="inpLoadTbxMap" accept=".tbxmap,.json" style="display:none" onchange="importTbxMapFile(this)">
-      <button class="tbtn" onclick="openRecipesModal()" title="Carregar calibração pronta de motor brasileiro em 1 clique">▤ Receitas BR</button>
+      <button class="tbtn" onclick="openRecipesModal()" title="Carregar calibração pronta de motor brasileiro em 1 clique">▤ Receitas</button>
       <button class="tbtn" onclick="openCmdPalette()" title="Buscar qualquer ajuste (Ctrl+K)">⌕ Buscar</button>
       <button class="tbtn" onclick="document.getElementById('inpLoadTbxMap').click()" title="Importar arquivo .tbxmap">↑ Abrir</button>
       <button class="tbtn" onclick="exportCal()" title="Salvar calibração completa no computador">↓ Salvar</button>
@@ -1005,6 +1100,21 @@ table.data-tbl select { padding-right: 18px !important; }
     <!-- 2. CENTER WORKSPACE -->
     <main class="center-stage">
       <div class="ide-tabbar" id="ideTabBar"></div>
+      <!-- v24.0 GLOBAL REAL-TIME AI TELEMETRY & FOLLOW HUD BAR -->
+      <div class="live-ai-hud" id="liveAiHudBar">
+        <span class="ai-hud-pill" id="hudAiStatePill">● IA AO VIVO</span>
+        <span class="ai-hud-stat"><b id="hudAiCellNow">3450×+0.85b</b></span>
+        <span class="ai-hud-stat">λ: <b id="hudAiLamNow" style="color:var(--neon-g)">0.810 → 0.810 (0.0%)</b></span>
+        <span class="ai-hud-stat"><b id="hudAiDeltaNow" style="color:#d8b4fe">Estável</b></span>
+        <span class="ai-hud-stat"><b id="hudAiCountNow">0 cél.</b></span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+          <button type="button" class="obtn" id="btnHudFollowAi" style="height:24px;padding:0 8px;font-size:10.5px;" onclick="toggleFollowAiMode()">◎ Seguir IA</button>
+          <button type="button" class="obtn warn" style="height:24px;padding:0 8px;font-size:10.5px;" onclick="startLiveAiDemoPull('map')" title="Desregula o mapa propositalmente e inicia puxada p/ ver a IA corrigir cada célula ao vivo!">⚡ Demo Ao Vivo</button>
+          <button type="button" class="obtn ai" style="height:24px;padding:0 8px;font-size:10.5px;" onclick="navTo('cv-copilot')">Scope IA →</button>
+          <button type="button" class="obtn" style="height:24px;padding:0 7px;font-size:10.5px;" onclick="revertLiveAiSession()" title="Reverter alterações desta sessão de IA em tempo real">↶ Reverter</button>
+          <button type="button" class="obtn" style="height:24px;padding:0 7px;font-size:10.5px;" onclick="toggleLiveAiAutoTune(false)">✕</button>
+        </div>
+      </div>
 
       <!-- ==================== VIEW 1: CLEAN, EASY-TO-READ MAP TABLE ==================== -->
       <section class="view-pane" id="cv-map3d">
@@ -1022,23 +1132,27 @@ table.data-tbl select { padding-right: 18px !important; }
             </div>
             <div class="v-sep"></div>
             <button class="obtn" onclick="undoMap()" title="Desfazer (Ctrl+Z)">↶ Desfazer</button>
-            <input id="inpSetVal" type="text" value="88.0" title="Digite valor exato (85) ou +2%" style="width:58px;height:30px;text-align:center;font-weight:800;">
+            <input id="inpSetVal" type="text" value="88.0" title="Digite valor exato (85) ou +2%" style="width:56px;height:30px;text-align:center;font-weight:800;">
             <button class="obtn on" onclick="applyFormulaInput(document.getElementById('inpSetVal').value)">Aplicar</button>
             <button class="obtn" onclick="matrixOp('mul', 1.02)">+2%</button>
             <button class="obtn" onclick="matrixOp('mul', 0.98)">-2%</button>
-            <button class="obtn" onclick="matrixOp('interp2D')">Interpolar</button>
-            <button class="obtn" onclick="matrixOp('smooth')">Suavizar</button>
-            <button class="obtn ai" onclick="aiOptimizeCurrentMap()" title="A IA calibra toda esta tabela automaticamente (Ctrl+Z desfaz)">✦ Otimizar Mapa c/ IA</button>
+            <button class="obtn ai" id="btnMapLiveAi" onclick="toggleLiveAiAutoTune()" title="Liga/Pausa a calibração fechada da IA em tempo real">● IA Ao Vivo</button>
+            <button class="obtn" id="btnMapFollowAi" onclick="toggleFollowAiMode()" title="A seleção segue automaticamente cada célula ajustada pela IA">◎ Seguir IA</button>
+            <button class="obtn ai" onclick="aiOptimizeCurrentMap()" title="Calibra toda a tabela de uma vez (Ctrl+Z desfaz)">✦ Mapa 1-Click</button>
 
             <div class="tools-dd-wrap">
               <button class="obtn" onclick="document.getElementById('mapToolsMenu').classList.toggle('open');event.stopPropagation()">Mais Opções ▾</button>
               <div class="tools-dd-menu" id="mapToolsMenu" onclick="this.classList.remove('open')">
+                <button type="button" onclick="startLiveAiDemoPull('map')"><span>⚡ Testar IA Ao Vivo (Carro Desregulado)</span><span>▶</span></button>
+                <button type="button" id="btnAiDeltaMode" onclick="toggleAiSessionDeltaMode()"><span>Ver Δ Ajustes Feitos pela IA</span><span>ΔIA</span></button>
+                <button type="button" onclick="matrixOp('interp2D')"><span>Interpolar Bloco 2D (Tecla I)</span><span>⊞</span></button>
+                <button type="button" onclick="matrixOp('smooth')"><span>Suavizar Células 3×3 (Tecla S)</span><span>≈</span></button>
                 <button type="button" id="btnFuelUnit" onclick="toggleFuelMapMode()"><span>Alternar VE (%) ↔ Tempo (ms)</span><span>⇄</span></button>
-                <button type="button" id="btnFollowEng" onclick="toggleFollowEngine()"><span>Seguir Giro do Motor</span><span>◎</span></button>
+                <button type="button" id="btnFollowEng" onclick="toggleFollowEngine()"><span>Seguir Giro do Motor (S/ IA)</span><span>◎</span></button>
                 <button type="button" onclick="toggleLockSelection()"><span>Travar / Destravar Células</span><span>◈</span></button>
                 <button type="button" id="btnMapDiff" onclick="toggleDiffMode()"><span>Ver Diferença p/ Mapa Base</span><span>Δ</span></button>
-                <button type="button" id="btnHistMode" onclick="toggleHistMode()"><span>Sugestão de Correção Sonda</span><span>≣</span></button>
-                <button type="button" id="btnHistApply" style="display:none" onclick="applyHistogramCorrections()"><span>Aplicar Correção Sonda</span><span>✦</span></button>
+                <button type="button" id="btnHistMode" onclick="toggleHistMode()"><span>Histograma de Erro Sonda</span><span>≣</span></button>
+                <button type="button" id="btnHistApply" style="display:none" onclick="applyHistogramCorrections()"><span>Aplicar Histograma Acumulado</span><span>✦</span></button>
                 <button type="button" onclick="openAxisModal()"><span>Configurar Eixos (RPM / bar)</span><span>⊞</span></button>
                 <button type="button" onclick="openFtImportModal()"><span>Importar FuelTech / Excel</span><span>↓</span></button>
                 <button type="button" onclick="openMapHealthModal()"><span>Revisar Segurança do Mapa</span><span>✓</span></button>
@@ -1114,8 +1228,9 @@ table.data-tbl select { padding-right: 18px !important; }
           <button class="obtn" onclick="curveOp('mul', 1.03)">+3% Todos</button>
           <button class="obtn" onclick="curveOp('mul', 0.97)">-3% Todos</button>
           <button class="obtn" onclick="curveOp('smooth')">Suavizar Curva</button>
-          <button class="obtn" onclick="curveOp('linear')">Linearizar Extremos</button>
-          <button class="obtn ai" onclick="aiOptimizeCurrentCurve()">✦ Calibrar Curva c/ IA</button>
+          <button class="obtn" onclick="curveOp('linear')">Linearizar</button>
+          <button class="obtn ai" id="btnCurveLiveAi" onclick="toggleLiveAiAutoTune()">● IA Ao Vivo</button>
+          <button class="obtn ai" onclick="aiOptimizeCurrentCurve()">✦ Curva 1-Click</button>
           <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--neon-g);" id="lblCurveLive">Motor Agora: 13.88 V</span>
         </div>
         <div class="curve2d-layout">
@@ -1234,18 +1349,75 @@ table.data-tbl select { padding-right: 18px !important; }
         </div>
       </section>
 
-      <!-- ==================== FULL-SYSTEM OMNISCIENT AI COPILOT (ALL 10 ECU DOMAINS) ==================== -->
+      <!-- ==================== v24.0 REAL-TIME CLOSED-LOOP AI COPILOT & LIVE TELEMETRY SCOPE ==================== -->
       <section class="view-pane" id="cv-copilot">
         <div class="v-bar">
           <button class="obtn back-home-btn" onclick="navTo('cv-home')">← Início</button>
-          <div class="v-crumb">✦ Copiloto IA de Calibração Integral — Atua em Todo o Mapa, Partida, Fase Fria, EOI e Proteções</div>
+          <div class="v-crumb">Copiloto IA em Tempo Real — Telemetria Fechada, Modo Seguir IA &amp; 10 Subsistemas</div>
           <div style="margin-left:auto;display:flex;gap:6px;">
-            <button class="obtn" onclick="undoMap()">↶ Desfazer (Ctrl+Z)</button>
-            <button class="obtn ok" onclick="runFullAiAudit()">↻ Reavaliar Motor</button>
-            <button class="obtn ai" onclick="aiCalibrateEntireEcu()">✦ Calibrar Todos os 10 Sistemas c/ IA</button>
+            <button class="obtn ai" id="btnCopilotLiveTop" onclick="toggleLiveAiAutoTune()">● Ligar IA em Tempo Real</button>
+            <button class="obtn" id="btnCopilotFollowTop" onclick="followAiOnMapView()">◎ Ir p/ Tabela &amp; Seguir IA</button>
+            <button class="obtn warn" onclick="startLiveAiDemoPull('copilot')">⚡ Simular Carro Desregulado</button>
+            <button class="obtn" onclick="undoMap()">↶ Desfazer</button>
+            <button class="obtn ai" onclick="aiCalibrateEntireEcu()">✦ Calibrar 10/10 Agora</button>
           </div>
         </div>
         <div class="scroll-body">
+          <!-- REAL-TIME CLOSED-LOOP AI TELEMETRY OSCILLOSCOPE + LIVE FEED -->
+          <div class="ai-rt-cockpit">
+            <div class="panel-box" style="border-color:rgba(168,85,247,0.45);">
+              <div class="p-hdr">
+                <span>Osciloscópio da IA em Tempo Real — Sonda Real vs Alvo &amp; Pulsos de Correção Ao Vivo</span>
+                <span class="st-pill" id="copLiveBadge">PAUSADA</span>
+              </div>
+              <div class="card-pad" style="gap:8px;">
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;">
+                  <div class="ro-badge" style="flex-direction:column;align-items:flex-start;gap:1px;"><span>Ponto Motor Agora</span><strong id="copLiveCell" style="color:var(--cyan)">3450 × +0.85b</strong></div>
+                  <div class="ro-badge" style="flex-direction:column;align-items:flex-start;gap:1px;"><span>Sonda Real / Alvo</span><strong id="copLiveLam" style="color:var(--neon-g)">0.810 / 0.810 λ</strong></div>
+                  <div class="ro-badge" style="flex-direction:column;align-items:flex-start;gap:1px;"><span>Correção IA Agora</span><strong id="copLiveStep" style="color:#d8b4fe">0.0 %</strong></div>
+                  <div class="ro-badge" style="flex-direction:column;align-items:flex-start;gap:1px;"><span>Células Acertadas</span><strong id="copLiveFixes" style="color:#fcd34d">0 cél. (Erro 0.0%)</strong></div>
+                </div>
+                <div style="height:185px;background:#060a13;border:1px solid #1b2a44;border-radius:7px;position:relative;overflow:hidden;">
+                  <canvas id="cvAiLiveScope" style="width:100%;height:100%;display:block;"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-box" style="border-color:rgba(56,189,248,0.38);">
+              <div class="p-hdr">
+                <span>Controle de Malha Fechada IA &amp; Stream Ao Vivo</span>
+                <span style="font-family:var(--mono);font-size:10px;color:#7dd3fc;">Clique no feed p/ ir à célula</span>
+              </div>
+              <div class="card-pad" style="gap:7px;">
+                <div class="f-row"><span class="f-lbl">Modo de Operação Ao Vivo</span>
+                  <select id="selAiLiveMode" onchange="syncLiveAiButtons()">
+                    <option value="apply" selected>Auto-Aplicar no Mapa</option>
+                    <option value="shadow">Sombra (Só Sugerir)</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Subsistemas Ativos</span>
+                  <select id="selAiLiveScope">
+                    <option value="all" selected>VE + Ponto + Frio + EOI</option>
+                    <option value="ve_only">Somente VE × Sonda</option>
+                    <option value="ve_ign">VE + Ponto Boost</option>
+                  </select>
+                </div>
+                <div class="f-row"><span class="f-lbl">Velocidade &amp; Trava Segurança (±%)</span>
+                  <div class="dual-ctl">
+                    <select id="selAiLiveGain">
+                      <option value="0.32">Suave Rua (32%)</option>
+                      <option value="0.62" selected>Rápida Dyno (62%)</option>
+                      <option value="0.88">Pista Rápida (88%)</option>
+                    </select>
+                    <div class="num-step"><span class="ns-pfx">±</span><input id="inpAiMaxClamp" type="number" step="2" min="4" max="35" value="18"><span class="ns-u">%</span></div>
+                  </div>
+                </div>
+                <div class="ai-feed-list" id="aiRealtimeFeed">
+                  <div class="ai-feed-item"><span>Clique em <b>● Ligar IA em Tempo Real</b> ou <b>⚡ Simular Carro Desregulado</b> p/ ver a IA calibrando célula a célula!</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- NATURAL LANGUAGE COMMAND BAR -->
           <div class="ai-prompt-box">
             <span class="t-ico c-ai" style="width:30px;height:30px;font-size:11px;">IA</span>
@@ -3650,6 +3822,10 @@ table.data-tbl select { padding-right: 18px !important; }
           <span class="lbl">Sonda O2</span>
           <span class="val" id="fbLam" style="color:var(--neon-g);">1.00 λ</span>
         </div>
+        <div class="calm-tlm-row" id="rowTlmLiveAi" onclick="navTo('cv-copilot')" style="cursor:pointer;border-color:rgba(168,85,247,0.34);">
+          <span class="lbl" style="color:#d8b4fe;">IA Tempo Real</span>
+          <span class="val" id="svAiLiveTlm" style="color:#c4b5fd;font-size:12.5px;">PAUSADA</span>
+        </div>
         <div class="calm-tlm-row">
           <span class="lbl">Tempo Injeção</span>
           <span class="val" id="svPw">2.18 ms</span>
@@ -3686,7 +3862,10 @@ table.data-tbl select { padding-right: 18px !important; }
           <button type="button" class="sim-pill" id="simBtn_2step" onclick="setSimScenario('2step')">🔥 2-Step</button>
           <button type="button" class="sim-pill" id="simBtn_pops" onclick="setSimScenario('pops')">💥 Pops / Cut</button>
         </div>
-        <button type="button" class="sim-pill fault" id="simBtn_fault" style="width:100%" onclick="setSimScenario('fault')">🚨 Testar Queda Pressão Bomba (Proteção)</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+          <button type="button" class="sim-pill fault" id="simBtn_fault" onclick="setSimScenario('fault')">🚨 Queda Bomba</button>
+          <button type="button" class="sim-pill" id="simBtn_aidemo" style="border-color:#a855f7;color:#e9d5ff;background:rgba(124,58,237,0.22);" onclick="startLiveAiDemoPull('map')">✦ Demo IA Vivo</button>
+        </div>
 
         <div class="sim-slider-row">
           <div style="display:flex;justify-content:space-between;"><span>Pedal Acelerador</span><strong id="simPedalLbl" style="color:var(--cyan);font-family:var(--mono)">0 %</strong></div>
@@ -3870,6 +4049,10 @@ const st = {
   manualBench: false, manualRpm: 3800, manualMap: 185,
   dashAlarmDemo: false, activeOutTest: -1, outTestTimer: null,
   liveTestMode: "", injFlowLbh: 80, revLimitRpm: 7200,
+  aiLiveOn: false, aiFollowMode: false, aiDeltaView: false,
+  aiSessionBackup: null, aiCellTouches: {}, aiScopeBuf: [], aiLiveTick: 0,
+  aiLiveStats: { fixes: 0, lastStepPct: 0, lastCellTxt: "—", avgErrPct: 0 },
+  physTrueVe: null, physTrueWue: null,
   openTabs: [
     { key: "cv-home", label: "🏠 Menu Rápido" },
     { key: "map:ve", label: "⛽ Mapa VE" },
@@ -3982,7 +4165,7 @@ function navTo(viewId) {
     if (viewId === "cv-dash") drawDashPreview();
     if (viewId === "cv-outtest") renderOutputTests();
     if (viewId === "cv-calc") runWorkshopCalcs();
-    if (viewId === "cv-copilot") runFullAiAudit();
+    if (viewId === "cv-copilot") { runFullAiAudit(); if (typeof drawAiLiveScope === "function") drawAiLiveScope(); }
     if (viewId === "cv-setup") syncDirectSetup();
     if (viewId === "cv-boost") syncBoostHardwareMode();
     if (viewId === "cv-egt") syncEgtTopology();
@@ -4583,6 +4766,17 @@ function initAllMaps(dispCc, maxBoostBar, isEth, specOpt) {
     if (fPct) fPct.value = sp.isMeth ? 32 : (sp.isEth ? 24 : 15);
     if (cMult) cMult.value = (sp.isMeth ? 2.6 : (sp.isEth ? 2.2 : 1.5)).toFixed(1);
   }
+  /* Store physical engine airflow ground-truth (with realistic ±3.6% runner resonance) for real-time closed-loop AI! */
+  st.physTrueVe = [];
+  for (let r = 0; r < DIM; r++) {
+    st.physTrueVe[r] = [];
+    for (let c = 0; c < DIM; c++) {
+      const resWave = 1.0 + Math.sin(r * 0.58 + c * 0.44) * 0.036;
+      st.physTrueVe[r][c] = Number(Math.max(26, Math.min(134, st.baseMaps.ve[r][c] * resWave)).toFixed(1));
+    }
+  }
+  st.physTrueWue = st.curves && st.curves.wue ? st.curves.wue.y.slice() : null;
+  st.aiCellTouches = {};
   updateBaseMapPreview();
   if (!st.snapshots.length) saveNewSnapshot("v1.0 — Mapa Base Inicial");
 }
@@ -4605,6 +4799,7 @@ function renderGrid() {
   const meta = MAP_META[st.mapId], m = st.maps[st.mapId], bm = st.baseMaps[st.mapId], b = bounds();
   const hr = Math.round(contIdx(st.rpmAxis, st.tlm.rpm)), hc = Math.round(contIdx(st.mapAxis, st.tlm.map_kpa));
 
+  const nowMs = Date.now();
   let h = '<thead><tr><th class="cn" onclick="openAxisModal()">RPM\\' + (st.loadMode === "tps" ? "TPS" : "bar") + '</th>';
   for (let c = 0; c < DIM; c++) h += '<th onclick="openAxisModal()">' + fmtXHeader(c) + "</th>";
   h += "</tr></thead><tbody>";
@@ -4612,8 +4807,18 @@ function renderGrid() {
     h += '<tr><th class="rh" onclick="openAxisModal()">' + st.rpmAxis[r] + "</th>";
     for (let c = 0; c < DIM; c++) {
       const v = m[r][c], dVal = v - bm[r][c];
+      const aiTouch = st.aiCellTouches[st.mapId + ":" + r + ":" + c];
       let bgCss = "", txt = "", isInv = false;
-      if (st.histMode && st.hitCount[r]) {
+      if (st.aiDeltaView) {
+        if (!aiTouch || Math.abs(v - aiTouch.startVal) < 0.02) {
+          bgCss = "#0d1522"; isInv = true; txt = "—";
+        } else {
+          const dv = v - aiTouch.startVal;
+          bgCss = dv > 0 ? "rgb(88,28,135)" : "rgb(6,95,70)";
+          isInv = true;
+          txt = (dv >= 0 ? "+" : "") + dv.toFixed(meta.dec);
+        }
+      } else if (st.histMode && st.hitCount[r]) {
         const hits = st.hitCount[r][c] || 0;
         if (hits === 0) {
           bgCss = "#0d1522"; isInv = true; txt = "—";
@@ -4638,7 +4843,8 @@ function renderGrid() {
         bgCss = jc.css; isInv = jc.inv; txt = v.toFixed(meta.dec);
       }
       const isLocked = !!st.lockedCells[st.mapId + ":" + r + ":" + c];
-      const cls = (isInv ? "inv " : "") + (isLocked ? "locked " : "") + ((r >= b.r0 && r <= b.r1 && c >= b.c0 && c <= b.c1) ? "sel " : "") + ((r === hr && c === hc) ? "hit" : "");
+      const aiCls = aiTouch ? ((nowMs - aiTouch.ts < 2400) ? "ai-live-flash " : "ai-tuned-cell ") : "";
+      const cls = (isInv ? "inv " : "") + (isLocked ? "locked " : "") + aiCls + ((r >= b.r0 && r <= b.r1 && c >= b.c0 && c <= b.c1) ? "sel " : "") + ((r === hr && c === hc) ? "hit" : "");
       h += '<td data-r="' + r + '" data-c="' + c + '" class="' + cls.trim() + '" style="background:' + bgCss + '">' + txt + "</td>";
     }
     h += "</tr>";
@@ -4663,11 +4869,15 @@ function updateCellCrossInspector(b, cnt) {
   const pwEq = veToPwMs(veV, mp, st.injFlowLbh || 65, 9.0 * lamV) + 0.85;
   const dutyEq = Math.min(99, Math.round((pwEq * rpm) / 1200));
   const ptTxt = cnt === 1 ? (rpm + " RPM × " + xLbl) : ("Bloco " + (b.r1 - b.r0 + 1) + "×" + (b.c1 - b.c0 + 1) + " (" + rpm + " RPM)");
+  const aiT = st.aiCellTouches[st.mapId + ":" + r + ":" + c] || st.aiCellTouches["ve:" + r + ":" + c];
+  const aiPill = aiT
+    ? ('<span style="color:#e9d5ff;border-color:rgba(168,85,247,0.55);background:rgba(88,28,135,0.28);">✦ IA: <b>' + aiT.startVal.toFixed(1) + ' → ' + aiT.curVal.toFixed(1) + ' (' + (aiT.curVal - aiT.startVal >= 0 ? '+' : '') + (aiT.curVal - aiT.startVal).toFixed(1) + ')</b></span>')
+    : "";
   box.innerHTML =
     "<span>📍 <b>" + ptTxt + "</b></span>" +
     "<span>Injeção: <b>" + veV.toFixed(1) + "% (" + pwEq.toFixed(2) + " ms • " + dutyEq + "% Duty)</b></span>" +
-    "<span>Ponto aqui: <b>" + ignV.toFixed(1) + "°</b></span>" +
-    "<span>Alvo Sonda: <b>" + lamV.toFixed(2) + " λ</b></span>";
+    "<span>Ponto: <b>" + ignV.toFixed(1) + "°</b></span>" +
+    "<span>Sonda Real/Alvo: <b>" + st.tlm.lambda.toFixed(3) + " / " + lamV.toFixed(2) + " λ</b></span>" + aiPill;
   if (jmp) {
     jmp.textContent = st.mapId === "ign" ? "Ver Injeção neste Ponto ⇄" : "Ver Ignição neste Ponto ⇄";
   }
@@ -6039,11 +6249,21 @@ function mainLoop() {
 
   const hr = Math.round(contIdx(st.rpmAxis, t.rpm));
   const hc = Math.round(contIdx(st.mapAxis, t.map_kpa));
-  const cellHits = (st.hitCount[hr] && st.hitCount[hr][hc]) || 0;
-  const residualBias = Math.sin(hr * 0.65 + hc * 0.45) * 0.032 * Math.exp(-cellHits * 0.025);
+  const vePhys = (st.physTrueVe && st.physTrueVe.length === DIM)
+    ? bilerpMap(st.physTrueVe, t.rpm, t.map_kpa)
+    : bilerpMap(st.baseMaps.ve, t.rpm, t.map_kpa);
+  const wuePhysPct = (st.physTrueWue && st.curves && st.curves.wue)
+    ? (function() {
+        const xs = st.curves.wue.x, ys = st.physTrueWue, x = t.clt_c;
+        if (x <= xs[0]) return ys[0]; if (x >= xs[9]) return ys[9];
+        for (let k = 0; k < 9; k++) if (x >= xs[k] && x <= xs[k + 1]) return ys[k] + ((x - xs[k]) / (xs[k + 1] - xs[k])) * (ys[k + 1] - ys[k]);
+        return 0;
+      })()
+    : lerpCurve("wue", t.clt_c);
+  const fuelDelivRatio = (Math.max(20, veLive) / Math.max(20, vePhys)) * (wueMult / Math.max(0.75, 1.0 + wuePhysPct * 0.01));
 
   t.target_lambda = lamTgt;
-  t.lambda = Math.max(0.65, Math.min(1.30, t.target_lambda * (1.0 + residualBias) + (st.stimLamBias || 0) + Math.cos(ph * 3) * 0.003));
+  t.lambda = Math.max(0.62, Math.min(1.38, (t.target_lambda / Math.max(0.60, Math.min(1.50, fuelDelivRatio))) + (st.stimLamBias || 0) + Math.cos(ph * 3) * 0.002));
   let pwCalc = t.rpm === 0 ? 0 : Math.max(0, basePw + deadMs + spaMs);
   let ignCalc = ignBase + lerpCurve("iat_ign", t.iat_c) + wmiCorr;
 
@@ -6150,12 +6370,16 @@ function mainLoop() {
   setTxt("pkDp", st.peaks.dpMin.toFixed(2) + "b"); setBar("mbDp", (t.diff_fp_kpa / 400) * 100);
   setTxt("pkClt", st.peaks.clt.toFixed(1) + "°"); setBar("mbClt", (t.clt_c / 115) * 100);
 
+  /* Real-Time Closed-Loop AI Auto-Tuner + Live AI Telemetry + Follow AI Mode! */
+  if (typeof stepLiveAiClosedLoop === "function") stepLiveAiClosedLoop(t, hr, hc);
+
   if (document.getElementById("cv-map3d").classList.contains("active")) {
     moveReticle();
     if (st.mapLayout === "full" || st.mapLayout === "3d") render3D();
     if (st.mapLayout === "full") render2DSlice();
     if (st.mapLayout === "split") moveSplitReticle();
   }
+  else if (document.getElementById("cv-copilot").classList.contains("active")) { if (typeof drawAiLiveScope === "function") drawAiLiveScope(); }
   else if (document.getElementById("cv-curve2d").classList.contains("active")) { drawCurve2DEditor(); }
   else if (document.getElementById("cv-dash").classList.contains("active")) { drawDashPreview(); }
   else if (document.getElementById("cv-egt") && document.getElementById("cv-egt").classList.contains("active")) { renderEgtLiveBars(); }
@@ -8517,9 +8741,373 @@ function calcKnockFreqFromBore() {
   if (kInp && document.activeElement !== kInp) { kInp.value = bore.toFixed(1); if (typeof calcKnockFreq === "function") calcKnockFreq(); }
 }
 
+/* ==================== v24.0 REAL-TIME CLOSED-LOOP AI AUTO-TUNER, FOLLOW MODE & LIVE OSCILLOSCOPE ==================== */
+function syncLiveAiButtons() {
+  const on = !!st.aiLiveOn, fol = !!st.aiFollowMode;
+  const shadow = ((document.getElementById("selAiLiveMode") || {}).value === "shadow");
+  const bTop = document.getElementById("btnTopLiveAi");
+  const bMap = document.getElementById("btnMapLiveAi");
+  const bCrv = document.getElementById("btnCurveLiveAi");
+  const bCop = document.getElementById("btnCopilotLiveTop");
+  const bFolM = document.getElementById("btnMapFollowAi");
+  const bFolH = document.getElementById("btnHudFollowAi");
+  const bFolC = document.getElementById("btnCopilotFollowTop");
+  const hud = document.getElementById("liveAiHudBar");
+  const copBdg = document.getElementById("copLiveBadge");
+
+  if (bTop) {
+    bTop.classList.toggle("active", on);
+    bTop.textContent = on ? (shadow ? "👁 IA Sombra: ON" : "● IA Ao Vivo: ON") : "● IA Ao Vivo";
+  }
+  [bMap, bCrv].forEach(function(b) {
+    if (!b) return;
+    b.classList.toggle("live-on", on);
+    b.textContent = on ? "● IA Ao Vivo: ON" : "● IA Ao Vivo";
+  });
+  if (bCop) {
+    bCop.classList.toggle("live-on", on);
+    bCop.textContent = on ? "⏸ Pausar IA em Tempo Real" : "● Ligar IA em Tempo Real";
+  }
+  if (bFolM) {
+    bFolM.classList.toggle("follow-on", fol);
+    bFolM.textContent = fol ? "◎ Seguindo IA: ON" : "◎ Seguir IA";
+  }
+  if (bFolH) {
+    bFolH.classList.toggle("follow-on", fol);
+    bFolH.textContent = fol ? "◎ Seguindo IA" : "◎ Seguir IA";
+  }
+  if (bFolC) {
+    bFolC.classList.toggle("follow-on", fol);
+  }
+  if (hud) hud.classList.toggle("open", on || fol);
+  if (copBdg) {
+    copBdg.textContent = on ? (shadow ? "SOMBRA AO VIVO" : "CORRIGINDO AO VIVO") : "PAUSADA";
+    copBdg.style.color = on ? "#6ee7b7" : "#94a3b8";
+  }
+}
+
+function toggleLiveAiAutoTune(forceVal) {
+  const next = (typeof forceVal === "boolean") ? forceVal : !st.aiLiveOn;
+  if (next && !st.aiLiveOn) {
+    st.aiSessionBackup = cloneCalBundle();
+    st.aiLiveStats.fixes = 0;
+  }
+  st.aiLiveOn = next;
+  syncLiveAiButtons();
+  toast(st.aiLiveOn ? "✦ IA em Tempo Real ATIVADA! Corrigindo células ao vivo conforme telemetria." : "⏸ IA em Tempo Real pausada.");
+}
+
+function toggleFollowAiMode(forceVal) {
+  st.aiFollowMode = (typeof forceVal === "boolean") ? forceVal : !st.aiFollowMode;
+  if (st.aiFollowMode && !st.aiLiveOn) {
+    st.aiSessionBackup = cloneCalBundle();
+    st.aiLiveOn = true;
+  }
+  if (st.aiFollowMode) st.followEngine = false;
+  syncLiveAiButtons();
+  toast(st.aiFollowMode ? "◎ Modo Seguir IA ATIVO: o cursor acompanha cada célula ajustada pela IA!" : "Modo Seguir IA desativado.");
+}
+
+function followAiOnMapView() {
+  toggleLiveAiAutoTune(true);
+  toggleFollowAiMode(true);
+  navMap("ve");
+}
+
+function toggleAiSessionDeltaMode() {
+  st.aiDeltaView = !st.aiDeltaView;
+  if (st.aiDeltaView) { st.diffMode = false; st.histMode = false; }
+  const b = document.getElementById("btnAiDeltaMode");
+  if (b) b.classList.toggle("on", st.aiDeltaView);
+  renderGrid();
+  toast(st.aiDeltaView ? "ΔIA Ativo: exibindo exatamente quanto a IA alterou em cada célula!" : "Exibindo valores normais da tabela.");
+}
+
+function revertLiveAiSession() {
+  if (!st.aiSessionBackup) { toast("Nenhuma sessão ativa de IA para reverter!"); return; }
+  restoreCalBundle(st.aiSessionBackup);
+  st.aiCellTouches = {};
+  st.aiLiveStats.fixes = 0;
+  renderGrid();
+  toast("↶ Sessão de IA em tempo real revertida para o estado anterior!");
+}
+
+function startLiveAiDemoPull(targetScreen) {
+  st.aiSessionBackup = cloneCalBundle();
+  st.aiCellTouches = {};
+  st.aiLiveStats.fixes = 0;
+  /* Inject realistic uncalibrated lean/rich waves (-13% to +11%) + +2.2° hot boost timing so user watches AI heal live! */
+  for (let r = 0; r < DIM; r++) {
+    for (let c = 0; c < DIM; c++) {
+      const wave = -0.115 * Math.cos(r * 0.42) * Math.sin(c * 0.35 + 0.6) - (st.mapAxis[c] >= 165 ? 0.085 : 0.0);
+      st.maps.ve[r][c] = Number(Math.max(28, Math.min(132, st.physTrueVe[r][c] * (1.0 + wave))).toFixed(1));
+      st.maps.pw_ms[r][c] = veToPwMs(st.maps.ve[r][c], st.mapAxis[c], st.injFlowLbh || 80, 9.0);
+      if (st.mapAxis[c] >= 175) st.maps.ign[r][c] = Number((st.baseMaps.ign[r][c] + 2.2).toFixed(1));
+    }
+  }
+  syncCurrentBankStore();
+  st.aiLiveOn = true;
+  st.aiFollowMode = true;
+  st.followEngine = false;
+  syncLiveAiButtons();
+  setSimScenario("pull");
+  if (targetScreen === "copilot") navTo("cv-copilot");
+  else navMap("ve");
+  renderGrid();
+  toast("⚡ Mapa desregulado (-13% em Boost) + Puxada 1ª–4ª iniciada: veja a IA corrigindo célula por célula ao vivo!");
+}
+
+function jumpToAiFeedCell(mapKey, r, c) {
+  st.r1 = st.r2 = r; st.c1 = st.c2 = c;
+  navMap(mapKey || "ve");
+  renderGrid();
+}
+
+function pushAiRealtimeFeed(txt, mapKey, r, c, colHex) {
+  const box = document.getElementById("aiRealtimeFeed");
+  if (!box) return;
+  const d = new Date();
+  const ts = String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0");
+  const row = document.createElement("div");
+  row.className = "ai-feed-item";
+  row.style.borderLeftColor = colHex || "#a855f7";
+  row.setAttribute("onclick", "jumpToAiFeedCell('" + (mapKey || "ve") + "'," + r + "," + c + ")");
+  row.innerHTML = '<span><b style="color:#94a3b8">' + ts + '</b> ' + txt + '</span><span style="color:#7dd3fc">Ir →</span>';
+  if (box.firstChild && box.firstChild.textContent.indexOf("Clique em") >= 0) box.innerHTML = "";
+  box.insertBefore(row, box.firstChild);
+  while (box.children.length > 28) box.removeChild(box.lastChild);
+}
+
+function stepLiveAiClosedLoop(t, hr, hc) {
+  st.aiLiveTick = (st.aiLiveTick || 0) + 1;
+  const effMode = st.liveTestMode || st.simScenario || "idle";
+  const blocked = (t.guardian_fault_mask !== 0);
+  const errPct = ((t.lambda - t.target_lambda) / Math.max(0.5, t.target_lambda)) * 100.0;
+  const xBar = fmtXHeader(hc) + (st.loadMode === "tps" ? "" : "b");
+  const cellLbl = st.rpmAxis[hr] + "×" + xBar;
+  let stepAppliedPct = 0.0;
+  let deltaMsg = st.aiLiveOn ? "Estável (±0.2%)" : "IA Pausada";
+
+  const hud = document.getElementById("liveAiHudBar");
+  const pill = document.getElementById("hudAiStatePill");
+  const copBdg = document.getElementById("copLiveBadge");
+  if (hud) hud.classList.toggle("blocked", st.aiLiveOn && blocked);
+
+  if (st.aiLiveOn && blocked) {
+    if (pill) { pill.className = "ai-hud-pill warn"; pill.textContent = "🛡 BLOQUEADA GUARDIAN™"; }
+    if (copBdg) { copBdg.textContent = "🛡 BLOQUEADA GUARDIAN"; copBdg.style.color = "#fda4af"; }
+    deltaMsg = "Falso pobre ignorado (Queda dP)";
+  } else if (st.aiLiveOn) {
+    const mode = (document.getElementById("selAiLiveMode") || {}).value || "apply";
+    const scope = (document.getElementById("selAiLiveScope") || {}).value || "all";
+    const gain = parseFloat((document.getElementById("selAiLiveGain") || {}).value) || 0.62;
+    const maxClamp = Math.max(4, parseFloat((document.getElementById("inpAiMaxClamp") || {}).value) || 18);
+    if (pill) {
+      pill.className = "ai-hud-pill";
+      pill.textContent = mode === "shadow" ? "👁 IA SOMBRA" : "● IA AO VIVO";
+    }
+    if (copBdg) {
+      copBdg.textContent = mode === "shadow" ? "SOMBRA AO VIVO" : "CORRIGINDO AO VIVO";
+      copBdg.style.color = "#6ee7b7";
+    }
+
+    const canCorrect = (t.rpm >= 600 && effMode !== "pops" && effMode !== "2step" && st.shiftCutTicks === 0);
+    if (canCorrect && (st.aiLiveTick % 2 === 0)) {
+      const kVe = "ve:" + hr + ":" + hc;
+      if (!st.lockedCells[kVe] && Math.abs(errPct) >= 0.35) {
+        stepAppliedPct = Math.max(-9.5, Math.min(9.5, errPct * gain));
+        if (mode === "apply") {
+          const oldVe = st.maps.ve[hr][hc];
+          if (!st.aiCellTouches[kVe]) st.aiCellTouches[kVe] = { startVal: oldVe, curVal: oldVe, ts: Date.now() };
+          const startRef = st.aiCellTouches[kVe].startVal;
+          const minAllowed = startRef * (1.0 - maxClamp * 0.01);
+          const maxAllowed = startRef * (1.0 + maxClamp * 0.01);
+          const newVe = Number(Math.max(25, Math.min(136, Math.max(minAllowed, Math.min(maxAllowed, oldVe * (1.0 + stepAppliedPct * 0.01))))).toFixed(1));
+          if (Math.abs(newVe - oldVe) >= 0.1) {
+            st.maps.ve[hr][hc] = newVe;
+            st.maps.pw_ms[hr][hc] = veToPwMs(newVe, st.mapAxis[hc], st.injFlowLbh || 80, 9.0);
+            st.aiCellTouches[kVe].curVal = newVe;
+            st.aiCellTouches[kVe].ts = Date.now();
+            st.aiLiveStats.fixes++;
+
+            /* Smooth 22% feathering to immediate 4-connected neighbors so no sharp steps ever appear */
+            [[hr-1,hc],[hr+1,hc],[hr,hc-1],[hr,hc+1]].forEach(function(nb) {
+              const nr = nb[0], nc = nb[1];
+              if (nr < 0 || nr >= DIM || nc < 0 || nc >= DIM) return;
+              const nk = "ve:" + nr + ":" + nc;
+              if (st.lockedCells[nk]) return;
+              const ov = st.maps.ve[nr][nc];
+              if (!st.aiCellTouches[nk]) st.aiCellTouches[nk] = { startVal: ov, curVal: ov, ts: 0 };
+              const nv = Number(Math.max(25, Math.min(136, ov * (1.0 + stepAppliedPct * 0.0022))).toFixed(1));
+              st.maps.ve[nr][nc] = nv;
+              st.maps.pw_ms[nr][nc] = veToPwMs(nv, st.mapAxis[nc], st.injFlowLbh || 80, 9.0);
+              st.aiCellTouches[nk].curVal = nv;
+            });
+
+            deltaMsg = "VE " + oldVe.toFixed(1) + "→" + newVe.toFixed(1) + "% (" + (stepAppliedPct >= 0 ? "+" : "") + stepAppliedPct.toFixed(1) + "%)";
+            if (Math.abs(stepAppliedPct) >= 0.55) {
+              pushAiRealtimeFeed("[" + cellLbl + "] VE " + oldVe.toFixed(1) + "→<b style='color:#6ee7b7'>" + newVe.toFixed(1) + "%</b> (λ " + t.lambda.toFixed(3) + "→" + t.target_lambda.toFixed(2) + ")", "ve", hr, hc, stepAppliedPct > 0 ? "#a855f7" : "#10b981");
+            }
+          }
+          /* Optional Boost Ignition Safety Trim in real time */
+          if ((scope === "all" || scope === "ve_ign") && st.mapAxis[hc] >= 175 && st.baseMaps.ign && st.maps.ign[hr][hc] > st.baseMaps.ign[hr][hc] + 0.4) {
+            const kIgn = "ign:" + hr + ":" + hc;
+            const oldIgn = st.maps.ign[hr][hc];
+            if (!st.aiCellTouches[kIgn]) st.aiCellTouches[kIgn] = { startVal: oldIgn, curVal: oldIgn, ts: Date.now() };
+            const newIgn = Number(Math.max(st.baseMaps.ign[hr][hc], oldIgn - 0.6).toFixed(1));
+            st.maps.ign[hr][hc] = newIgn;
+            st.aiCellTouches[kIgn].curVal = newIgn;
+            st.aiCellTouches[kIgn].ts = Date.now();
+            deltaMsg += " • Ponto " + newIgn.toFixed(1) + "°";
+          }
+          /* Optional Cold Warmup (WUE) Real-Time Curve Learning when CLT < 72°C */
+          if (scope === "all" && t.clt_c < 72 && st.physTrueWue) {
+            let bestIdx = 0, bestDist = 999;
+            for (let wi = 0; wi < 10; wi++) {
+              const d = Math.abs(st.curves.wue.x[wi] - t.clt_c);
+              if (d < bestDist) { bestDist = d; bestIdx = wi; }
+            }
+            const curW = st.curves.wue.y[bestIdx], tgtW = st.physTrueWue[bestIdx];
+            if (Math.abs(curW - tgtW) >= 1) {
+              st.curves.wue.y[bestIdx] = Math.round(curW + (tgtW - curW) * 0.45);
+              if (st.activeCurve === "wue" && document.getElementById("cv-curve2d").classList.contains("active")) renderCurveInputs();
+            }
+          }
+          syncCurrentBankStore();
+        } else {
+          deltaMsg = "Sugestão: " + (stepAppliedPct >= 0 ? "+" : "") + stepAppliedPct.toFixed(1) + "% VE";
+        }
+      }
+
+      /* FOLLOW AI MODE: Automatically lock table cursor & scroll onto the cell the AI is tuning! */
+      if (st.aiFollowMode) {
+        const moved = (st.r1 !== hr || st.c1 !== hc);
+        st.r1 = st.r2 = hr; st.c1 = st.c2 = hc;
+        if (document.getElementById("cv-map3d").classList.contains("active")) {
+          renderGrid();
+          if (moved) {
+            const selTd = document.querySelector('#calSheet td[data-r="' + hr + '"][data-c="' + hc + '"]');
+            if (selTd && selTd.scrollIntoView) selTd.scrollIntoView({ block: "nearest", inline: "nearest" });
+          }
+        }
+      } else if (mode === "apply" && Math.abs(stepAppliedPct) >= 0.25 && document.getElementById("cv-map3d").classList.contains("active")) {
+        renderGrid();
+      }
+    }
+  }
+
+  st.aiLiveStats.lastStepPct = stepAppliedPct;
+  st.aiLiveStats.lastCellTxt = cellLbl;
+  st.aiLiveStats.avgErrPct = Math.abs(errPct);
+
+  /* Push real-time sample into 150-point Live AI Oscilloscope ring buffer */
+  st.aiScopeBuf.push({
+    lam: t.lambda, tgt: t.target_lambda, step: stepAppliedPct,
+    rpm: t.rpm, boost: (t.map_kpa - 101.3) / 100, blocked: blocked
+  });
+  if (st.aiScopeBuf.length > 150) st.aiScopeBuf.shift();
+
+  /* Update Live HUD Bar, Right Sidebar Row & Copilot Header Badges */
+  const touchedTotal = Object.keys(st.aiCellTouches).length;
+  const lamCol = Math.abs(errPct) <= 1.4 ? "var(--neon-g)" : (Math.abs(errPct) <= 4.5 ? "#fbbf24" : "#fda4af");
+  setH("hudAiCellNow", cellLbl);
+  const hudLam = document.getElementById("hudAiLamNow");
+  if (hudLam) {
+    hudLam.style.color = lamCol;
+    hudLam.textContent = t.lambda.toFixed(3) + " → " + t.target_lambda.toFixed(2) + " λ (" + (errPct >= 0 ? "+" : "") + errPct.toFixed(1) + "%)";
+  }
+  setH("hudAiDeltaNow", deltaMsg);
+  setH("hudAiCountNow", touchedTotal + " cél. • Erro " + Math.abs(errPct).toFixed(1) + "%");
+
+  const rTlm = document.getElementById("svAiLiveTlm");
+  if (rTlm) {
+    if (!st.aiLiveOn) { rTlm.textContent = "PAUSADA"; rTlm.style.color = "#94a3b8"; }
+    else if (blocked) { rTlm.textContent = "🛡 GUARDIAN"; rTlm.style.color = "#fda4af"; }
+    else {
+      rTlm.textContent = (stepAppliedPct >= 0 ? "+" : "") + stepAppliedPct.toFixed(1) + "% (" + touchedTotal + " cél)";
+      rTlm.style.color = "#6ee7b7";
+    }
+  }
+
+  setH("copLiveCell", cellLbl);
+  const cLam = document.getElementById("copLiveLam");
+  if (cLam) { cLam.style.color = lamCol; cLam.textContent = t.lambda.toFixed(3) + " / " + t.target_lambda.toFixed(2) + " λ"; }
+  setH("copLiveStep", (stepAppliedPct >= 0 ? "+" : "") + stepAppliedPct.toFixed(1) + " % VE");
+  setH("copLiveFixes", touchedTotal + " cél. (Erro " + Math.abs(errPct).toFixed(1) + "%)");
+}
+
+function drawAiLiveScope() {
+  const pc = prepCanvas(document.getElementById("cvAiLiveScope")); if (!pc) return;
+  const ctx = pc.ctx, W = pc.W, H = pc.H, buf = st.aiScopeBuf;
+  ctx.fillStyle = "#060a13"; ctx.fillRect(0, 0, W, H);
+  const pL = 44, pR = 14, pT = 22, pB = 20, pw = W - pL - pR, ph = H - pT - pB;
+
+  /* Horizontal reference grid (Lambda 0.70 .. 1.15) */
+  ctx.font = "700 9.5px Consolas, monospace";
+  for (let g = 0; g <= 4; g++) {
+    const fy = g / 4, y = pT + fy * ph, lv = 1.12 - fy * 0.44;
+    ctx.strokeStyle = "#142036"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(W - pR, y); ctx.stroke();
+    ctx.fillStyle = "#64748b"; ctx.textAlign = "right";
+    ctx.fillText(lv.toFixed(2) + "λ", pL - 6, y + 3);
+  }
+  /* Legend top-left */
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#00e5ff"; ctx.fillText("━ Sonda Real (λ)", pL, 14);
+  ctx.fillStyle = "#00e676"; ctx.fillText("┄ Sonda Alvo (λ)", pL + 122, 14);
+  ctx.fillStyle = "#d946ef"; ctx.fillText("▮ Pulso Correção IA (%VE)", pL + 245, 14);
+  ctx.fillStyle = "#fbbf24"; ctx.fillText("━ RPM", pL + 420, 14);
+
+  if (buf.length < 2) return;
+  const yLam = function(v) { return pT + (1.0 - Math.max(0, Math.min(1, (v - 0.68) / 0.44))) * ph; };
+  const midY = pT + ph * 0.5;
+
+  /* 1. AI Correction Pulse Bars (Δ% VE) */
+  const barStepW = Math.max(2, pw / 150);
+  for (let i = 0; i < buf.length; i++) {
+    const s = buf[i];
+    if (Math.abs(s.step) < 0.15) continue;
+    const x = pL + (i / 149) * pw;
+    const bh = Math.min(ph * 0.44, Math.abs(s.step) * 7.5);
+    ctx.fillStyle = s.step > 0 ? "rgba(217,70,239,0.45)" : "rgba(16,185,129,0.45)";
+    ctx.fillRect(x - 1, s.step > 0 ? (midY - bh) : midY, barStepW, bh);
+  }
+
+  /* 2. RPM trace (subtle amber) */
+  ctx.strokeStyle = "rgba(251,191,36,0.45)"; ctx.lineWidth = 1.4; ctx.beginPath();
+  for (let i = 0; i < buf.length; i++) {
+    const x = pL + (i / 149) * pw, y = pT + (1.0 - Math.min(1, buf[i].rpm / 8000)) * ph;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  /* 3. Target Lambda (dashed emerald) */
+  ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = "#00e676"; ctx.lineWidth = 1.8; ctx.beginPath();
+  for (let i = 0; i < buf.length; i++) {
+    const x = pL + (i / 149) * pw, y = yLam(buf[i].tgt);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke(); ctx.restore();
+
+  /* 4. Measured Real-Time Lambda (bright cyan converging onto emerald target!) */
+  ctx.strokeStyle = "#00e5ff"; ctx.lineWidth = 2.5; ctx.beginPath();
+  for (let i = 0; i < buf.length; i++) {
+    const x = pL + (i / 149) * pw, y = yLam(buf[i].lam);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  if (buf[buf.length - 1].blocked && st.aiLiveOn) {
+    ctx.fillStyle = "rgba(190,18,60,0.86)";
+    ctx.fillRect(pL + 20, pT + ph * 0.34, pw - 40, 28);
+    ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.font = "800 11px Segoe UI, sans-serif";
+    ctx.fillText("🛡 ENGINE GUARDIAN™ BLOQUEOU AUTO-TUNE (FALHA MECÂNICA / QUEDA PRESSÃO BOMBA)", pL + pw * 0.5, pT + ph * 0.34 + 18);
+  }
+}
+
 function prepareCleanIntuitiveUi() {
   const SIMPLE_TITLES = {
-    "cv-copilot":   "Copiloto IA de Calibração Integral — Todos os Subsistemas da ECU",
+    "cv-copilot":   "Copiloto IA em Tempo Real",
     "cv-proj":      "Dados do Cliente, 4 Bancos de Mapa e Versões Salvas",
     "cv-wiz":       "Motor & Gerador Físico de Mapa Base Completo (12 Tabelas + Partida + Frio + EOI)",
     "cv-setup":     "Roda Fônica, Sincronismo 720° e Estratégia de Corte",
@@ -8654,6 +9242,7 @@ syncGearboxModeUi();
 syncWizContextUi();
 syncFlexModeUi();
 calcKnockFreqFromBore();
+syncLiveAiButtons();
 if (typeof syncBoostHardwareMode === "function") syncBoostHardwareMode();
 if (typeof syncEgtTopology === "function") syncEgtTopology();
 if (typeof updateBaseMapPreview === "function") updateBaseMapPreview();
