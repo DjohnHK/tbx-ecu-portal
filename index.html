@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TBX Performance — Injeções Programáveis de Nova Geração (Mais Recursos, Menor Custo)</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg-0: #05080f; --bg-1: #0c1322; --bg-2: #131e33; --bd: #243552;
+  --txt-0: #f8fafc; --txt-1: #cbd5e1; --txt-2: #7e92ad;
+  --cyan: #00e5ff; --green: #00e676; --amber: #ffd600; --rose: #ff2a54;
+  --mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg-0); color: var(--txt-0); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.5; }
+.nav {
+  position: sticky; top: 0; z-index: 60; background: rgba(7, 11, 20, 0.95);
+  border-bottom: 1px solid var(--bd); padding: 12px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+.logo { font-weight: 900; font-size: 16px; letter-spacing: 0.6px; display: flex; align-items: center; gap: 9px; }
+.logo span { background: linear-gradient(90deg, #e11d48, #f97316); padding: 3px 9px; border-radius: 3px; font-family: var(--mono); font-size: 11px; }
+.cta-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  padding: 8px 15px; border-radius: 5px; font-weight: 800; font-size: 12px; cursor: pointer;
+  border: 1px solid #2d4060; background: #142036; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn.pri { background: linear-gradient(90deg, #0284c7, #00e5ff); color: #041019; border-color: #38bdf8; }
+.btn.grn { background: #14532d; border-color: #22c55e; color: #dcfce7; }
+
+.wrap { max-width: 1320px; margin: 0 auto; padding: 28px 24px 70px; display: flex; flex-direction: column; gap: 34px; }
+.hero {
+  background: radial-gradient(circle at 75% 35%, #162a4a 0%, #09101d 68%);
+  border: 1px solid #283d5e; border-radius: 14px; padding: 32px;
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; align-items: center;
+}
+@media (max-width: 980px) { .hero { grid-template-columns: 1fr; } }
+.hero h1 { font-size: 31px; line-height: 1.18; margin-bottom: 12px; }
+.hero h1 em { font-style: normal; color: var(--cyan); }
+.hero p { color: var(--txt-1); font-size: 14.5px; margin-bottom: 18px; }
+.hero-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+.hk { background: rgba(12, 19, 34, 0.85); border: 1px solid #263a59; padding: 10px 12px; border-radius: 7px; }
+.hk strong { display: block; font-family: var(--mono); font-size: 18px; color: var(--green); }
+.hk span { font-size: 11px; color: var(--txt-2); }
+.hero-img { width: 100%; border-radius: 10px; border: 1px solid #2c4366; box-shadow: 0 22px 60px rgba(0,0,0,0.7); background: #070b12; }
+
+.sec-title { font-size: 21px; font-weight: 900; margin-bottom: 4px; }
+.sec-sub { color: var(--txt-2); font-size: 13px; margin-bottom: 14px; }
+
+.sku-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 1050px) { .sku-grid { grid-template-columns: 1fr 1fr; } }
+.sku-card { background: var(--bg-1); border: 1px solid var(--bd); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sku-card.feat { border-color: var(--cyan); box-shadow: 0 0 28px rgba(0,229,255,0.12); }
+.sku-card img { width: 100%; height: 155px; object-fit: contain; background: #070b12; border-radius: 6px; border: 1px solid #1c2940; padding: 6px; }
+.sku-price { font-family: var(--mono); font-size: 20px; font-weight: 900; color: var(--green); }
+.sku-bom { font-family: var(--mono); font-size: 11px; color: var(--cyan); }
+.sku-list { list-style: none; font-size: 12px; color: var(--txt-1); display: flex; flex-direction: column; gap: 4px; }
+
+table.cmp-tbl { width: 100%; border-collapse: collapse; background: var(--bg-1); border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; font-size: 12.5px; }
+table.cmp-tbl th, table.cmp-tbl td { border: 1px solid #1e2d46; padding: 9px 12px; text-align: left; }
+table.cmp-tbl th { background: #132038; color: var(--cyan); font-family: var(--mono); }
+.yes { color: var(--green); font-weight: 800; }
+.no { color: var(--rose); font-weight: 700; }
+
+.cfg-box { background: var(--bg-1); border: 1px solid var(--cyan); border-radius: 10px; padding: 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+@media (max-width: 960px) { .cfg-box { grid-template-columns: 1fr; } }
+.f-grp { margin-bottom: 12px; }
+.f-grp label { display: block; font-size: 12px; font-weight: 700; color: var(--txt-1); margin-bottom: 4px; }
+.f-grp select { width: 100%; height: 36px; background: #090e18; border: 1px solid #2e4366; color: #fff; border-radius: 5px; padding: 0 10px; font-size: 12.5px; }
+.quote-res { background: #08121f; border: 1px solid #1e3a5f; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="logo"><span>TBX PERFORMANCE</span> ECOSSISTEMA AUTOMOTIVO REV 31.0</div>
+  <div class="cta-row">
+    <a class="btn" href="./TBX_ECU_PRO/studio/TBX_Studio_Pro.html" target="_blank">⚡ Abrir TBX Studio v12.0</a>
+    <a class="btn" href="./docs/MANUAL_OFICIAL_INSTALADOR_TBX.html" target="_blank">📘 Manual do Instalador</a>
+    <a class="btn" href="./docs/TBX_ECU_3D_HARDWARE_STUDIO.html" target="_blank">🧊 Estúdio 3D Placas</a>
+    <a class="btn grn" href="./TBX_Mobile_App/dist/TBX_Cockpit_GhostLock.apk">📱 Baixar App Android (.APK)</a>
+    <a class="btn pri" href="#configurador">💰 Simular Kit & Economia</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div style="font-family:var(--mono);color:var(--amber);font-size:11.5px;font-weight:800;margin-bottom:8px;">ENGENHARIA ARM CORTEX-M7 480 MHz • SÍLICIO ABERTO PARA OFICINAS & PREPARADORES</div>
+      <h1>Mais recursos que uma ECU de R$ 7.500.<br><em>Por menos da metade do investimento.</em></h1>
+      <p>A linha <strong>TBX-400 UNIVERSAL</strong> e <strong>TBX-800 PRO</strong> entrega Sonda Wideband Bosch LSU 4.9 nativa na placa, Borboleta Eletrônica DBW 55A, Sequencial <strong>VirtualCam™ 720° sem sensor de fase</strong>, proteção <strong>Crank-IMEP™</strong> contra falso pobre, multimídia Android 10.25" sem fio e adaptadores <strong>Zero-Jumper para chicotes FuelTech</strong>.</p>
+      <div class="cta-row">
+        <a class="btn pri" href="#comparativo">Ver Comparativo vs FT450 / FT470 / FT550</a>
+        <a class="btn" href="./VISUALIZAR_TODAS_INTERFACES_TBX.html" target="_blank">Testar Todas as 5 Telas Ao Vivo</a>
+      </div>
+      <div class="hero-kpis">
+        <div class="hk"><strong>Até R$ 5.400</strong><span>Economia real por projeto completo</span></div>
+        <div class="hk"><strong>Zero-Jumper</strong><span>Pluga direto em chicotes FT250..FT550</span></div>
+        <div class="hk"><strong>30/30 Gates</strong><span>Placas auditadas no KiCad 10 + SPICE</span></div>
+      </div>
+    </div>
+    <div>
+      <img class="hero-img" src="./docs/renders/RENDER_3D_HERO_BRANDED_ECUS_AND_HARNESS.png" alt="Ecossistema 3D TBX-800 PRO e TBX-400 UNIVERSAL">
+    </div>
+  </section>
+
+  <!-- LINHA COMPLETA DE PRODUTOS -->
+  <section>
+    <div class="sec-title">Linha Completa de Hardware TBX Performance</div>
+    <div class="sec-sub">Todos os módulos com projetos de 4 e 6 camadas ENIG validados para produção imediata em larga escala.</div>
+    <div class="sku-grid">
+      <div class="sku-card">
+        <img src="./docs/renders/RENDER_3D_TBX_ECU_Lite_Rev1.png" alt="TBX-400 UNIVERSAL">
+        <strong>TBX-400 UNIVERSAL (32p)</strong>
+        <div class="sku-price">Sugerido: R$ 1.890</div>
+        <div class="sku-bom">Custo Industrial SMT: ~US$ 33.84</div>
+        <ul class="sku-list">
+          <li>✓ STM32F407 168 MHz + MAP 7.0 Bar interno</li>
+          <li>✓ Sequencial VirtualCam™ 720° s/ sensor fase</li>
+          <li>✓ Arrancada 0–6s, 2-Step, Rolo, Nitro & Strain</li>
+          <li>✓ Wi-Fi/BLE App + Ghost-Lock™ Antifurto</li>
+        </ul>
+      </div>
+
+      <div class="sku-card feat">
+        <img src="./docs/renders/RENDER_3D_TBX_ECU_Rev1.png" alt="TBX-800 PRO">
+        <strong>TBX-800 PRO (64p • 6 Camadas)</strong>
+        <div class="sku-price">Sugerido: R$ 3.290</div>
+        <div class="sku-bom">Custo Industrial SMT: ~US$ 86.50</div>
+        <ul class="sku-list">
+          <li>✓ STM32H743 480 MHz • Mapas 20×20 + 8×8 Cil</li>
+          <li>✓ Wideband Bosch CJ125 LSU 4.9 NATIVO na placa!</li>
+          <li>✓ Dupla Ponte DBW 55A + VVT + Knock DSP SPI</li>
+          <li>✓ Dual CAN-FD (Painel OEM + Câmbio DSG/ZF 8HP)</li>
+        </ul>
+      </div>
+
+      <div class="sku-card">
+        <img src="./TBX_CAN_EXPANSION_MODULES/jlcpcb_tbx_nano_wb/RENDER_3D_TBX_NANO_WB_Rev1.png" alt="TBX-NANO-WB">
+        <strong>TBX-NANO-WB (Wideband CAN)</strong>
+        <div class="sku-price">Sugerido: R$ 549</div>
+        <div class="sku-bom">Custo Industrial SMT: ~US$ 20.29</div>
+        <ul class="sku-list">
+          <li>✓ Controlador Bosch CJ125 genuíno p/ LSU 4.9</li>
+          <li>✓ Dual-CAN: TBX 500k + FTCAN 2.0 (serve em FT!)</li>
+          <li>✓ Conector p/ tela OLED 0.96" + Saída 0–5V</li>
+          <li>✓ Rampa Dew-Point que triplica a vida no E100</li>
+        </ul>
+      </div>
+
+      <div class="sku-card">
+        <img src="./TBX_CAN_EXPANSION_MODULES/jlcpcb_tbx_pdm8/RENDER_3D_TBX_PDM8_Rev1.png" alt="TBX-PDM8">
+        <strong>TBX-PDM8 SmartFuse™ + FT-Bridge™</strong>
+        <div class="sku-price">Sugerido: R$ 890</div>
+        <div class="sku-bom">Custo Industrial SMT: ~US$ 11.97</div>
+        <ul class="sku-list">
+          <li>✓ 8 Canais Estado Sólido (Adeus relés e fusíveis!)</li>
+          <li>✓ Partida Suave PWM p/ Bombas Walbro & Ventoinha</li>
+          <li>✓ Disjuntor eFuse &lt;1ms + 3× Auto-Rearme via CAN</li>
+          <li>✓ Placas PnP FT-Bridge™ (R$ 390 Classic / R$ 590 P52)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVO DIRETO -->
+  <section id="comparativo">
+    <div class="sec-title">Comparativo Direto e Transparente de Mercado</div>
+    <div class="sec-sub">Veja quanto custa montar um projeto completo hoje na concorrência vs no ecossistema TBX Performance:</div>
+    <table class="cmp-tbl">
+      <thead>
+        <tr>
+          <th>RECURSO / TECNOLOGIA</th>
+          <th>TBX-400 UNI (R$ 1.890)</th>
+          <th>TBX-800 PRO (R$ 3.290)</th>
+          <th>FT450 (R$ 4.350)</th>
+          <th>Nova FT470 (R$ 4.990)</th>
+          <th>FT550 (R$ 7.490)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Leitor Sonda Wideband LSU 4.9 Integrado</td><td>Via TBX-NANO-WB (+R$ 549)</td><td class="yes">✓ INCLUSO NA PLACA (R$ 0)</td><td class="no">✗ Exige Nano (+R$ 1.150)</td><td class="no">✗ Exige Nano (+R$ 1.150)</td><td class="no">✗ Exige Nano (+R$ 1.150)</td></tr>
+        <tr><td>Borboleta Eletrônica DBW Integrada</td><td class="no">Cabo / Passo DRV8833</td><td class="yes">✓ DUPLA PONTE 55A INCLUSA</td><td class="no">✗ Não suporta</td><td class="yes">✓ 1 Borboleta</td><td class="yes">✓ 2 Borboletas</td></tr>
+        <tr><td>Injeção Sequencial 720° SEM Sensor de Fase</td><td class="yes">✓ VirtualCam™ 720° Nativo</td><td class="yes">✓ VirtualCam™ 720° Nativo</td><td class="no">✗ Exige usinar comando</td><td class="no">✗ Exige sensor físico</td><td class="no">✗ Exige sensor físico</td></tr>
+        <tr><td>Bloqueio de Falso Pobre por Misfire s/ Sensor</td><td class="yes">✓ Crank-IMEP™ 60-2</td><td class="yes">✓ Crank-IMEP™ 60-2</td><td class="no">✗ Afoga os outros cilindros</td><td class="no">✗ Não possui</td><td class="no">✗ Não possui</td></tr>
+        <tr><td>Wi-Fi + App Multimídia 10.25" + GPS Drag + Antifurto</td><td class="yes">✓ INCLUSO DE SÉRIE</td><td class="yes">✓ INCLUSO DE SÉRIE</td><td class="no">✗ Sem Wi-Fi / GPS externo</td><td class="no">✗ Sem Wi-Fi / GPS externo</td><td class="no">✗ Sem Wi-Fi / GPS externo</td></tr>
+        <tr><td>Controle Câmbio DSG DQ250 / BMW ZF 8HP via CAN</td><td class="yes">✓ Nativo 500 kbps</td><td class="yes">✓ Dual CAN-FD + .DBC</td><td class="no">✗ Limitado</td><td class="no">✗ Sem editor .DBC</td><td class="yes">✓ Parcial</td></tr>
+        <tr><td><strong>CUSTO REAL PRONTO P/ RODAR COM WIDEBAND</strong></td><td><strong class="yes">R$ 2.439</strong></td><td><strong class="yes">R$ 3.290</strong></td><td><strong class="no">R$ 5.500</strong></td><td><strong class="no">R$ 6.140</strong></td><td><strong class="no">R$ 8.640</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CONFIGURADOR DE PROJETO & ECONOMIA -->
+  <section id="configurador">
+    <div class="sec-title">Simulador de Kit & Economia para Preparadores e Clientes</div>
+    <div class="sec-sub">Monte o pacote ideal para o carro e veja a economia imediata frente aos módulos equivalentes de mercado.</div>
+    <div class="cfg-box">
+      <div>
+        <div class="f-grp">
+          <label>1. Escolha a Central TBX</label>
+          <select id="selEcu" onchange="calcKit()">
+            <option value="800" selected>TBX-800 PRO (64p • Wideband CJ125 Nativo + DBW + 8×8 Sequencial) — R$ 3.290</option>
+            <option value="400">TBX-400 UNIVERSAL (32p • MAP 7 Bar + VirtualCam™ + Pro-Drag) — R$ 1.890</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label>2. Chicote ou Adaptador Plug & Play do Carro</label>
+          <select id="selHar" onchange="calcKit()">
+            <option value="ft_p52" selected>Já tenho chicote FT450/FT550 → Usar Mini-Box TBX-PNP-FT-POWER52 Zero-Jumper (+R$ 590)</option>
+            <option value="ft_cls">Já tenho chicote FT250/300/350/400/500 → Usar Mini-Box TBX-PNP-FT-CLASSIC (+R$ 390)</option>
+            <option value="vag">VW Golf GTI / Audi A3 1.8T 20V → Adaptador PnP T80 / T121 (+R$ 490)</option>
+            <option value="univ">Carro montado do zero → Chicote Universal Malha Náutica 3m (+R$ 450)</option>
+          </select>
+        </div>
+        <div class="f-grp">
+          <label>3. Módulos de Expansão CAN Opcionais</label>
+          <select id="selExp" onchange="calcKit()">
+            <option value="none">Sem expansão extra (TBX-800 PRO já tem Wideband na placa!)</option>
+            <option value="wb">Adicionar Condicionador TBX-NANO-WB CAN + Sonda Bosch LSU 4.9 (+R$ 890)</option>
+            <option value="pdm" selected>Adicionar TBX-PDM8 SmartFuse™ (Elimina caixa de relés e fusíveis!) (+R$ 890)</option>
+            <option value="both">Pacote Full Motorsport: TBX-PDM8 + 2ª Sonda TBX-NANO-WB (+R$ 1.439)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="quote-res">
+        <div>
+          <div style="font-size:11.5px;color:var(--cyan);font-family:var(--mono);font-weight:800">RESUMO DO SEU PACOTE TBX PERFORMANCE</div>
+          <div id="qTitle" style="font-size:17px;font-weight:900;margin:6px 0">TBX-800 PRO + FT-Bridge Power52 + PDM-8</div>
+          <div id="qTotal" style="font-family:var(--mono);font-size:28px;font-weight:900;color:var(--green)">R$ 4.770,00</div>
+          <div id="qMarket" style="font-size:12.5px;color:var(--txt-1);margin-top:6px">Equivalente concorrente (FT550 + WB Nano + Módulo Relés/PDM): <s style="color:var(--rose)">R$ 12.140,00</s></div>
+          <div id="qSave" style="margin-top:8px;padding:8px 10px;background:#0a291c;border:1px solid var(--green);border-radius:5px;color:var(--green);font-weight:800;font-size:13px">✓ Economia Direta no Bolso: R$ 7.370,00!</div>
+        </div>
+        <div class="cta-row">
+          <a class="btn pri" style="width:100%;justify-content:center" href="./JLCPCB_READY_TO_ORDER_PACK/COMO_PEDIR_TUDO_PASSO_A_PASSO.md" target="_blank">📦 Abrir Guia de Produção & Compras Lote Piloto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+function calcKit() {
+  const ecu = document.getElementById("selEcu").value;
+  const har = document.getElementById("selHar").value;
+  const exp = document.getElementById("selExp").value;
+
+  const ecuP = ecu === "800" ? 3290 : 1890;
+  const mktBase = ecu === "800" ? 8640 : 6140;
+  const harP = har === "ft_p52" ? 590 : (har === "ft_cls" ? 390 : (har === "vag" ? 490 : 450));
+  const expP = exp === "none" ? 0 : (exp === "wb" ? 890 : (exp === "pdm" ? 890 : 1439));
+  const mktExp = exp === "pdm" || exp === "both" ? 3500 : 0;
+
+  const total = ecuP + harP + expP;
+  const mkt = mktBase + mktExp;
+  const save = mkt - total;
+
+  document.getElementById("qTitle").textContent =
+    (ecu === "800" ? "TBX-800 PRO" : "TBX-400 UNIVERSAL") + " + " +
+    (har === "ft_p52" ? "FT-Bridge 52p" : (har === "ft_cls" ? "FT-Bridge Classic" : (har === "vag" ? "PnP Golf 1.8T" : "Chicote 3m"))) +
+    (exp === "none" ? "" : (" + " + exp.toUpperCase()));
+  document.getElementById("qTotal").textContent = "R$ " + total.toLocaleString("pt-BR") + ",00";
+  document.getElementById("qMarket").innerHTML = "Equivalente no mercado tradicional: <s style='color:var(--rose)'>R$ " + mkt.toLocaleString("pt-BR") + ",00</s>";
+  document.getElementById("qSave").textContent = "✓ Economia Direta de R$ " + save.toLocaleString("pt-BR") + ",00 por carro montado!";
+}
+calcKit();
+</script>
+</body>
+</html>

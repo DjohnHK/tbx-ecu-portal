@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TBX Performance Ultimate v7.0 — Ecossistema Completo Sincronizado (TBX-800 PRO • TBX-400 • Dash 7" • Mobile • Bancada HIL)</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg-0: #05080f; --bg-1: #0c111d; --bg-2: #141c2c; --bd: #243247;
+  --txt-0: #f8fafc; --txt-1: #cbd5e1; --txt-2: #64748b;
+  --cyan: #00e5ff; --green: #00e676; --yellow: #ffd600; --orange: #ff9100; --red: #ff2a4b; --purple: #b388ff;
+  --mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #070a11; }
+::-webkit-scrollbar-thumb { background: #243247; border-radius: 3px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-0); color: var(--txt-0); font-family: 'Segoe UI', Tahoma, sans-serif; font-size: 12px; user-select: none; }
+
+.master-shell { display: grid; grid-template-rows: 36px 1fr; width: 100vw; height: 100vh; }
+.master-bar {
+  background: #0e121a; border-bottom: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 12px; gap: 8px;
+}
+.m-logo { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 12px; letter-spacing: 0.4px; }
+.m-chip { background: linear-gradient(90deg, #e11d48, #f97316); color: #fff; font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 2px; }
+.m-tabs { display: flex; gap: 4px; }
+.m-tab {
+  height: 26px; padding: 0 11px; background: #171d29; color: var(--txt-1);
+  border: 1px solid #2a3548; border-radius: 2px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.m-tab:hover { color: #fff; background: #21293a; }
+.m-tab.active { background: #0284c7; border-color: #38bdf8; color: #fff; }
+
+.stage { width: 100%; height: 100%; overflow: hidden; }
+.s-pane { display: none; width: 100%; height: 100%; }
+.s-pane.active { display: flex; }
+iframe.ide-frame { width: 100%; height: 100%; border: none; background: #0a0c10; }
+
+/* ================= 7" CNC MOTORSPORT DASH OS v4.0 (3 SWITCHABLE SCREENS) ================= */
+.dash-wrap {
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% 42%, #172030 0%, #06080c 76%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px;
+}
+.dash-screen-switcher { display: flex; gap: 6px; }
+.ds-btn {
+  height: 26px; padding: 0 12px; background: #151b26; color: var(--txt-1);
+  border: 1px solid var(--bd); border-radius: 2px; font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.ds-btn.active { background: #e11d48; border-color: #fb7185; color: #fff; }
+
+.cnc-bezel {
+  width: 1010px; max-width: 96vw; height: 565px; max-height: 83vh;
+  background: linear-gradient(160deg, #29303d 0%, #12161e 52%, #1d2330 100%);
+  border: 3px solid #3d485c; border-radius: 22px; padding: 13px 22px 16px;
+  box-shadow: 0 32px 85px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.2);
+  display: grid; grid-template-rows: 24px 1fr; gap: 9px; position: relative;
+}
+.dome-row { display: grid; grid-template-columns: repeat(16, 1fr); gap: 6px; padding: 0 46px; align-items: center; }
+.d-led { height: 12px; border-radius: 2px; background: #141821; border: 1px solid #262f40; }
+.bezel-mid { display: grid; grid-template-columns: 26px 1fr 26px; gap: 10px; height: 100%; align-items: center; }
+.s-leds { display: flex; flex-direction: column; justify-content: space-around; height: 84%; align-items: center; }
+.w-led { width: 17px; height: 17px; border-radius: 50%; background: #181d27; border: 2px solid #2d374a; }
+.w-lbl { font-family: var(--mono); font-size: 8px; color: #7e8ea6; margin-top: -8px; font-weight: 900; }
+
+.tft-glass {
+  width: 100%; height: 100%; background: #05070b; border: 2px solid #000; border-radius: 7px;
+  display: grid; grid-template-rows: 114px 1fr 48px; overflow: hidden; position: relative;
+}
+.dash-page { display: none; width: 100%; height: 100%; }
+.dash-page.active { display: grid; }
+
+/* Dash Page 1: GT3 Circuit */
+.gt3-grid { grid-template-columns: 1fr 205px 1fr; gap: 1px; background: #192231; }
+.gt3-col { display: grid; grid-template-rows: repeat(3, 1fr); gap: 1px; background: #192231; }
+.gt3-cell { background: #080b11; padding: 7px 14px; display: flex; flex-direction: column; justify-content: center; }
+.gt3-cell .k { font-size: 10px; font-weight: 800; color: #6c7f9b; text-transform: uppercase; letter-spacing: 0.6px; }
+.gt3-cell .v { font-family: var(--mono); font-size: 29px; font-weight: 900; color: #f8fafc; line-height: 1.05; }
+.gt3-cell .u { font-family: var(--mono); font-size: 11px; color: var(--cyan); }
+.gt3-gear { background: radial-gradient(circle, #121b2b 0%, #06080d 80%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* Dash Page 2: Pro-Drag 201m/402m */
+.drag-dash-grid { grid-template-columns: 220px 1fr 250px; gap: 1px; background: #192231; }
+.xmas-tree { background: #070a10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px; }
+.stage-bulb { width: 90px; height: 22px; border-radius: 3px; background: #1b2230; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; font-weight: 900; color: #000; }
+.stage-bulb.lit-yel { background: var(--yellow); box-shadow: 0 0 14px var(--yellow); }
+.stage-bulb.lit-grn { background: var(--green); box-shadow: 0 0 16px var(--green); }
+.slip-times { background: #080b11; padding: 12px 16px; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--mono); }
+.slip-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #182130; padding-bottom: 5px; }
+
+/* Dash Page 3: 8-Cyl EGT & 16-Sensor Matrix */
+.diag16-grid { grid-template-columns: 1.1fr 1fr; gap: 1px; background: #192231; }
+
+.tft-touch {
+  background: #0b0f17; border-top: 1px solid #1d2738;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 6px 8px;
+}
+.t-key {
+  background: #141c2a; border: 1px solid #2b3950; border-radius: 3px;
+  color: #cbd5e1; font-family: var(--mono); font-size: 10.5px; font-weight: 800; cursor: pointer;
+}
+.t-key:hover { border-color: var(--cyan); color: #fff; }
+.t-key.k-on { background: #0d3b22; border-color: var(--green); color: var(--green); }
+.t-key.k-alrm { background: #470a18; border-color: var(--red); color: #fda4af; }
+
+.dash-alert {
+  position: absolute; inset: 0; background: rgba(180,10,38,0.94);
+  display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 20; pointer-events: none;
+}
+.dash-alert.on { display: flex; }
+
+/* ================= ANDROID SUPER-APP (5 MODULES) ================= */
+.mob-stage {
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 40% 35%, #151e2e 0%, #07090d 76%);
+  display: flex; align-items: center; justify-content: center; gap: 28px; padding: 16px;
+}
+.phone-frame {
+  width: 378px; height: 748px; max-height: 91vh;
+  background: #181f2c; border: 3px solid #364258; border-radius: 38px; padding: 10px;
+  box-shadow: 0 30px 75px rgba(0,0,0,0.88); display: flex; flex-direction: column;
+}
+.ph-screen { flex: 1; background: #080b10; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
+.ph-hdr { background: #101520; padding: 10px 14px; border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; align-items: center; }
+.ph-content { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.ph-mod { display: none; flex-direction: column; gap: 8px; }
+.ph-mod.active { display: flex; }
+.ph-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ph-tile { background: #111723; border: 1px solid #232d42; padding: 7px 9px; border-radius: 4px; }
+.ph-tile .k { font-size: 9px; color: var(--txt-2); text-transform: uppercase; }
+.ph-tile .v { font-family: var(--mono); font-size: 14.5px; font-weight: 800; margin-top: 2px; }
+.ph-bar-nav { background: #0f141e; border-top: 1px solid var(--bd); display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px; }
+.ph-tab { height: 40px; background: #171f2e; border: 1px solid #28344b; color: var(--txt-1); font-size: 10px; font-weight: 700; border-radius: 4px; cursor: pointer; }
+.ph-tab.active { background: #0284c7; border-color: #38bdf8; color: #fff; }
+</style>
+</head>
+<body>
+<div class="master-shell">
+  <header class="master-bar">
+    <div class="m-logo" style="white-space:nowrap;">
+      <span class="m-chip">TBX STUDIO 12.0</span>
+      <span>ECOSSISTEMA COMPLETO</span>
+    </div>
+    <div class="m-tabs" style="white-space:nowrap;">
+      <button class="m-tab active" onclick="switchPortal('sp-pro', this)">1. TBX-800 PRO v12</button>
+      <button class="m-tab" onclick="switchPortal('sp-lite', this)">2. TBX-400 UNI v12</button>
+      <button class="m-tab" onclick="switchPortal('sp-dash', this)">3. Dash 7"</button>
+      <button class="m-tab" onclick="switchPortal('sp-mob', this)">4. Multimídia + App</button>
+      <button class="m-tab" onclick="switchPortal('sp-stim', this)">5. Bancada HIL 96p</button>
+      <button class="m-tab" onclick="switchPortal('sp-man', this)">6. Manual Instalador</button>
+      <button class="m-tab" onclick="switchPortal('sp-site', this)">7. Site Comercial</button>
+    </div>
+    <div style="font-family:var(--mono);font-size:10.5px;color:var(--green);">12 PACKS PRONTOS</div>
+  </header>
+
+  <div class="stage">
+    <!-- 1. TBX-800 PRO ULTIMATE IDE -->
+    <section class="s-pane active" id="sp-pro">
+      <iframe class="ide-frame" src="./TBX_ECU_PRO/studio/TBX_Studio_Pro.html"></iframe>
+    </section>
+
+    <!-- 2. 7" CNC RACE DASH OS (3 SWITCHABLE DASH LAYOUTS) -->
+    <section class="s-pane" id="sp-dash">
+      <div class="dash-wrap">
+        <div class="dash-screen-switcher">
+          <button class="ds-btn active" onclick="setDashPage('dp-gt3', this)">TELA 1: CIRCUITO GT3 / PISTA</button>
+          <button class="ds-btn" onclick="setDashPage('dp-drag', this)">TELA 2: PRO-DRAG ARRANCADA (201m / 402m + PINHEIRINHO)</button>
+          <button class="ds-btn" onclick="setDashPage('dp-egt', this)">TELA 3: MONITOR 8 TERMOPARES EGT + 12 ALARMES</button>
+        </div>
+
+        <div class="cnc-bezel">
+          <div class="dome-row" id="domeLeds"></div>
+          <div class="bezel-mid">
+            <div class="s-leds">
+              <div class="w-led" id="wlOil"></div><span class="w-lbl">OIL</span>
+              <div class="w-led" id="wlDp"></div><span class="w-lbl">dP</span>
+              <div class="w-led" id="wlEgt"></div><span class="w-lbl">EGT</span>
+              <div class="w-led" id="wlKnk"></div><span class="w-lbl">KNK</span>
+            </div>
+
+            <div class="tft-glass">
+              <div class="dash-alert" id="dashEmerg">
+                <div style="font-family:var(--mono);font-size:15px;font-weight:900;color:var(--yellow);">INTERVENÇÃO ENGINE GUARDIAN™ EM 1 MS</div>
+                <div style="font-family:var(--mono);font-size:40px;font-weight:900;color:#fff;margin:6px 0;">QUEDA PRESSÃO BOMBA (dP 1.88 bar)</div>
+                <div style="font-family:var(--mono);font-size:14.5px;color:#ffe4e6;">APRENDIZADO VE 20×20 CONGELADO • COMPENSAÇÃO √dP +25% ATIVA • BOOST N75 CORTADO</div>
+              </div>
+
+              <div style="background:#070a10;border-bottom:1px solid #192231;">
+                <canvas id="cvRibbon" width="880" height="112" style="width:100%;height:100%;"></canvas>
+              </div>
+
+              <!-- DASH PAGE 1: GT3 CIRCUIT -->
+              <div class="dash-page gt3-grid active" id="dp-gt3">
+                <div class="gt3-col">
+                  <div class="gt3-cell"><span class="k">MAP / Pressão Turbo</span><div><span class="v" id="d1Map" style="color:var(--cyan);">+1.45</span> <span class="u">bar</span></div></div>
+                  <div class="gt3-cell"><span class="k">Wideband LSU 4.9 × Alvo</span><div><span class="v" id="d1Lam" style="color:var(--green);">0.792</span> <span class="u" id="d1Tgt">λ (0.790)</span></div></div>
+                  <div class="gt3-cell"><span class="k">Diff Combustível dP</span><div><span class="v" id="d1Dp">3.04</span> <span class="u">bar</span></div></div>
+                </div>
+                <div class="gt3-gear">
+                  <div style="font-family:var(--mono);font-size:11px;color:var(--green);font-weight:900;">DELTA -0.34s</div>
+                  <div style="font-family:var(--mono);font-size:108px;font-weight:900;color:var(--yellow);line-height:0.9;" id="d1Gear">4</div>
+                  <div style="font-family:var(--mono);font-size:23px;font-weight:800;" id="d1Spd">196 km/h</div>
+                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--cyan);margin-top:4px;" id="d1Bank">BANCO 1: PISTA 1.85b</div>
+                </div>
+                <div class="gt3-col">
+                  <div class="gt3-cell"><span class="k">Pressão de Óleo</span><div><span class="v" id="d1Oil">4.10</span> <span class="u">bar</span></div></div>
+                  <div class="gt3-cell"><span class="k">EGT Médio / Máximo</span><div><span class="v" id="d1Egt" style="color:var(--yellow);">794</span> <span class="u">°C (Cil 3)</span></div></div>
+                  <div class="gt3-cell"><span class="k">Água CLT / Ponto Ign.</span><div><span class="v" id="d1Clt">88°</span> <span class="u" id="d1Ign">/ 17.2°</span></div></div>
+                </div>
+              </div>
+
+              <!-- DASH PAGE 2: PRO-DRAG CHRISTMAS TREE + 60FT / 201M / 402M -->
+              <div class="dash-page drag-dash-grid" id="dp-drag">
+                <div class="xmas-tree">
+                  <div class="stage-bulb lit-yel">PRE-STAGE</div>
+                  <div class="stage-bulb lit-yel">STAGE</div>
+                  <div class="stage-bulb" id="bulbAmb1">AMBER 1</div>
+                  <div class="stage-bulb" id="bulbGrn">GREEN GO!</div>
+                  <div style="font-family:var(--mono);font-size:12px;color:var(--cyan);margin-top:4px;" id="d2Gforce">ACEL: 1.46 G</div>
+                </div>
+                <div class="slip-times">
+                  <div class="slip-row"><span style="color:#94a3b8;">REAÇÃO</span><strong style="font-size:22px;color:var(--green);">0.018 s</strong></div>
+                  <div class="slip-row"><span style="color:#94a3b8;">60 PÉS (18m)</span><strong style="font-size:22px;color:var(--cyan);">1.492 s</strong></div>
+                  <div class="slip-row"><span style="color:#94a3b8;">0 – 100 km/h</span><strong style="font-size:22px;color:#fff;">2.84 s</strong></div>
+                  <div class="slip-row"><span style="color:#94a3b8;">1/8 MILHA (201m)</span><strong style="font-size:22px;color:var(--yellow);">6.385 s @ 189 km/h</strong></div>
+                  <div class="slip-row" style="border:none;"><span style="color:#94a3b8;">1/4 MILHA (402m)</span><strong style="font-size:24px;color:var(--orange);">9.792 s @ 236 km/h</strong></div>
+                </div>
+                <div class="gt3-col">
+                  <div class="gt3-cell"><span class="k">Domo Wastegate CO2</span><div><span class="v" style="color:var(--cyan);" id="d2Co2">2.15</span> <span class="u">bar</span></div></div>
+                  <div class="gt3-cell"><span class="k">Rampa Nitro PWM</span><div><span class="v" style="color:var(--purple);" id="d2Nit">78</span> <span class="u">%</span></div></div>
+                  <div class="gt3-cell"><span class="k">Tempo Pós-Transbrake</span><div><span class="v" style="color:var(--green);" id="d2Timer">2.64</span> <span class="u">seg</span></div></div>
+                </div>
+              </div>
+
+              <!-- DASH PAGE 3: 8-CYLINDER EGT BARS + SENSOR MATRIX -->
+              <div class="dash-page diag16-grid" id="dp-egt">
+                <div style="background:#080b11;padding:10px;display:flex;flex-direction:column;">
+                  <div style="font-family:var(--mono);font-size:11px;color:var(--cyan);margin-bottom:6px;">TERMOPARES INDIVIDUAIS EGT CILINDROS 1–8 (°C)</div>
+                  <canvas id="cvDashEgt" width="440" height="240" style="width:100%;flex:1;"></canvas>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#192231;font-family:var(--mono);">
+                  <div class="gt3-cell"><span class="k">Duty Bico Pri/Sec</span><span style="font-size:18px;font-weight:800;">42% / 58%</span></div>
+                  <div class="gt3-cell"><span class="k">Pistas DBW 1/2</span><span style="font-size:18px;font-weight:800;color:var(--green);">98.2% OK</span></div>
+                  <div class="gt3-cell"><span class="k">VVT Adm / Esc</span><span style="font-size:18px;font-weight:800;color:var(--cyan);">+21° / -11°</span></div>
+                  <div class="gt3-cell"><span class="k">Knock Máx (8ch)</span><span style="font-size:18px;font-weight:800;">14.2 mV</span></div>
+                  <div class="gt3-cell"><span class="k">Filme Aquino τ-X</span><span style="font-size:18px;font-weight:800;">0.58 ms</span></div>
+                  <div class="gt3-cell"><span class="k">Teor Etanol Flex</span><span style="font-size:18px;font-weight:800;color:var(--green);">E88 (88%)</span></div>
+                </div>
+              </div>
+
+              <div class="tft-touch">
+                <button class="t-key" id="tk2s" onclick="tgDash('twoStep')">TRANSBRAKE / 2-STEP</button>
+                <button class="t-key k-on" id="tkCl" onclick="tgDash('cl')">NEURAL O2: ATIVO</button>
+                <button class="t-key" onclick="nextBank()">BANCO MAPA (1–4)</button>
+                <button class="t-key" id="tkFp" onclick="tgDash('fault')">TESTAR QUEDA BOMBA</button>
+                <button class="t-key" id="tkGl" onclick="tgDash('lock')">GHOST-LOCK: LIVRE</button>
+                <button class="t-key k-on">LOG 200HZ: GRAVANDO</button>
+              </div>
+            </div>
+
+            <div class="s-leds">
+              <div class="w-led" style="background:#00e676;box-shadow:0 0 8px #00e676;"></div><span class="w-lbl">CAN1</span>
+              <div class="w-led" style="background:#00e5ff;box-shadow:0 0 8px #00e5ff;"></div><span class="w-lbl">CAN2</span>
+              <div class="w-led" id="wl2s"></div><span class="w-lbl">2STP</span>
+              <div class="w-led" id="wlGl"></div><span class="w-lbl">LOCK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ANDROID SUPER-APP (5 MODULES INCLUDING UNDER-HOOD PINOUT PROBE) -->
+    <section class="s-pane" id="sp-mob">
+      <div class="mob-stage">
+        <div class="phone-frame">
+          <div class="ph-screen">
+            <div class="ph-hdr">
+              <div>
+                <div style="font-weight:900;font-size:13px;">TBX COMPANION PRO v4.0</div>
+                <div style="font-family:var(--mono);font-size:9.5px;color:var(--cyan);">BLE 5.0 + Wi-Fi 200Hz • TBX-800 PRO</div>
+              </div>
+              <span style="font-family:var(--mono);font-size:9.5px;background:#0b291b;border:1px solid var(--green);color:var(--green);padding:2px 6px;">ONLINE</span>
+            </div>
+
+            <div class="ph-content">
+              <!-- Mod 0: Cockpit -->
+              <div class="ph-mod active" id="pm0">
+                <canvas id="cvPhDial" width="336" height="225" style="width:100%;height:220px;background:#0a0f1a;border:1px solid #1f2d44;border-radius:6px;"></canvas>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
+                  <button class="t-key k-on" id="mbk0" style="height:28px;font-size:9.5px" onclick="setMobBank(0)">M1 PISTA</button>
+                  <button class="t-key" id="mbk1" style="height:28px;font-size:9.5px" onclick="setMobBank(1)">M2 RUA</button>
+                  <button class="t-key" id="mbk2" style="height:28px;font-size:9.5px" onclick="setMobBank(2)">M3 FLEX</button>
+                  <button class="t-key" id="mbk3" style="height:28px;font-size:9.5px" onclick="setMobBank(3)">M4 VALET</button>
+                </div>
+                <div class="ph-tiles">
+                  <div class="ph-tile"><div class="k">Diff Comb. dP</div><div class="v" id="pDp">3.04 bar</div></div>
+                  <div class="ph-tile"><div class="k">Pressão Óleo</div><div class="v" id="pOil">3.85 bar</div></div>
+                  <div class="ph-tile"><div class="k">Sonda LSU 4.9</div><div class="v" style="color:var(--green);" id="pLam">0.792 λ</div></div>
+                  <div class="ph-tile"><div class="k">Fase VirtualCam</div><div class="v" style="color:var(--cyan);">720° LOCK</div></div>
+                  <div class="ph-tile"><div class="k">Água / Ar</div><div class="v" id="pTemps">88° / 33°</div></div>
+                  <div class="ph-tile"><div class="k">Etanol Flex</div><div class="v" style="color:var(--green);">E85 (85%)</div></div>
+                  <div class="ph-tile"><div class="k">EGT Máx CAN</div><div class="v" style="color:var(--yellow);">794 °C</div></div>
+                  <div class="ph-tile"><div class="k">Bateria +15</div><div class="v">13.88 V</div></div>
+                </div>
+                <div id="phGuardBox" style="padding:8px 10px;background:#072216;border:1px solid var(--green);border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--green);">
+                  ✓ ENGINE GUARDIAN™ SAUDÁVEL • 0 FALHAS • BARRAMENTO HIL SINCRONIZADO
+                </div>
+              </div>
+
+              <!-- Mod 1: Boost Controller & 4 Maps -->
+              <div class="ph-mod" id="pm1">
+                <div style="background:#111826;border:1px solid var(--cyan);padding:10px;border-radius:4px;">
+                  <div style="display:flex;justify-content:space-between;font-family:var(--mono);margin-bottom:6px;">
+                    <span>ALVO OVERBOOST PELO APP</span><strong id="lblPhBoost" style="color:var(--cyan);">1.55 bar</strong>
+                  </div>
+                  <input type="range" min="0.60" max="1.95" step="0.05" value="1.55" style="width:100%;accent-color:var(--cyan);" oninput="document.getElementById('lblPhBoost').textContent=Number(this.value).toFixed(2)+' bar'">
+                </div>
+                <button class="t-key k-on" style="height:44px;text-align:left;padding:0 12px;" onclick="nextBank()">1. PISTA FULL POWER (1.85 bar • Pops ≥4k)</button>
+                <button class="t-key" style="height:44px;text-align:left;padding:0 12px;" onclick="nextBank()">2. RUA SILENCIOSO (1.10 bar • Eco)</button>
+                <button class="t-key" style="height:44px;text-align:left;padding:0 12px;" onclick="nextBank()">3. PRO-DRAG RAMPA TEMPO + CO2</button>
+                <button class="t-key" style="height:44px;text-align:left;padding:0 12px;color:var(--yellow);" onclick="nextBank()">4. MODO MANOBRISTA (3.200 RPM / 0 bar)</button>
+              </div>
+
+              <!-- Mod 2: Drag Timer 200Hz CAN -->
+              <div class="ph-mod" id="pm2">
+                <div style="background:#101724;border:1px solid #26334a;padding:12px;border-radius:4px;font-family:var(--mono);display:flex;flex-direction:column;gap:8px;">
+                  <div style="color:var(--cyan);font-weight:800;">DRAG TELEMETRY 200Hz (ABS CAN + 6-DOF)</div>
+                  <div class="slip-row"><span>0 – 100 km/h</span><strong style="color:var(--green);font-size:18px;">2.84 s</strong></div>
+                  <div class="slip-row"><span>100 – 200 km/h</span><strong style="color:var(--cyan);font-size:18px;">4.92 s</strong></div>
+                  <div class="slip-row"><span>60 Pés (18m)</span><strong style="color:#fff;font-size:18px;">1.49 s</strong></div>
+                  <div class="slip-row"><span>201m (1/8 Milha)</span><strong style="color:var(--yellow);font-size:18px;">6.38 s @ 189</strong></div>
+                  <div class="slip-row" style="border:none;"><span>Potência Estimada</span><strong style="color:var(--orange);font-size:18px;">348 cv roda</strong></div>
+                </div>
+              </div>
+
+              <!-- Mod 3: Under-Hood Live Harness Pinout Probe -->
+              <div class="ph-mod" id="pm3">
+                <div style="font-size:11px;color:var(--cyan);font-weight:800;">MODO INSTALADOR NO COFRE — CHICOTE & WIRE DOCTOR™</div>
+                <input placeholder="Filtrar pino ou fio (ex: bico, bobina, dbw, n75)..." oninput="filterMobPins(this.value)" style="height:28px;background:#0a0d14;border:1px solid var(--bd);color:#fff;padding:0 8px;font-size:11px;">
+                <div id="mobPinList" style="display:flex;flex-direction:column;gap:5px;font-family:var(--mono);font-size:10.5px;"></div>
+              </div>
+
+              <!-- Mod 4: Ghost-Lock -->
+              <div class="ph-mod" id="pm4">
+                <div style="background:#101724;border:1px solid var(--cyan);padding:12px;border-radius:4px;display:flex;flex-direction:column;gap:9px;">
+                  <div id="phGlState" style="font-weight:900;color:var(--green);">IMOBILIZADOR LIBERADO (HMAC-SHA256)</div>
+                  <p style="color:var(--txt-1);font-size:11px;line-height:1.45;">Bloqueio criptográfico direto no escalonador de 720° do STM32 + Desbloqueio por aproximação BLE 5.0 (Trava de segurança: jamais bloqueia com RPM > 0).</p>
+                  <button class="t-key k-alrm" style="height:40px;" onclick="ds.lock=true;updGl()">BLOQUEAR PARTIDA NO SILÍCIO</button>
+                  <button class="t-key k-on" style="height:40px;" onclick="ds.lock=false;updGl()">AUTENTICAR BIOMETRIA / HMAC</button>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ph-bar-nav">
+              <button class="ph-tab active" id="pt0" onclick="setPhTab(0)">Cockpit</button>
+              <button class="ph-tab" id="pt1" onclick="setPhTab(1)">Boost/Map</button>
+              <button class="ph-tab" id="pt2" onclick="setPhTab(2)">Drag 201m</button>
+              <button class="ph-tab" id="pt3" onclick="setPhTab(3)">Chicote</button>
+              <button class="ph-tab" id="pt4" onclick="setPhTab(4)">GhostLock</button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- 10.25" AUTOMOTIVE ANDROID MULTIMEDIA HEAD-UNIT (TBX VISION™ — BEATS FT470 + ZERO EXTERNAL GPS COST!) -->
+        <div style="width:940px;max-width:66vw;display:flex;flex-direction:column;gap:10px;">
+          <div style="background:linear-gradient(160deg,#232b38,#0e131b);border:3px solid #3c485e;border-radius:18px;padding:12px 16px;box-shadow:0 28px 70px rgba(0,0,0,0.88);">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid #233047;margin-bottom:10px;">
+              <div>
+                <span style="font-weight:900;font-size:13px;color:#fff;">CENTRAL MULTIMÍDIA ANDROID 10.25" — TBX VISION™ CUSTOM DASH</span>
+                <span style="margin-left:10px;font-family:var(--mono);font-size:10px;color:var(--cyan);">CONEXÃO DUPLA SIMULTÂNEA: 2/2 ATIVOS (USB-C PC 200Hz + WI-FI MULTIMÍDIA 60Hz)</span>
+              </div>
+              <div style="display:flex;gap:5px;">
+                <button class="ds-btn active" onclick="setHuTheme('track', this)">TEMA PISTA + GPS LAP</button>
+                <button class="ds-btn" onclick="setHuTheme('street', this)">TEMA OEM SLEEPER</button>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:230px 1fr 245px;gap:8px;background:#070a10;border:1px solid #1e2a3d;border-radius:8px;padding:10px;">
+              <!-- Left Custom Slots -->
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div class="ph-tile"><div class="k">Slot Custom #1 <select onchange="updHuSlot(1,this.value)" style="float:right;background:#0c121e;color:var(--cyan);border:1px solid #26344d;font-size:9px;"><option value="map" selected>Pressão Turbo</option><option value="iat">Temp. Ar IAT</option><option value="vbatt">Bateria V</option></select></div><div class="v" id="huS1" style="font-size:24px;color:var(--cyan);">+1.38 bar</div></div>
+                <div class="ph-tile"><div class="k">Slot Custom #2 <select onchange="updHuSlot(2,this.value)" style="float:right;background:#0c121e;color:var(--cyan);border:1px solid #26344d;font-size:9px;"><option value="lam" selected>Sonda LSU 4.9</option><option value="eth">Teor Etanol</option><option value="ign">Avanço Ponto</option></select></div><div class="v" id="huS2" style="font-size:24px;color:var(--green);">0.792 λ</div></div>
+                <div class="ph-tile"><div class="k">Slot Custom #3 (Segurança)</div><div class="v" id="huS3" style="font-size:20px;color:#fff;">Óleo 3.85b • dP 3.04b</div></div>
+              </div>
+
+              <!-- Center RPM + Smartphone/HeadUnit Native GPS Lap Timer (Zero R$ 1.800 CAN GPS Module Needed!) -->
+              <div style="background:radial-gradient(circle,#111a2b 0%,#06090f 82%);border:1px solid #1f2d44;border-radius:6px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;">
+                <div style="font-family:var(--mono);font-size:10.5px;color:var(--green);font-weight:900;">GPS INTERNO MULTIMÍDIA 10Hz • AUTÓDROMO INTERLAGOS • SETOR 2</div>
+                <div style="text-align:center;">
+                  <div style="font-family:var(--mono);font-size:54px;font-weight:900;color:#fff;line-height:1;" id="huRpm">5.840 <span style="font-size:16px;color:var(--yellow);">RPM</span></div>
+                  <div style="font-family:var(--mono);font-size:15px;color:var(--cyan);margin-top:4px;" id="huThemeSub">VOLTA ATUAL: 1:43.28  (DELTA MELHOR VOLTA: -0.44 s)</div>
+                </div>
+                <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-family:var(--mono);text-align:center;">
+                  <div style="background:#0c121d;padding:5px;border-radius:4px;border:1px solid #1e2b40;"><div style="font-size:9px;color:#94a3b8;">FORÇA-G (MEMS)</div><strong style="color:var(--yellow);">1.34 G Lat</strong></div>
+                  <div style="background:#0c121d;padding:5px;border-radius:4px;border:1px solid #1e2b40;"><div style="font-size:9px;color:#94a3b8;">EMPINADA PITCH</div><strong style="color:var(--green);">+2.1° OK</strong></div>
+                  <div style="background:#0c121d;padding:5px;border-radius:4px;border:1px solid #1e2b40;"><div style="font-size:9px;color:#94a3b8;">100–200 GPS</div><strong style="color:var(--cyan);">4.88 seg</strong></div>
+                </div>
+              </div>
+
+              <!-- Right Competitive Edge Box: TBX vs FT470 -->
+              <div style="background:#0b101a;border:1px solid #24334b;border-radius:6px;padding:9px;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--mono);font-size:10px;">
+                <div style="color:var(--orange);font-weight:900;font-size:10.5px;border-bottom:1px solid #1e2a3f;padding-bottom:4px;">COMPARATIVO DIRETO × FT470</div>
+                <div style="display:flex;justify-content:space-between;"><span>Pinos Físicos</span><strong style="color:var(--green);">64p TBX vs 44p</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>CPU Principal</span><strong style="color:var(--green);">480 MHz H7 FPU</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Knock DSP SPI</span><strong style="color:var(--green);">Duplo TPIC8101</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Sequencial s/ G40</span><strong style="color:var(--cyan);">VirtualCam™ 720°</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Anti-Falso-Pobre</span><strong style="color:var(--cyan);">Crank-IMEP™ 60-2</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Câmbio DSG/8HP</span><strong style="color:var(--green);">Nativo CAN-TCU™</strong></div>
+                <div style="display:flex;justify-content:space-between;"><span>Lap Timer GPS</span><strong style="color:var(--green);">Grátis via App!</strong></div>
+                <div style="display:flex;justify-content:space-between;border-top:1px solid #1e2a3f;padding-top:4px;"><span>Custo BOM PCBA</span><strong style="color:var(--yellow);">US$ 58 vs R$ 4.990</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TBX-400 STUDIO -->
+    <section class="s-pane" id="sp-lite">
+      <iframe class="ide-frame" src="./TBX_ECU_LITE/studio/TBX_Studio_Lite.html"></iframe>
+    </section>
+
+    <!-- 5. TBX-STIM 96P -->
+    <section class="s-pane" id="sp-stim">
+      <iframe class="ide-frame" src="./TBX_BENCH_STIMULATOR/studio/TBX_Stim_Bench_Console.html"></iframe>
+    </section>
+
+    <!-- 6. MANUAL DO INSTALADOR -->
+    <section class="s-pane" id="sp-man">
+      <iframe class="ide-frame" src="./docs/MANUAL_OFICIAL_INSTALADOR_TBX.html"></iframe>
+    </section>
+
+    <!-- 7. SITE COMERCIAL -->
+    <section class="s-pane" id="sp-site">
+      <iframe class="ide-frame" src="./SITE_COMERCIAL_TBX_PERFORMANCE.html"></iframe>
+    </section>
+  </div>
+</div>
+
+<script>
+const ds = { bank: 0, twoStep: false, cl: true, fault: false, lock: false, stimActive: false, rpm: 4200, map: 1.25, lam: 0.792, dp: 3.04 };
+const hilBus = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel("tbx_hil_bus_v7") : null;
+if (hilBus) {
+  hilBus.onmessage = function(ev) {
+    const d = ev.data; if (!d) return;
+    if (d.type === "stim_telemetry") {
+      ds.stimActive = d.active;
+      if (d.active) { ds.rpm = d.rpm; ds.map = (d.map_kpa - 100) / 100; ds.dp = Math.max(0.8, (d.fp_kpa - d.map_kpa + 100) / 100); ds.fault = (ds.dp < 2.45 && d.map_kpa > 150); }
+    } else if (d.type === "bank_switch" && typeof d.bank === "number") {
+      setMobBank(d.bank, true);
+    } else if (d.type === "ghost_state") {
+      ds.lock = d.armed; updGl(true);
+    } else if (d.type === "fault_pump") {
+      ds.fault = d.fault;
+    }
+  };
+}
+const MOB_PINS = [
+  "J1.A1 | Injetor 1 | Fio PT/VM | 13.84V [OK]",
+  "J1.A2 | Injetor 2 | Fio PT/AZ | 13.83V [OK]",
+  "J1.B1 | Bobina 1 TTL | Fio AZ/VM | 5.0V Pulso [OK]",
+  "J1.C1 | Roda Fônica 60-2 VR+ | Malha Blindada [LOCK]",
+  "J1.D4 | Solenoide Boost N75 | Fio LR/VM | 56% PWM [OK]",
+  "J2.E1 | Motor Borboleta DBW+ | Fio VM/AM | 20kHz [OK]",
+  "J2.F7 | Rede VAG CAN1 High | Fio LR/PT | 500kbps [OK]"
+];
+
+function initPortal() {
+  const dm = document.getElementById("domeLeds");
+  for (let i = 0; i < 16; i++) { const d = document.createElement("div"); d.className = "d-led"; dm.appendChild(d); }
+  filterMobPins("");
+}
+
+function switchPortal(id, btn) {
+  const ps = document.querySelectorAll(".s-pane");
+  for (let i = 0; i < ps.length; i++) ps[i].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  const bs = document.querySelectorAll(".m-tab");
+  for (let i = 0; i < bs.length; i++) bs[i].classList.remove("active");
+  btn.classList.add("active");
+}
+function setHuTheme(mode, btn) {
+  const p = btn.parentElement.querySelectorAll(".ds-btn");
+  for (let i = 0; i < p.length; i++) p[i].classList.remove("active");
+  btn.classList.add("active");
+  document.getElementById("huThemeSub").textContent = mode === "street"
+    ? "MODO RUA OEM SLEEPER • CRUZEIRO ECONÔMICO 1.00 λ • AR-CONDICIONADO ATIVO"
+    : "VOLTA ATUAL: 1:43.28  (DELTA MELHOR VOLTA: -0.44 s)";
+}
+function updHuSlot(slotIdx, kind) {
+  const mapTxt = { map: "+1.38 bar", iat: "32.5 °C", vbatt: "13.88 V", lam: "0.792 λ", eth: "E85 (85%)", ign: "16.4 °APMS" };
+  document.getElementById("huS" + slotIdx).textContent = mapTxt[kind] || "+1.38 bar";
+}
+
+function setDashPage(id, btn) {
+  const ps = document.querySelectorAll(".dash-page");
+  for (let i = 0; i < ps.length; i++) ps[i].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  const bs = document.querySelectorAll(".ds-btn");
+  for (let i = 0; i < bs.length; i++) bs[i].classList.remove("active");
+  btn.classList.add("active");
+}
+
+function setPhTab(idx) {
+  for (let i = 0; i < 5; i++) {
+    document.getElementById("pm" + i).classList.toggle("active", i === idx);
+    document.getElementById("pt" + i).classList.toggle("active", i === idx);
+  }
+}
+
+function filterMobPins(q) {
+  const ql = (q || "").toLowerCase();
+  document.getElementById("mobPinList").innerHTML = MOB_PINS.filter(function(x) { return x.toLowerCase().indexOf(ql) >= 0; }).map(function(x) {
+    return '<div style="background:#111724;border:1px solid #243047;padding:7px;border-radius:3px;color:#e2e8f0;">' + x + "</div>";
+  }).join("");
+}
+
+function tgDash(k) {
+  ds[k] = !ds[k];
+  document.getElementById("tk2s").classList.toggle("k-alrm", ds.twoStep);
+  document.getElementById("tkCl").classList.toggle("k-on", ds.cl);
+  document.getElementById("tkFp").classList.toggle("k-alrm", ds.fault);
+  document.getElementById("tkGl").classList.toggle("k-alrm", ds.lock);
+  document.getElementById("tkGl").textContent = "GHOST-LOCK: " + (ds.lock ? "BLOQ" : "LIVRE");
+  if (k === "fault" && hilBus) hilBus.postMessage({ type: "fault_pump", fault: ds.fault });
+  updGl();
+}
+
+function updGl(fromBus) {
+  const el = document.getElementById("phGlState");
+  el.textContent = ds.lock ? "BLOQUEADO NO SILÍCIO (0 RPM)" : "IMOBILIZADOR LIBERADO (HMAC-SHA256)";
+  el.style.color = ds.lock ? "var(--red)" : "var(--green)";
+  if (!fromBus && hilBus) hilBus.postMessage({ type: "ghost_state", armed: ds.lock });
+}
+
+function setMobBank(idx, fromBus) {
+  ds.bank = idx % 4;
+  const n = ["BANCO 1: PISTA 1.85b", "BANCO 2: RUA 1.10b", "BANCO 3: PRO-DRAG CO2", "BANCO 4: VALET 3200"];
+  document.getElementById("d1Bank").textContent = n[ds.bank];
+  for (let i = 0; i < 4; i++) {
+    const mb = document.getElementById("mbk" + i);
+    if (mb) mb.classList.toggle("k-on", i === ds.bank);
+  }
+  if (!fromBus && hilBus) hilBus.postMessage({ type: "bank_switch", bank: ds.bank });
+}
+
+function nextBank() {
+  setMobBank((ds.bank + 1) % 4, false);
+}
+
+function renderDashAndPhone() {
+  const ph = Date.now() * 0.0016, s = Math.abs(Math.sin(ph));
+  if (!ds.stimActive) {
+    if (ds.lock) { ds.rpm = 0; ds.map = 0.0; ds.dp = 3.00; }
+    else if (ds.twoStep) { ds.rpm = 4450 + Math.round(Math.sin(Date.now() * 0.06) * 55); ds.map = 1.15; ds.dp = 3.02; }
+    else if (ds.fault) { ds.rpm = 5600; ds.map = 1.35; ds.dp = 1.88; }
+    else {
+      const cap = ds.bank === 3 ? 3200 : 7600;
+      ds.rpm = Math.min(cap, Math.round(1100 + s * 6400));
+      ds.map = -0.50 + s * (ds.bank === 3 ? 0.50 : 2.25);
+      ds.dp = 3.04;
+    }
+  }
+  const tgt = ds.map > 0.55 ? 0.785 : 1.000;
+  ds.lam = ds.fault ? 0.892 : (tgt + Math.cos(ph * 3) * 0.004);
+
+  const dome = document.getElementById("domeLeds").children;
+  for (let i = 0; i < dome.length; i++) {
+    const on = (i / 16) < (ds.rpm / 7600) && !ds.lock;
+    dome[i].style.background = !on ? "#141821" : (i < 6 ? "#00e676" : (i < 11 ? "#ffd600" : "#ff2a4b"));
+    dome[i].style.boxShadow = on ? ("0 0 9px " + dome[i].style.background) : "none";
+  }
+
+  document.getElementById("d1Map").textContent = (ds.map >= 0 ? "+" : "") + ds.map.toFixed(2);
+  document.getElementById("d1Lam").textContent = ds.lam.toFixed(3);
+  document.getElementById("d1Tgt").textContent = "λ (" + tgt.toFixed(3) + ")";
+  document.getElementById("d1Dp").textContent = ds.dp.toFixed(2);
+  document.getElementById("d1Gear").textContent = ds.rpm === 0 ? "N" : (ds.twoStep ? "1" : String(Math.min(6, 1 + Math.floor(ds.rpm / 1350))));
+  document.getElementById("d1Spd").textContent = (ds.twoStep || ds.rpm === 0 ? 0 : Math.round(ds.rpm * 0.029)) + " km/h";
+  document.getElementById("wlDp").style.background = ds.fault ? "#ff2a4b" : "#181d27";
+  document.getElementById("wl2s").style.background = ds.twoStep ? "#ffd600" : "#181d27";
+  document.getElementById("wlGl").style.background = ds.lock ? "#ff2a4b" : "#181d27";
+  document.getElementById("dashEmerg").classList.toggle("on", ds.fault && (Math.floor(Date.now() / 1600) % 2 === 0));
+  document.getElementById("bulbGrn").classList.toggle("lit-grn", !ds.twoStep && ds.rpm > 3500);
+
+  // Ribbon Canvas
+  const cv = document.getElementById("cvRibbon");
+  if (cv) {
+    const ctx = cv.getContext("2d"), W = cv.width;
+    ctx.clearRect(0, 0, W, cv.height);
+    const active = Math.round((ds.rpm / 8500) * 52);
+    for (let i = 0; i < 52; i++) {
+      const x = 16 + i * ((W - 235) / 52), climb = Math.max(0, (13 - i) * 2.1);
+      const on = i < active && !ds.lock;
+      ctx.fillStyle = !on ? "#151c28" : (i < 32 ? "#00e5ff" : (i < 42 ? "#00e676" : (i < 47 ? "#ffd600" : "#ff2a4b")));
+      ctx.fillRect(x, 16 + climb, 9, 54 - climb * 0.6);
+    }
+    ctx.fillStyle = ds.lock ? "#ff2a4b" : "#fff"; ctx.font = "900 46px Consolas"; ctx.textAlign = "right";
+    ctx.fillText(ds.lock ? "LOCK" : String(ds.rpm), W - 16, 62);
+    ctx.fillStyle = "#00e5ff"; ctx.font = "bold 11.5px Consolas"; ctx.fillText("RPM MOTOR", W - 16, 84);
+    ctx.textAlign = "left";
+  }
+
+  // Dash Page 3 EGT Bars
+  const ce = document.getElementById("cvDashEgt");
+  if (ce && document.getElementById("dp-egt").classList.contains("active")) {
+    const c2 = ce.getContext("2d"); c2.clearRect(0, 0, ce.width, ce.height);
+    for (let i = 0; i < 8; i++) {
+      const egt = 775 + ((i * 11 + Math.round(s * 28)) % 36);
+      const h = ((egt - 500) / 450) * (ce.height - 38);
+      const x = 14 + i * 52;
+      c2.fillStyle = egt > 840 ? "#ff2a4b" : "#00e676";
+      c2.fillRect(x, ce.height - 22 - h, 36, h);
+      c2.fillStyle = "#cbd5e1"; c2.font = "bold 10px Consolas";
+      c2.fillText("C" + (i + 1), x + 10, ce.height - 7);
+      c2.fillText(String(egt), x + 6, ce.height - 26 - h);
+    }
+  }
+
+  // Phone Graduated Dial (0..8 x1000 RPM + Shift Lights)
+  const cp = document.getElementById("cvPhDial");
+  if (cp) {
+    const c3 = cp.getContext("2d"), W = cp.width, H = cp.height;
+    c3.clearRect(0, 0, W, H);
+    for (let i = 0; i < 14; i++) {
+      const on = (i / 14) < (ds.rpm / 7400) && !ds.lock;
+      c3.fillStyle = !on ? "#151e2e" : (i < 8 ? "#00e676" : (i < 11 ? "#ffd600" : "#ff2a4b"));
+      c3.fillRect(16 + i * 22, 8, 17, 6);
+    }
+    const cx = W * 0.5, cy = H * 0.62, r = 76, a0 = 0.78 * Math.PI, sw = 1.44 * Math.PI, rt = Math.min(1, ds.rpm / 8000);
+    c3.lineWidth = 10; c3.strokeStyle = "#1b2436"; c3.beginPath(); c3.arc(cx, cy, r, a0, a0 + sw); c3.stroke();
+    c3.strokeStyle = ds.lock ? "#ff2a4b" : "#00e5ff"; c3.beginPath(); c3.arc(cx, cy, r, a0, a0 + sw * (ds.lock ? 1 : rt)); c3.stroke();
+    c3.font = "bold 10px Consolas"; c3.textAlign = "center"; c3.textBaseline = "middle";
+    for (let k = 0; k <= 8; k++) {
+      const ang = a0 + (k / 8) * sw;
+      c3.fillStyle = k >= 7 ? "#ff6b81" : "#94a3b8";
+      c3.fillText(String(k), cx + Math.cos(ang) * (r - 20), cy + Math.sin(ang) * (r - 20));
+    }
+    c3.save(); c3.translate(cx, cy); c3.rotate(a0 + sw * (ds.lock ? 0 : rt));
+    c3.fillStyle = "#ff2a4b"; c3.beginPath(); c3.moveTo(-9, -2.2); c3.lineTo(r - 9, 0); c3.lineTo(-9, 2.2); c3.closePath(); c3.fill(); c3.restore();
+    c3.fillStyle = "#fff"; c3.font = "bold 24px Consolas";
+    c3.fillText(ds.lock ? "LOCKED" : String(ds.rpm), cx, cy + 26);
+    c3.fillStyle = "#00e5ff"; c3.font = "bold 11px Consolas";
+    c3.fillText((ds.map >= 0 ? "+" : "") + ds.map.toFixed(2) + " bar • " + ds.lam.toFixed(3) + " λ", cx, cy + 48);
+  }
+  document.getElementById("pDp").textContent = ds.dp.toFixed(2) + " bar";
+  const gb = document.getElementById("phGuardBox");
+  if (gb) {
+    gb.style.borderColor = ds.fault ? "var(--red)" : "var(--green)";
+    gb.style.color = ds.fault ? "#fda4af" : "var(--green)";
+    gb.textContent = ds.fault ? "⚠ GUARDIAN ATUANDO: QUEDA BOMBA dP (VE CONGELADO)" : "✓ ENGINE GUARDIAN™ SAUDÁVEL • 0 FALHAS • HIL SINCRONIZADO";
+  }
+}
+
+initPortal();
+setInterval(renderDashAndPhone, 70);
+renderDashAndPhone();
+</script>
+</body>
+</html>

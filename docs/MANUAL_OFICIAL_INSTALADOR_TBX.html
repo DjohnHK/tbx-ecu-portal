@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Oficial do Instalador & Esquemas Elétricos — TBX Performance (Rev 31.0)</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg-0: #060911; --bg-1: #0d1322; --bg-2: #141e33; --bd: #25354f;
+  --txt-0: #f8fafc; --txt-1: #cbd5e1; --txt-2: #7c8ea6;
+  --cyan: #00e5ff; --green: #00e676; --amber: #ffd600; --red: #ff2a4b;
+  --mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg-0); color: var(--txt-0); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.5; }
+.top-bar {
+  position: sticky; top: 0; z-index: 50; background: rgba(11, 17, 30, 0.96);
+  border-bottom: 1px solid var(--bd); padding: 10px 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.badge { background: linear-gradient(90deg, #0284c7, #00e5ff); color: #041019; font-family: var(--mono); font-weight: 900; font-size: 11px; padding: 3px 9px; border-radius: 3px; }
+.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.n-btn {
+  background: #152036; color: var(--txt-0); border: 1px solid #2d3f5e; padding: 6px 11px;
+  border-radius: 4px; font-size: 11.5px; font-weight: 700; cursor: pointer; text-decoration: none;
+}
+.n-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.n-btn.prn { background: #14532d; border-color: #22c55e; color: #dcfce7; }
+
+.container { max-width: 1320px; margin: 0 auto; padding: 20px 22px 60px; display: flex; flex-direction: column; gap: 22px; }
+.card { background: var(--bg-1); border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; }
+.c-hdr {
+  background: #131c2e; border-bottom: 1px solid var(--bd); padding: 10px 16px;
+  display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 13px; letter-spacing: 0.4px;
+}
+.c-body { padding: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.golden-rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+@media (max-width: 960px) { .golden-rules { grid-template-columns: 1fr 1fr; } }
+.rule-box { background: #10192b; border: 1px solid #243552; border-left: 4px solid var(--cyan); padding: 11px; border-radius: 5px; font-size: 12px; }
+.rule-box strong { display: block; color: var(--cyan); margin-bottom: 4px; font-size: 12.5px; }
+
+.search-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: center; }
+.search-in {
+  flex: 1; height: 34px; background: #090e18; border: 1px solid #2e4263; color: #fff;
+  padding: 0 12px; border-radius: 4px; font-size: 12.5px;
+}
+table.pin-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.pin-tbl th, table.pin-tbl td { border: 1px solid #1e2c45; padding: 6px 9px; text-align: left; }
+table.pin-tbl th { background: #142036; color: var(--cyan); font-family: var(--mono); font-size: 11px; }
+table.pin-tbl tr:hover { background: #132138; }
+.w-pill { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 6px; vertical-align: middle; border: 1px solid rgba(255,255,255,0.35); }
+
+.svg-diagram { width: 100%; height: auto; background: #080d16; border: 1px solid #22324d; border-radius: 6px; padding: 8px; }
+.chk-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.chk-item { background: #101829; border: 1px solid #22324d; padding: 9px 12px; border-radius: 5px; display: flex; align-items: center; gap: 10px; font-size: 12.2px; cursor: pointer; }
+.chk-item input { width: 16px; height: 16px; accent-color: var(--green); }
+
+@media print {
+  body { background: #fff; color: #000; }
+  .top-bar { position: static; background: #fff; border-bottom: 2px solid #000; }
+  .n-btn { display: none; }
+  .card, .rule-box, .chk-item { background: #fff !important; border-color: #888 !important; color: #000 !important; break-inside: avoid; }
+  .c-hdr, table.pin-tbl th { background: #eee !important; color: #000 !important; }
+  .svg-diagram { background: #fff !important; filter: invert(0.92) hue-rotate(180deg); }
+}
+</style>
+</head>
+<body>
+<header class="top-bar">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="badge">MANUAL DE OFICINA REV 31.0</span>
+    <strong>GUIA TÉCNICO ILUSTRADO DO INSTALADOR — TBX-400 UNIVERSAL • TBX-800 PRO • FT-BRIDGE™ • PDM-8 • NANO-WB</strong>
+  </div>
+  <div class="nav-links">
+    <a class="n-btn" href="#sec-regras">1. Regras de Ouro</a>
+    <a class="n-btn" href="#sec-diagramas">2. Diagramas Elétricos SVG</a>
+    <a class="n-btn" href="#sec-pinout">3. Pinagem & Cores J1/J2</a>
+    <a class="n-btn" href="#sec-pnp">4. Placas PnP FT & VAG</a>
+    <a class="n-btn" href="#sec-check">5. Checklist 1ª Partida</a>
+    <button class="n-btn prn" onclick="window.print()">🖨 Imprimir Manual A4 / PDF</button>
+  </div>
+</header>
+
+<main class="container">
+  <!-- 1. REGRAS DE OURO DE ATERRAMENTO E RUÍDO -->
+  <section class="card" id="sec-regras">
+    <div class="c-hdr"><span>1. AS 4 REGRAS DE OURO DE ELÉTRICA AUTOMOTIVA TBX (ZERO RUÍDO DE RODA FÔNICA)</span><span style="color:var(--green);font-family:var(--mono)">PADRÃO OEM ISO-7637</span></div>
+    <div class="c-body">
+      <div class="golden-rules">
+        <div class="rule-box">
+          <strong>1. Terra Estrela no Cabeçote/Bloco</strong>
+          Ligue o fio <code>B8 — Terra Potência PGND (Preto 2.5mm²)</code> direto no bloco/cabeçote do motor (nunca em lata pintada ou para-lama). O <code>C8 — Terra Sensores AGND (Marrom)</code> só vai aos sensores (TPS, Água, Ar, Pressão) — JAMAIS aterre C8 na lata!
+        </div>
+        <div class="rule-box">
+          <strong>2. Cabo Blindado da Roda Fônica 60-2</strong>
+          Use cabo par trançado com malha nos pinos <code>C1 (VR+)</code> e <code>C2 (VR-)</code>. A malha (<code>C3 Drain</code>) deve ser ligada <strong>SOMENTE do lado da ECU</strong> e isolada com termo-retrátil na ponta do sensor p/ evitar loop de terra!
+        </div>
+        <div class="rule-box">
+          <strong>3. Velas Resistivas Obrigatórias</strong>
+          Utilize sempre velas e cabos resistivos (ex.: <code>NGK série R — BR8ES / BKR8EIX</code>). Velas diretas sem resistor geram pulsos de 25 kV que interferem em qualquer ECU ou rede CAN.
+        </div>
+        <div class="rule-box">
+          <strong>4. Bicos Baixa Impedância & Sonda</strong>
+          Os drivers <code>VND5E050</code> tocam direto bicos de alta impedância (<code>>= 8 Ω</code>). Para bicos antigos <code>2 Ω</code> s/ Peak&Hold, use resistores de lastro. A sonda <code>Bosch LSU 4.9</code> deve ficar inclinada <code>>= 10°</code> acima da horizontal p/ não acumular água do Etanol!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. DIAGRAMAS ELÉTRICOS VETORIAIS DE OFICINA -->
+  <section class="card" id="sec-diagramas">
+    <div class="c-hdr"><span>2. ESQUEMAS ELÉTRICOS DE INSTALAÇÃO NO COFRE (TRADICIONAL COM RELÉS VS TBX-PDM8 SEM FUSÍVEIS)</span><span style="color:var(--cyan);font-family:var(--mono)">VETORIAL ALTA DEFINIÇÃO</span></div>
+    <div class="c-body grid-2">
+      <div>
+        <div style="font-weight:800;margin-bottom:6px;color:var(--cyan)">Diagrama A — Alimentação, Bomba, Bicos, Bobinas & Roda Fônica 60-2</div>
+        <svg class="svg-diagram" viewBox="0 0 600 350">
+          <rect x="14" y="20" width="175" height="310" rx="8" fill="#0e1a2d" stroke="#00e5ff" stroke-width="2"/>
+          <text x="101" y="44" fill="#00e5ff" font-family="Consolas" font-size="13" font-weight="bold" text-anchor="middle">TBX-400 / TBX-800 (J1)</text>
+          <text x="26" y="76" fill="#f8fafc" font-family="Consolas" font-size="11">B7 (+15 Pós-Chave VM)</text>
+          <text x="26" y="106" fill="#94a3b8" font-family="Consolas" font-size="11">B8 (PGND Bloco PT 2.5)</text>
+          <text x="26" y="136" fill="#38bdf8" font-family="Consolas" font-size="11">B1 (Saída Relé Bomba)</text>
+          <text x="26" y="170" fill="#ef4444" font-family="Consolas" font-size="11">A1..A4 (Bicos INJ 1–4)</text>
+          <text x="26" y="204" fill="#00e676" font-family="Consolas" font-size="11">B2..B5 (Bobinas TTL 5V)</text>
+          <text x="26" y="242" fill="#ffd600" font-family="Consolas" font-size="11">C1/C2 (60-2 VR+ / VR-)</text>
+          <text x="26" y="276" fill="#fb923c" font-family="Consolas" font-size="11">D4 (+5V) / C8 (AGND)</text>
+          <text x="26" y="308" fill="#f59e0b" font-family="Consolas" font-size="11">D5/D8 (CAN-H / CAN-L)</text>
+
+          <!-- Connections -->
+          <line x1="189" y1="72" x2="365" y2="72" stroke="#ef4444" stroke-width="2.2"/>
+          <rect x="365" y="54" width="215" height="34" rx="5" fill="#231219" stroke="#ef4444"/>
+          <text x="472" y="75" fill="#fecdd3" font-family="Consolas" font-size="11" text-anchor="middle">Chave Ignição +15 (Fusível 5A)</text>
+
+          <line x1="189" y1="102" x2="365" y2="102" stroke="#94a3b8" stroke-width="3"/>
+          <rect x="365" y="92" width="215" height="26" rx="5" fill="#161f2e" stroke="#64748b"/>
+          <text x="472" y="109" fill="#e2e8f0" font-family="Consolas" font-size="11" text-anchor="middle">Cabeçote / Bloco Motor (PGND)</text>
+
+          <line x1="189" y1="132" x2="365" y2="132" stroke="#38bdf8" stroke-width="2"/>
+          <rect x="365" y="122" width="215" height="32" rx="5" fill="#0d2338" stroke="#38bdf8"/>
+          <text x="472" y="142" fill="#bae6fd" font-family="Consolas" font-size="11" text-anchor="middle">Pino 85 Relé Bomba (86=+12V)</text>
+
+          <line x1="189" y1="166" x2="365" y2="166" stroke="#ef4444" stroke-width="2"/>
+          <rect x="365" y="158" width="215" height="30" rx="5" fill="#2b1419" stroke="#f87171"/>
+          <text x="472" y="177" fill="#fecaca" font-family="Consolas" font-size="11" text-anchor="middle">Pino 2 Bicos (Pino 1 = +12V Relé)</text>
+
+          <line x1="189" y1="200" x2="365" y2="200" stroke="#00e676" stroke-width="2"/>
+          <rect x="365" y="192" width="215" height="30" rx="5" fill="#0a261b" stroke="#00e676"/>
+          <text x="472" y="211" fill="#bbf7d0" font-family="Consolas" font-size="11" text-anchor="middle">Sinal TTL 5V Bobinas G40/VW/LS</text>
+
+          <line x1="189" y1="238" x2="365" y2="238" stroke="#ffd600" stroke-width="2" stroke-dasharray="5,3"/>
+          <rect x="365" y="226" width="215" height="32" rx="5" fill="#29220a" stroke="#ffd600"/>
+          <text x="472" y="246" fill="#fef08a" font-family="Consolas" font-size="11" text-anchor="middle">Sensor 60-2 (Malha só em C3!)</text>
+
+          <line x1="189" y1="304" x2="365" y2="304" stroke="#f59e0b" stroke-width="2"/>
+          <rect x="365" y="288" width="215" height="36" rx="5" fill="#291c09" stroke="#f59e0b"/>
+          <text x="472" y="310" fill="#fde68a" font-family="Consolas" font-size="11" text-anchor="middle">Rede CAN 500k (PDM-8 / Nano-WB)</text>
+        </svg>
+      </div>
+
+      <div>
+        <div style="font-weight:800;margin-bottom:6px;color:var(--green)">Diagrama B — Instalação Limpa Sem Relés c/ TBX-PDM8 + Sonda Bosch LSU 4.9</div>
+        <svg class="svg-diagram" viewBox="0 0 600 350">
+          <rect x="16" y="20" width="568" height="150" rx="8" fill="#0b221a" stroke="#00e676" stroke-width="2"/>
+          <text x="300" y="44" fill="#00e676" font-family="Consolas" font-size="12" font-weight="bold" text-anchor="middle">TBX-PDM8 SMARTFUSE™ — LIGAÇÃO DIRETA SEM CAIXA DE RELÉS E SEM FUSÍVEIS</text>
+          <text x="32" y="70" fill="#f8fafc" font-family="Consolas" font-size="11.2">J_BATT (+30): Cabo 16mm² Direto do Polo Positivo da Bateria  |  PGND no Bloco</text>
+          <text x="32" y="92" fill="#67e8f9" font-family="Consolas" font-size="11.2">CH1 (22A • Rampa Suave 450ms) → Bomba Combustível Principal Walbro 450/525</text>
+          <text x="32" y="114" fill="#67e8f9" font-family="Consolas" font-size="11.2">CH3 (25A • Rampa Suave 600ms) → Eletroventilador Radiador (Zero Pico 45A!)</text>
+          <text x="32" y="136" fill="#86efac" font-family="Consolas" font-size="11.2">CH4 / CH5 (15A eFuse &lt;1ms)    → +12V Limpo p/ Bobinas COP e Bancada de Bicos</text>
+          <text x="32" y="156" fill="#fcd34d" font-family="Consolas" font-size="11.2">Par Trançado CAN-H / CAN-L    → Pinos D5 e D8 da TBX (Telemetria Corrente Ao Vivo)</text>
+
+          <rect x="16" y="188" width="568" height="144" rx="8" fill="#101a2e" stroke="#38bdf8" stroke-width="2"/>
+          <text x="300" y="211" fill="#38bdf8" font-family="Consolas" font-size="11.2" font-weight="bold" text-anchor="middle">CONECTOR 6 VIAS SONDA BOSCH LSU 4.9 (0 258 017 025) — TBX-800 PRO OU TBX-NANO-WB</text>
+          <text x="32" y="238" fill="#ef4444" font-family="Consolas" font-size="11.2">Pino 1 (Vermelho) : Ip Corrente Bomba  → LSU_IP (J2.C1 / J_LSU6.1)</text>
+          <text x="32" y="259" fill="#fde047" font-family="Consolas" font-size="11.2">Pino 2 (Amarelo)  : Vm Massa Virtual   → LSU_VM (J2.C2 / J_LSU6.2)</text>
+          <text x="32" y="280" fill="#f8fafc" font-family="Consolas" font-size="11.2">Pino 3 (Branco)   : HTR- PWM Aquecedor → LSU_HTR- (J2.A8 / J_LSU6.3)</text>
+          <text x="32" y="301" fill="#9ca3af" font-family="Consolas" font-size="11.2">Pino 4 (Cinza)    : HTR+ +12V Pós-Relé → +12V Protegido (5A / CH7 PDM-8)</text>
+          <text x="32" y="321" fill="#22c55e" font-family="Consolas" font-size="11.2">Pino 5 (Verde)    : Rcal → LSU_RCAL   |  Pino 6 (Preto): Un Nernst → LSU_UN</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. TABELA INTERATIVA COMPLETA DE PINOS E CORES -->
+  <section class="card" id="sec-pinout">
+    <div class="c-hdr"><span>3. TABELA OFICIAL DE PINAGEM & CORES DO CHICOTE (MOLEX CMC 32 VIAS J1 UNIVERSAL + J2 PRO 64P)</span><span id="lblPinCount" style="color:var(--cyan);font-family:var(--mono)">44 VIAS DOCUMENTADAS</span></div>
+    <div class="c-body">
+      <div class="search-row">
+        <input class="search-in" id="pinSearch" placeholder="🔍 Filtrar por pino (ex: A1, C1), função (ex: bomba, sonda, tps, fônica, dbw) ou cor do fio..." oninput="filterManualPins()">
+        <select class="search-in" style="max-width:240px" id="pinConnFilter" onchange="filterManualPins()">
+          <option value="ALL">Mostrar J1 (32p) + J2 PRO (64p)</option>
+          <option value="J1">Apenas Conector J1 (TBX-400 & TBX-800)</option>
+          <option value="J2">Apenas Conector J2 (Exclusivo TBX-800 PRO)</option>
+        </select>
+      </div>
+      <table class="pin-tbl">
+        <thead><tr><th>PLUG / PINO</th><th>COR DO FIO & BITOLA</th><th>FUNÇÃO PRINCIPAL / TRUE FLEX-I/O™</th><th>SINAL ELÉTRICO & DICA DE INSTALAÇÃO</th></tr></thead>
+        <tbody id="pinRowsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. GUIA RÁPIDO ADAPTADORES PLUG & PLAY -->
+  <section class="card" id="sec-pnp">
+    <div class="c-hdr"><span>4. INSTALAÇÃO EM 5 MINUTOS COM ADAPTADORES PLUG & PLAY (CHICOTES FUELTECH & VAG GOLF/A3 1.8T)</span><span style="color:var(--amber);font-family:var(--mono)">ZERO CORTE DE FIO</span></div>
+    <div class="c-body grid-2">
+      <div class="rule-box" style="border-left-color:var(--amber)">
+        <strong style="color:var(--amber)">Chicotes FuelTech Antigos & Novos (TBX-FT-BRIDGE™)</strong>
+        • <b>FT200 / FT250 / FT300 / FT350 / FT400 / FT500</b>: encaixe o plugue preto 24 vias (+ 16v Aux e 4v FTCAN) na Mini-Box <code>TBX-PNP-FT-CLASSIC</code> e clique o rabicho de 25 cm na TBX.<br>
+        • <b>FT450 / FT550 (Superseal 26v / 52v)</b>: encaixe os conectores A/B na <code>TBX-PNP-FT-POWER52</code>, abra a aba <b>Migração PnP FT</b> no TBX Studio e clique em <i>Auto-Detectar Fios Brancos</i>: a matriz <code>CH446Q</code> roteia TPS, Água, Ar e Pressões eletronicamente sem jumpers e lê sua WB-O2 Nano via FTCAN 1 Mbps!
+      </div>
+      <div class="rule-box" style="border-left-color:var(--green)">
+        <strong style="color:var(--green)">VW Golf GTI / Audi A3 1.8T 20V (T80 Cabo & T121 DBW)</strong>
+        • <b>AGU 150cv Cabo (Bosch M3.8.3 — 80 Vias T80)</b>: plugue o adaptador <code>04_PNP_GOLF150_T80</code> no chicote original; o driver <code>DRV8870</code> controla o corpo de marcha lenta motorizado <code>V60</code> nativamente.<br>
+        • <b>AUQ 180cv DBW (Bosch ME7.5 — 121 Vias T121)</b>: plugue na <code>TBX-800 PRO</code> + ligue a mangueirinha PU <code>Ø4mm</code> pós-borboleta no espigão traseiro <code>7.0 Bar</code> para habilitar o modo <b>Dual-MAP</b> + painel CAN original (`0x280`/`0x288`).
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CHECKLIST DE PRIMEIRA PARTIDA -->
+  <section class="card" id="sec-check">
+    <div class="c-hdr"><span>5. CHECKLIST DE SEGURANÇA ANTES DA 1ª PARTIDA DO MOTOR</span><span id="chkProg" style="color:var(--green);font-family:var(--mono)">0 / 8 CONFERIDOS</span></div>
+    <div class="c-body">
+      <div class="chk-list" id="chkContainer"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const MANUAL_PINS = [
+  ["J1","A1","Preto / Vermelho 1.0mm²","#ef4444","Bico Injetor Cilindro 1","Saída Low-Side Protegida 14A (Pino 1 do bico recebe +12V pós-relé)"],
+  ["J1","A2","Preto / Azul 1.0mm²","#3b82f6","Bico Injetor Cilindro 2","Saída Low-Side Protegida 14A • Ordem 1-3-4-2 sequencial via VirtualCam™"],
+  ["J1","A3","Preto / Verde 1.0mm²","#10b981","Bico Injetor Cilindro 3","Saída Low-Side Protegida 14A • Crank-IMEP™ monitora contribuição individual"],
+  ["J1","A4","Preto / Amarelo 1.0mm²","#eab308","Bico Injetor Cilindro 4","Saída Low-Side Protegida 14A"],
+  ["J1","A5","Marrom / Branco 1.0mm²","#a16207","Atuador Marcha Lenta PWM / INJ 5","PWM 150 Hz p/ válvula Bosch 2 fios ou 5º Bico / True Flex-I/O™"],
+  ["J1","A6","Laranja / Preto 1.0mm²","#f97316","Solenoide Boost N75 (ou Entrada Flex-I/O™)","PWM 25–35 Hz Malha Fechada PID ou conversível em Entrada 0–19V"],
+  ["J1","A7","Verde / Branco 1.0mm²","#22c55e","Relé Compressor A/C / Shift-Light (Flex-I/O™)","Saída Low-Side c/ histerese WOT-Cut ou Entrada Digital por Software"],
+  ["J1","A8","Vermelho / Branco 1.5mm²","#f43f5e","Relé Eletroventilador 1 (ou Pós-Fan)","Aciona pino 85 do relé da ventoinha principal (ou via CAN no PDM-8)"],
+  ["J1","B1","Vermelho / Azul 1.0mm²","#0ea5e9","Relé Bomba de Combustível","Prime de 2.5s ao ligar chave + corte imediato se motor apagar (0 RPM)"],
+  ["J1","B2","Azul / Vermelho 0.75mm²","#38bdf8","Bobina Ignição 1 (Sinal TTL 5V)","Disparo na borda de descida (repouso 0V frio) p/ bobinas smart VW/Audi/LS"],
+  ["J1","B3","Azul / Verde 0.75mm²","#2dd4bf","Bobina Ignição 2 (Sinal TTL 5V)","Em centelha perdida 4 cil, liga par 1-4 em B2 e par 2-3 em B3"],
+  ["J1","B4","Azul / Amarelo 0.75mm²","#facc15","Bobina Ignição 3 (Sinal TTL 5V)","Sequencial COP (ou saída auxiliar PLC em motores centelha perdida)"],
+  ["J1","B5","Azul / Branco 0.75mm²","#e2e8f0","Bobina Ignição 4 (Sinal TTL 5V)","Sequencial COP"],
+  ["J1","B6","Roxo / Branco 0.75mm²","#a855f7","Saída Conta-Giros Painel 12V (Tacho)","Pulso quadrado 12V compatível com painéis originais e Monster"],
+  ["J1","B7","Vermelho Puro 1.5mm²","#dc2626","Alimentação Pós-Chave +15 (Ignição)","Manter +12V mesmo durante o arranque (linha 15 verdadeira, fusível 5A)"],
+  ["J1","B8","Preto Puro 2.5mm²","#475569","Terra de Potência Principal (PGND)","Obrigatório parafusar direto no cabeçote ou bloco metálico limpo do motor!"],
+  ["J1","C1","Branco (Cabo Blindado)","#f8fafc","Roda Fônica 60-2 Sinal Positivo (VR+ / Hall)","Se o Doutor VR no Scope acusar inversão, inverta C1 com C2 ou ative via software"],
+  ["J1","C2","Preto (Cabo Blindado)","#64748b","Roda Fônica 60-2 Retorno (VR-)","Para sensor Hall 3 fios, ligue o sinal em C1 e deixe C2 isolado"],
+  ["J1","C3","Malha Drain Blindagem","#334155","Aterramento da Malha Blindada 60-2","Ligar SOMENTE na ECU! Isolar a malha na ponta do sensor p/ evitar ruído!"],
+  ["J1","C4","Branco / Azul 0.5mm²","#60a5fa","Sensor de Fase Comando Hall (Opcional)","Com TBX VirtualCam™ 720°, motores 4/6/8 cil rodam Sequencial mesmo sem este fio!"],
+  ["J1","C5","Verde / Preto 0.5mm²","#4ade80","Entrada Pedido de A/C ou Rolling Anti-Lag","Eleva alvo de marcha lenta antes de atracar o compressor"],
+  ["J1","C6","Amarelo / Preto 0.5mm²","#fde047","Botão Two-Step / Interruptor Embreagem","Ativa Launch Control 2-Step parado e Flat-Shift (NLS) nas trocas de marcha"],
+  ["J1","C7","Roxo / Preto 0.5mm²","#c084fc","Sensor de Etanol Flex Continental (50–150 Hz)","Interpola automaticamente mapas de VE, Ponto e Partida a Frio E0..E100"],
+  ["J1","C8","Marrom Puro 0.75mm²","#92400e","Terra Exclusivo de Sensores (AGND)","Comum de TPS, Água, Ar e Pressões. JAMAIS ligar na carroceria ou negativo bateria!"],
+  ["J1","D1","Azul / Preto 0.5mm²","#0284c7","Sinal Posição Borboleta TPS (0–5V)","Calibrar 0% e 100% em 1 clique na tela Sensores do TBX Studio"],
+  ["J1","D2","Rosa / Preto 0.5mm²","#fb7185","Temperatura do Motor Água CLT (NTC)","Pull-up interno 2.7 kΩ ativo (Bosch M12 / VW G62 / GM / Fiat)"],
+  ["J1","D3","Cinza / Preto 0.5mm²","#94a3b8","Temperatura do Ar Admissão IAT (NTC)","Instalar pós-intercooler antes da borboleta"],
+  ["J1","D4","Laranja Puro 0.75mm²","#fb923c","Saída Regulada +5.00V Sensores","Alimenta TPS e transdutores PS-10B de pressão de combustível e óleo (protegida)"],
+  ["J1","D5","Laranja / Marrom (Par)","#f59e0b","Barramento CAN-H Principal (500 kbps)","Conecta Painel OEM, Câmbio DSG/8HP, TBX-NANO-WB e TBX-PDM8"],
+  ["J1","D6","Branco / Vermelho 0.5mm²","#fda4af","Pressão de Óleo 0–5V / Sonda Externa 0–5V","Entrada analógica protegida p/ Engine Guardian™"],
+  ["J1","D7","Verde / Amarelo 0.5mm²","#84cc16","Pressão de Combustível 0–5V (PS-10B)","Monitora dP diferencial (3.0 bar + Boost) a 1 kHz p/ salvar motor se bomba cair!"],
+  ["J1","D8","Laranja / Verde (Par)","#16a34a","Barramento CAN-L Principal (500 kbps)","Trançar junto com o fio D5 (CAN-H) por todo o chicote"],
+  ["J2","J2.A1..A4","Preto / Listras Bancada B","#ef4444","Bicos Injetores 5 a 8 (2ª Bancada / V8)","Exclusivo TBX-800 PRO: Estágio 2 progressivo ou 8 cilindros 100% sequencial"],
+  ["J2","J2.B1..B4","Azul / Listras IGN 5–8","#38bdf8","Bobinas Ignição 5 a 8 TTL (ou Saídas Flex-I/O™)","Exclusivo TBX-800 PRO: COP 6/8 cil ou saídas WMI / Nitro / VVT"],
+  ["J2","J2.D1/D2","Amarelo Grosso 1.5mm²","#facc15","Motor Borboleta Eletrônica DBW+ e DBW-","Dupla Ponte-H Infineon BTN8982TA 55A @ 20 kHz c/ segurança EGAS"],
+  ["J2","J2.D3..D6","Branco / Listras Pedal","#e2e8f0","Dupla Pista TPS1/TPS2 + Pedal PPS1/PPS2","Redundância cruzada de segurança automotiva (<2ms limp-home se divergir)"],
+  ["J2","J2.C1..C6","Chicote Sonda LSU 4.9","#00e676","Controlador Bosch CJ125 Nativo na Placa","Liga direto no conector de 6 vias da sonda Bosch LSU 4.9 sem caixa externa!"],
+  ["J2","J2.C7/C8","Blindado Sensor Knock","#a855f7","Sensor de Detonação Piezo (DSP TPIC8101)","Filtro acústico SPI calculado pelo diâmetro do pistão c/ atraso individual"]
+];
+
+const CHECK_ITEMS = [
+  "Conferido Terra de Potência B8 (2.5mm²) parafusado direto em metal limpo no cabeçote/bloco.",
+  "Conferido que o Terra de Sensores C8 (Marrom) NÃO está encostando na lata/chassi.",
+  "Calibrado TPS 0% (fechado) e 100% (pé no fundo) na tela Sensores do TBX Studio.",
+  "Leituras de Temperatura de Água (CLT) e Ar (IAT) coerentes com a temperatura ambiente.",
+  "Pressão de Combustível sobe p/ 3.0 bar durante os 2.5s de pós-chave e não vaza.",
+  "Durante a partida (bicos desligados), Scope 4Ch mostra Roda Fônica 60-2 limpa e sincronizada.",
+  "Conferido avanço fixo em 15.0° APMS com pistola estroboscópica na polia do motor.",
+  "Limites do Engine Guardian™ (Pressão Mín. Óleo e Diferencial Comb. dP) revisados e ativos."
+];
+
+function filterManualPins() {
+  const q = (document.getElementById("pinSearch").value || "").toLowerCase();
+  const cf = document.getElementById("pinConnFilter").value;
+  const rows = MANUAL_PINS.filter(function(r) {
+    if (cf !== "ALL" && r[0] !== cf) return false;
+    return r.join(" ").toLowerCase().indexOf(q) >= 0;
+  });
+  document.getElementById("lblPinCount").textContent = rows.length + " VIAS EXIBIDAS";
+  document.getElementById("pinRowsBody").innerHTML = rows.map(function(r) {
+    return "<tr><td style='font-family:var(--mono);font-weight:800;color:var(--cyan)'>" + r[0] + " • " + r[1] + "</td>" +
+      "<td><span class='w-pill' style='background:" + r[3] + "'></span>" + r[2] + "</td>" +
+      "<td style='font-weight:700;color:#fff'>" + r[4] + "</td>" +
+      "<td style='color:var(--txt-1)'>" + r[5] + "</td></tr>";
+  }).join("");
+}
+
+function renderChecks() {
+  const box = document.getElementById("chkContainer");
+  box.innerHTML = CHECK_ITEMS.map(function(txt, i) {
+    return "<label class='chk-item'><input type='checkbox' onchange='updChkCount()'><span><b>" + (i + 1) + ".</b> " + txt + "</span></label>";
+  }).join("");
+}
+function updChkCount() {
+  const n = document.querySelectorAll("#chkContainer input:checked").length;
+  document.getElementById("chkProg").textContent = n + " / " + CHECK_ITEMS.length + " CONFERIDOS";
+}
+
+filterManualPins();
+renderChecks();
+</script>
+</body>
+</html>

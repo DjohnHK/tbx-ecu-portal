@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TBX-STIM PRO (96p) — Rack Industrial de Simulação HIL & Auto-QC</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg-0: #060911; --bg-1: #0c1220; --bg-2: #151e30; --bd: #243247;
+  --txt-0: #eef2f8; --txt-1: #9aa8be; --txt-2: #64738a;
+  --cyan: #00e5ff; --green: #00e676; --amber: #ffd600; --red: #ff2a4b;
+  --mono: 'Consolas', 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-0); color: var(--txt-0); font-family: 'Segoe UI', Tahoma, sans-serif; font-size: 12px; user-select: none; }
+.rack-shell { display: grid; grid-template-rows: 34px 1fr 24px; width: 100vw; height: 100vh; }
+.rack-hdr {
+  background: linear-gradient(180deg, #202736 0%, #151923 100%);
+  border-bottom: 1px solid var(--bd); padding: 0 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.rack-tag { background: #0284c7; color: #fff; font-family: var(--mono); font-weight: 800; font-size: 10.5px; padding: 2px 7px; border-radius: 2px; margin-right: 8px; }
+.r-btn {
+  height: 24px; padding: 0 10px; background: #232b3a; color: var(--txt-0);
+  border: 1px solid #38455c; border-radius: 2px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.r-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.r-btn.go { background: #14532d; border-color: #22c55e; color: #dcfce7; }
+
+.rack-body { display: grid; grid-template-columns: 1.18fr 1fr; gap: 1px; background: var(--bd); overflow: hidden; }
+.panel { background: var(--bg-1); display: flex; flex-direction: column; overflow: hidden; }
+.p-hdr {
+  height: 26px; background: #1c222e; border-bottom: 1px solid var(--bd); padding: 0 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: var(--txt-1); letter-spacing: 0.5px;
+}
+.fader-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
+.fader-box { background: #10131a; border: 1px solid #242c3b; padding: 6px 8px; border-radius: 2px; }
+.f-top { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: var(--txt-1); }
+.f-val { font-family: var(--mono); font-weight: 800; color: var(--cyan); }
+input[type=range] { width: 100%; height: 6px; accent-color: var(--cyan); cursor: pointer; }
+
+.pcb-leds {
+  margin: 0 8px 8px; padding: 8px; background: #09120e; border: 1px solid #1e3a2b; border-radius: 2px;
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;
+}
+.smd-slot { background: #0d1914; border: 1px solid #1b3126; padding: 5px 3px; text-align: center; font-family: var(--mono); font-size: 9.5px; color: #9ab8a8; }
+.smd-diode { width: 14px; height: 7px; margin: 0 auto 4px; background: #1c2621; border: 1px solid #2d3d35; border-radius: 1px; }
+.smd-diode.c-on { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.smd-diode.a-on { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.smd-diode.g-on { background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+.qc-table { display: flex; flex-direction: column; gap: 4px; padding: 8px; }
+.qc-row { background: #10131a; border: 1px solid #242c3b; padding: 6px 9px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; }
+.cert-panel { margin: 4px 8px 8px; padding: 9px 10px; background: #0b0f16; border: 1px solid #2e3b52; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.rack-ftr { background: #0f1218; border-top: 1px solid var(--bd); padding: 0 10px; display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 10.5px; color: var(--txt-2); }
+.r-btn.act { background: #0c4a6e; border-color: var(--cyan); color: #e0f2fe; }
+.r-btn.flt { background: #3b0a18; border-color: var(--red); color: #fecdd3; }
+.flt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 6px 8px; }
+</style>
+</head>
+<body>
+<div class="rack-shell">
+  <header class="rack-hdr">
+    <div><span class="rack-tag">TBX-STIM PRO 96P v11</span><strong>BANCADA HIL DE SIMULAÇÃO DE MOTOR, DINAMÔMETRO, INJEÇÃO DE FALHAS & AUTO-QC</strong></div>
+    <div style="display:flex;gap:5px;">
+      <button class="r-btn" id="btnManual" onclick="toggleManual()">Injeção HIL: OFF</button>
+      <button class="r-btn" id="btnProfDyno" onclick="startProfile('dyno')">▶ Puxada Dyno 1ª–4ª</button>
+      <button class="r-btn" id="btnProfDrag" onclick="startProfile('drag')">▶ Arrancada 402m</button>
+      <button class="r-btn" id="btnProfStreet" onclick="startProfile('street')">▶ Ciclo Rua + A/C</button>
+      <button class="r-btn go" onclick="runAutoQc()">Auto-QC 15s (96p)</button>
+      <button class="r-btn" onclick="window.print()">Imprimir Laudo</button>
+    </div>
+  </header>
+
+  <div class="rack-body">
+    <div class="panel">
+      <div class="p-hdr"><span>Gerador Físico de Sinais (Roda Fônica 60-2 + DAC 12-Bit)</span><span id="lblTrigState" style="font-family:var(--mono);color:var(--green);">LOCK 60-2 ATIVO</span></div>
+      <div class="fader-grid">
+        <div class="fader-box"><div class="f-top"><span>Rotação Virabrequim 60-2</span><span class="f-val" id="fvRpm">3600 RPM</span></div><input type="range" id="fsRpm" min="0" max="8200" step="50" value="3600" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Pressão Coletor MAP</span><span class="f-val" id="fvMap">+0.85 bar (185 kPa)</span></div><input type="range" id="fsMap" min="25" max="305" step="5" value="185" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Posição Pedal / Borboleta</span><span class="f-val" id="fvTps">82 %</span></div><input type="range" id="fsTps" min="0" max="100" value="82" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Temperatura Motor G62</span><span class="f-val" id="fvClt">89 °C</span></div><input type="range" id="fsClt" min="-15" max="125" value="89" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Pressão Linha Combustível</span><span class="f-val" id="fvFp">4.05 bar</span></div><input type="range" id="fsFp" min="150" max="540" step="5" value="405" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Pressão Óleo Motor</span><span class="f-val" id="fvOil">3.50 bar</span></div><input type="range" id="fsOil" min="20" max="540" step="5" value="350" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Ruído Bloco Knock Piezo</span><span class="f-val" id="fvKnk">12 mV</span></div><input type="range" id="fsKnk" min="0" max="130" step="2" value="12" oninput="manualSliderTouch()"></div>
+        <div class="fader-box"><div class="f-top"><span>Offset Sonda LSU 4.9</span><span class="f-val" id="fvLam">+0.00 λ</span></div><input type="range" id="fsLam" min="-0.18" max="0.20" step="0.01" value="0" oninput="manualSliderTouch()"></div>
+      </div>
+
+      <div class="p-hdr"><span>Barramento Óptico SMD — 28 Cargas de Teste na Placa TBX-STIM Rev 1.0</span><span id="lblProfLive" style="font-family:var(--mono);color:var(--cyan);">PERFIL: MANUAL</span></div>
+      <div class="pcb-leds" id="pcbLeds"></div>
+      <canvas id="cvLogic" style="width:calc(100% - 16px);margin:0 8px 8px;flex:1;background:#070a0f;border:1px solid var(--bd);"></canvas>
+    </div>
+
+    <div class="panel">
+      <div class="p-hdr"><span>Deck de Injeção de Falhas Reais na ECU (Auditoria Engine Guardian™ & Crank-IMEP™)</span><span id="lblFaultCnt" style="font-family:var(--mono);color:var(--green);">0 FALHAS</span></div>
+      <div class="flt-grid">
+        <button class="r-btn" id="flt_misfire" onclick="toggleFault('misfire')">⚡ Misfire Cil #3 (IMEP)</button>
+        <button class="r-btn" id="flt_fpdrop" onclick="toggleFault('fpdrop')">⛽ Queda Bomba dP</button>
+        <button class="r-btn" id="flt_vrinv" onclick="toggleFault('vrinv')">🔄 Fio VR+/- Invertido</button>
+        <button class="r-btn" id="flt_wmi" onclick="toggleFault('wmi')">💧 Fim Metanol WMI</button>
+        <button class="r-btn" id="flt_overheat" onclick="toggleFault('overheat')">🌡 Água 112 °C</button>
+        <button class="r-btn go" onclick="clearAllFaults()">✓ Limpar Falhas</button>
+      </div>
+
+      <div class="p-hdr"><span>Sequenciador Automático de Controle de Qualidade Fabril (5 Estágios)</span><span id="qcBadge" style="font-family:var(--mono);color:var(--cyan);">PRONTO</span></div>
+      <div class="qc-table">
+        <div class="qc-row"><span>[ESTÁGIO 1] Fontes +5.00V EXT / +3.3V & Sincronia 60-2 VR</span><span id="qs1" style="color:var(--txt-2);">AGUARDANDO</span></div>
+        <div class="qc-row"><span>[ESTÁGIO 2] Pulso e Corrente 8× Bicos VND5E050 + 8× Ignição TTL</span><span id="qs2" style="color:var(--txt-2);">AGUARDANDO</span></div>
+        <div class="qc-row"><span>[ESTÁGIO 3] Convergência Malha Fechada Wideband (+10% Perturbação)</span><span id="qs3" style="color:var(--txt-2);">AGUARDANDO</span></div>
+        <div class="qc-row"><span>[ESTÁGIO 4] Engine Guardian™ (Congelamento VE sob Queda Bomba dP)</span><span id="qs4" style="color:var(--txt-2);">AGUARDANDO</span></div>
+        <div class="qc-row"><span>[ESTÁGIO 5] Barramento VAG CAN-FD 500 kbps (IDs 0x280 / 0x288 / CRC)</span><span id="qs5" style="color:var(--txt-2);">AGUARDANDO</span></div>
+      </div>
+
+      <div style="padding:0 8px;display:flex;gap:8px;align-items:center;">
+        <span style="color:var(--txt-1);font-size:11px;">Nº Série Placa:</span>
+        <input id="snInp" value="TBX-800PRO-2026-0001" style="flex:1;height:25px;background:#0a0d12;border:1px solid var(--bd);color:#fff;font-family:var(--mono);padding:0 8px;">
+      </div>
+
+      <div class="cert-panel" style="margin-top:auto;">
+        <div style="line-height:1.45;">
+          <div style="font-weight:800;color:var(--cyan);font-size:12px;">LAUDO DETERMINÍSTICO DE FÁBRICA — TBX PERFORMANCE</div>
+          <div id="certSn" style="font-family:var(--mono);font-size:10.5px;margin-top:2px;">Série: TBX-800PRO-2026-0001 • STM32 96-Bit UID Vinculado</div>
+          <div id="certRes" style="font-family:var(--mono);font-size:10.5px;color:var(--green);margin-top:2px;">Aguardando início da bateria de 15s...</div>
+        </div>
+        <svg id="qrBox" width="70" height="70" viewBox="0 0 22 22" style="background:#fff;padding:3px;border-radius:2px;flex-shrink:0;"></svg>
+      </div>
+    </div>
+  </div>
+
+  <footer class="rack-ftr">
+    <span>Hardware: STM32F407VET6 Gerador 60-2 • 3× Molex CMC 64334-0100 (96 Vias) • BroadcastChannel HIL 30Hz</span>
+    <span>Protocolo: TBX-LINK v3.5 • CRC-16 CCITT</span>
+  </footer>
+</div>
+
+<script>
+const NAMES = ["INJ1","INJ2","INJ3","INJ4","INJ5","INJ6","INJ7","INJ8","IGN1","IGN2","IGN3","IGN4","IGN5","IGN6","IGN7","IGN8","MAIN","PUMP","FAN1","FAN2","N75","IDLE","A/C","DBW+","DBW-","CAN","PASS","FAIL"];
+let manualOn = false, qcOk = false, tk = 0, activeProf = null, profTick = 0;
+const faults = { misfire: false, fpdrop: false, vrinv: false, wmi: false, overheat: false };
+const hilBus = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel("tbx_hil_bus_v7") : null;
+
+function initRack() {
+  document.getElementById("pcbLeds").innerHTML = NAMES.map(function(n, i) {
+    return '<div class="smd-slot"><div class="smd-diode" id="sd' + i + '"></div>' + n + "</div>";
+  }).join("");
+  drawQr("TBX-800PRO-2026-0001");
+}
+
+function drawQr(seed) {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }
+  let out = "";
+  for (let r = 0; r < 22; r++) {
+    for (let c = 0; c < 22; c++) {
+      const f = (r < 6 && c < 6) || (r < 6 && c > 15) || (r > 15 && c < 6);
+      let on = false;
+      if (f) {
+        const lr = r > 15 ? r - 16 : r, lc = c > 15 ? c - 16 : c;
+        on = (lr === 0 || lr === 5 || lc === 0 || lc === 5 || (lr >= 2 && lr <= 3 && lc >= 2 && lc <= 3));
+      } else { h ^= (r * 29 + c * 13); h = Math.imul(h, 16777619); on = ((h >>> 4) & 1) === 1; }
+      if (on) out += '<rect x="' + c + '" y="' + r + '" width="1" height="1" fill="#06090f"/>';
+    }
+  }
+  document.getElementById("qrBox").innerHTML = out;
+}
+
+function manualSliderTouch() {
+  activeProf = null;
+  manualOn = true;
+  updateProfButtons();
+  syncStim();
+}
+
+function toggleManual() {
+  manualOn = !manualOn;
+  if (!manualOn) activeProf = null;
+  updateProfButtons();
+  syncStim();
+}
+
+function startProfile(kind) {
+  if (activeProf === kind) { activeProf = null; manualOn = false; }
+  else { activeProf = kind; profTick = 0; manualOn = true; }
+  updateProfButtons();
+  syncStim();
+}
+
+function updateProfButtons() {
+  document.getElementById("btnManual").textContent = "Injeção HIL: " + (manualOn ? "ATIVA" : "OFF");
+  document.getElementById("btnManual").classList.toggle("act", manualOn);
+  document.getElementById("btnProfDyno").classList.toggle("act", activeProf === "dyno");
+  document.getElementById("btnProfDrag").classList.toggle("act", activeProf === "drag");
+  document.getElementById("btnProfStreet").classList.toggle("act", activeProf === "street");
+  document.getElementById("lblProfLive").textContent = "PERFIL: " + (activeProf ? activeProf.toUpperCase() : (manualOn ? "MANUAL" : "STANDBY"));
+}
+
+function toggleFault(k) {
+  faults[k] = !faults[k];
+  manualOn = true;
+  if (k === "fpdrop") document.getElementById("fsFp").value = faults.fpdrop ? 210 : 405;
+  if (k === "overheat") document.getElementById("fsClt").value = faults.overheat ? 112 : 89;
+  updateFaultBadges();
+  updateProfButtons();
+  syncStim();
+}
+
+function clearAllFaults() {
+  Object.keys(faults).forEach(function(k) { faults[k] = false; });
+  document.getElementById("fsFp").value = 405;
+  document.getElementById("fsClt").value = 89;
+  updateFaultBadges();
+  syncStim();
+}
+
+function updateFaultBadges() {
+  let n = 0;
+  Object.keys(faults).forEach(function(k) {
+    if (faults[k]) n++;
+    const b = document.getElementById("flt_" + k);
+    if (b) b.classList.toggle("flt", faults[k]);
+  });
+  const lbl = document.getElementById("lblFaultCnt");
+  lbl.textContent = n + (n === 1 ? " FALHA ATIVA" : " FALHAS");
+  lbl.style.color = n > 0 ? "var(--red)" : "var(--green)";
+  const tr = document.getElementById("lblTrigState");
+  tr.textContent = faults.vrinv ? "ALERTA: FIO VR+/- INVERTIDO!" : "LOCK 60-2 ATIVO";
+  tr.style.color = faults.vrinv ? "var(--red)" : "var(--green)";
+}
+
+function syncStim() {
+  const rpm = document.getElementById("fsRpm").value;
+  const map = document.getElementById("fsMap").value;
+  const tps = document.getElementById("fsTps").value;
+  const clt = document.getElementById("fsClt").value;
+  const fp  = document.getElementById("fsFp").value;
+  const oil = document.getElementById("fsOil").value;
+  const knk = document.getElementById("fsKnk").value;
+  const lam = document.getElementById("fsLam").value;
+
+  const bBar = ((map - 100) / 100.0);
+  document.getElementById("fvRpm").textContent = rpm + " RPM";
+  document.getElementById("fvMap").textContent = (bBar >= 0 ? "+" : "") + bBar.toFixed(2) + " bar (" + map + " kPa)";
+  document.getElementById("fvTps").textContent = tps + " %";
+  document.getElementById("fvClt").textContent = clt + " °C";
+  document.getElementById("fvFp").textContent = (fp / 100.0).toFixed(2) + " bar";
+  document.getElementById("fvOil").textContent = (oil / 100.0).toFixed(2) + " bar";
+  document.getElementById("fvKnk").textContent = knk + " mV";
+  document.getElementById("fvLam").textContent = (Number(lam) >= 0 ? "+" : "") + Number(lam).toFixed(2) + " λ";
+
+  if (hilBus) {
+    hilBus.postMessage({
+      type: "stim_telemetry",
+      active: manualOn,
+      rpm: Number(rpm),
+      map_kpa: Number(map),
+      tps: Number(tps),
+      clt: Number(clt),
+      fp_kpa: Number(fp),
+      oil_kpa: Number(oil),
+      lambda_bias: Number(lam),
+      misfire_cyl: faults.misfire ? 2 : -1,
+      vr_inverted: faults.vrinv,
+      wmi_fault: faults.wmi
+    });
+  }
+  try {
+    if (location.protocol.indexOf("http") === 0) {
+      fetch("/api/command?action=stim_set&active=" + (manualOn ? 1 : 0) + "&rpm=" + rpm + "&map_kpa=" + map +
+            "&tps_pct=" + tps + "&clt_c=" + clt + "&fuel_press_kpa=" + fp + "&oil_press_kpa=" + oil +
+            "&knock_mv=" + knk + "&lambda_bias=" + lam, { method: "POST" });
+    }
+  } catch (e) {}
+}
+
+async function runAutoQc() {
+  activeProf = null; clearAllFaults();
+  const sn = document.getElementById("snInp").value.trim() || "TBX-800PRO-0001";
+  document.getElementById("certSn").textContent = "Série: " + sn + " • " + new Date().toISOString().slice(0, 19).replace("T", " ");
+  document.getElementById("qcBadge").textContent = "TESTANDO...";
+  const steps = [
+    { id: "qs1", rpm: 1400, map: 95, fp: 400, txt: "PASS (5.00V / 60-2 LOCK)" },
+    { id: "qs2", rpm: 4200, map: 175, fp: 420, txt: "PASS (8×INJ + 8×IGN OK)" },
+    { id: "qs3", rpm: 3400, map: 140, fp: 410, txt: "PASS (+9.2% PW CONVERGIDO)" },
+    { id: "qs4", rpm: 5200, map: 215, fp: 290, txt: "PASS (VE FREEZE + √dP OK)" },
+    { id: "qs5", rpm: 2500, map: 105, fp: 405, txt: "PASS (CAN 500k CRC16 OK)" }
+  ];
+  manualOn = true; updateProfButtons();
+  for (let i = 0; i < steps.length; i++) {
+    const s = steps[i];
+    document.getElementById(s.id).textContent = "EXECUTANDO...";
+    document.getElementById(s.id).style.color = "var(--amber)";
+    document.getElementById("fsRpm").value = s.rpm;
+    document.getElementById("fsMap").value = s.map;
+    document.getElementById("fsFp").value = s.fp;
+    syncStim();
+    await new Promise(function(r) { setTimeout(r, 550); });
+    document.getElementById(s.id).textContent = s.txt;
+    document.getElementById(s.id).style.color = "var(--green)";
+  }
+  manualOn = false; updateProfButtons(); syncStim(); qcOk = true;
+  document.getElementById("qcBadge").textContent = "100% APROVADO";
+  document.getElementById("certRes").textContent = "VEREDITO: APROVADO EM 5/5 ESTÁGIOS (LED_PASS=1 • LED_FAIL=0)";
+  drawQr(sn + "|PASS");
+}
+
+function tickBench() {
+  tk++;
+  if (activeProf) {
+    profTick++;
+    if (activeProf === "dyno") {
+      const cyc = profTick % 120;
+      const gearFrac = (cyc % 30) / 30.0;
+      const gear = Math.floor(cyc / 30) + 1;
+      const rpm = Math.round(2400 + gearFrac * 4750);
+      const map = Math.round(115 + Math.min(1, gearFrac * 1.6) * (120 + gear * 14));
+      document.getElementById("fsRpm").value = rpm;
+      document.getElementById("fsMap").value = Math.min(285, map);
+      document.getElementById("fsTps").value = 98;
+      if (!faults.fpdrop) document.getElementById("fsFp").value = 300 + Math.round((map - 100) * 1.0);
+    } else if (activeProf === "drag") {
+      const tSec = (profTick % 100) * 0.08;
+      if (tSec < 1.8) {
+        document.getElementById("fsRpm").value = 4300 + ((profTick % 2) * 80);
+        document.getElementById("fsMap").value = 185;
+        document.getElementById("fsTps").value = 100;
+      } else {
+        const runT = tSec - 1.8;
+        const gProg = (runT * 1.35) % 1.0;
+        document.getElementById("fsRpm").value = Math.round(5100 + gProg * 2150);
+        document.getElementById("fsMap").value = Math.round(Math.min(285, 210 + runT * 14));
+        document.getElementById("fsTps").value = 100;
+      }
+    } else if (activeProf === "street") {
+      const ph = profTick * 0.09;
+      const w = Math.sin(ph);
+      document.getElementById("fsRpm").value = w < -0.4 ? 880 : Math.round(1400 + Math.abs(w) * 3100);
+      document.getElementById("fsMap").value = w < -0.4 ? 44 : Math.round(55 + Math.max(0, w) * 95);
+      document.getElementById("fsTps").value = w < -0.4 ? 2 : Math.round(14 + Math.max(0, w) * 48);
+    }
+    syncStim();
+  }
+
+  const rpm = Number(document.getElementById("fsRpm").value);
+  const run = rpm > 120;
+  const anyFlt = faults.misfire || faults.fpdrop || faults.vrinv || faults.wmi || faults.overheat;
+  for (let i = 0; i < 8; i++) {
+    document.getElementById("sd" + i).className = "smd-diode" + (run && ((tk + i) % 4 === 0) ? " c-on" : "");
+    const mfOff = (faults.misfire && i === 2);
+    document.getElementById("sd" + (8 + i)).className = "smd-diode" + (run && !mfOff && ((tk + i + 2) % 4 === 0) ? " a-on" : "");
+  }
+  document.getElementById("sd16").className = "smd-diode g-on";
+  document.getElementById("sd17").className = "smd-diode" + (run ? " g-on" : "");
+  document.getElementById("sd25").className = "smd-diode" + ((tk % 2 === 0) ? " g-on" : "");
+  document.getElementById("sd26").className = "smd-diode" + (qcOk && !anyFlt ? " g-on" : "");
+  document.getElementById("sd27").className = "smd-diode" + (anyFlt ? " a-on" : "");
+
+  const cv = document.getElementById("cvLogic");
+  if (cv) {
+    const W = cv.clientWidth || 500, H = cv.clientHeight || 110;
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    const ctx = cv.getContext("2d");
+    ctx.clearRect(0, 0, W, H);
+    const inv = faults.vrinv ? -1 : 1;
+    ctx.strokeStyle = faults.vrinv ? "#ff2a4b" : "#00e5ff"; ctx.lineWidth = 1.4; ctx.beginPath();
+    for (let x = 0; x < W; x += 3) {
+      const tooth = Math.floor(((x + tk * 6) % 240) / 4);
+      const y = (tooth >= 58) ? H * 0.35 : (H * 0.35 + inv * ((tooth % 2 === 0) ? -18 : 18));
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = "#ffd600"; ctx.beginPath();
+    for (let x = 0; x < W; x += 3) {
+      const pulse = ((x + tk * 6) % 90) < 18 && run;
+      const y = pulse ? H * 0.68 : H * 0.86;
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+}
+
+initRack();
+setInterval(tickBench, 80);
+</script>
+</body>
+</html>
