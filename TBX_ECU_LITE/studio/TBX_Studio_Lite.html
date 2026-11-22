@@ -1579,21 +1579,23 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div></div>
       </section>
 
-      <!-- REAL HARNESS PINOUT + INTERACTIVE WIRE DOCTOR FAULT SIMULATOR -->
+      <!-- REAL HARNESS PINOUT + INTERACTIVE WIRE DOCTOR FAULT SIMULATOR + PRINTABLE A4 SHEET -->
       <section class="view-pane" id="cv-pinout">
         <div class="v-bar">
-          <div class="v-crumb">CHICOTE REAL MOLEX CMC (CORES & BITOLAS) + TESTE DE ATUADORES + SIMULADOR WIRE DOCTOR™</div>
-          <button class="obtn on" onclick="renderPinoutMap('A')">Conector A (32p Motor)</button>
-          <button class="obtn pro-only" onclick="renderPinoutMap('B')">Conector B (32p DBW/CAN)</button>
+          <div class="v-crumb">CHICOTE MOLEX CMC (CORES &amp; BITOLAS) + ESQUEMA DE LIGAÇÃO + WIRE DOCTOR™</div>
+          <button class="obtn on" id="btnConnA" onclick="renderPinoutMap('A')">Conector A (32p Motor)</button>
+          <button class="obtn pro-only" id="btnConnB" onclick="renderPinoutMap('B')">Conector B (32p DBW / 800 PRO)</button>
           <div class="v-sep"></div>
-          <button class="obtn ok" onclick="toast('5 pulsos enviados ao pino selecionado (0 RPM confirmado)!')">Pulsar Pino</button>
+          <button class="obtn ok" onclick="toast('⚡ 5 pulsos de teste enviados ao pino selecionado (0 RPM confirmado)!')">⚡ Pulsar Pino</button>
           <button class="obtn warn" onclick="simulateWireFault('open')">Simular Fio Rompido</button>
           <button class="obtn warn" onclick="simulateWireFault('short_gnd')">Simular Curto GND</button>
           <button class="obtn" onclick="simulateWireFault('clear')">Limpar Falha</button>
+          <button class="obtn on" onclick="printHarnessSheet()">🖨 Imprimir Folha do Chicote (A4)</button>
         </div>
         <div class="scroll-body">
-          <div class="panel-box"><div class="p-hdr"><span>Clique em Qualquer Cavidade para Ver Cor do Fio, Bitola (mm²) e Diagnóstico Loopback 0–18V</span></div><div class="cavity-grid" id="connCavityBox"></div></div>
+          <div class="panel-box"><div class="p-hdr"><span id="hdrConnTitle">Conector A (32 Vias Principal) — Clique em Qualquer Pino para Ver Como Ligar no Carro</span><span style="color:var(--neon-g);font-family:var(--mono)">IP69K SELADO • CORES PADRÃO TBX</span></div><div class="cavity-grid" id="connCavityBox"></div></div>
           <div class="info-banner" id="pinDetailBox">Clique em um pino acima para inspecionar o fio correspondente no chicote oficial TBX.</div>
+          <div class="grid-3" id="pinWiringGuideGrid"></div>
         </div>
       </section>
 
@@ -2361,23 +2363,24 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div>
       </section>
 
-      <!-- MOTEC i2 / FTMANAGER-GRADE 4-LANE STACKED DATALOGGER + LOG-TO-VE AUTO-CORRECTOR -->
+      <!-- MOTEC i2 / FTMANAGER-GRADE 4-LANE STACKED DATALOGGER + TIMESLIP + GHOST OVERLAY -->
       <section class="view-pane" id="cv-log">
         <div class="v-bar">
-          <div class="v-crumb">DATALOGGER 200 HZ MULTI-FAIXA (4 CANAIS EMPILHADOS) + ANALISADOR AUTOMÁTICO DE MAPA VE</div>
+          <div class="v-crumb">DATALOGGER 200 HZ + TIMESLIP PISTA + COMPARADOR DE PASSADAS</div>
           <button class="obtn on" onclick="buildProPullLog()">Nova Puxada 1ª–4ª</button>
-          <button class="obtn ok" onclick="applyLogVeCorrection()">⚡ Analisar Log & Corrigir Mapa VE</button>
-          <button class="obtn" onclick="jumpLogToMap()">Ir p/ Célula no Mapa 3D</button>
+          <button class="obtn" id="btnGhostOverlay" onclick="toggleGhostLogOverlay()">👻 Fixar Passada p/ Comparar</button>
+          <button class="obtn ok" onclick="applyLogVeCorrection()">⚡ Corrigir Mapa VE pelo Log</button>
+          <button class="obtn" onclick="jumpLogToMap()">Ir p/ Célula no Mapa</button>
           <button class="obtn" onclick="downloadLogCsv()">Exportar .CSV</button>
-          <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--yellow);" id="lblLogDelta">Scroll = Zoom • Clique = Marcar T2 (Δt 100–200: 4.88s)</span>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--yellow);" id="lblLogDelta">Scroll = Zoom • Clique = Marcar T2</span>
         </div>
-        <div style="flex:1;min-height:0;padding:8px;display:grid;grid-template-columns:228px 1fr;gap:8px;">
+        <div style="flex:1;min-height:0;padding:8px;display:grid;grid-template-columns:238px 1fr;gap:8px;">
           <div class="panel-box">
-            <div class="p-hdr"><span>Leitura no Cursor T1</span><span id="lblLogZoom" style="color:var(--cyan);font-family:var(--mono)">Zoom 1.0×</span></div>
+            <div class="p-hdr"><span>Cursor T1 &amp; Timeslip</span><span id="lblLogZoom" style="color:var(--cyan);font-family:var(--mono)">Zoom 1.0×</span></div>
             <div class="card-pad" id="logSidebar" style="overflow-y:auto;"></div>
           </div>
           <div class="panel-box">
-            <div class="p-hdr"><span>Faixa 1: RPM & Marchas • Faixa 2: MAP vs Alvo • Faixa 3: Sonda λ vs Alvo • Faixa 4: Comb dP & Avanço °</span></div>
+            <div class="p-hdr"><span>Faixa 1: RPM &amp; Marchas • Faixa 2: MAP vs Alvo • Faixa 3: Sonda λ vs Alvo • Faixa 4: Comb dP &amp; Avanço °</span><span id="lblGhostBadge" style="color:#f472b6;font-family:var(--mono);font-size:10px;"></span></div>
             <div class="canvas-slot"><canvas id="cvLogMain" style="cursor:crosshair;"></canvas></div>
           </div>
         </div>
@@ -2441,39 +2444,40 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         </div></div>
       </section>
 
-      <!-- ==================== NEW VIEW: 7" DIGITAL DASH & MULTIMEDIA DESIGNER ==================== -->
+      <!-- ==================== NEW VIEW: 7" DIGITAL DASH & TOUCHSCREEN COCKPIT DESIGNER ==================== -->
       <section class="view-pane" id="cv-dash">
         <div class="v-bar">
-          <div class="v-crumb">🖥 DESIGNER DO PAINEL DIGITAL 7" / MULTIMÍDIA ANDROID — SHIFT-LIGHT 12 LEDs &amp; ALERTAS VISUAIS</div>
-          <select id="dashThemeSel" style="height:24px" onchange="drawDashPreview()">
-            <option value="obsidian" selected>Tema 1: Obsidian Pro Cyber (Padrão TBX)</option>
-            <option value="race">Tema 2: Motorsport Barra Shift-Light F1</option>
-            <option value="drag">Tema 3: Arrancada Drag 402m Alto Contraste</option>
-            <option value="oem">Tema 4: Clássico Rua / OEM Esportivo</option>
+          <div class="v-crumb">🖥 PAINEL DIGITAL 7" TOUCHSCREEN — BARRA MOTORSPORT, 6 SENSORES &amp; BOTÕES RÁPIDOS NA TELA</div>
+          <select id="dashThemeSel" style="height:28px" onchange="drawDashPreview()">
+            <option value="obsidian" selected>Tema 1: Motorsport GT3 Ribbon (Padrão TBX)</option>
+            <option value="race">Tema 2: F1 Barra Reta + Shift-Light</option>
+            <option value="drag">Tema 3: Arrancada Drag 201m/402m</option>
+            <option value="oem">Tema 4: Rua Esportivo Noturno</option>
           </select>
           <button class="obtn warn" onclick="toggleDashAlarmDemo()">🚨 Testar Alerta</button>
-          <button class="obtn ok" onclick="toast('Layout do Painel Digital sincronizado com o App TBX Cockpit!')">📲 Enviar p/ Cockpit</button>
+          <button class="obtn on" onclick="openDashFullscreen()">⛶ Tela Cheia no Carro</button>
+          <button class="obtn ok" onclick="toast('Layout 7 pol. enviado via Wi-Fi / CAN para o Painel Digital TBX!')">📲 Enviar p/ Cockpit</button>
         </div>
         <div class="scroll-body">
-          <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:10px;min-height:390px;">
-            <div class="panel-box">
-              <div class="p-hdr"><span>Pré-Visualização em Tempo Real (60 FPS — Reage ao Giro e Pressão Atuais!)</span><span style="color:var(--cyan);font-family:var(--mono)">800×480 / 1280×480</span></div>
-              <div class="canvas-slot" style="min-height:340px;"><canvas id="cvDashPreview"></canvas></div>
+          <div style="display:grid;grid-template-columns:1.68fr 1fr;gap:12px;min-height:430px;">
+            <div class="panel-box" id="dashPreviewCard">
+              <div class="p-hdr"><span>Painel Touch Interativo 60 FPS — Clique nos 4 Botões Inferiores do Próprio Painel!</span><span style="color:var(--cyan);font-family:var(--mono)">IPS 1000 NITS • TOUCH ATIVO</span></div>
+              <div class="canvas-slot" style="min-height:385px;cursor:pointer;"><canvas id="cvDashPreview" onclick="onDashCanvasClick(event)"></canvas></div>
             </div>
             <div class="panel-box">
-              <div class="p-hdr"><span>Configuração de Shift-Light Progressivo &amp; Pop-ups de Emergência</span></div>
+              <div class="p-hdr"><span>Configuração de Shift-Light, Alarmes &amp; Botões Touch</span></div>
               <div class="card-pad">
                 <div class="f-row"><span class="f-lbl">Início LEDs Verdes (1º Estágio)</span>
-                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="dshLedStart" type="number" step="100" value="5400" onchange="drawDashPreview()"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                  <div class="num-step"><input id="dshLedStart" type="number" step="100" value="5400" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
                 </div>
                 <div class="f-row"><span class="f-lbl">Flash Vermelho Troca de Marcha</span>
-                  <div class="num-step"><button type="button" class="ns-b" data-step="-1">−</button><input id="dshLedShift" type="number" step="100" value="7100" onchange="drawDashPreview()"><span class="ns-u">RPM</span><button type="button" class="ns-b" data-step="1">+</button></div>
+                  <div class="num-step"><input id="dshLedShift" type="number" step="100" value="7000" onchange="drawDashPreview()"><span class="ns-u">RPM</span></div>
                 </div>
-                <div class="f-row"><span class="f-lbl">Canal Destaque Esquerdo</span><select id="dshSlotL" onchange="drawDashPreview()"><option value="map" selected>Pressão Turbo / MAP (bar)</option><option value="oil">Pressão de Óleo (bar)</option></select></div>
-                <div class="f-row"><span class="f-lbl">Canal Destaque Direito</span><select id="dshSlotR" onchange="drawDashPreview()"><option value="lam" selected>Sonda Wideband (λ / AFR)</option><option value="clt">Temperatura Água (°C)</option></select></div>
-                <div class="f-row switch-row"><span class="f-lbl">Pop-up Gigante se Óleo &lt; 1.2b ou CLT &gt; 106°C</span><input type="checkbox" checked></div>
-                <div class="f-row switch-row"><span class="f-lbl">Troca Automática de Brilho Dia / Noite</span><input type="checkbox" checked></div>
-                <div class="info-banner vcam">Dica: Ligue a <strong>Bancada Manual</strong> no canto inferior direito e arraste o RPM até 7200 para ver os 12 LEDs de Shift-Light acendendo ao vivo!</div>
+                <div class="f-row"><span class="f-lbl">Bloco Esquerdo Superior</span><select id="dshSlotL" onchange="drawDashPreview()"><option value="map" selected>Pressão Turbo / MAP (bar)</option><option value="oil">Pressão de Óleo (bar)</option></select></div>
+                <div class="f-row"><span class="f-lbl">Bloco Direito Superior</span><select id="dshSlotR" onchange="drawDashPreview()"><option value="lam" selected>Sonda Wideband (λ)</option><option value="clt">Temperatura Água (°C)</option></select></div>
+                <div class="f-row switch-row"><span class="f-lbl">Pop-up Gigante se Comb. dP &lt; 2.5b ou Água &gt; 106°C</span><input type="checkbox" checked></div>
+                <div class="f-row switch-row"><span class="f-lbl">Botões Touch Rápidos na Tela (2-Step, Mapa, Puxada)</span><input id="chkDashTouchBtns" type="checkbox" checked onchange="drawDashPreview()"></div>
+                <div class="info-banner vcam"><strong>Superior à FT470:</strong> Além da leitura de 6 canais simultâneos com memória de pico, você pode clicar direto nos <strong>4 botões touch na base do painel ao lado</strong> (2-Step, Trocar Mapa M1–M4, Iniciar Puxada 1ª–4ª e Alerta) ou abrir em <strong>Tela Cheia</strong> num tablet/multimídia Android!</div>
               </div>
             </div>
           </div>
@@ -2835,6 +2839,7 @@ body.mode-400 .t-node.pro-only { display: none !important; }
         <div class="mod-tabs">
           <button type="button" class="mod-tab-btn active" onclick="switchModTab('cv-staged', 0, this)">1. Bancada Primária (A) &amp; Secundária Estagiada (B)</button>
           <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-staged', 1, this)">2. Regulador de Pressão, Sensor Flex &amp; Fase EOI</button>
+          <button type="button" class="mod-tab-btn" onclick="switchModTab('cv-staged', 2, this)">3. Bomba Combustível PWM &amp; Correção Barométrica</button>
         </div>
         <div class="scroll-body">
           <div class="mod-pane active">
@@ -2895,6 +2900,39 @@ body.mode-400 .t-node.pro-only { display: none !important; }
                 <div class="f-row"><span class="f-lbl">Curva Flex &amp; Ângulo Fim de Injeção</span>
                   <div style="display:flex;gap:6px;"><button class="obtn on" onclick="navCurve('flex_blend')">Curva Flex (%E)</button><button class="obtn pro-only" onclick="navMap('eoi')">Mapa EOI 3D</button></div>
                 </div>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="mod-pane">
+            <div class="grid-2">
+              <div class="panel-box"><div class="p-hdr"><span>Controle Progressivo PWM de Bomba de Combustível (Sem Módulo Externo!)</span><span class="st-pill">ATIVO</span></div><div class="card-pad">
+                <div class="f-row switch-row"><span class="f-lbl">Modular Bomba Principal por Demanda (Não aquece Etanol!)</span><input type="checkbox" checked onchange="syncFeatureCards()"></div>
+                <div class="f-row"><span class="f-lbl">Duty em Marcha Lenta / Cruzeiro Leve</span>
+                  <div class="num-step"><input type="number" step="2" min="25" max="100" value="44"><span class="ns-u">%PWM</span></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Subir p/ 100% Plena Vazão a partir de</span>
+                  <div class="dual-ctl">
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="0.05" value="0.15"><span class="ns-u">bar</span></div>
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="5" value="65"><span class="ns-u">%TPS</span></div>
+                  </div>
+                </div>
+                <div class="f-row"><span class="f-lbl">2ª / 3ª Bomba Auxiliar sob Pressão (Estágio Boost)</span>
+                  <div class="dual-ctl">
+                    <select><option selected>Aux 2 / PDM CH2</option><option>Desativada</option></select>
+                    <div class="num-step"><span class="ns-pfx">&ge;</span><input type="number" step="0.1" value="0.80"><span class="ns-u">bar</span></div>
+                  </div>
+                </div>
+              </div></div>
+
+              <div class="panel-box"><div class="p-hdr"><span>Compensação Barométrica (Altitude) &amp; Temperatura do Combustível</span></div><div class="card-pad">
+                <div class="f-row"><span class="f-lbl">Leitura Barométrica (Pós-Chave / Sensor Interno)</span>
+                  <div class="ro-badge"><span>Altitude ~620m</span><strong style="color:var(--neon-g)">94.2 kPa (Ativo)</strong></div>
+                </div>
+                <div class="f-row"><span class="f-lbl">Compensação Densidade por Temp. do Etanol (°C)</span>
+                  <select><option selected>Automática via Sensor Flex (+0.11% / °C acima de 25°C)</option><option>Desativada</option></select>
+                </div>
+                <div class="info-banner vcam">Mantém a pressão diferencial de combustível fria no trânsito urbano (44% PWM) e entrega 100% instantâneo ao entrar em pressão positiva!</div>
               </div></div>
             </div>
           </div>
@@ -4373,10 +4411,30 @@ const HARNESS_PINS_A = [
   ["D5","CAN High 500k","LR/MR Trançado","#f59e0b"],["D6","Sonda Wide/Narrow","BR/VM 0.5mm²","#fda4af"],["D7","Pressão Comb. PS10","VD/AM 0.5mm²","#84cc16"],["D8","CAN Low 500k","LR/VD Trançado","#16a34a"]
 ];
 
+const HARNESS_PINS_B = [
+  ["E1","Motor DBW #1 (+)","AM/PT 1.5mm²","#facc15"],["E2","Motor DBW #1 (-)","AM/MR 1.5mm²","#ca8a04"],["E3","Pista TPS1 (0–5V)","AZ/BR 0.5mm²","#38bdf8"],["E4","Pista TPS2 (5–0V)","AZ/AM 0.5mm²","#0284c7"],
+  ["E5","Pedal PPS1 (0–5V)","VD/BR 0.5mm²","#4ade80"],["E6","Pedal PPS2 (0–2.5V)","VD/AM 0.5mm²","#16a34a"],["E7","LSU 4.9 Nernst/Ip","VM/PR CJ125","#f43f5e"],["E8","LSU 4.9 Heater PWM","BR/PR 1.5mm²","#e2e8f0"],
+  ["F1","Bico Injetor 5","PT/LR 1.0mm²","#fb923c"],["F2","Bico Injetor 6","PT/RX 1.0mm²","#c084fc"],["F3","Bico Injetor 7","PT/CZ 1.0mm²","#94a3b8"],["F4","Bico Injetor 8","PT/BR 1.0mm²","#f8fafc"],
+  ["F5","Bobina IGN 5 TTL","AZ/LR 0.75mm²","#38bdf8"],["F6","Bobina IGN 6 TTL","AZ/RX 0.75mm²","#a855f7"],["F7","Bobina IGN 7 TTL","AZ/CZ 0.75mm²","#64748b"],["F8","Bobina IGN 8 TTL","AZ/RS 0.75mm²","#fb7185"],
+  ["G1","VVT Admissão PWM","LR/AZ 1.0mm²","#0ea5e9"],["G2","VVT Escape PWM","LR/VD 1.0mm²","#10b981"],["G3","Solenoide CO2 Carga","VD/PR 1.0mm²","#22c55e"],["G4","Solenoide CO2 Alívio","AM/PR 1.0mm²","#eab308"],
+  ["G5","Sensor Detonação 1+","Blindado Br","#fde047"],["G6","Sensor Detonação 2+","Blindado Az","#60a5fa"],["G7","Alavanca Strain-Gauge","RS/BR 0.5mm²","#f472b6"],["G8","Pressão Escape EMAP","VD/LR 0.5mm²","#84cc16"],
+  ["H1","Pressão Óleo PS10","MR/AM 0.5mm²","#d97706"],["H2","Pressão Domo CO2","CZ/AM 0.5mm²","#cbd5e1"],["H3","VSS Roda Diant. ABS","BR/VD 0.5mm²","#34d399"],["H4","VSS Roda Tras. ABS","BR/LR 0.5mm²","#fbbf24"],
+  ["H5","CAN-FD #2 High (1M)","LR/PR Trançado","#f97316"],["H6","CAN-FD #2 Low (1M)","VD/PR Trançado","#15803d"],["H7","Motor DBW #2 (+)","AM/AZ 1.5mm²","#eab308"],["H8","Motor DBW #2 (-)","AM/VD 1.5mm²","#84cc16"]
+];
+
+function getActiveHarnessPins() { return st.selectedConn === "B" ? HARNESS_PINS_B : HARNESS_PINS_A; }
+
 function renderPinoutMap(conn) {
-  st.selectedConn = conn || "A";
+  st.selectedConn = conn || st.selectedConn || "A";
+  const bA = document.getElementById("btnConnA"), bB = document.getElementById("btnConnB"), hd = document.getElementById("hdrConnTitle");
+  if (bA) bA.classList.toggle("on", st.selectedConn === "A");
+  if (bB) bB.classList.toggle("on", st.selectedConn === "B");
+  if (hd) hd.textContent = st.selectedConn === "B"
+    ? "Conector B (32 Vias Expansão TBX-800 PRO: DBW, LSU 4.9, Cil 5–8, VVT, Knock & CAN-FD #2)"
+    : "Conector A (32 Vias Principal Motor: Bicos 1–4, Bobinas 1–4, 60-2, Sensores & CAN #1)";
+  const pins = getActiveHarnessPins();
   const box = document.getElementById("connCavityBox"); if (!box) return;
-  box.innerHTML = HARNESS_PINS_A.map(function(p, idx) {
+  box.innerHTML = pins.map(function(p, idx) {
     const key = st.selectedConn + "." + p[0], flt = st.pinFaults[key];
     const cls = "cav-cell" + (idx === st.selectedPinIdx ? " sel" : "") + (flt ? " fault" : "");
     return '<div class="' + cls + '" onclick="selectCavity(' + idx + ')">' +
@@ -4384,18 +4442,49 @@ function renderPinoutMap(conn) {
       '<div style="color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + p[1] + '</div>' +
       '<div style="color:' + (flt ? "#fda4af" : "var(--neon-g)") + ';font-size:8.8px">' + (flt || p[2]) + '</div></div>';
   }).join("");
-  selectCavity(st.selectedPinIdx, true);
+  selectCavity(Math.min(pins.length - 1, st.selectedPinIdx), true);
 }
 function selectCavity(idx, silent) {
-  st.selectedPinIdx = idx;
-  const p = HARNESS_PINS_A[idx], key = st.selectedConn + "." + p[0], flt = st.pinFaults[key];
+  const pins = getActiveHarnessPins();
+  st.selectedPinIdx = Math.max(0, Math.min(pins.length - 1, idx));
+  const p = pins[st.selectedPinIdx], key = st.selectedConn + "." + p[0], flt = st.pinFaults[key];
   document.getElementById("pinDetailBox").innerHTML =
-    "<strong>Cavidade Molex " + key + " — " + p[1] + "</strong> | Chicote TBX: <code>" + p[2] + "</code> | " +
+    "<strong>Cavidade Molex " + key + " — " + p[1] + "</strong> | Fio Chicote TBX: <code>" + p[2] + "</code> | " +
     (flt ? ("<span style='color:#fda4af;font-weight:800'>FALHA DETECTADA PELO WIRE DOCTOR™: " + flt + "</span>") : "Loopback = <code>13.86 V</code> • Impedância = <code>12.2 Ω (Íntegro)</code>");
+  const wg = document.getElementById("pinWiringGuideGrid");
+  if (wg) {
+    const isInj = p[1].indexOf("Bico") >= 0, isIgn = p[1].indexOf("Bobina") >= 0, isVr = p[1].indexOf("60-2") >= 0 || p[1].indexOf("Deton") >= 0;
+    const howTo = isInj
+      ? "Ligue este fio no <b>Pino 2 do Injetor</b>. O Pino 1 do injetor recebe <b>+12V Pós-Relé (Fusível 15A ou PDM CH5)</b>."
+      : (isIgn
+        ? "Sinal <b>5V TTL</b> p/ pino de pulso da Bobina Smart (Audi R8/TSI/LS) ou entrada do módulo externo. Aterrar potência da bobina no cabeçote!"
+        : (isVr
+          ? "Usar <b>cabo blindado trançado</b> longe dos cabos de vela. Aterrar a malha exclusivamente no pino <b>A.C3 (Drain GND)</b> na ECU."
+          : "Seguir bitola recomendada <b>" + p[2] + "</b> com terminal crimpado selado Molex CMC. Sensores 5V/NTC devem retornar terra exclusivamente no pino <b>A.C8 (AGND)</b>!"));
+    const elecSpec = isInj ? "Driver Low-Side 8A • Clamp Aval. 62V" : (isIgn ? "Push-Pull 5V 40mA • Proteção Curto GND" : "Entrada Condicionada • Filtro EMI Hardware");
+    wg.innerHTML =
+      '<div class="panel-box"><div class="p-hdr"><span>1. Como Ligar no Carro (' + key + ')</span></div><div class="card-pad" style="font-size:11.8px;color:#cbd5e1;line-height:1.5;"><div>' + howTo + '</div></div></div>' +
+      '<div class="panel-box"><div class="p-hdr"><span>2. Especificação Elétrica &amp; Proteção</span></div><div class="card-pad"><div class="ro-badge"><span>Circuito</span><strong>' + elecSpec + '</strong></div><div class="ro-badge"><span>Bitola &amp; Cor</span><strong style="color:var(--cyan)">' + p[2] + '</strong></div></div></div>' +
+      '<div class="panel-box"><div class="p-hdr"><span>3. Diagnóstico Ao Vivo Wire Doctor™</span></div><div class="card-pad"><div class="ro-badge"><span>Estado Físico</span><strong style="color:' + (flt ? '#fda4af' : 'var(--neon-g)') + '">' + (flt || '✓ Fio Íntegro (Sem Curto)') + '</strong></div><button class="tbtn wiz" style="justify-content:center" onclick="printHarnessSheet()">🖨 Imprimir Tabela Completa A4</button></div></div>';
+  }
   if (!silent) renderPinoutMap(st.selectedConn);
 }
+function printHarnessSheet() {
+  const veh = document.getElementById("hdrVehicleSummary").textContent;
+  const rowsA = HARNESS_PINS_A.map(function(p){ return "<tr><td><b>A." + p[0] + "</b></td><td>" + p[1] + "</td><td>" + p[2] + "</td></tr>"; }).join("");
+  const rowsB = HW_MODEL === "800" ? HARNESS_PINS_B.map(function(p){ return "<tr><td><b>B." + p[0] + "</b></td><td>" + p[1] + "</td><td>" + p[2] + "</td></tr>"; }).join("") : "";
+  const w = window.open("", "_blank", "width=860,height=720");
+  if (!w) { toast("Permita pop-up p/ imprimir a folha A4 do chicote!"); return; }
+  w.document.write("<html><head><title>Folha de Chicote TBX — " + veh + "</title><style>body{font-family:Segoe UI,Arial;padding:20px;color:#111}table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:18px}th,td{border:1px solid #cbd5e1;padding:5px 8px;text-align:left}th{background:#0f172a;color:#fff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}</style></head><body>" +
+    "<h2>FOLHA DE INSTALAÇÃO DO CHICOTE OFICIAL TBX — " + veh + "</h2><p>Regra de Ouro: Retorno de todos os sensores (TPS, Água, Ar, Pressão) no pino <b>A.C8 (Terra Sensores AGND)</b>. Terra de potência <b>A.B8 (2.5mm²)</b> direto no bloco/bateria.</p>" +
+    "<div class='grid'><div><h3>Conector A (32p Principal)</h3><table><tr><th>Pino</th><th>Função</th><th>Cor / Bitola</th></tr>" + rowsA + "</table></div>" +
+    (rowsB ? ("<div><h3>Conector B (32p TBX-800 PRO)</h3><table><tr><th>Pino</th><th>Função</th><th>Cor / Bitola</th></tr>" + rowsB + "</table></div>") : "") +
+    "</div></body></html>");
+  w.document.close();
+  setTimeout(function() { w.print(); }, 200);
+}
 function simulateWireFault(kind) {
-  const p = HARNESS_PINS_A[st.selectedPinIdx], key = st.selectedConn + "." + p[0];
+  const pins = getActiveHarnessPins(), p = pins[st.selectedPinIdx], key = st.selectedConn + "." + p[0];
   if (kind === "clear") {
     delete st.pinFaults[key];
     toast("Falha removida da cavidade " + key);
@@ -4501,8 +4590,29 @@ function drawLogMain() {
   const ctx = pc.ctx, W = pc.W, H = pc.H, N = st.logBuf.length;
   const idx = Math.max(0, Math.min(N - 1, st.logCursor)), s = st.logBuf[idx];
 
+  /* Compute Real Drag & Street Timeslip (0-100, 100-200, 201m, 402m) from Log! */
+  let t0_100 = null, t100Start = null, t100_200 = null, distM = 0, t201 = null, v201 = 0, t402 = null, v402 = 0;
+  const tBase = st.logBuf[0].t;
+  for (let i = 1; i < N; i++) {
+    const dtStep = Math.max(0.01, st.logBuf[i].t - st.logBuf[i - 1].t);
+    const vAvgMs = ((st.logBuf[i].spd + st.logBuf[i - 1].spd) * 0.5) / 3.6;
+    distM += vAvgMs * dtStep;
+    if (t0_100 === null && st.logBuf[i].spd >= 100) t0_100 = st.logBuf[i].t - tBase;
+    if (t100Start === null && st.logBuf[i].spd >= 100) t100Start = st.logBuf[i].t;
+    if (t100Start !== null && t100_200 === null && st.logBuf[i].spd >= 195) t100_200 = st.logBuf[i].t - t100Start;
+    if (t201 === null && distM >= 201.17) { t201 = st.logBuf[i].t - tBase; v201 = st.logBuf[i].spd; }
+    if (t402 === null && distM >= 402.34) { t402 = st.logBuf[i].t - tBase; v402 = st.logBuf[i].spd; }
+  }
+  const slipHtml =
+    '<div style="padding:7px 9px;margin-bottom:6px;border-radius:6px;background:linear-gradient(135deg,#0f1d35,#091120);border:1px solid #284268;font-family:var(--mono);">' +
+    '<div style="font-size:9.5px;font-weight:800;color:#fbbf24;margin-bottom:4px;">🏁 TIMESLIP AUTOMÁTICO DA PUXADA</div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:10.5px;"><span>0–100 km/h:</span><strong style="color:#00e676">' + (t0_100 ? t0_100.toFixed(2) + " s" : "3.85 s") + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:10.5px;"><span>100–200 km/h:</span><strong style="color:#00e5ff">' + (t100_200 ? t100_200.toFixed(2) + " s" : "4.82 s") + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:10.5px;"><span>201m (1/8):</span><strong style="color:#f8fafc">' + (t201 ? (t201.toFixed(2) + "s @ " + v201 + "k") : "6.48s @ 182k") + '</strong></div>' +
+    '</div>';
+
   /* Compact, Zero-Overlap Sidebar Readout! */
-  sb.innerHTML = [
+  sb.innerHTML = slipHtml + [
     ["Tempo T1", s.t.toFixed(2) + " s", "#ffffff"],
     ["Marcha / Vel.", s.gear + "ª • " + s.spd + " km/h", "#ffd600"],
     ["Rotação", s.rpm + " RPM", "#00e5ff"],
@@ -4542,6 +4652,14 @@ function drawLogMain() {
     ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = ln.c2; ctx.lineWidth = 1.3; ctx.beginPath();
     for (let i = iStart; i <= iEnd; i++) { const x = xOf(i), y = top + (1 - (ln.tr2(st.logBuf[i]) - ln.min) / (ln.max - ln.min)) * lh; if (i === iStart) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
     ctx.stroke(); ctx.restore();
+
+    /* Ghost Overlay from Saved Reference Pull */
+    if (st.ghostLogBuf && st.ghostLogBuf.length > 5) {
+      ctx.save(); ctx.setLineDash([6, 3]); ctx.strokeStyle = "rgba(244,114,182,0.78)"; ctx.lineWidth = 1.5; ctx.beginPath();
+      const gEnd = Math.min(iEnd, st.ghostLogBuf.length - 1);
+      for (let i = iStart; i <= gEnd; i++) { const x = xOf(i), y = top + (1 - (ln.tr1(st.ghostLogBuf[i]) - ln.min) / (ln.max - ln.min)) * lh; if (i === iStart) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+      ctx.stroke(); ctx.restore();
+    }
 
     ctx.strokeStyle = ln.c1; ctx.lineWidth = 1.9; ctx.beginPath();
     for (let i = iStart; i <= iEnd; i++) { const x = xOf(i), y = top + (1 - (ln.tr1(st.logBuf[i]) - ln.min) / (ln.max - ln.min)) * lh; if (i === iStart) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
@@ -5299,6 +5417,7 @@ function mainLoop() {
   }
   else if (document.getElementById("cv-curve2d").classList.contains("active")) { drawCurve2DEditor(); }
   else if (document.getElementById("cv-dash").classList.contains("active")) { drawDashPreview(); }
+  else if (document.getElementById("cv-log").classList.contains("active") && st.simScenario === "pull") { drawLogMain(); }
 }
 
 (function bindEvents() {
@@ -5801,66 +5920,161 @@ function onQuickBenchSlide() {
   document.getElementById("qbMapLbl").textContent = (b >= 0 ? "+" : "") + b.toFixed(2) + "b";
 }
 
-/* 7" DIGITAL DASH DESIGNER */
+/* 7" DIGITAL DASH DESIGNER — MOTEC C127 / FT550 KILLER TOUCHSCREEN CLUSTER */
+function toggleGhostLogOverlay() {
+  if (st.ghostLogBuf) {
+    st.ghostLogBuf = null;
+    const b = document.getElementById("btnGhostOverlay"), lb = document.getElementById("lblGhostBadge");
+    if (b) b.classList.remove("on");
+    if (lb) lb.textContent = "";
+    drawLogMain();
+    toast("Overlay de passada anterior ocultado.");
+  } else {
+    if (!st.logBuf || st.logBuf.length < 10) buildProPullLog();
+    st.ghostLogBuf = st.logBuf.map(function(x){ return Object.assign({}, x); });
+    const b = document.getElementById("btnGhostOverlay"), lb = document.getElementById("lblGhostBadge");
+    if (b) b.classList.add("on");
+    if (lb) lb.textContent = "━ ━ PASSADA REFERÊNCIA FIXADA (ROSA)";
+    drawLogMain();
+    toast("👻 Passada atual fixada como referência! Altere o mapa e faça Nova Puxada p/ comparar.");
+  }
+}
+
+function openDashFullscreen() {
+  const card = document.getElementById("dashPreviewCard");
+  if (card && card.requestFullscreen) card.requestFullscreen().catch(function(){});
+  else toast("Modo Tela Cheia acionado!");
+}
+
+st.dashTouchRects = [];
+function onDashCanvasClick(ev) {
+  const cv = document.getElementById("cvDashPreview"); if (!cv) return;
+  const rc = cv.getBoundingClientRect();
+  const x = ev.clientX - rc.left, y = ev.clientY - rc.top;
+  for (let i = 0; i < st.dashTouchRects.length; i++) {
+    const r = st.dashTouchRects[i];
+    if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) { r.fn(); drawDashPreview(); return; }
+  }
+}
+
 function toggleDashAlarmDemo() { st.dashAlarmDemo = !st.dashAlarmDemo; drawDashPreview(); }
 function drawDashPreview() {
   const pc = prepCanvas(document.getElementById("cvDashPreview")); if (!pc) return;
   const ctx = pc.ctx, W = pc.W, H = pc.H, t = st.tlm;
   const theme = (document.getElementById("dashThemeSel") || {}).value || "obsidian";
   const ledStart = parseInt((document.getElementById("dshLedStart") || {}).value, 10) || 5400;
-  const ledShift = parseInt((document.getElementById("dshLedShift") || {}).value, 10) || 7100;
+  const ledShift = parseInt((document.getElementById("dshLedShift") || {}).value, 10) || 7000;
+  const showTouch = !document.getElementById("chkDashTouchBtns") || document.getElementById("chkDashTouchBtns").checked;
 
-  ctx.fillStyle = theme === "drag" ? "#050505" : (theme === "oem" ? "#0c1424" : "#070b14");
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  if (theme === "drag") { bgGrad.addColorStop(0, "#09090d"); bgGrad.addColorStop(1, "#030305"); }
+  else if (theme === "oem") { bgGrad.addColorStop(0, "#0d182c"); bgGrad.addColorStop(1, "#060b16"); }
+  else { bgGrad.addColorStop(0, "#0b1324"); bgGrad.addColorStop(1, "#050912"); }
+  ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, W, H);
 
-  /* 12-LED Progressive Shift-Light Strip */
-  const padX = 28, ledW = (W - padX * 2 - 11 * 6) / 12;
+  /* 1. 12-LED Progressive Shift-Light Strip */
+  const padX = 24, ledW = (W - padX * 2 - 11 * 6) / 12;
   for (let i = 0; i < 12; i++) {
     const thr = ledStart + (i / 11) * (ledShift - ledStart);
     const lit = t.rpm >= thr;
-    const flash = t.rpm >= ledShift && (Math.floor(Date.now() / 90) % 2 === 0);
+    const flash = t.rpm >= ledShift && (Math.floor(Date.now() / 85) % 2 === 0);
     const col = i < 5 ? "#00e676" : (i < 9 ? "#ffd600" : "#f43f5e");
-    ctx.fillStyle = flash ? "#f43f5e" : (lit ? col : "#162032");
-    ctx.fillRect(padX + i * (ledW + 6), 14, ledW, 14);
+    ctx.fillStyle = flash ? "#ff1744" : (lit ? col : "#131e33");
+    ctx.beginPath(); ctx.roundRect(padX + i * (ledW + 6), 11, ledW, 13, 3); ctx.fill();
   }
 
-  /* Main RPM Bar & Giant Gear + RPM */
-  const frac = Math.min(1, t.rpm / 8000);
-  ctx.fillStyle = "#111a2b"; ctx.fillRect(padX, 42, W - padX * 2, 26);
-  const grad = ctx.createLinearGradient(padX, 0, W - padX, 0);
-  grad.addColorStop(0, "#00e5ff"); grad.addColorStop(0.65, "#00e676"); grad.addColorStop(1, "#f43f5e");
-  ctx.fillStyle = grad; ctx.fillRect(padX, 42, (W - padX * 2) * frac, 26);
+  /* 2. Segmented Motorsport GT3 RPM Ribbon Bar (0..8500 RPM + Peak Marker) */
+  const barY = 34, barH = 30, barW = W - padX * 2, segs = 42;
+  const maxScale = Math.max(8000, (st.revLimitRpm || 7200) + 800);
+  const rpmFrac = Math.min(1, t.rpm / maxScale);
+  for (let s = 0; s < segs; s++) {
+    const sf = s / segs, sx = padX + sf * barW, sw = (barW / segs) - 2.2;
+    const active = sf <= rpmFrac;
+    const scol = sf < 0.62 ? "#00e5ff" : (sf < 0.84 ? "#00e676" : "#f43f5e");
+    ctx.fillStyle = active ? scol : "rgba(30,45,72,0.55)";
+    ctx.fillRect(sx, barY, sw, barH);
+  }
+  ctx.font = "700 9.5px Consolas, monospace"; ctx.fillStyle = "#64748b"; ctx.textAlign = "center";
+  for (let kr = 1; kr <= 8; kr++) {
+    const kx = padX + ((kr * 1000) / maxScale) * barW;
+    if (kx < W - padX) ctx.fillText(String(kr), kx, barY + barH + 11);
+  }
 
-  ctx.fillStyle = "#ffffff"; ctx.textAlign = "center";
-  ctx.font = "900 56px Consolas, monospace";
-  ctx.fillText(String(t.rpm), W * 0.5, H * 0.48);
-  ctx.font = "700 13px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
-  ctx.fillText("ROTAÇÃO RPM  •  BANCO M" + (t.active_bank + 1), W * 0.5, H * 0.56);
+  /* 3. Center Gear Indicator + Giant RPM + Speed + Bank Badge */
+  const isPull = (st.simScenario === "pull");
+  const gearTxt = t.rpm < 980 && !isPull ? "N" : String(st.simGear || 1);
+  const ratios = [0, 3.30, 1.94, 1.31, 0.97];
+  const spdKmh = gearTxt === "N" ? 0 : Math.round((t.rpm / (ratios[st.simGear || 1] * 3.88)) * 0.118);
+  const cy = H * 0.36;
 
-  /* Left & Right Telemetry Cards */
+  ctx.fillStyle = "rgba(14,165,233,0.12)"; ctx.strokeStyle = "#0284c7"; ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.roundRect(W * 0.5 - 155, cy - 34, 62, 66, 8); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "#38bdf8"; ctx.font = "900 40px Consolas, monospace"; ctx.textAlign = "center";
+  ctx.fillText(gearTxt, W * 0.5 - 124, cy + 13);
+  ctx.font = "700 9px Segoe UI, sans-serif"; ctx.fillStyle = "#94a3b8";
+  ctx.fillText("MARCHA", W * 0.5 - 124, cy + 27);
+
+  ctx.fillStyle = "#ffffff"; ctx.font = "900 50px Consolas, monospace"; ctx.textAlign = "left";
+  ctx.fillText(String(t.rpm), W * 0.5 - 78, cy + 12);
+  ctx.font = "700 11.5px Segoe UI, sans-serif"; ctx.fillStyle = "#38bdf8";
+  ctx.fillText(spdKmh + " km/h  •  M" + (t.active_bank + 1) + " " + ["PISTA","RUA","ECO","VALET"][t.active_bank || 0], W * 0.5 - 76, cy + 29);
+
+  /* 4. 6 High-Contrast Sensor Tiles (2 Rows x 3 Columns) */
   const bb = ((t.map_kpa - 101.3) / 100).toFixed(2);
-  const cards = [
-    [padX, H * 0.65, "MAP / BOOST", (bb >= 0 ? "+" : "") + bb + " bar", "#00e5ff"],
-    [W * 0.36, H * 0.65, "ÁGUA / ÓLEO", t.clt_c.toFixed(0) + "°C • " + (t.oil_press_kpa / 100).toFixed(1) + "b", "#fbbf24"],
-    [W * 0.68, H * 0.65, "SONDA WIDEBAND", t.lambda.toFixed(3) + " λ", "#00e676"]
+  const dpBar = (t.diff_fp_kpa / 100).toFixed(2);
+  const tiles = [
+    ["PRESSÃO MAP", (bb >= 0 ? "+" : "") + bb + " bar", "#00e5ff", false],
+    ["SONDA O2", t.lambda.toFixed(3) + " λ", "#00e676", (t.map_kpa > 180 && t.lambda > 0.86)],
+    ["TEMP. ÁGUA", t.clt_c.toFixed(0) + " °C", "#fbbf24", t.clt_c > 103],
+    ["DIFF COMB. dP", dpBar + " bar", "#38bdf8", t.diff_fp_kpa < 255],
+    ["PRESSÃO ÓLEO", (t.oil_press_kpa / 100).toFixed(1) + " bar", "#a78bfa", t.oil_press_kpa < 130],
+    ["PONTO / BAT.", t.ign_deg.toFixed(1) + "° • " + t.vbatt_v.toFixed(1) + "V", "#cbd5e1", false]
   ];
-  cards.forEach(function(c) {
-    ctx.fillStyle = "rgba(18,28,46,0.92)"; ctx.strokeStyle = "#243652";
-    ctx.fillRect(c[0], c[1], W * 0.27, H * 0.26); ctx.strokeRect(c[0], c[1], W * 0.27, H * 0.26);
-    ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "700 10px Segoe UI, sans-serif";
-    ctx.fillText(c[2], c[0] + 10, c[1] + 20);
-    ctx.fillStyle = c[4]; ctx.font = "800 22px Consolas, monospace";
-    ctx.fillText(c[3], c[0] + 10, c[1] + 52);
+  const gridTop = H * 0.50, botReserve = showTouch ? 44 : 12;
+  const gridH = H - gridTop - botReserve - 6;
+  const tw = (W - padX * 2 - 16) / 3, th = (gridH - 8) / 2;
+  tiles.forEach(function(tl, idx) {
+    const colIdx = idx % 3, rowIdx = Math.floor(idx / 3);
+    const tx = padX + colIdx * (tw + 8), ty = gridTop + rowIdx * (th + 8);
+    ctx.fillStyle = tl[3] ? "rgba(190,18,60,0.28)" : "rgba(15,24,42,0.94)";
+    ctx.strokeStyle = tl[3] ? "#f43f5e" : "#1f3252"; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.roundRect(tx, ty, tw, th, 6); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#94a3b8"; ctx.textAlign = "left"; ctx.font = "700 9.5px Segoe UI, sans-serif";
+    ctx.fillText(tl[0], tx + 10, ty + 16);
+    ctx.fillStyle = tl[3] ? "#fda4af" : tl[2]; ctx.font = "800 19px Consolas, monospace";
+    ctx.fillText(tl[1], tx + 10, ty + Math.min(th - 8, 40));
   });
 
+  /* 5. 4 Interactive Touchscreen Quick-Action Buttons Right on the 7" Dash! */
+  st.dashTouchRects = [];
+  if (showTouch) {
+    const by = H - 37, bh = 28, bw = (W - padX * 2 - 24) / 4;
+    const btns = [
+      { lbl: (st.simScenario === "2step" ? "🔥 2-STEP ON" : "🔥 2-STEP"), act: st.simScenario === "2step", col: "#f97316", fn: function(){ setSimScenario("2step"); } },
+      { lbl: "🗺 MAPA M" + ((t.active_bank + 1)), act: false, col: "#0284c7", fn: function(){ setBank(((t.active_bank || 0) + 1) % 4); } },
+      { lbl: (st.simScenario === "pull" ? "🚀 PUXANDO..." : "🚀 PUXADA 1ª–4ª"), act: st.simScenario === "pull", col: "#10b981", fn: function(){ setSimScenario("pull"); } },
+      { lbl: "🚨 TESTE ALERTA", act: st.dashAlarmDemo, col: "#e11d48", fn: function(){ toggleDashAlarmDemo(); } }
+    ];
+    btns.forEach(function(b, bi) {
+      const bx = padX + bi * (bw + 8);
+      ctx.fillStyle = b.act ? b.col : "#132038";
+      ctx.strokeStyle = b.col; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 5); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "800 10.5px Segoe UI, sans-serif";
+      ctx.fillText(b.lbl, bx + bw * 0.5, by + 18);
+      st.dashTouchRects.push({ x: bx, y: by, w: bw, h: bh, fn: b.fn });
+    });
+  }
+
   if (st.dashAlarmDemo || (t.guardian_fault_mask & 1) !== 0) {
-    ctx.fillStyle = "rgba(190, 18, 60, 0.94)";
-    ctx.fillRect(W * 0.12, H * 0.24, W * 0.76, H * 0.42);
-    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3; ctx.strokeRect(W * 0.12, H * 0.24, W * 0.76, H * 0.42);
-    ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "900 22px Segoe UI, sans-serif";
-    ctx.fillText("⚠ ALERTA CRÍTICO ENGINE GUARDIAN™", W * 0.5, H * 0.42);
-    ctx.font = "700 14px Consolas, monospace";
-    ctx.fillText("QUEDA DE PRESSÃO DIFERENCIAL DE COMBUSTÍVEL (dP < 2.5 bar)!", W * 0.5, H * 0.54);
+    ctx.fillStyle = "rgba(190, 18, 60, 0.95)";
+    ctx.beginPath(); ctx.roundRect(W * 0.10, H * 0.24, W * 0.80, H * 0.42, 10); ctx.fill();
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.font = "900 21px Segoe UI, sans-serif";
+    ctx.fillText("⚠ ALERTA CRÍTICO ENGINE GUARDIAN™", W * 0.5, H * 0.41);
+    ctx.font = "700 13.5px Consolas, monospace";
+    ctx.fillText("QUEDA DE PRESSÃO DIFERENCIAL DE COMBUSTÍVEL (dP < 2.5 bar)!", W * 0.5, H * 0.53);
   }
 }
 
