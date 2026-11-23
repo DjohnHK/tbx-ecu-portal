@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TBX Cockpit &amp; Ghost-Lock™ Wi-Fi v5.0 — Mobile Mission Control</title>
+<style>
+  :root {
+    --bg-base: #050811;
+    --bg-surface: rgba(11, 17, 32, 0.88);
+    --bg-card: rgba(15, 23, 42, 0.82);
+    --bd: rgba(51, 65, 85, 0.58);
+    --txt: #f8fafc;
+    --muted: #94a3b8;
+    --cyan: #00f2fe;
+    --sky: #38bdf8;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --coral: #ef4444;
+    --violet: #a855f7;
+    --mono: 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0, 242, 254, 0.11) 0%, transparent 48%),
+      radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.10) 0%, transparent 48%),
+      var(--bg-base);
+    color: var(--txt);
+    min-height: 100vh;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 10px 12px 84px;
+    overflow-x: hidden;
+  }
+  .top-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 13px; border-radius: 14px;
+    background: var(--bg-surface); backdrop-filter: blur(16px);
+    border: 1px solid var(--bd); margin-bottom: 10px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 10px var(--emerald); display: inline-block; }
+  .dot.off { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+
+  /* Shift-Light 10-LED Strip */
+  .shift-strip {
+    display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px;
+    margin-bottom: 10px; padding: 6px 8px;
+    background: rgba(9, 13, 24, 0.9); border-radius: 10px; border: 1px solid var(--bd);
+  }
+  .s-led { height: 8px; border-radius: 99px; background: #162033; transition: background 0.06s, box-shadow 0.06s; }
+  .s-led.g { background: #10b981; box-shadow: 0 0 8px #10b981; }
+  .s-led.y { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+  .s-led.r { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+  .tab-pane { display: none; flex-direction: column; gap: 10px; }
+  .tab-pane.active { display: flex; }
+
+  .glass-card {
+    background: var(--bg-card); backdrop-filter: blur(14px);
+    border: 1px solid var(--bd); border-radius: 15px; padding: 13px;
+  }
+  .halo-wrap {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    position: relative;
+  }
+  .rpm-big { font-family: var(--mono); font-size: 42px; font-weight: 900; line-height: 1; letter-spacing: -1.5px; }
+  .gear-pill {
+    width: 48px; height: 54px; border-radius: 12px;
+    background: rgba(0, 242, 254, 0.12); border: 1px solid rgba(0, 242, 254, 0.45);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .gear-pill b { font-family: var(--mono); font-size: 26px; color: var(--cyan); line-height: 1; }
+  .gear-pill span { font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 800; }
+
+  .gauges-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .g-card {
+    background: var(--bg-card); border: 1px solid var(--bd); border-radius: 13px; padding: 11px 12px;
+  }
+  .g-lbl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.4px; }
+  .g-val { font-family: var(--mono); font-size: 23px; font-weight: 900; margin-top: 2px; }
+  .g-sub { font-size: 10.5px; color: #64748b; font-family: var(--mono); margin-top: 2px; }
+
+  .banks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .b-btn {
+    background: #0d1628; color: var(--muted); border: 1px solid var(--bd);
+    border-radius: 11px; padding: 10px 4px; font-size: 11.5px; font-weight: 800; cursor: pointer;
+  }
+  .b-btn.active { background: rgba(0, 242, 254, 0.18); color: #67e8f9; border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,242,254,0.16); }
+
+  .quick-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
+  .q-chip {
+    padding: 10px 10px; border-radius: 11px; border: 1px solid var(--bd);
+    background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-size: 11.4px; font-weight: 800;
+    display: flex; align-items: center; justify-content: space-between; gap: 6px; cursor: pointer;
+  }
+  .q-chip.on { border-color: var(--emerald); background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+  .q-chip.ai-on { border-color: var(--violet); background: rgba(168, 85, 247, 0.18); color: #e9d5ff; }
+
+  .trim-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(51,65,85,0.35); }
+  .trim-row:last-child { border-bottom: none; }
+  .step-grp { display: flex; align-items: center; gap: 6px; }
+  .st-btn {
+    width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--bd);
+    background: #111c33; color: #fff; font-size: 16px; font-weight: 900; cursor: pointer;
+  }
+  .st-val { font-family: var(--mono); font-size: 14px; font-weight: 800; min-width: 68px; text-align: center; color: var(--cyan); }
+
+  input[type=range] { width: 100%; accent-color: var(--cyan); height: 26px; margin-top: 4px; }
+
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .pad-k {
+    height: 44px; border-radius: 11px; border: 1px solid var(--bd);
+    background: #0f192d; color: #f8fafc; font-family: var(--mono); font-size: 18px; font-weight: 800; cursor: pointer;
+  }
+  .pad-k:active { background: rgba(0,242,254,0.22); border-color: var(--cyan); }
+  .act-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .act-btn { padding: 12px; border-radius: 11px; border: none; font-weight: 900; font-size: 12.5px; color: #fff; cursor: pointer; }
+  .btn-lock { background: linear-gradient(135deg, #e11d48, #be123c); }
+  .btn-unlock { background: linear-gradient(135deg, #059669, #047857); }
+
+  .bar-mini { height: 7px; background: #070b14; border-radius: 99px; overflow: hidden; margin-top: 5px; }
+  .bar-mini > div { height: 100%; border-radius: 99px; background: var(--emerald); }
+
+  /* Thumb-Ergonomic Bottom Navigation Bar */
+  .bottom-nav {
+    position: fixed; left: 50%; bottom: 0; transform: translateX(-50%);
+    width: 100%; max-width: 540px; height: 66px;
+    background: rgba(8, 13, 25, 0.95); backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(56, 189, 248, 0.28);
+    display: grid; grid-template-columns: repeat(5, 1fr); z-index: 50;
+  }
+  .bn-item {
+    background: transparent; border: none; color: #64748b;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font-size: 10px; font-weight: 800; cursor: pointer;
+  }
+  .bn-item .ico { font-family: var(--mono); font-size: 13px; font-weight: 900; padding: 2px 8px; border-radius: 99px; }
+  .bn-item.active { color: var(--cyan); }
+  .bn-item.active .ico { background: rgba(0, 242, 254, 0.16); color: var(--cyan); }
+
+  .toast-mob {
+    position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.96); border: 1px solid var(--cyan); color: #f8fafc;
+    padding: 9px 15px; border-radius: 99px; font-size: 12px; font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 99;
+    white-space: nowrap;
+  }
+  .toast-mob.show { opacity: 1; }
+</style>
+</head>
+<body>
+  <div id="mobToast" class="toast-mob">Comando enviado!</div>
+
+  <header class="top-hdr">
+    <div>
+      <div style="font-weight:900;font-size:13.5px;letter-spacing:0.3px;">TBX COCKPIT &amp; GHOST-LOCK™ v5.0</div>
+      <div id="conn-txt" style="font-size:10.8px;color:var(--muted);">Sincronizando TBX-LINK Wi-Fi...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:900;">
+      <span id="conn-dot" class="dot"></span>
+      <span id="fortress-badge" style="color:#34d399;font-family:var(--mono);">FORTRESS OK</span>
+    </div>
+  </header>
+
+  <div class="shift-strip" id="shiftStrip">
+    <div class="s-led"></div><div class="s-led"></div><div class="s-led"></div><div class="s-led"></div><div class="s-led"></div>
+    <div class="s-led"></div><div class="s-led"></div><div class="s-led"></div><div class="s-led"></div><div class="s-led"></div>
+  </div>
+
+  <!-- ==================== TAB 1: COCKPIT HALO ==================== -->
+  <section class="tab-pane active" id="tab-0">
+    <div class="glass-card">
+      <div class="halo-wrap">
+        <svg width="118" height="96" viewBox="0 0 120 98" style="flex-shrink:0;">
+          <path d="M 16 86 A 48 48 0 1 1 104 86" fill="none" stroke="#162238" stroke-width="11" stroke-linecap="round"/>
+          <path id="svgRpmArc" d="M 16 86 A 48 48 0 1 1 104 86" fill="none" stroke="url(#gHalo)" stroke-width="11" stroke-linecap="round" stroke-dasharray="216" stroke-dashoffset="130"/>
+          <defs>
+            <linearGradient id="gHalo" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#10b981"/><stop offset="65%" stop-color="#00f2fe"/><stop offset="100%" stop-color="#ef4444"/>
+            </linearGradient>
+          </defs>
+          <text x="60" y="62" text-anchor="middle" fill="#94a3b8" font-size="9.5" font-weight="800">PONTO</text>
+          <text x="60" y="80" text-anchor="middle" fill="#38bdf8" font-family="monospace" font-size="16" font-weight="900" id="v-ign">18.5°</text>
+        </svg>
+        <div style="flex:1;min-width:0;">
+          <div class="g-lbl">ROTAÇÃO AO VIVO</div>
+          <div class="rpm-big" id="v-rpm">3450</div>
+          <div class="g-sub" id="v-pw-duty">Pulso: 4.12 ms • E85 Flex</div>
+        </div>
+        <div class="gear-pill">
+          <b id="v-gear">3</b>
+          <span>Marcha</span>
+        </div>
+      </div>
+      <div style="display:none"><div id="rpm-fill"></div></div>
+    </div>
+
+    <div class="gauges-grid">
+      <div class="g-card"><div class="g-lbl">MAP / BOOST</div><div class="g-val" id="v-map" style="color:var(--sky);">+0.85 bar</div><div class="g-sub">Alvo: +1.40 bar</div></div>
+      <div class="g-card"><div class="g-lbl">SONDA LAMBDA</div><div class="g-val" id="v-lam" style="color:#34d399;">0.820 λ</div><div class="g-sub" id="v-stft">STFT: +0.4% (Alvo 0.82)</div></div>
+      <div class="g-card"><div class="g-lbl">ÁGUA / AR (IAT)</div><div class="g-val" id="v-clt" style="color:#fbbf24;">88.5 °C</div><div class="g-sub" id="v-iat">Admissão: 32.0 °C</div></div>
+      <div class="g-card"><div class="g-lbl">PRESSÃO COMB. / V</div><div class="g-val" id="v-vb" style="color:#c084fc;">13.9 V</div><div class="g-sub" id="v-fp">Linha dP: 3.04 bar</div></div>
+    </div>
+
+    <div class="banks">
+      <button class="b-btn active" id="bk-0" onclick="setBank(0)">M1 PISTA</button>
+      <button class="b-btn" id="bk-1" onclick="setBank(1)">M2 RUA</button>
+      <button class="b-btn" id="bk-2" onclick="setBank(2)">M3 E100</button>
+      <button class="b-btn" id="bk-3" onclick="setBank(3)">VALET</button>
+    </div>
+
+    <div class="quick-chips">
+      <button class="q-chip ai-on" id="qc-ai" onclick="toggleQuickChip('ai')"><span>✦ IA Tempo Real</span><b id="qc-ai-st">ON</b></button>
+      <button class="q-chip" id="qc-rals" onclick="toggleQuickChip('rals')"><span>⚡ Roll Anti-Lag</span><b id="qc-rals-st">PRONTO</b></button>
+      <button class="q-chip on" id="qc-pops" onclick="toggleQuickChip('pops')"><span>◈ Pops &ge;4000 RPM</span><b id="qc-pops-st">ON</b></button>
+      <button class="q-chip" id="qc-cut" onclick="toggleQuickChip('cut')"><span>⇄ Difusor Escape</span><b id="qc-cut-st">AUTO</b></button>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 2: IA & TRIM REMOTO ==================== -->
+  <section class="tab-pane" id="tab-1">
+    <div class="glass-card">
+      <div style="font-weight:900;font-size:13.5px;color:#e9d5ff;margin-bottom:8px;">✦ AJUSTE RÁPIDO PELO CELULAR (SINCRONIZADO C/ STUDIO)</div>
+      <div class="trim-row">
+        <div><strong style="font-size:12.5px;">Trim Global Combustível</strong><div style="font-size:10.5px;color:var(--muted);">Enriquece/empobrece todo o mapa</div></div>
+        <div class="step-grp"><button class="st-btn" onclick="adjTrim('fuel',-1)">−</button><span class="st-val" id="trm-fuel">+0.0%</span><button class="st-btn" onclick="adjTrim('fuel',1)">+</button></div>
+      </div>
+      <div class="trim-row">
+        <div><strong style="font-size:12.5px;">Alvo Marcha Lenta</strong><div style="font-size:10.5px;color:var(--muted);">Malha fechada PID / Reserva Ponto</div></div>
+        <div class="step-grp"><button class="st-btn" onclick="adjTrim('idle',-25)">−</button><span class="st-val" id="trm-idle">880 RPM</span><button class="st-btn" onclick="adjTrim('idle',25)">+</button></div>
+      </div>
+      <div class="trim-row">
+        <div><strong style="font-size:12.5px;">Pressão Alvo Turbo</strong><div style="font-size:10.5px;color:var(--muted);">Solenoide N75 / MAC / Domo CO2</div></div>
+        <div class="step-grp"><button class="st-btn" onclick="adjTrim('boost',-0.1)">−</button><span class="st-val" id="trm-boost">+1.40 b</span><button class="st-btn" onclick="adjTrim('boost',0.1)">+</button></div>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <div style="font-weight:900;font-size:13px;margin-bottom:6px;">🎛 Simulador Wi-Fi em Tempo Real (Celular → PC)</div>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);">
+        <span>RPM: <strong id="lbl-srpm" style="color:#fff;">3800 RPM</strong></span>
+        <span>MAP: <strong id="lbl-smap" style="color:#fff;">195 kPa</strong></span>
+      </div>
+      <input type="range" id="sl-rpm" min="850" max="7800" step="50" value="3800" oninput="pushStim()">
+      <input type="range" id="sl-map" min="35" max="300" step="5" value="195" oninput="pushStim()">
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: ARRANCADA & G-METER ==================== -->
+  <section class="tab-pane" id="tab-2">
+    <div class="glass-card" style="text-align:center;">
+      <div style="font-weight:900;font-size:13.5px;color:var(--cyan);margin-bottom:8px;">🏁 PINHEIRO VIRTUAL &amp; TELEMETRIA DE PISTA (GPS + ABS)</div>
+      <div id="dragTreeLights" style="display:flex;justify-content:center;gap:12px;margin:10px 0;">
+        <span class="dot off" id="dt-1" style="width:18px;height:18px;"></span>
+        <span class="dot off" id="dt-2" style="width:18px;height:18px;"></span>
+        <span class="dot off" id="dt-3" style="width:18px;height:18px;"></span>
+        <span class="dot" id="dt-go" style="width:22px;height:22px;opacity:0.25;"></span>
+      </div>
+      <button class="act-btn btn-unlock" style="width:100%;margin-top:4px;" onclick="startMobileDragTree()">▶ ARMAR PINHEIRO DE LARGADA (2-STEP)</button>
+    </div>
+    <div class="gauges-grid">
+      <div class="g-card"><div class="g-lbl">60 PÉS (18m)</div><div class="g-val" id="dg-60" style="color:#fbbf24;">1.62 s</div><div class="g-sub">Destracionamento: 3.1%</div></div>
+      <div class="g-card"><div class="g-lbl">0 A 100 KM/H</div><div class="g-val" id="dg-100" style="color:var(--cyan);">3.64 s</div><div class="g-sub">Pico G: 1.38 G</div></div>
+      <div class="g-card"><div class="g-lbl">201 METROS (1/8)</div><div class="g-val" id="dg-201" style="color:#34d399;">6.89 s</div><div class="g-sub">@ 168.4 km/h</div></div>
+      <div class="g-card"><div class="g-lbl">402 METROS (1/4)</div><div class="g-val" id="dg-402" style="color:#c084fc;">10.58 s</div><div class="g-sub">@ 214.2 km/h</div></div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: SAÚDE DO MOTOR & SILÍCIO ==================== -->
+  <section class="tab-pane" id="tab-3">
+    <div class="glass-card">
+      <div style="font-weight:900;font-size:13.5px;color:#6ee7b7;margin-bottom:8px;">🩺 DIAGNÓSTICO EXCLUSIVO DE SILÍCIO TBX</div>
+      <div style="font-size:12px;margin-bottom:8px;"><strong>Sonic-Match™ (Vazão Bicos na Flauta):</strong> <span style="color:var(--emerald);font-family:var(--mono);">99.4% Equalizados</span><div class="bar-mini"><div style="width:99%"></div></div></div>
+      <div style="font-size:12px;margin-bottom:8px;"><strong>Crank-Comp™ (Compressão s/ Tirar Velas):</strong> <span style="color:var(--sky);font-family:var(--mono);">Cil 1..4 = 99–100%</span><div class="bar-mini"><div style="width:100%;background:var(--sky)"></div></div></div>
+      <div style="font-size:12px;margin-bottom:8px;"><strong>Doutor do Chicote (PA4..PA7 Loopback):</strong> <span style="color:var(--emerald);font-family:var(--mono);">12.2 Ω • 0 Falhas</span><div class="bar-mini"><div style="width:100%"></div></div></div>
+      <div style="font-size:12px;"><strong>Saúde Partida &amp; Alternador (Crank-Sag):</strong> <span style="color:#c084fc;font-family:var(--mono);">Mín 10.5V • Carga 13.9V</span><div class="bar-mini"><div style="width:95%;background:#a855f7"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 5: GHOST-LOCK™ HMAC-SHA256 ==================== -->
+  <section class="tab-pane" id="tab-4">
+    <div class="glass-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <strong style="font-size:13.5px;">🔒 GHOST-LOCK™ ANTIFURTO CRIPTOGRÁFICO</strong>
+        <span style="font-family:var(--mono);font-size:10.5px;color:var(--cyan);">HMAC-SHA256</span>
+      </div>
+      <input class="pad-k" id="pin-in" type="password" maxlength="6" value="2580" style="width:100%;text-align:center;letter-spacing:6px;font-size:22px;height:46px;" placeholder="PIN">
+      <div class="pin-pad">
+        <button class="pad-k" onclick="tapPin('1')">1</button><button class="pad-k" onclick="tapPin('2')">2</button><button class="pad-k" onclick="tapPin('3')">3</button>
+        <button class="pad-k" onclick="tapPin('4')">4</button><button class="pad-k" onclick="tapPin('5')">5</button><button class="pad-k" onclick="tapPin('6')">6</button>
+        <button class="pad-k" onclick="tapPin('7')">7</button><button class="pad-k" onclick="tapPin('8')">8</button><button class="pad-k" onclick="tapPin('9')">9</button>
+        <button class="pad-k" onclick="tapPin('C')" style="color:#fda4af;">LIMPAR</button><button class="pad-k" onclick="tapPin('0')">0</button><button class="pad-k" onclick="tapPin('<')">⌫</button>
+      </div>
+      <div class="act-row">
+        <button class="act-btn btn-lock" onclick="ghostCmd('ghost_arm')">BLOQUEAR ECU</button>
+        <button class="act-btn btn-unlock" onclick="ghostCmd('ghost_unlock')">LIBERAR PARTIDA</button>
+      </div>
+      <div id="ghost-msg" style="margin-top:9px;font-size:12px;color:#34d399;font-weight:800;text-align:center;">✓ Central Destravada e Autorizada (Anti-Stall RPM&gt;0 Ativo)</div>
+    </div>
+
+    <div class="glass-card" style="display:flex;align-items:center;gap:12px;">
+      <svg width="74" height="74" viewBox="0 0 37 37" style="background:#fff;padding:4px;border-radius:8px;flex-shrink:0;">
+        <path fill="#050811" d="M2,2h11v11h-11z M4,4v7h7v-7z M6,6h3v3h-3z M24,2h11v11h-11z M26,4v7h7v-7z M28,6h3v3h-3z M2,24h11v11h-11z M4,26v7h7v-7z M6,28h3v3h-3z M16,2h3v5h-3z M15,9h5v4h-5z M2,15h7v3h-7z M12,15h9v6h-9z M24,15h11v4h-11z M15,24h6v11h-6z M24,22h5v6h-5z M31,22h4v13h-4z M24,31h5v4h-5z"/>
+      </svg>
+      <div style="font-size:11.5px;color:var(--muted);line-height:1.45;">
+        <strong style="color:#f8fafc;display:block;margin-bottom:2px;">Pareamento Rápido Wi-Fi AP / BLE</strong>
+        Rede da ECU: <code style="color:var(--cyan);">TBX-ECU-PRO</code> • IP Local: <code style="color:#6ee7b7;">192.168.4.1</code> (Zero roteador externo!)
+      </div>
+    </div>
+  </section>
+
+  <!-- THUMB-ERGONOMIC 5-TAB BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <button class="bn-item active" id="bn-0" onclick="switchMobTab(0)"><span class="ico">CK</span><span>Cockpit</span></button>
+    <button class="bn-item" id="bn-1" onclick="switchMobTab(1)"><span class="ico">IA</span><span>IA &amp; Trim</span></button>
+    <button class="bn-item" id="bn-2" onclick="switchMobTab(2)"><span class="ico">DR</span><span>Arrancada</span></button>
+    <button class="bn-item" id="bn-3" onclick="switchMobTab(3)"><span class="ico">SD</span><span>Saúde</span></button>
+    <button class="bn-item" id="bn-4" onclick="switchMobTab(4)"><span class="ico">GL</span><span>Ghost-Lock</span></button>
+  </nav>
+
+<script>
+const API_BASE = window.location.protocol.startsWith("http") ? "" : "http://127.0.0.1:18743";
+const hilBus = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel("tbx_hil_bus_v7") : null;
+let stimDebounce = null;
+let mobState = { fuelTrim: 0.0, idleRpm: 880, boostBar: 1.40, aiOn: true, ralsOn: false, popsOn: true, cutOn: false, lastBusMs: 0 };
+
+function mobToast(msg) {
+  const t = document.getElementById("mobToast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(window._mtTimer);
+  window._mtTimer = setTimeout(function(){ t.classList.remove("show"); }, 2100);
+}
+
+function switchMobTab(idx) {
+  for (let i = 0; i < 5; i++) {
+    document.getElementById("tab-" + i).classList.toggle("active", i === idx);
+    document.getElementById("bn-" + i).classList.toggle("active", i === idx);
+  }
+}
+
+function tapPin(k) {
+  const el = document.getElementById("pin-in");
+  if (k === "C") el.value = "";
+  else if (k === "<") el.value = el.value.slice(0, -1);
+  else if (el.value.length < 6) el.value += k;
+}
+
+function toggleQuickChip(id) {
+  const btn = document.getElementById("qc-" + id);
+  const stEl = document.getElementById("qc-" + id + "-st");
+  if (id === "ai") {
+    mobState.aiOn = !mobState.aiOn;
+    btn.classList.toggle("ai-on", mobState.aiOn);
+    stEl.textContent = mobState.aiOn ? "ON" : "OFF";
+    mobToast(mobState.aiOn ? "✦ IA Tempo Real ativada!" : "IA Tempo Real pausada.");
+  } else {
+    btn.classList.toggle("on");
+    const on = btn.classList.contains("on");
+    stEl.textContent = on ? "ON" : "OFF";
+    mobToast("Função " + id.toUpperCase() + (on ? " ativada!" : " desativada."));
+  }
+}
+
+function adjTrim(kind, step) {
+  if (kind === "fuel") {
+    mobState.fuelTrim = Math.max(-15, Math.min(15, Number((mobState.fuelTrim + step).toFixed(1))));
+    document.getElementById("trm-fuel").textContent = (mobState.fuelTrim >= 0 ? "+" : "") + mobState.fuelTrim.toFixed(1) + "%";
+    mobToast("Trim Global Combustível: " + document.getElementById("trm-fuel").textContent);
+  } else if (kind === "idle") {
+    mobState.idleRpm = Math.max(650, Math.min(1400, mobState.idleRpm + step));
+    document.getElementById("trm-idle").textContent = mobState.idleRpm + " RPM";
+    mobToast("Alvo de Lenta: " + mobState.idleRpm + " RPM");
+  } else if (kind === "boost") {
+    mobState.boostBar = Math.max(0.4, Math.min(3.5, Number((mobState.boostBar + step).toFixed(2))));
+    document.getElementById("trm-boost").textContent = "+" + mobState.boostBar.toFixed(2) + " b";
+    mobToast("Alvo de Boost: +" + mobState.boostBar.toFixed(2) + " bar");
+  }
+}
+
+function startMobileDragTree() {
+  const ids = ["dt-1", "dt-2", "dt-3"];
+  ids.forEach(function(id){ document.getElementById(id).className = "dot off"; });
+  const go = document.getElementById("dt-go");
+  go.style.opacity = "0.25";
+  mobToast("2-Step Armado @ 4250 RPM — Prepare-se!");
+  [400, 800, 1200].forEach(function(ms, idx) {
+    setTimeout(function(){ document.getElementById(ids[idx]).className = "dot off"; document.getElementById(ids[idx]).style.background = "#f59e0b"; }, ms);
+  });
+  setTimeout(function(){
+    go.style.opacity = "1";
+    mobToast("🟢 LARGADA VERDE! Cronômetro GPS 200Hz disparado!");
+  }, 1600);
+}
+
+async function setBank(b) {
+  for (let i = 0; i < 4; i++) document.getElementById("bk-" + i).classList.toggle("active", i === b);
+  mobToast("Mapa M" + (b + 1) + " selecionado sem corte na combustão!");
+  try { await fetch(API_BASE + "/api/command?action=set_bank&bank=" + b, { method: "POST" }); } catch (_e) {}
+}
+
+function pushStim() {
+  const rpm = document.getElementById("sl-rpm").value;
+  const map = document.getElementById("sl-map").value;
+  document.getElementById("lbl-srpm").textContent = rpm + " RPM";
+  document.getElementById("lbl-smap").textContent = map + " kPa";
+  renderTelemetryValues({ rpm: Number(rpm), map_kpa: Number(map), lambda: map > 150 ? 0.81 : 1.00, clt_c: 88.5, vbatt_v: 13.9, ign_deg: map > 150 ? 16.5 : 26.0 });
+  if (stimDebounce) clearTimeout(stimDebounce);
+  stimDebounce = setTimeout(async function() {
+    try { await fetch(API_BASE + "/api/command?action=stim_set&enable=1&rpm=" + rpm + "&map=" + map + "&tps=85", { method: "POST" }); } catch (_e) {}
+  }, 45);
+}
+
+async function ghostCmd(act) {
+  const pin = document.getElementById("pin-in").value || "2580";
+  const msg = document.getElementById("ghost-msg");
+  const badge = document.getElementById("fortress-badge");
+  const isArm = act === "ghost_arm";
+  if (!isArm && pin !== "2580") {
+    msg.textContent = "✕ PIN Inválido! Assinatura HMAC-SHA256 recusada pelo STM32.";
+    msg.style.color = "#fb7185";
+    mobToast("PIN incorreto!");
+    return;
+  }
+  if (isArm) {
+    msg.textContent = "🔒 GHOST-LOCK ARMADO: Injeção e Ignição Bloqueadas no Silício!";
+    msg.style.color = "#fb7185";
+    badge.textContent = "LOCKED"; badge.style.color = "#fb7185";
+    mobToast("🔒 Central bloqueada via Ghost-Lock™!");
+  } else {
+    msg.textContent = "✓ GHOST-LOCK LIBERADO: Partida Autorizada via HMAC-SHA256!";
+    msg.style.color = "#34d399";
+    badge.textContent = "FORTRESS OK"; badge.style.color = "#34d399";
+    mobToast("✓ Central destravada com sucesso!");
+  }
+  try { await fetch(API_BASE + "/api/command?action=" + act + "&pin=" + encodeURIComponent(pin), { method: "POST" }); } catch (_e) {}
+}
+
+function renderTelemetryValues(d) {
+  const rpm = Math.round(d.rpm || 0);
+  document.getElementById("v-rpm").textContent = rpm;
+  const frac = Math.min(1.0, Math.max(0.0, rpm / 7800.0));
+  document.getElementById("svgRpmArc").setAttribute("stroke-dashoffset", (216 * (1.0 - frac)).toFixed(1));
+  const leds = document.querySelectorAll("#shiftStrip .s-led");
+  const lit = Math.round(frac * 10);
+  leds.forEach(function(el, i) {
+    el.className = "s-led" + (i < lit ? (i < 5 ? " g" : (i < 8 ? " y" : " r")) : "");
+  });
+  document.getElementById("v-gear").textContent = d.gear || (rpm < 1200 ? "N" : Math.min(6, Math.max(1, Math.floor(rpm / 1450))));
+  document.getElementById("v-ign").textContent = (d.ign_deg !== undefined ? Number(d.ign_deg).toFixed(1) : "18.5") + "°";
+  const bar = ((d.map_kpa || 100) - 100) / 100.0;
+  document.getElementById("v-map").textContent = (bar >= 0 ? "+" : "") + bar.toFixed(2) + " bar";
+  document.getElementById("v-lam").textContent = (d.lambda !== undefined ? Number(d.lambda).toFixed(3) : "0.850") + " λ";
+  document.getElementById("v-clt").textContent = (d.clt_c !== undefined ? Number(d.clt_c).toFixed(1) : "88.5") + " °C";
+  document.getElementById("v-vb").textContent = (d.vbatt_v !== undefined ? Number(d.vbatt_v).toFixed(1) : "13.9") + " V";
+  if (d.inj_pw_ms !== undefined) document.getElementById("v-pw-duty").textContent = "Pulso: " + Number(d.inj_pw_ms).toFixed(2) + " ms • Flex Virtual™";
+}
+
+if (hilBus) {
+  hilBus.onmessage = function(ev) {
+    const m = ev.data || {};
+    if (typeof m.rpm === "number") {
+      mobState.lastBusMs = Date.now();
+      document.getElementById("conn-dot").classList.remove("off");
+      document.getElementById("conn-txt").textContent = "Sincronizado em Tempo Real c/ TBX Studio (200 Hz)";
+      renderTelemetryValues(m);
+    }
+  };
+}
+
+async function pollLive() {
+  if (Date.now() - mobState.lastBusMs < 800) return;
+  try {
+    const r = await fetch(API_BASE + "/api/telemetry", { cache: "no-store" });
+    const d = await r.json();
+    document.getElementById("conn-dot").classList.remove("off");
+    document.getElementById("conn-txt").textContent = "Conectado Ao Vivo • " + (d.source || "TBX-LINK Wi-Fi");
+    renderTelemetryValues(d);
+    if (d.active_bank !== undefined) {
+      for (let i = 0; i < 4; i++) document.getElementById("bk-" + i).classList.toggle("active", i === d.active_bank);
+    }
+  } catch (_err) {
+    document.getElementById("conn-dot").classList.add("off");
+    document.getElementById("conn-txt").textContent = "Demo Interativa Ao Vivo (Abra junto c/ TBX Studio!)";
+    const ph = Date.now() * 0.0016;
+    const demoRpm = 2400 + Math.sin(ph) * 1950 + 1600;
+    const demoMap = 95 + Math.max(0, Math.sin(ph) * 145);
+    renderTelemetryValues({
+      rpm: demoRpm, map_kpa: demoMap,
+      lambda: demoMap > 140 ? 0.812 : 0.998,
+      clt_c: 88.5, vbatt_v: 13.9,
+      ign_deg: demoMap > 140 ? 17.5 : 28.0,
+      inj_pw_ms: 1.9 + (demoMap / 100) * 3.1
+    });
+  }
+}
+
+setInterval(pollLive, 120);
+pollLive();
+</script>
+</body>
+</html>
